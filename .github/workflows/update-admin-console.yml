@@ -1,0 +1,35 @@
+name: Update AdminConsole Frontend
+
+on:
+  workflow_dispatch:
+
+  pull_request:
+    types:
+      - opened
+    branches:
+      - 'main'
+      - 'chore/lerna-monorepo'
+    paths:
+      - 'apps/adminConsole/package.json'
+  push:
+    branches:
+      - 'main'
+      - 'chore/apps'
+    paths:
+      - 'apps/adminConsole/**'
+      - 'packages/ui/**'
+      - .github/workflows/update-admin-console.yml
+      - .github/workflows/common-config.yml
+      - nginx.conf
+
+jobs:
+  call-nodes-ci:
+    uses: ./.github/workflows/common-config.yml
+    with:
+      NODE_VERSION: '16.14'
+      PACKAGE_NAME: admin-console-frontend-v1
+      PACKAGE_PATH: apps/adminConsole/package.json
+      DOCKERFILE_PATH: Dockerfile-admin-console-client
+      PACKAGE_BUILD_SCRIPT: build:console
+      DEFAULT_VERSION: latest
+    secrets: inherit

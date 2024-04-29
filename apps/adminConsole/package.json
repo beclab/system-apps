@@ -1,0 +1,71 @@
+{
+  "name": "@apps/admin_console",
+  "version": "0.2.2",
+  "description": "Control Hub",
+  "productName": "Control Hub",
+  "private": true,
+  "scripts": {
+    "lint": "eslint --ext .js,.ts,.vue ./",
+    "format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore",
+    "test": "echo \"No test specified\" && exit 0",
+    "dev": "quasar dev",
+    "build": "quasar build",
+    "build:pwa": "quasar build -m pwa",
+    "prebuild": "rimraf dist"
+  },
+  "dependencies": {
+    "@apps/monitoring": "../monitoring",
+    "@apps/nodes": "../nodes",
+    "@bytetrade/ui": "0.0.81",
+    "@packages/ui": "../common",
+    "@quasar/extras": "^1.16.9",
+    "ace-builds": "^1.32.7",
+    "ansi_up": "^5.0.0",
+    "axios": "^0.21.1",
+    "buffer": "^6.0.3",
+    "core-js": "^3.6.5",
+    "diff": "^4.0.2",
+    "diff2html": "^3.1.6",
+    "echarts": "^5.4.1",
+    "js-base64": "^3.7.7",
+    "js-yaml": "^3.12.0",
+    "lodash": "^4.17.21",
+    "moment-mini": "^2.29.4",
+    "pinia": "^2.0.11",
+    "quasar": "^2.6.0",
+    "tinycolor2": "^1.6.0",
+    "vue": "^3.0.0",
+    "vue-echarts": "^6.5.4",
+    "vue-i18n": "^9.2.2",
+    "vue-router": "^4.0.0",
+    "vue3-ace-editor": "^2.2.2",
+    "vue3-text-clamp": "^0.1.2",
+    "xterm": "^5.1.0",
+    "xterm-addon-attach": "^0.8.0",
+    "xterm-addon-fit": "^0.7.0"
+  },
+  "browserslist": [
+    "last 10 Chrome versions",
+    "last 10 Firefox versions",
+    "last 4 Edge versions",
+    "last 7 Safari versions",
+    "last 8 Android versions",
+    "last 8 ChromeAndroid versions",
+    "last 8 FirefoxAndroid versions",
+    "last 10 iOS versions",
+    "last 5 Opera versions"
+  ],
+  "engines": {
+    "node": ">= 12.22.1",
+    "npm": ">= 6.13.4",
+    "yarn": ">= 1.21.1"
+  },
+  "devDependencies": {
+    "@quasar/app-webpack": "^3.0.0",
+    "@types/diff": "^5.0.3",
+    "@types/js-yaml": "^4.0.5",
+    "@types/lodash": "^4.14.191",
+    "@types/node": "^12.20.21",
+    "@types/tinycolor2": "^1.4.3"
+  }
+}

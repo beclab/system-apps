@@ -1,0 +1,63 @@
+{
+  "name": "@apps/server",
+  "version": "0.2.0",
+  "description": "server",
+  "productName": "server",
+  "private": true,
+  "scripts": {
+    "lint": "eslint --ext .js,.ts,.vue ./",
+    "format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore",
+    "test": "echo \"No test specified\" && exit 0",
+    "dev": "cross-env NODE_ENV=development nodemon -w ./common -w ./server -e js,yaml server/server.js",
+    "build": "webpack --config scripts/webpack.server.js",
+    "prebuild": "rimraf dist"
+  },
+  "dependencies": {
+    "dnscache": "^1.0.2",
+    "http-proxy": "^1.18.1",
+    "js-yaml": "^3.12.0",
+    "jwt-decode": "^2.2.0",
+    "koa": "^2.4.1",
+    "koa-bodyparser": "^4.2.0",
+    "koa-compress": "^3.0.0",
+    "koa-convert": "^1.2.0",
+    "koa-ejs": "^4.2.0",
+    "koa-locales": "^1.8.0",
+    "koa-logger": "^3.2.0",
+    "koa-mount": "^3.0.0",
+    "koa-router": "^7.3.0",
+    "koa-static": "^4.0.2",
+    "lodash": "^4.17.21",
+    "mobx": "^4.15.4",
+    "moment-mini": "^2.19.4",
+    "node-cache": "^4.1.1",
+    "node-fetch": "^2.6.7",
+    "path-to-regexp": "^2.2.1",
+    "qs": "^6.5.2",
+    "stream-array": "^1.1.2"
+  },
+  "browserslist": [
+    "last 10 Chrome versions",
+    "last 10 Firefox versions",
+    "last 4 Edge versions",
+    "last 7 Safari versions",
+    "last 8 Android versions",
+    "last 8 ChromeAndroid versions",
+    "last 8 FirefoxAndroid versions",
+    "last 10 iOS versions",
+    "last 5 Opera versions"
+  ],
+  "engines": {
+    "node": ">= 12.22.1",
+    "npm": ">= 6.13.4",
+    "yarn": ">= 1.21.1"
+  },
+  "devDependencies": {
+    "@types/file-saver": "^2.0.5",
+    "copy-webpack-plugin": "^11.0.0",
+    "cross-env": "^7.0.3",
+    "nodemon": "^2.0.21",
+    "webpack": "^5.76.1",
+    "webpack-cli": "^5.0.1"
+  }
+}

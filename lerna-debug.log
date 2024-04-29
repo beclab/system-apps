@@ -1,0 +1,16 @@
+0 silly argv {
+0 silly argv   _: [ 'bootstrap' ],
+0 silly argv   lernaVersion: '5.1.8',
+0 silly argv   '$0': '/Users/yyh/Desktop/system-app-temp/system-apps/node_modules/.bin/lerna'
+0 silly argv }
+1 notice cli v5.1.8
+2 verbose rootPath /Users/yyh/Desktop/system-app-temp/system-apps
+3 error Error: Unsupported URL Type "workspace:": workspace:*
+3 error     at unsupportedURLType (/Users/yyh/Desktop/system-app-temp/system-apps/node_modules/npm-package-arg/npa.js:246:15)
+3 error     at fromURL (/Users/yyh/Desktop/system-app-temp/system-apps/node_modules/npm-package-arg/npa.js:306:13)
+3 error     at Function.resolve (/Users/yyh/Desktop/system-app-temp/system-apps/node_modules/npm-package-arg/npa.js:76:12)
+3 error     at /Users/yyh/Desktop/system-app-temp/system-apps/node_modules/@lerna/package-graph/index.js:66:30
+3 error     at Array.forEach (<anonymous>)
+3 error     at /Users/yyh/Desktop/system-app-temp/system-apps/node_modules/@lerna/package-graph/index.js:60:38
+3 error     at PackageGraph.forEach (<anonymous>)
+3 error     at new PackageGraph (/Users/yyh/Desktop/system-app-temp/system-apps/node_modules/@lerna/package-graph/index.js:49:10)

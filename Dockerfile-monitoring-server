@@ -1,0 +1,24 @@
+FROM node:18.15.0-buster-slim as server_dist
+
+WORKDIR /server_dist
+
+COPY apps/server/package*.json ./
+
+RUN yarn
+
+ADD apps/server/ ./
+
+RUN yarn add rimraf -D && yarn build
+
+
+FROM node:18.15.0-buster-slim
+
+EXPOSE 8000
+
+WORKDIR /server
+
+COPY --from=server_dist /server_dist/dist/ ./
+
+WORKDIR /server/main
+
+CMD [ "node", "server.js"]

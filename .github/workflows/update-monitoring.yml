@@ -1,0 +1,36 @@
+name: Update Monitoring Frontend
+
+on:
+  workflow_dispatch:
+
+  pull_request:
+    types:
+      - opened
+    branches:
+      - 'main'
+      - 'chore/lerna-monorepo'
+    paths:
+      - 'apps/monitoring/package.json'
+  push:
+    branches:
+      - 'main'
+      - 'feat/api_watch'
+      - 'chore/apps'
+    paths:
+      - 'apps/monitoring/**'
+      - 'packages/ui/**'
+      - .github/workflows/update-monitoring.yml
+      - .github/workflows/common-config.yml
+      - nginx.conf
+
+jobs:
+  call-nodes-ci:
+    uses: ./.github/workflows/common-config.yml
+    with:
+      NODE_VERSION: '16.14'
+      PACKAGE_NAME: dashboard-frontend-v1
+      PACKAGE_PATH: apps/monitoring/package.json
+      DOCKERFILE_PATH: Dockerfile-monitoring-client
+      PACKAGE_BUILD_SCRIPT: build:monitoring
+      DEFAULT_VERSION: latest
+    secrets: inherit

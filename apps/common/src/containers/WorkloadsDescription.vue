@@ -1,0 +1,37 @@
+<template>
+	<span>
+		<template v-if="reason">
+			<StatusReason :status="status" :reason="reason" :data="detail" />
+		</template>
+		<template v-else-if="detail.updateTime">
+			{{
+				t('UPDATED_TIME', {
+					value: getLocalTime(detail.updateTime).format('YYYY-MM-DD HH:mm:ss')
+				})
+			}}
+		</template>
+		<template v-else>
+			{{
+				t('CREATED_TIME', {
+					diff: getLocalTime(detail.createTime).format('YYYY-MM-DD HH:mm:ss')
+				})
+			}}
+		</template>
+	</span>
+</template>
+
+<script setup lang="ts">
+import { defineProps } from 'vue';
+import { t } from 'src/boot/i18n';
+import { getLocalTime } from 'src/utils';
+import { getWorkloadStatus } from 'src/utils/status';
+import StatusReason from '../components/StatusReason.vue';
+
+interface DescriptionProps {
+	detail: any;
+}
+
+const props = defineProps<DescriptionProps>();
+
+const { status, reason } = getWorkloadStatus(props.detail, props.detail.module);
+</script>

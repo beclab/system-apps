@@ -1,0 +1,33 @@
+<svg width="181" height="124" viewBox="0 0 181 124" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Frame 56" clip-path="url(#clip0_121_2434)">
+<g id="Group 9">
+<ellipse id="Ellipse 12" cx="90.9186" cy="115.116" rx="89.5814" ry="36.4186" fill="url(#paint0_linear_121_2434)"/>
+<path id="Union" fill-rule="evenodd" clip-rule="evenodd" d="M79.5501 14.707C75.4888 14.707 72.1965 17.9992 72.1965 22.0605V79.0504C72.1965 83.1116 75.4888 86.4039 79.5501 86.4039H122.568C126.629 86.4039 129.922 83.1116 129.922 79.0504V31.9878H143.158V22.0605C143.158 17.9993 139.866 14.707 135.805 14.707H122.568H92.7864H79.5501Z" fill="url(#paint1_linear_121_2434)"/>
+<rect id="Rectangle 56" x="80.6534" y="30.1494" width="40.8121" height="4.77979" rx="2.3899" fill="#F1F5F9"/>
+<rect id="Rectangle 57" x="80.6534" y="42.2827" width="40.8121" height="4.77979" rx="2.3899" fill="#F1F5F9"/>
+<rect id="Rectangle 58" x="80.6534" y="54.416" width="25.3697" height="4.77979" rx="2.3899" fill="#F1F5F9"/>
+<path id="Rectangle 56_2" d="M129.922 22.7958C129.922 19.7499 132.391 17.2807 135.437 17.2807C138.483 17.2807 140.952 19.7499 140.952 22.7958V31.9877H129.922V22.7958Z" fill="#81AFFF"/>
+<path id="Subtract" fill-rule="evenodd" clip-rule="evenodd" d="M113.376 70.2262H62.2693V81.6242C62.2693 84.264 64.4093 86.404 67.0491 86.404H119.994V86.3943C116.307 86.2032 113.376 83.1529 113.376 79.418V70.2262Z" fill="url(#paint2_linear_121_2434)"/>
+<path id="Vector 9" d="M59.6963 27.2089C58.805 35.8558 56.8375 39.7518 51.0559 45.225" stroke="#BDD2F7" stroke-width="0.367676"/>
+<path id="Vector 10" d="M62.154 40.0304C60.2474 46.328 57.6736 49.0855 52.1585 52.9461" stroke="#BDD2F7" stroke-width="0.367676"/>
+<path id="Union_2" fill-rule="evenodd" clip-rule="evenodd" d="M48.0189 51.9739C48.1197 51.7976 48.0584 51.573 47.8821 51.4722C47.7058 51.3715 47.4812 51.4328 47.3805 51.6091L46.5297 53.0979C46.0611 52.8813 45.5391 52.7605 44.989 52.7605C42.3639 52.7605 41.5102 55.0462 40.6317 57.3981C39.9957 59.1009 39.3467 60.8384 38.0032 61.7685C41.1808 61.8956 48.6658 60.7386 48.6658 56.4372C48.6658 55.6001 48.386 54.8283 47.9148 54.2102C46.4656 56.418 45.2141 57.6149 42.9668 59.3786C44.6613 57.3239 45.6559 56.0128 46.7743 54.0472C46.8303 54.0157 46.8788 53.9691 46.9131 53.9092L48.0189 51.9739Z" fill="#BDD2F7"/>
+</g>
+</g>
+<defs>
+<linearGradient id="paint0_linear_121_2434" x1="90.9186" y1="78.6977" x2="90.7823" y2="124.3" gradientUnits="userSpaceOnUse">
+<stop stop-color="#DEE5F4"/>
+<stop offset="1" stop-color="#F1F5F9" stop-opacity="0"/>
+</linearGradient>
+<linearGradient id="paint1_linear_121_2434" x1="107.677" y1="14.707" x2="107.677" y2="86.4039" gradientUnits="userSpaceOnUse">
+<stop stop-color="#A1C0FF"/>
+<stop offset="1" stop-color="#C9D9F3"/>
+</linearGradient>
+<linearGradient id="paint2_linear_121_2434" x1="91.1319" y1="70.2262" x2="91.1319" y2="86.404" gradientUnits="userSpaceOnUse">
+<stop stop-color="#E2ECFA"/>
+<stop offset="1" stop-color="#A4C6FA"/>
+</linearGradient>
+<clipPath id="clip0_121_2434">
+<rect width="180" height="124" fill="white" transform="translate(0.5)"/>
+</clipPath>
+</defs>
+</svg>

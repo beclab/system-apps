@@ -1,0 +1,107 @@
+on:
+  workflow_call:
+    inputs:
+      PACKAGE_NAME:
+        required: true
+        type: string
+      PACKAGE_PATH:
+        required: true
+        type: string
+      DOCKERFILE_PATH:
+        required: true
+        type: string
+      DOCKER_CONTEXT:
+        type: string
+        default: .
+      DOCKER_BUILD_ARGS:
+        type: string
+      DEFAULT_VERSION:
+        required: true
+        type: string
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASS }}
+
+      - name: Check if version has been updated
+        id: check
+        uses: EndBug/version-check@v2.1.1
+        with:
+          file-name: ${{ inputs.PACKAGE_PATH }}
+
+      - name: Update Docker Tag
+        id: docker-tag
+        run: |
+          echo "::set-output name=time::$(TZ='Asia/Shanghai' date +'%Y-%m-%d %H:%M:%S')"
+          if [ ${{ steps.check.outputs.changed }} == 'true' ]; then
+            echo "::set-output name=version::v${{ steps.check.outputs.version }}"
+            echo "::set-output name=changed::true"
+          else
+            echo "::set-output name=version::${{ inputs.DEFAULT_VERSION }}"
+            echo "::set-output name=changed::false"
+          fi
+
+      - name: Build and push Docker image
+        id: docker_build_push
+        uses: docker/build-push-action@v2
+        with:
+          context: ${{ inputs.DOCKER_CONTEXT}}
+          file: ${{ inputs.DOCKERFILE_PATH }}
+          push: true
+          tags: beclab/${{ inputs.PACKAGE_NAME }}:${{ steps.docker-tag.outputs.version }}
+          build-args: ${{ inputs.DOCKER_BUILD_ARGS}}
+
+      - name: Post Success Message
+        if: steps.docker_build_push.outcome == 'success'
+        uses: foxundermoon/feishu-action@v2
+        with:
+          url: ${{ secrets.FEISHU_WEBHOOK_URL }}
+          msg_type: post
+          content: |
+            post:
+              zh_cn:
+                title: 'Success: beclab/${{ inputs.PACKAGE_NAME }}:${{ steps.docker-tag.outputs.version }}'
+                content:
+                - - tag: text
+                    un_escape: true
+                    text: 'images:&nbsp;'
+                  - tag: a
+                    text: beclab/${{ inputs.PACKAGE_NAME }}
+                    href: https://hub.docker.com/r/beclab/${{ inputs.PACKAGE_NAME }}
+                - - tag: text
+                    un_escape: true
+                    text: 'repository:&nbsp;'
+                  - tag: a
+                    text: ${{ github.event.repository.name }}
+                    href: ${{ github.event.repository.html_url }}
+                - - tag: text
+                    un_escape: true
+                    text: 'date:&nbsp;'
+                  - tag: text
+                    text: '${{ steps.docker-tag.outputs.time }}'
+
+      - name: Post Failure Message
+        if: steps.docker_build_push.outcome != 'success'
+        uses: foxundermoon/feishu-action@v2
+        with:
+          url: ${{ secrets.FEISHU_WEBHOOK_URL }}
+          msg_type: post
+          content: |
+            post:
+              zh_cn:
+                title: 'Failure: ${{ inputs.PACKAGE_NAME }}:${{ steps.docker-tag.outputs.version }}'
+                content:
+                - - tag: text
+                    un_escape: true
+                    text: 'logs:&nbsp;'
+                  - tag: a
+                    text: ${{ github.job }}
+                    href: ${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}

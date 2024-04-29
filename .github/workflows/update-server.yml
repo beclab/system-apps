@@ -1,0 +1,30 @@
+name: Update Server
+
+on:
+  workflow_dispatch:
+
+  pull_request:
+    types:
+      - opened
+    branches:
+      - 'main'
+    paths:
+      - 'apps/server/package.json'
+  push:
+    branches:
+      - 'main'
+      - 'chore/apps'
+    paths:
+      - 'apps/server/**'
+      - .github/workflows/update-server.yml
+      - .github/workflows/common-server-config.yml
+
+jobs:
+  call-nodes-ci:
+    uses: ./.github/workflows/common-server-config.yml
+    with:
+      PACKAGE_NAME: monitoring-server-v1
+      PACKAGE_PATH: apps/server/package.json
+      DOCKERFILE_PATH: Dockerfile-monitoring-server
+      DEFAULT_VERSION: latest
+    secrets: inherit

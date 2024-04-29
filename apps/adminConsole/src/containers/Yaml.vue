@@ -1,0 +1,46 @@
+<template>
+	<v-ace-editor
+		v-model:value="data"
+		lang="yaml"
+		theme="textmate"
+		readonly
+		style="height: 100%"
+		wrap
+		:options="{
+			showGutter: true,
+			showPrintMargin: true,
+			useWorker: true
+		}"
+	/>
+</template>
+
+<script setup lang="ts">
+import { getYaml } from 'src/network';
+import { onMounted, ref, toRef, toRefs } from 'vue';
+import yaml from 'js-yaml';
+import { VAceEditor } from 'vue3-ace-editor';
+import ace from 'ace-builds';
+import 'ace-builds/src-noconflict/mode-yaml';
+import 'ace-builds/src-noconflict/snippets/yaml';
+import 'ace-builds/src-noconflict/theme-textmate';
+
+import 'ace-builds/src-noconflict/mode-groovy';
+import 'ace-builds/src-noconflict/theme-chaos';
+import 'ace-builds/src-noconflict/keybinding-vscode';
+import 'ace-builds/src-noconflict/ext-searchbox';
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+//@ts-ignore
+import workerJsonUrl from 'file-loader?esModule=false!ace-builds/src-noconflict/worker-yaml.js';
+ace.config.setModuleUrl('ace/mode/yaml_worker', workerJsonUrl);
+// src/components/Modals/EditYaml/index.jsx
+
+interface Props {
+	data: string;
+}
+const props = withDefaults(defineProps<Props>(), {});
+
+const { data } = toRefs(props);
+</script>
+
+<style></style>

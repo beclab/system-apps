@@ -1,0 +1,113 @@
+<template>
+	<MyPage>
+		<MyCard square flat :title="t('DETAILS')">
+			<div style="min-height: 200px" class="relative-position">
+				<DetailPage :data="statusList"> </DetailPage>
+				<q-inner-loading :showing="loading"> </q-inner-loading>
+			</div>
+		</MyCard>
+	</MyPage>
+</template>
+
+<script setup lang="ts">
+import DetailPage from '@packages/ui/src/containers/DetailPage.vue';
+import { getNodeDetail } from 'src/network';
+import { ref, watch } from 'vue';
+import { getNodeRoles, getNodeStatus } from 'src/utils/node';
+import { t } from 'src/boot/i18n';
+import { getLocalTime } from 'src/utils';
+import { get, isEmpty } from 'lodash';
+import { useRoute } from 'vue-router';
+import MyCard from '@packages/ui/src/components/MyCard2.vue';
+import { ObjectMapper } from 'src/utils/object.mapper';
+import MyPage from '@packages/ui/src/containers/MyPage.vue';
+
+const statusList = ref();
+let loading = ref(false);
+
+const getAttrs = (detail: any) => {
+	if (isEmpty(detail)) {
+		return;
+	}
+
+	const statusStr = getNodeStatus(detail);
+
+	const address = get(detail, 'status.addresses[0].address', '-');
+	const nodeInfo = detail.nodeInfo || {};
+
+	return [
+		{
+			name: t('STATUS'),
+			value: statusStr
+		},
+		{
+			name: t('IP_ADDRESS'),
+			value: address
+		},
+		{
+			name: t('ROLE'),
+			value:
+				getNodeRoles(detail.labels).indexOf('master') === -1
+					? t('WORKER')
+					: t('CONTROL_PLANE')
+		},
+		{
+			name: t('OS_VERSION'),
+			value: nodeInfo.osImage
+		},
+		{
+			name: t('OS_TYPE'),
+			value: t(nodeInfo.operatingSystem.toUpperCase())
+		},
+		{
+			name: t('KERNEL_VERSION'),
+			value: nodeInfo.kernelVersion
+		},
+		{
+			name: t('CONTAINER_RUNTIME'),
+			value: nodeInfo.containerRuntimeVersion
+		},
+		{
+			name: t('KUBELET_VERSION'),
+			value: nodeInfo.kubeletVersion
+		},
+		{
+			name: t('KUBE_PROXY_VERSION'),
+			value: nodeInfo.kubeProxyVersion
+		},
+		{
+			name: t('ARCHITECTURE'),
+			value: nodeInfo.architecture.toUpperCase()
+		},
+		{
+			name: t('CREATION_TIME_TCAP'),
+			value: getLocalTime(detail.createTime).format('YYYY-MM-DD HH:mm:ss')
+		}
+	];
+};
+const route = useRoute();
+
+const fetchList = () => {
+	const { node }: Record<string, any> = route.params;
+	loading.value = true;
+	getNodeDetail(node)
+		.then((res) => {
+			const data = ObjectMapper.nodes(res.data);
+			statusList.value = getAttrs(data);
+		})
+		.finally(() => {
+			loading.value = false;
+		});
+};
+
+watch(
+	() => route.params.node,
+	() => {
+		fetchList();
+	}
+);
+
+fetchList();
+</script>
+
+<style></style>

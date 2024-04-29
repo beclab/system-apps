@@ -1,0 +1,43 @@
+{
+  "name": "@apps/nodes",
+  "version": "0.1.18",
+  "description": "Nodes",
+  "productName": "Nodes",
+  "private": true,
+  "scripts": {
+    "lint": "eslint --ext .js,.ts,.vue ./",
+    "format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore",
+    "test": "echo \"No test specified\" && exit 0",
+    "dev": "Account=yyhy65754 quasar dev",
+    "build": "quasar build",
+    "build:pwa": "quasar build -m pwa",
+    "prebuild": "rimraf dist"
+  },
+  "dependencies": {
+    "@packages/ui": "../common",
+    "js-yaml": "^3.12.0",
+    "vue3-ace-editor": "^2.2.2",
+    "xterm": "^5.1.0",
+    "xterm-addon-attach": "^0.8.0",
+    "xterm-addon-fit": "^0.7.0"
+  },
+  "browserslist": [
+    "last 10 Chrome versions",
+    "last 10 Firefox versions",
+    "last 4 Edge versions",
+    "last 7 Safari versions",
+    "last 8 Android versions",
+    "last 8 ChromeAndroid versions",
+    "last 8 FirefoxAndroid versions",
+    "last 10 iOS versions",
+    "last 5 Opera versions"
+  ],
+  "engines": {
+    "node": ">= 12.22.1",
+    "npm": ">= 6.13.4",
+    "yarn": ">= 1.21.1"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.5"
+  }
+}
