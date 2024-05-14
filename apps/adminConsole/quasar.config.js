@@ -107,51 +107,51 @@ module.exports = configure(function (ctx) {
 			open: true, // opens browser window automatically,
 			proxy: {
 				'/kapis/terminal': {
-					target: 'wss://${proxyTarget}',
+					target: `wss://${proxyTarget}`,
 					changeOrigin: true,
 					ws: true,
 					http: false
 				},
 				'/apis/apps/v1/watch': {
-					target: 'wss://${proxyTarget}',
+					target: `wss://${proxyTarget}`,
 					changeOrigin: true,
 					ws: true,
 					http: false
 				},
 				'/api/v1/watch': {
-					target: 'wss://${proxyTarget}',
+					target: `wss://${proxyTarget}`,
 					changeOrigin: true,
 					ws: true,
 					http: false
 				},
 				'/kapis': {
-					target: 'https://${proxyTarget}',
+					target: `https://${proxyTarget}`,
 					changeOrigin: true,
 					secure: false,
 					ws: false
 				},
 				'/api': {
-					target: 'https://${proxyTarget}',
+					target: `https://${proxyTarget}`,
 					changeOrigin: true,
 					secure: false
 				},
 				'/bfl': {
-					target: 'https://${proxyTarget}',
+					target: `https://${proxyTarget}`,
 					changeOrigin: true,
 					secure: false
 				},
 				'/capi': {
-					target: 'https://${proxyTarget}',
+					target: `https://${proxyTarget}`,
 					changeOrigin: true,
 					secure: false
 				},
 				'/middleware': {
-					target: 'https://${proxyTarget}',
+					target: `https://${proxyTarget}`,
 					changeOrigin: true,
 					secure: false
 				},
 				'/zinc_search': {
-					target: 'https://${proxyTarget}',
+					target: `https://${proxyTarget}`,
 					changeOrigin: true,
 					secure: false
 				}

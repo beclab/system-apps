@@ -6,98 +6,96 @@
 				<q-resize-observer @resize="onResize" />
 			</div>
 			<bt-scroll-area class="my-menu-before-scroll">
-				<div :style="{ width: `${scope.value}px` }">
-					<q-tree
-						ref="treeRef"
-						dense
-						:nodes="data"
-						node-key="id"
-						label-key="title"
-						selected-color="primary"
-						:accordion="true"
-						v-model:selected="selected"
-						v-model:expanded="expanded"
-						@update:selected="onSelected"
-						@update:expanded="onExpanded"
-						style="background-color: #fff"
-						no-selection-unset
-						v-bind="$attrs"
-						no-results-label=" "
-						no-nodes-label=" "
-						class="my-tree-wrapper"
-					>
-						<template v-slot:default-body="prop">
-							<div v-if="prop.node.story" class="q-ml-sm">
-								{{ prop.node.story }}
-							</div>
-						</template>
-						<template v-slot:default-header="prop">
+				<q-tree
+					ref="treeRef"
+					dense
+					:nodes="data"
+					node-key="id"
+					label-key="title"
+					selected-color="primary"
+					:accordion="true"
+					v-model:selected="selected"
+					v-model:expanded="expanded"
+					@update:selected="onSelected"
+					@update:expanded="onExpanded"
+					style="background-color: #fff"
+					no-selection-unset
+					v-bind="$attrs"
+					no-results-label=" "
+					no-nodes-label=" "
+					class="my-tree-wrapper"
+				>
+					<template v-slot:default-body="prop">
+						<div v-if="prop.node.story" class="q-ml-sm">
+							{{ prop.node.story }}
+						</div>
+					</template>
+					<template v-slot:default-header="prop">
+						<div
+							:id="prop.key"
+							:class="{
+								'tree-img-wrapper': !prop.node.children
+							}"
+							class="my-tree-header-container"
+						>
 							<div
-								:id="prop.key"
 								:class="{
-									'tree-img-wrapper': !prop.node.children
+									'my-tree-header-wrapper': !prop.node.children,
+									'selected-node': isSelected(prop.key, prop.node.children)
 								}"
-								class="my-tree-header-container"
+								class="row no-wrap items-center my-tree-header-wrapper"
 							>
-								<div
-									:class="{
-										'my-tree-header-wrapper': !prop.node.children,
-										'selected-node': isSelected(prop.key, prop.node.children)
-									}"
-									class="row no-wrap items-center my-tree-header-wrapper"
-								>
-									<q-inner-loading :showing="prop.node.loading">
-										<q-spinner-dots size="sm" color="primary" />
-									</q-inner-loading>
-									<div class="header-top relative-position">
-										<q-img
-											class="my-tree-avatar"
-											v-if="prop.node.img"
-											:src="imgFilter(prop)"
-											:placeholder-src="defaultIcon"
-											:class="{
-												'expanded-node-img': isImgActive(prop)
-											}"
-											:ratio="1"
-											width="20px"
-											height="20px"
-											fit="scale-down"
-											no-spinner
-											loading="lazy"
-											style="border-radius: 50%"
-										>
-											<template v-slot:error>
-												<div style="padding: 0px" class="absolute-full">
-													<img :src="defaultIcon" alt="" />
-												</div>
-											</template>
-										</q-img>
-										<MyBadge
-											class="my-tree-badge-wrapper"
-											v-if="prop.node.status"
-											:type="prop.node.status"
-											size="sm"
-										></MyBadge>
-									</div>
-
-									<span
+								<q-inner-loading :showing="prop.node.loading">
+									<q-spinner-dots size="sm" color="primary" />
+								</q-inner-loading>
+								<div class="header-top relative-position">
+									<q-img
+										class="my-tree-avatar"
+										v-if="prop.node.img"
+										:src="imgFilter(prop)"
+										:placeholder-src="defaultIcon"
 										:class="{
-											'expanded-node-text': isExpanded(prop),
-											'q-ml-xs': !prop.node.img
+											'expanded-node-img': isImgActive(prop)
 										}"
-										style="
-											flex: 1;
-											white-space: nowrap;
-											overflow: hidden;
-											text-overflow: ellipsis;
-										"
-										>{{ prop.node.title }}</span
+										:ratio="1"
+										width="20px"
+										height="20px"
+										fit="scale-down"
+										no-spinner
+										loading="lazy"
+										style="border-radius: 50%"
 									>
+										<template v-slot:error>
+											<div style="padding: 0px" class="absolute-full">
+												<img :src="defaultIcon" alt="" />
+											</div>
+										</template>
+									</q-img>
+									<MyBadge
+										class="my-tree-badge-wrapper"
+										v-if="prop.node.status"
+										:type="prop.node.status"
+										size="sm"
+									></MyBadge>
 								</div>
+
+								<span
+									:class="{
+										'expanded-node-text': isExpanded(prop),
+										'q-ml-xs': !prop.node.img
+									}"
+									style="
+										flex: 1;
+										white-space: nowrap;
+										overflow: hidden;
+										text-overflow: ellipsis;
+									"
+									>{{ prop.node.title }}</span
+								>
 							</div>
-						</template>
-					</q-tree>
-				</div>
+						</div>
+					</template>
+				</q-tree>
 			</bt-scroll-area>
 			<Empty v-if="isEmpty && !hiddenEmpty" size="mini" center></Empty>
 			<q-inner-loading :showing="loading"></q-inner-loading>
@@ -328,7 +326,7 @@ defineExpose({ resetSelected, setExpanded, getExpandedNodes });
 		content: '';
 		position: absolute;
 		left: -4px;
-		right: -4px;
+		right: 4px;
 		top: 0;
 		bottom: 0;
 		background-color: rgba(34, 111, 255, 0.12);
@@ -338,6 +336,7 @@ defineExpose({ resetSelected, setExpanded, getExpandedNodes });
 .my-tree-header-container {
 	width: 100%;
 	position: relative;
+	border-radius: 4px;
 	.my-tree-badge-wrapper {
 		margin-left: 4px;
 	}
@@ -350,21 +349,26 @@ defineExpose({ resetSelected, setExpanded, getExpandedNodes });
 		}
 	}
 }
+::v-deep(.q-tree .q-tree__node-header) {
+	border-radius: 4px;
+}
 ::v-deep(.q-tree .q-tree__node-header .q-focus-helper) {
 	left: -6px;
-	right: -6px;
+	right: 0;
 	width: auto;
+	border-radius: 4px;
 }
 
 ::v-deep(.q-focus-helper:has(+ .q-icon.q-tree__arrow)) {
 	left: 0;
-	right: -8px;
+	right: 0;
 	width: auto;
 }
 
 .my-tree-header-wrapper {
 	padding: 4px 0;
 	border-radius: 4px;
+	padding-right: 8px;
 	width: 100%;
 }
 
@@ -379,6 +383,16 @@ defineExpose({ resetSelected, setExpanded, getExpandedNodes });
 }
 ::v-deep(.q-tree__node:after) {
 	border-color: #e0e0e0;
+}
+::v-deep(.my-menu-before-scroll .q-scrollarea__container) {
+	overflow-x: hidden;
+}
+::v-deep(.my-menu-before-scroll .q-scrollarea__content) {
+	min-width: initial;
+	width: 100%;
+}
+::v-deep(.my-menu-before-scroll .q-tree__node-collapsible) {
+	overflow-x: hidden;
 }
 </style>
 <style></style>
