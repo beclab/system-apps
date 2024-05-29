@@ -42,7 +42,7 @@
 						</template>
 						<template #subTitle>
 							{{ t('NODE_PORT_SCAP') }}
-							<q-icon name="o_info" color="grey-5">
+							<q-icon name="sym_r_info" color="grey-5">
 								<q-tooltip>
 									<div style="max-width: 240px">
 										{{ t('SERVICE_NODE_PORT_DESC') }}

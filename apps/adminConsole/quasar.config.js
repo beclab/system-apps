@@ -13,7 +13,7 @@
 const { configure } = require('quasar/wrappers');
 require('dotenv').config({ path: '../../.env' });
 const path = require('path');
-const proxyTarget = '';
+const proxyTarget = 'dashboard.yangyongheng.myterminus.com';
 module.exports = configure(function (ctx) {
 	return {
 		// https://v2.quasar.dev/quasar-cli-webpack/supporting-ts

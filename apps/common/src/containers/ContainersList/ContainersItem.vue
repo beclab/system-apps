@@ -25,7 +25,7 @@
 							<q-icon
 								v-if="!hideLog"
 								color="primary"
-								name="o_article"
+								name="sym_r_article"
 								flat
 								dense
 								size="16px"

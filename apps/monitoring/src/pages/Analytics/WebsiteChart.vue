@@ -10,7 +10,7 @@
 		<template #extra>
 			<QButtonStyle>
 				<q-btn
-					icon="o_open_in_browser"
+					icon="sym_r_open_in_browser"
 					color="grey-8"
 					class="my-icon rounded-borders-sm"
 					flat

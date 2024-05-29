@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<q-icon name="o_info" class="status-color" :class="status" />
+		<q-icon name="sym_r_info" class="status-color" :class="status" />
 		<span style="margin-left: 4px" class="status-color" :class="status">
 			{{ t(reason) }}
 		</span>

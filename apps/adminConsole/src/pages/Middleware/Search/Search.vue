@@ -22,7 +22,7 @@
 							<q-btn
 								flat
 								color="grey-7"
-								icon="o_article"
+								icon="sym_r_article"
 								class="q-px-sm"
 								@click="mapHanlder(scope.row)"
 							>
@@ -36,7 +36,7 @@
 							<q-btn
 								flat
 								color="grey-7"
-								icon="o_search"
+								icon="sym_r_search"
 								class="q-px-sm"
 								@click="searchHanlder(scope.row)"
 							>

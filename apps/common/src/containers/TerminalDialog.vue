@@ -1,7 +1,7 @@
 <template>
 	<q-icon
 		color="primary"
-		name="o_terminal"
+		name="sym_r_terminal"
 		flat
 		dense
 		size="16px"
