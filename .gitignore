@@ -33,3 +33,4 @@ yarn-error.log*
 *.sln
 .env
 local_config.yaml
+.yalc
