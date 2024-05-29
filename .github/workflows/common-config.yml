@@ -54,6 +54,8 @@ jobs:
           sudo chmod 755 fonttools
           cd ./fonttools
           ./subset_font.sh nyTnjDwKNJ_190FjzaqkNCeE.woff2 unicodes.txt MaterialSymbolsRounded.woff2 ${{ inputs.DIR_PATH }}/src/assets/fonts
+          pwd
+          echo ${{ inputs.DIR_PATH }}/src/assets/fonts
 
       - name: Cache
         uses: actions/cache@v1
@@ -66,6 +68,7 @@ jobs:
       - name: Install
         run: |
           npm i -g yarn
+          pwd
 
       - run: yarn install --no-frozen-lockfile
 
@@ -98,50 +101,3 @@ jobs:
           file: ${{ inputs.DOCKERFILE_PATH }}
           push: true
           tags: beclab/${{ inputs.PACKAGE_NAME }}:${{ steps.docker-tag.outputs.version }}
-
-      - name: Post Success Message
-        if: steps.docker_build_push.outcome == 'success'
-        uses: foxundermoon/feishu-action@v2
-        with:
-          url: ${{ secrets.FEISHU_WEBHOOK_URL }}
-          msg_type: post
-          content: |
-            post:
-              zh_cn:
-                title: 'Success: beclab/${{ inputs.PACKAGE_NAME }}:${{ steps.docker-tag.outputs.version }}'
-                content:
-                - - tag: text
-                    un_escape: true
-                    text: 'images:&nbsp;'
-                  - tag: a
-                    text: beclab/${{ inputs.PACKAGE_NAME }}
-                    href: https://hub.docker.com/r/beclab/${{ inputs.PACKAGE_NAME }}
-                - - tag: text
-                    un_escape: true
-                    text: 'repository:&nbsp;'
-                  - tag: a
-                    text: ${{ github.event.repository.name }}
-                    href: ${{ github.event.repository.html_url }}
-                - - tag: text
-                    un_escape: true
-                    text: 'date:&nbsp;'
-                  - tag: text
-                    text: '${{ steps.docker-tag.outputs.time }}'
-
-      - name: Post Failure Message
-        if: steps.docker_build_push.outcome != 'success'
-        uses: foxundermoon/feishu-action@v2
-        with:
-          url: ${{ secrets.FEISHU_WEBHOOK_URL }}
-          msg_type: post
-          content: |
-            post:
-              zh_cn:
-                title: 'Failure: ${{ inputs.PACKAGE_NAME }}:${{ steps.docker-tag.outputs.version }}'
-                content:
-                - - tag: text
-                    un_escape: true
-                    text: 'logs:&nbsp;'
-                  - tag: a
-                    text: ${{ github.job }}
-                    href: ${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}
