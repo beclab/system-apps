@@ -13,7 +13,7 @@
 const { configure } = require('quasar/wrappers');
 require('dotenv').config({ path: '../../.env' });
 const path = require('path');
-const proxyTarget = 'control-hub.yangyongheng.myterminus.com';
+const proxyTarget = '';
 module.exports = configure(function (ctx) {
 	return {
 		// https://v2.quasar.dev/quasar-cli-webpack/supporting-ts
@@ -38,9 +38,7 @@ module.exports = configure(function (ctx) {
 		css: ['app.scss', ctx.dev ? '' : 'font.pro.scss'],
 
 		// https://github.com/quasarframework/quasar/tree/dev/extras
-		extras: [
-			'material-symbols-rounded',
-		],
+		extras: ['material-icons'],
 
 		// Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-build
 		build: {
