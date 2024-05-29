@@ -29,6 +29,7 @@ jobs:
       NODE_VERSION: '16.14'
       PACKAGE_NAME: admin-console-frontend-v1
       PACKAGE_PATH: apps/adminConsole/package.json
+      DIR_PATH: apps/adminConsole
       DOCKERFILE_PATH: Dockerfile-admin-console-client
       PACKAGE_BUILD_SCRIPT: build:console
       DEFAULT_VERSION: latest

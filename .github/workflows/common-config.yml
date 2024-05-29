@@ -19,6 +19,9 @@ on:
       DEFAULT_VERSION:
         required: true
         type: string
+      DIR_PATH:
+        required: true
+        type: string
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -50,7 +53,7 @@ jobs:
         run: |
           sudo chmod 755 fonttools
           cd ./fonttools
-          ./subset_font.sh nyTnjDwKNJ_190FjzaqkNCeE.woff2 unicodes.txt MaterialSymbolsRounded.woff2 ../src/assets/fonts
+          ./subset_font.sh nyTnjDwKNJ_190FjzaqkNCeE.woff2 unicodes.txt MaterialSymbolsRounded.woff2 ${{ inputs.DIR_PATH }}/src/assets/fonts
 
       - name: Cache
         uses: actions/cache@v1
