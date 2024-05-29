@@ -50,7 +50,7 @@ jobs:
         run: |
           sudo chmod 755 fonttools
           cd ./fonttools
-          ./subset_font.sh nyTnjDwKNJ_190FjzaqkNCeE.woff2 unicodes.txt MaterialSymbolsRounded.woff2 ./dist/spa/fonts
+          ./subset_font.sh nyTnjDwKNJ_190FjzaqkNCeE.woff2 unicodes.txt MaterialSymbolsRounded.woff2 ../src/assets/fonts
 
       - name: Cache
         uses: actions/cache@v1
