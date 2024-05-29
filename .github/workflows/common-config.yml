@@ -54,10 +54,9 @@ jobs:
           pwd
           sudo chmod 755 fonttools
           cd ./fonttools
-          ./subset_font.sh nyTnjDwKNJ_190FjzaqkNCeE.woff2 unicodes.txt MaterialSymbolsRounded.woff2 ../apps/${{ inputs.DIR_PATH }}/src/assets/fonts
-          cd ../apps/${{ inputs.DIR_PATH }}/src/assets/fonts
+          ./subset_font.sh nyTnjDwKNJ_190FjzaqkNCeE.woff2 unicodes.txt MaterialSymbolsRounded.woff2 ../${{ inputs.DIR_PATH }}/src/assets/fonts
+          cd ../${{ inputs.DIR_PATH }}/src/assets/fonts
           ll
-
       - name: Cache
         uses: actions/cache@v1
         with:
