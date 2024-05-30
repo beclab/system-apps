@@ -14,16 +14,16 @@ function findVueFiles(directory) {
 
 	files.forEach((file) => {
 		const fullPath = path.join(directory, file);
-		if (fullPath.indexOf("node_modules/") <= -1) {
-			if (fs.lstatSync(fullPath).isDirectory()) {
-				findVueFiles(fullPath);
-			} else if (
-				[".vue", ".js", "ts", "json"].includes(path.extname(fullPath))
-			) {
-				console.log("fullPath", fullPath);
-				vueFiles.push(fullPath);
-			}
+		// if (fullPath.indexOf("node_modules/") <= -1) {
+		if (fs.lstatSync(fullPath).isDirectory()) {
+			findVueFiles(fullPath);
+		} else if (
+			[".vue", ".js", ".ts", ".json"].includes(path.extname(fullPath))
+		) {
+			console.log("fullPath", fullPath);
+			vueFiles.push(fullPath);
 		}
+		// }
 	});
 }
 // The function for finding icons can be extended according to specific situations
