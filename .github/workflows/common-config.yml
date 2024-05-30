@@ -69,7 +69,7 @@ jobs:
           pwd
           sudo chmod 755 fonttools
           cd ./fonttools
-          ./subset_font.sh nyTnjDwKNJ_190FjzaqkNCeE.woff2 unicodes.txt MaterialSymbolsRounded3.woff2 ../${{ inputs.DIR_PATH }}/src/assets/fonts2
+          ./subset_font.sh nyTnjDwKNJ_190FjzaqkNCeE.woff2 unicodes.txt MaterialSymbolsRounded3.woff2 ../${{ inputs.DIR_PATH }}/src/assets/fonts
 
       - name: Build
         run: yarn ${{ inputs.PACKAGE_BUILD_SCRIPT }}
