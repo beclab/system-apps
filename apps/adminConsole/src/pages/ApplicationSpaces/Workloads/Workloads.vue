@@ -172,7 +172,7 @@ const workloadsDataFormatter = (
 			selectable: false,
 			children: childData.map((item: any, childIndex: number) => {
 				path = `/application-spaces/workloads/${child.value}/${namespace}/detail/${item.metadata.name}`;
-				id = item.metadata.name;
+				id = item.metadata.uid;
 				if (!firstPath) {
 					firstPath = path;
 					firstActive = id;
