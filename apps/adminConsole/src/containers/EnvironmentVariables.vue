@@ -361,7 +361,7 @@ const ports = computed(() => {
 });
 
 watch(
-	() => route.params.name,
+	() => route.params,
 	async (newId) => {
 		fetchEnv();
 	}
