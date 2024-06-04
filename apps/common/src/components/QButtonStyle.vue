@@ -28,7 +28,7 @@ withDefaults(defineProps<Props>(), {
 		}
 	}
 	::v-deep(.q-btn--outline:before) {
-		border-color: $grey-2;
+		border-color: $btn-stroke;
 	}
 	&.md-style-wrapper {
 		::v-deep(.q-btn .q-btn__content .q-icon) {

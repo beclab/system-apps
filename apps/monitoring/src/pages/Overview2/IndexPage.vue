@@ -103,7 +103,7 @@ import { useAppDetailStore } from 'src/stores/AppDetail';
 import ColumnFlex from './components/ColumnFlex.vue';
 import Analytics from './Analytics.vue';
 import { get, last } from 'lodash';
-
+import { useColor } from '@bytetrade/ui';
 const appDetail = useAppDetailStore();
 
 const router = useRouter();

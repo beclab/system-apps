@@ -20,10 +20,10 @@
 								:src="trafficIcon"
 								:loading="loading"
 							></MyImg>
-							<div class="text-subtitle3 text-grey-8 q-ml-sm">Traffic</div>
+							<div class="text-subtitle3 text-ink-2 q-ml-sm">Traffic</div>
 						</div>
 						<div>
-							<div class="text-subtitle3 text-grey-10">
+							<div class="text-subtitle3 text-ink-1">
 								<div class="row items-center justify-end">
 									<q-skeleton v-if="loading" type="text" width="50px" />
 									<span v-else
@@ -33,7 +33,7 @@
 									<q-icon
 										name="sym_r_arrow_upward_alt"
 										size="16px"
-										color="grey-8"
+										color="ink-2"
 									/>
 								</div>
 								<div class="row items-center q-mt-xs justify-end">
@@ -45,7 +45,7 @@
 									<q-icon
 										name="sym_r_arrow_downward_alt"
 										size="16px"
-										color="grey-8"
+										color="ink-2"
 									/>
 								</div>
 							</div>
@@ -62,10 +62,10 @@
 					<div class="full-width row items-center justify-between">
 						<div class="row items-center">
 							<MyImg type="circle" :src="pods2Icon" :loading="loading"></MyImg>
-							<div class="text-subtitle3 text-grey-8 q-ml-md">Pods</div>
+							<div class="text-subtitle3 text-ink-2 q-ml-md">Pods</div>
 						</div>
 						<q-skeleton v-if="loading" type="text" width="24px" />
-						<div v-else class="text-h6 text-grey-10">{{ podCounts }}</div>
+						<div v-else class="text-h6 text-ink-1">{{ podCounts }}</div>
 					</div>
 				</q-card>
 			</div>

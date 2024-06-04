@@ -1,7 +1,7 @@
 <template>
 	<div dense flat class="my-sort-button-icon q-pa-none" @click="statusChange">
 		<q-img
-			:src="switch_up"
+			:src="$q.dark.isActive ? switch_up_dark : switch_up"
 			:ratio="1"
 			width="32px"
 			:class="[status === 'desc' ? 'desc' : 'asc']"
@@ -11,7 +11,11 @@
 
 <script setup lang="ts">
 import switch_up from '@packages/ui/src/assets/switch_down.svg';
+import switch_up_dark from '@packages/ui/src/assets/switch_down-dark.svg';
 import { ref } from 'vue';
+import { useQuasar } from 'quasar';
+const $q = useQuasar();
+
 interface Props {
 	defaultValue: string;
 }
@@ -34,7 +38,7 @@ const statusChange = () => {
 <style lang="scss" scoped>
 .my-sort-button-icon {
 	cursor: pointer;
-	border: 1px solid $grey-2;
+	border: 1px solid $btn-stroke;
 	border-radius: 8px;
 	.desc {
 		transform: rotateZ(180deg);

@@ -1,7 +1,7 @@
 <template>
 	<div class="row items-center justify-between q-py-sm">
 		<div class="row items-center">
-			<div class="text-subtitle1 grey-10" style="min-width: 20px">
+			<div class="text-subtitle1 text-ink-1" style="min-width: 20px">
 				<q-skeleton v-if="loading" type="text" />
 				<span v-else>{{ index }}</span>
 			</div>
@@ -13,12 +13,12 @@
 					:loading="loading"
 				></MyImg>
 			</div>
-			<div class="text-subtitle1 grey-10">
+			<div class="text-subtitle1 text-ink-1">
 				<q-skeleton v-if="loading" type="text" width="72px" />
 				<span v-else>{{ data.title }}</span>
 			</div>
 		</div>
-		<div class="text-subtitle1 text-grey-6">
+		<div class="text-subtitle1 text-ink-3">
 			<q-skeleton v-if="loading" type="text" width="48px" />
 			<span v-else>{{ data.used }} {{ data.unit }}</span>
 		</div>

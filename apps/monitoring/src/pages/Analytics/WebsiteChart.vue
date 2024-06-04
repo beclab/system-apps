@@ -11,11 +11,10 @@
 			<QButtonStyle>
 				<q-btn
 					icon="sym_r_open_in_browser"
-					color="grey-8"
-					class="my-icon rounded-borders-sm"
-					flat
+					class="rounded-borders-sm"
 					dense
-					no-caps
+					outline
+					color="ink-2"
 					@click.stop="openUrl(url)"
 				></q-btn>
 			</QButtonStyle>
@@ -132,8 +131,5 @@ watch(
 }
 .title-img {
 	box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
-}
-.my-icon {
-	border: 1px solid $grey-2;
 }
 </style>

@@ -8,7 +8,7 @@
 						icon="refresh"
 						dense
 						outline
-						color="grey-8"
+						color="ink-2"
 						@click="refresh"
 					/>
 				</QButtonStyle>
@@ -29,7 +29,7 @@
 							icon="refresh"
 							dense
 							outline
-							color="grey-8"
+							color="ink-2"
 							@click="refresh"
 						/>
 					</QButtonStyle>

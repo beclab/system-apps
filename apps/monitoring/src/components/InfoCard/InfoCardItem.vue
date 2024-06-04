@@ -3,17 +3,13 @@
 		<div
 			class="info-card-wrapper q-pa-xl"
 			:class="[props.active ? 'info-card-wrapper-active' : '']"
+			:style="{ background: props.active ? backgroundMode : undefined }"
 		>
-			<q-img
-				:src="props.active && img_active ? img_active : img"
-				width="48px"
-				ratio="1"
-				no-spinner
-			/>
+			<q-img :src="props.img" width="48px" ratio="1" no-spinner />
 			<div class="row no-wrap items-center justify-between q-mt-lg">
 				<div class="q-mr-lg">
 					<div
-						class="row items-center info-ratio text-h5 text-grey-10 value-wrapper"
+						class="row items-center info-ratio text-h5 text-ink-1 value-wrapper"
 					>
 						<q-skeleton v-if="loading" type="text" width="88px" />
 						<template v-else>
@@ -22,7 +18,7 @@
 							<span class="ratio-foolter">{{ _total || '-' }}</span>
 						</template>
 					</div>
-					<div class="text-subtitle1 text-grey-6">
+					<div class="text-subtitle1 text-ink-3">
 						<q-skeleton v-if="loading" type="text" width="64px" />
 						<template v-else>
 							<span>{{ _capitalize(name) }}&nbsp;</span>
@@ -40,7 +36,7 @@
 						size="56px"
 						:thickness="0.428"
 						:color="activeColor"
-						:track-color="props.active ? 'white' : 'grey-1'"
+						:track-color="props.active ? 'background-1' : 'background-3'"
 						readonly
 					>
 						<div class="text-subtitle3" :class="[`text-${activeColor}`]">
@@ -55,10 +51,13 @@
 
 <script setup lang="ts">
 import { getSuitableUnit, getValueByUnit } from 'src/utils/monitoring';
-import { computed, ref, toRefs } from 'vue';
+import { computed, ref, StyleValue, toRefs } from 'vue';
 import { _capitalize } from 'src/utils/index';
 import { isNaN, round } from 'lodash';
-
+import { useQuasar } from 'quasar';
+import { useColor } from '@bytetrade/ui';
+const $q = useQuasar();
+const { color: bgColor }: any = useColor('background-1');
 export interface InfoCardItemProps {
 	used: string;
 	total: string;
@@ -97,6 +96,12 @@ const activeColor = computed(() =>
 		? 'warning'
 		: 'positive'
 );
+
+const backgroundMode = computed(() =>
+	$q.dark.isActive
+		? 'linear-gradient(125deg, #1f1f1f 4.57%, #262e37 87.85%)'
+		: 'linear-gradient(125deg, #FFF 4.57%, #EBF5FF 87.85%)'
+);
 </script>
 
 <style lang="scss" scoped>
@@ -106,15 +111,10 @@ const activeColor = computed(() =>
 	.info-card-wrapper {
 		position: relative;
 		border-radius: 20px;
-		border: 1px solid $grey-2;
+		border: 1px solid $separator;
+		background: $background-1;
 		&.info-card-wrapper-active {
 			border: 1px solid $light-blue-6;
-			background: linear-gradient(
-				125deg,
-				#f9feff 4.57%,
-				rgba(214, 240, 255, 0.6) 51.18%,
-				rgba(204, 230, 255, 0.6) 87.85%
-			);
 		}
 		.info-item {
 			font-size: 12px;

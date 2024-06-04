@@ -7,10 +7,9 @@
 					dense
 					no-caps
 					unelevated
-					color="white"
-					text-color="grey-8"
-					toggle-color="light-blue-1"
-					toggle-text-color="primary"
+					text-color="ink-2"
+					toggle-color="light-blue-soft"
+					toggle-text-color="orange-default"
 					:options="[
 						{ value: 'line', slot: 'line' },
 						{ value: 'bar', slot: 'bar' }

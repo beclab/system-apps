@@ -3,11 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, toRefs } from 'vue';
 import WebsiteDetailsList from './WebsiteDetailsList.vue';
-import MyDrawer from '@packages/ui/src/components/MyDrawer.vue';
-import QButtonStyle from '@packages/ui/src/components/QButtonStyle.vue';
-import FullPageWithBack from '@packages/ui/src/components/FullPageWithBack.vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();

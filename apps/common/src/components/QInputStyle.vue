@@ -10,12 +10,15 @@
 		height: 32px;
 		line-height: 16px;
 	}
+	::v-deep(.q-field--dark .q-field__native) {
+		color: $ink-2;
+	}
 	::v-deep(.q-field__marginal) {
 		height: 32px;
 		font-size: 16px;
 	}
-	::v-deep(.q-field__control:before) {
-		border: 1px solid $grey-2;
+	::v-deep(.q-field__control::before) {
+		border-color: $btn-stroke;
 	}
 }
 </style>

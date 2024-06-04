@@ -1,6 +1,6 @@
 <template>
 	<template v-if="loading">
-		<tr v-for="item in 6" :key="item" class="table-wrapper bg-white">
+		<tr v-for="item in 6" :key="item" class="table-wrapper">
 			<td class="first-td">
 				<q-skeleton style="width: 100%" height="26px" />
 			</td>

@@ -12,7 +12,7 @@
 					style="width: 240px"
 				>
 					<template v-slot:prepend>
-						<q-icon name="search" size="xs" />
+						<q-icon name="search" color="ink-2" size="xs" />
 					</template>
 				</q-input>
 			</QInputStyle>
@@ -46,7 +46,7 @@
 					</template>
 				</div>
 				<div
-					class="row items-center justify-between text-h4 text-grey-10 q-ml-md"
+					class="row items-center justify-between text-h4 text-ink-1 q-ml-md"
 					style="flex: 1"
 				>
 					<div class="row items-center">
@@ -54,16 +54,16 @@
 						<span v-else> {{ item.currentEntrance.title }}</span>
 						<div
 							v-if="authLevelFilter(item.currentEntrance.authLevel)"
-							class="q-px-md q-py-xs bg-grey-1 rounded-borders-lg q-ml-lg"
+							class="q-px-md q-py-xs bg-background-3 rounded-borders-lg q-ml-lg"
 						>
-							<div class="text-subtitle3 text-green-8">
+							<div class="text-subtitle3 text-positive">
 								{{ authLevelFilter(item.currentEntrance.authLevel) }}
 							</div>
 						</div>
 					</div>
 					<div class="row items-center" v-if="item.state">
 						<MyBadge type="running"></MyBadge>
-						<span class="text-subtitle3 text-grey-8 q-ml-sm">{{
+						<span class="text-subtitle3 text-ink-2 q-ml-sm">{{
 							capitalize(item.state)
 						}}</span>
 					</div>

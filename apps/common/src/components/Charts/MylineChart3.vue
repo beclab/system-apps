@@ -50,6 +50,13 @@ import { date } from 'quasar';
 import { firstToUpper, firstToUpperWith_ } from 'src/constant';
 import { colors } from 'quasar';
 import { chartEntervalOfWidth } from './utils';
+import { useColor } from '@bytetrade/ui';
+
+const { color: ink1 } = useColor('ink-1');
+const { color: ink2 } = useColor('ink-2');
+const { color: ink3 } = useColor('ink-3');
+const { color: background2 } = useColor('background-2');
+const { color: lightBlueDefault } = useColor('light-blue-default');
 
 const { getPaletteColor, changeAlpha } = colors;
 
@@ -125,7 +132,7 @@ const option = computed(() => {
 			left: 0,
 			padding: 0,
 			textStyle: {
-				color: getPaletteColor('grey-10'),
+				color: ink1.value,
 				fontSize: 16,
 				fontWeight: 700
 			}
@@ -145,7 +152,7 @@ const option = computed(() => {
 			itemWidth: 8,
 			itemHeight: 8,
 			textStyle: {
-				color: getPaletteColor('grey-8')
+				color: ink2.value
 			}
 		},
 		tooltip: {
@@ -154,30 +161,32 @@ const option = computed(() => {
 				`${isNaN(value) ? '-' : value} ${unit.value}`,
 			axisPointer: {
 				type: 'line',
-				label: {
-					color: '#414141',
-					backgroundColor: '#eee'
-				},
-				crossStyle: {}
-			}
+				lineStyle: {
+					color: lightBlueDefault.value
+				}
+			},
+			backgroundColor: background2.value,
+			textStyle: {
+				color: ink1.value
+			},
+			borderWidth: 0,
+			renderMode: 'html',
+			className: 'echart-tooltip-container'
 		},
 		xAxis: {
 			type: 'category',
 			onZero: true,
 			axisLine: {
-				show: true,
-				lineStyle: {
-					color: '#F1F1F1'
-				}
+				show: false
 			},
 			axisTick: {
-				alignWithLabel: true
+				show: false
 			},
 			axisLabel: {
 				show: props.xAxisLabel,
 				interval: chartInterval.value,
 				align: 'center',
-				color: getPaletteColor('grey-5'),
+				color: ink3.value,
 				margin: 20
 			},
 			data: get(props.data.data, '[0]', []).map((item) => item[0])
@@ -193,7 +202,7 @@ const option = computed(() => {
 			axisLabel: {
 				show: true,
 				margin: yAxisLabelMargin,
-				color: getPaletteColor('grey-5'),
+				color: ink3.value,
 				align: 'left'
 			}
 		},
@@ -236,5 +245,12 @@ const onResize = (size: { width: number; height: number }) => {
 	.chart {
 		height: 100%;
 	}
+}
+</style>
+<style>
+.echart-tooltip-container {
+	box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.2);
+	border-radius: 12px;
+	overflow: hidden;
 }
 </style>

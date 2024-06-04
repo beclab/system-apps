@@ -12,13 +12,14 @@
 
 const { configure } = require('quasar/wrappers');
 require('dotenv').config({ path: '../../.env' });
-const proxyTarget = '';
+const proxyTarget = 'dashboard.yangyongheng.myterminus.com';
 module.exports = configure(function (ctx) {
 	return {
 		// https://v2.quasar.dev/quasar-cli-webpack/supporting-ts
 		supportTS: {
 			tsCheckerConfig: {
 				eslint: {
+
 					enabled: true,
 					files: './src/**/*.{ts,tsx,js,jsx,vue}'
 				}
@@ -83,28 +84,28 @@ module.exports = configure(function (ctx) {
 			open: true, // opens browser window automatically,
 			proxy: {
 				'/kapis': {
-					target: proxyTarget,
+					target: `https://${proxyTarget}`,
 					changeOrigin: true
 				},
 				'/api': {
-					target: proxyTarget,
+					target: `https://${proxyTarget}`,
 					changeOrigin: true
 				},
 				'/bfl': {
-					target: proxyTarget,
+					target: `https://${proxyTarget}`,
 					changeOrigin: true
 				},
 				'/server': {
-					target: proxyTarget,
+					target: `https://${proxyTarget}`,
 					changeOrigin: true
 				},
 				'/analytics_service': {
-					target: proxyTarget,
+					target: `https://${proxyTarget}`,
 					// target: 'https://dc7161be.yyhy65754.myterminus.com',
 					changeOrigin: true
 				},
 				'/capi/app/detail': {
-					target: proxyTarget,
+					target: `https://${proxyTarget}`,
 					changeOrigin: true,
 					secure: false
 				}

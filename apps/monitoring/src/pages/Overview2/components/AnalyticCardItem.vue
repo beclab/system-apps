@@ -4,7 +4,7 @@
 			<div class="parent-container bg-teal-2">
 				<q-img :src="icon" :ratio="1" :width="iconWidth" />
 			</div>
-			<div class="text-h4 q-ml-lg text-grey-10">{{ value }}</div>
+			<div class="text-h4 q-ml-lg text-ink-1">{{ value }}</div>
 		</div>
 		<div class="q-px-lg q-py-sm rounded-borders-lg" :class="trendClass">
 			<q-icon :name="trendIcon" />
@@ -12,9 +12,7 @@
 			<span class="text-subtitle1 q-ml-sm">{{ trend }}{{ change || '' }}</span>
 		</div>
 	</div>
-	<div class="text-subtitle1 text-grey-6 q-mt-lg">
-		{{ subtile }} in 24 hours
-	</div>
+	<div class="text-subtitle1 text-ink-2 q-mt-lg">{{ subtile }} in 24 hours</div>
 </template>
 
 <script setup lang="ts">
@@ -49,9 +47,9 @@ const trendIcon = computed(() =>
 );
 const trendClass = computed(() =>
 	props.change > 0
-		? 'text-green-8 bg-green-2'
+		? 'text-positive bg-green-soft'
 		: props.change < 0
-		? 'text-negative bg-red-1'
+		? 'text-negative bg-red-soft'
 		: ''
 );
 </script>

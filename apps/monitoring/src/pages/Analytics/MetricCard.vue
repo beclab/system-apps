@@ -9,7 +9,7 @@
 					:end-val="changeFormat(value).value"
 					:duration="1"
 				></count-up>
-				<span class="text-h5">{{ changeFormat(value).unit }}</span>
+				<span class="text-h5 text-ink-1">{{ changeFormat(value).unit }}</span>
 			</div>
 			<div class="q-ml-sm">
 				<q-badge
@@ -29,7 +29,7 @@
 				</q-badge>
 			</div>
 		</div>
-		<div class="text-subtitle3 text-grey-8 q-mt-sm">
+		<div class="text-subtitle3 text-ink-2 q-mt-sm">
 			<span>{{ label }}</span>
 		</div>
 	</div>
@@ -81,8 +81,8 @@ watch(
 		content: '+';
 	}
 	.up {
-		background: $green-2;
-		color: $green-8;
+		background: $green-soft;
+		color: $positive;
 	}
 	.down {
 		background: $red-1;

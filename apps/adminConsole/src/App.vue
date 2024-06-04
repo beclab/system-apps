@@ -30,7 +30,7 @@ export default defineComponent({
 </style>
 <style lang="scss">
 .q-btn .q-icon {
-	color: $grey-8;
+	color: $ink-2;
 }
 .q-menu {
 	padding: 12px;
@@ -44,7 +44,10 @@ body.desktop .q-focus-helper {
 	font-style: normal;
 	font-weight: 500;
 	line-height: 16px;
-	color: $grey-8;
+	color: $ink-2;
 	min-height: 32px;
+}
+.q-card--dark {
+	border-color: $separator;
 }
 </style>

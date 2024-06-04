@@ -6,7 +6,7 @@
 				:value="pageviewsSum"
 				:change="pageviewsChange"
 			></AnalyticCardItem>
-			<q-separator class="q-my-xl" />
+			<q-separator color="separator" class="q-my-xl" />
 			<AnalyticCardItem
 				type="visit"
 				:value="uniquesSum"

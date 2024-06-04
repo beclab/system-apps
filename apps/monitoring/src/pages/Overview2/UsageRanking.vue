@@ -3,9 +3,9 @@
 		<ColumnFlex>
 			<template #header>
 				<div class="row items-center justify-between q-py-lg">
-					<div class="text-h5 text-grey-10">Usage Ranking</div>
+					<div class="text-h5 text-ink-1">Usage Ranking</div>
 					<div
-						class="text-h6 text-light-blue-6 cursor-pointer"
+						class="text-h6 text-light-blue-default cursor-pointer"
 						@click="routeToApplication"
 					>
 						More
@@ -32,10 +32,7 @@
 							<template #header>
 								<div class="my-spliter q-mb-md">
 									<div class="row item-center justify-between q-py-lg">
-										<div class="text-h6 text-grey-10">Applications</div>
-										<div class="text-subtitle1 text-grey-6">
-											{{ list.title }}
-										</div>
+										<div class="text-h6 text-ink-1">{{ list.title }}</div>
 									</div>
 								</div>
 							</template>
@@ -109,14 +106,13 @@ const fetchData = () => {
 			}));
 			fetchWorkloadsMetrics(apps.value, userNamespace)
 				.then((data) => {
-					console.log('testaaa', data);
 					monitoringData.value = [
 						{
-							title: 'CPU',
+							title: 'Top 5 CPU Usage Apps',
 							data: data.cpu_usage
 						},
 						{
-							title: 'Memory',
+							title: 'Top 5 Memory Usage Apps',
 							data: data.memory_usage
 						}
 					];
@@ -263,6 +259,6 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .my-spliter {
-	border-bottom: 1px solid $grey-2 !important;
+	border-bottom: 1px solid $separator !important;
 }
 </style>

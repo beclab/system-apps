@@ -12,7 +12,7 @@
 					class="q-pa-xs"
 					dense
 					icon="refresh"
-					color="grey-8"
+					color="ink-2"
 					outline
 					style="margin-left: 16px; border-radius: 8px"
 					:disable="loading"

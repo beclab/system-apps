@@ -48,7 +48,14 @@ import { capitalize, get, indexOf, isArray } from 'lodash';
 import { date } from 'quasar';
 import { firstToUpper, firstToUpperWith_ } from 'src/constant';
 import { colors } from 'quasar';
+import { useColor } from '@bytetrade/ui';
 
+const { color: ink1 } = useColor('ink-1');
+const { color: ink2 } = useColor('ink-2');
+const { color: ink3 } = useColor('ink-3');
+const { color: separator } = useColor('separator');
+const { color: background2 } = useColor('background-2');
+const { color: lightBlueDefault } = useColor('light-blue-default');
 const { getPaletteColor, changeAlpha } = colors;
 
 use([
@@ -123,7 +130,7 @@ const option = computed(() => {
 			text: title.value,
 			left: -6,
 			textStyle: {
-				color: '#414141',
+				color: ink1.value,
 				fontSize: 12,
 				fontWeight: 'normal'
 			}
@@ -143,7 +150,7 @@ const option = computed(() => {
 			itemWidth: 8,
 			itemHeight: 8,
 			textStyle: {
-				color: getPaletteColor('grey-8')
+				color: ink2.value
 			}
 		},
 		tooltip: {
@@ -165,26 +172,33 @@ const option = computed(() => {
 			},
 			axisPointer: {
 				type: 'line',
-				label: {
-					color: '#414141',
-					backgroundColor: '#eee'
-				},
-				crossStyle: {}
-			}
+				lineStyle: {
+					color: lightBlueDefault.value
+				}
+			},
+			backgroundColor: background2.value,
+			textStyle: {
+				color: ink1.value
+			},
+			borderWidth: 0,
+			renderMode: 'html',
+			className: 'echart-tooltip-container'
 		},
 		xAxis: {
 			type: 'category',
 			// onZero: false,
 			axisLine: {
-				show: true,
+				show: false,
 				lineStyle: {
-					color: '#F1F1F1'
+					color: separator.value
 				}
 			},
-			axisTick: false,
+			axisTick: {
+				show: false
+			},
 			axisLabel: {
 				show: props.xAxisLabel,
-				color: getPaletteColor('grey-5'),
+				color: ink3.value,
 				margin: 20
 			}
 		},
@@ -196,13 +210,13 @@ const option = computed(() => {
 			splitLine: {
 				lineStyle: {
 					type: 'dashed',
-					color: getPaletteColor('grey-2')
+					color: separator.value
 				}
 			},
 			axisLabel: {
 				show: true,
 				margin: yAxisLabelMargin,
-				color: getPaletteColor('grey-5'),
+				color: ink3.value,
 				align: 'left'
 			}
 		},

@@ -7,12 +7,16 @@
 				v-model="active"
 				style="width: 239px"
 				@select="selectHandler"
+				show-theme-toggle
 			/>
 		</q-drawer>
 		<q-page-container class="relative-position dashboard-container">
 			<PageBackground class="page-bg-wrapper"></PageBackground>
 			<bt-scroll-area class="dashboard-scroll-wrapper" ref="scrollRef">
-				<div class="text-h3 q-px-xxl q-mb-md" style="margin-top: 56px">
+				<div
+					class="text-h3 q-px-xxl q-mb-md text-ink-1"
+					style="margin-top: 56px"
+				>
 					{{ currentItem.label }}
 				</div>
 				<div class="q-px-xxl q-py-xl" style="min-width: 800px">
@@ -31,6 +35,7 @@ import { getAppDetail } from '@packages/ui/src/network';
 import PageBackground from 'components/PageBackground.vue';
 import { useAppDetailStore } from 'src/stores/AppDetail';
 const AppDetailStore = useAppDetailStore();
+
 const options = [
 	{
 		key: 'overview',
@@ -114,7 +119,7 @@ watch(
 	padding: 20px 32px 0 32px;
 }
 ::v-deep(.my-active-link) {
-	color: $light-blue-6;
-	background: $light-blue-1;
+	color: $light-blue-default;
+	background: $light-blue-soft;
 }
 </style>

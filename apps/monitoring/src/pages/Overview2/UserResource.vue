@@ -4,12 +4,17 @@
 			<MyCard>
 				<div class="row items-center justify-between q-mb-xl">
 					<div class="row items-center">
-						<q-img :src="cupIcon" :ratio="1" width="24px" class="q-mr-md" />
-						<div class="text-subtitle1 text-grey-10">
-							CPU {{ cpuData.unit }}
+						<q-img
+							:src="$q.dark.isActive ? cupIconDark : cupIcon"
+							:ratio="1"
+							width="24px"
+							class="q-mr-md"
+						/>
+						<div class="text-subtitle1 text-ink-1">
+							CPU {{ cpuData.unit }}aa
 						</div>
 					</div>
-					<div class="text-h5 text-grey-10">
+					<div class="text-h5 text-ink-1">
 						{{ cpuData.used }}/{{ cpuData.total || '-' }}
 					</div>
 				</div>
@@ -25,12 +30,17 @@
 			<MyCard>
 				<div class="row items-center justify-between q-mb-xl">
 					<div class="row items-center">
-						<q-img :src="memory2Icon" :ratio="1" width="24px" class="q-mr-md" />
-						<div class="text-subtitle1 text-grey-10">
+						<q-img
+							:src="$q.dark.isActive ? memory2IconDark : memory2Icon"
+							:ratio="1"
+							width="24px"
+							class="q-mr-md"
+						/>
+						<div class="text-subtitle1 text-ink-1">
 							Memory {{ memoryData.unit }}
 						</div>
 					</div>
-					<div class="text-h5 text-grey-10">
+					<div class="text-h5 text-ink-1">
 						{{ memoryData.used }}/{{ memoryData.total || '-' }}
 					</div>
 				</div>
@@ -56,12 +66,16 @@ import { computed } from 'vue';
 import MylineChart from '@packages/ui/src/components/Charts/MylineChart3.vue';
 import MyCard from 'components/MyCard.vue';
 import cupIcon from 'assets/cup.svg';
+import cupIconDark from 'assets/cup-dark.svg';
 import memory2Icon from 'assets/memory2.svg';
+import memory2IconDark from 'assets/memory2-dark.svg';
 import {
 	getContentOptionsUser,
 	getTabOptionsUser,
 	MetricTypesUser
 } from './config';
+import { useQuasar } from 'quasar';
+const $q = useQuasar();
 
 interface Props {
 	data: any;

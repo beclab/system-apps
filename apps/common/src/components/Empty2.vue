@@ -26,7 +26,7 @@ const props = withDefaults(defineProps<Props>(), {});
 		transform: translate(-50%, -50%);
 	}
 	.empty-content {
-		color: #5c5551;
+		color: $ink-2;
 		&.empty-content-center {
 			position: absolute;
 			top: 50%;

@@ -1,7 +1,7 @@
 <template>
 	<div class="metrics-table-container">
 		<bt-scroll-area style="height: 265px">
-			<table class="my-data-detail-table">
+			<table class="my-data-detail-table text-ink-1">
 				<thead class="table-header">
 					<tr>
 						<th colspan="1">
@@ -16,13 +16,9 @@
 						</th>
 					</tr>
 				</thead>
-				<tr
-					v-for="item in filteredData"
-					:key="item.name"
-					class="table-wrapper bg-white"
-				>
+				<tr v-for="item in filteredData" :key="item.name" class="table-wrapper">
 					<td class="first-td">
-						<span class="text-subtitle1 text-grey-8">{{
+						<span class="text-subtitle1 text-ink-1">{{
 							item.x || '(Unknown)'
 						}}</span>
 					</td>
@@ -31,8 +27,7 @@
 							<q-linear-progress
 								class="progress-wrapper"
 								size="20px"
-								color="light-blue-1"
-								track-color="white"
+								color="light-blue-soft"
 								:value="progressLabel(item.z) / 100"
 							>
 								<div class="absolute-full flex items-center">
@@ -47,7 +42,7 @@
 						</div>
 					</td>
 					<td>
-						<div class="text-right text-h6 text-grey-10 q-pl-lg">
+						<div class="text-right text-h6 q-pl-lg">
 							{{ item.y }}
 						</div>
 					</td>
@@ -149,14 +144,13 @@ watch(() => dateValue[props.websiteId], getData, {
 			top: 0;
 			bottom: 0;
 			width: 2px;
-			background: $primary;
+			background: $light-blue-default;
 		}
 	}
 
 	.table-header {
 		position: sticky;
 		top: 0;
-		background-color: #ffffff;
 		z-index: 1;
 	}
 
