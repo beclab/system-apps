@@ -23,8 +23,8 @@
 					:columns="columns"
 					row-key="name"
 					flat
-					hide-pagination
-					:pagination="undefined"
+					hide-bottom
+					v-model:pagination="pagination"
 				>
 					<template v-slot:no-data>
 						<Empty2></Empty2>
@@ -94,7 +94,7 @@
 import { t } from 'src/boot/i18n';
 import { computed, reactive, ref, watch } from 'vue';
 import DetailPage from '@packages/ui/src/containers/DetailPage.vue';
-import MyCard from '@packages/ui/src/components/MyCar4.vue';
+import MyCard from '@packages/ui/src/components/MyCard2.vue';
 import { useAppDetailStore } from 'src/stores/AppDetail';
 const appDetailStore = useAppDetailStore();
 const username = appDetailStore.user.username;
@@ -139,7 +139,9 @@ const columns: any = [
 	{ name: 'name', label: 'Databases', field: 'name', align: 'center' },
 	{ name: 'password', label: 'Password', field: 'password', align: 'center' }
 ];
-
+const pagination = ref({
+	rowsNumber: 0
+});
 const passworkFormat = (value: string | number) => {
 	return '*'.repeat(6);
 };
