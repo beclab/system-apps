@@ -7,6 +7,7 @@
 			row-key="name"
 			:loading="loading"
 			hide-pagination
+			v-model:pagination="pagination"
 		>
 			<template v-slot:body-cell-status="props">
 				<q-td :props="props">
@@ -39,7 +40,9 @@ import QTableStyle from '@packages/ui/src/components/QTableStyle.vue';
 
 const loading = ref(false);
 const rows = ref();
-
+const pagination = ref({
+	rowsNumber: 0
+});
 const columns: any = [
 	{
 		label: t('TYPE'),

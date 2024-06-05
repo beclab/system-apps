@@ -23,7 +23,7 @@
 					:columns="columns"
 					row-key="name"
 					flat
-					hide-bottom
+					hide-pagination
 					v-model:pagination="pagination"
 				>
 					<template v-slot:no-data>
