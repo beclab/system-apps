@@ -102,7 +102,7 @@ const fetchRevisions = () => {
 };
 
 const pathFormat = (data: any) =>
-	`/application-spaces/workloads/deployments/${data.namespace}/detail/${data.name}?type=workload`;
+	`/application-spaces/workloads/deployments/${data.namespace}/detail/${data.name}?type=workload&kind=${data.module}`;
 
 fetchRevisions();
 </script>

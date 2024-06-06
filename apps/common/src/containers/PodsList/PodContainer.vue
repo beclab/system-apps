@@ -81,7 +81,6 @@ const params = ref();
 const variables = ref();
 const childComponentRef = ref();
 const monitoringData = ref();
-const visible = ref(false);
 const shouldExecuteResponseHandler = ref(true);
 
 let locker: any = null;
@@ -109,6 +108,7 @@ async function fetchPods(showLoading = true) {
 	}
 	try {
 		const res = await getPosdList(props.detail, { cancelToken: source.token });
+		console.log('aaaa', props.detail);
 		if (shouldExecuteResponseHandler.value) {
 			podList.value = getPosdListFormatter(res);
 			PodListData.updateData(podList.value);
@@ -339,7 +339,8 @@ const itemClick = (data: any) => {
 		path,
 		query: {
 			type: 'pod',
-			podName: name
+			podName: name,
+			uid: props.detail.uid
 		}
 	});
 };

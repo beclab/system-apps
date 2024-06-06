@@ -21,7 +21,14 @@ import {
 	getNamespaceStatefulsets,
 	getNamespaceDeployments
 } from 'src/network';
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import {
+	computed,
+	onBeforeUnmount,
+	onMounted,
+	ref,
+	watch,
+	nextTick
+} from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import MyTree from '@packages/ui/src/components/Menu/MyTree.vue';
 import collectionPlay from 'src/assets/Statefulsets.svg';
@@ -200,8 +207,8 @@ const workloadsDataFormatter = (
 					selectToExpend: true,
 					route: {
 						path,
-						key: item.metadata.name,
-						id: item.metadata.name
+						key: item.metadata.uid,
+						id: item.metadata.uid
 					}
 				};
 				return data;
@@ -261,21 +268,28 @@ const tabList = (item: any, node: string) => {
 watch(
 	() => route.query.type,
 	(type) => {
-		const { namespace, name }: { [key: string]: any } = route.params;
-		console.log('type', type);
+		const { namespace, name, kind }: { [key: string]: any } = route.params;
+
 		if (type === 'pod') {
-			myTreeRef.value.setExpanded(`${route.query.podName}`, true);
-			layzLoadData(route.query.podName as string, PodListData.data);
+			myTreeRef.value.setExpanded(`${route.query.uid}`, true);
+			layzLoadData(route.query.uid as string, PodListData.data);
 			myTreeRef.value.setExpanded(`${namespace}-${name}`, true);
 			defaultActive.value = `${namespace}-${name}`;
 			setTimeout(() => {
-				route.query.scroll === 'true' && scrollToView(`${route.query.podName}`);
+				route.query.scroll === 'true' && scrollToView(`${route.query.uid}`);
 			});
 		} else if (type === 'workload') {
-			myTreeRef.value.setExpanded(name, true);
-			defaultActive.value = name;
-			setTimeout(() => {
-				scrollToView(name);
+			const all = list.value.find(
+				(item) => item.id === route.query.kind
+			).children;
+			const target = all.find((item) => item.title === name);
+			const id = target.id;
+			myTreeRef.value.setExpanded(route.query.kind, true);
+			defaultActive.value = id;
+			nextTick(() => {
+				setTimeout(() => {
+					scrollToView(id);
+				}, 400);
 			});
 		}
 	}
