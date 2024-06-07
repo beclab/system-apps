@@ -289,7 +289,7 @@ watch(
 			nextTick(() => {
 				setTimeout(() => {
 					scrollToView(id);
-				}, 400);
+				}, 650);
 			});
 		}
 	}
