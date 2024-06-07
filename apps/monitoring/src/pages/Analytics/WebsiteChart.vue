@@ -113,7 +113,7 @@ watch(
 .website-card-wrapper {
 	position: relative;
 	&:active {
-		background: $light-blue-1;
+		background: $background-hover;
 	}
 	&:hover {
 		&.highlight::after {
