@@ -10,7 +10,7 @@
 							row-key="name"
 							hide-pagination
 							flat
-							:pagination="undefined"
+							:pagination="pagination"
 							@refresh="fetchData"
 						>
 							<template v-slot:header="props">
@@ -112,7 +112,9 @@ const tabs = [
 const detail = ref();
 const loading = ref(false);
 const route = useRoute();
-
+const pagination = ref({
+	rowsNumber: 0
+});
 const tableData = (detail: any, direction: string) => {
 	const originData = get(detail, '_originData');
 	const namespace = get(originData, 'metadata.namespace');

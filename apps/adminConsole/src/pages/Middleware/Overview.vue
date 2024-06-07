@@ -24,7 +24,7 @@
 					row-key="name"
 					flat
 					hide-pagination
-					:pagination="undefined"
+					v-model:pagination="pagination"
 				>
 					<template v-slot:no-data>
 						<Empty2></Empty2>
@@ -139,7 +139,9 @@ const columns: any = [
 	{ name: 'name', label: 'Databases', field: 'name', align: 'center' },
 	{ name: 'password', label: 'Password', field: 'password', align: 'center' }
 ];
-
+const pagination = ref({
+	rowsNumber: 0
+});
 const passworkFormat = (value: string | number) => {
 	return '*'.repeat(6);
 };
