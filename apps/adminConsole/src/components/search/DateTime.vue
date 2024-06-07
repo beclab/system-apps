@@ -6,10 +6,10 @@
 			outline
 			no-caps
 			:label="displayValue"
-			align="between"
-			icon-right="schedule"
+			align="around"
+			color="ink-2"
+			dense
 			class="q-pa-sm date-time-button"
-			color="primary"
 		>
 			<q-menu id="date-time-menu" class="date-time-dialog">
 				<q-tabs v-model="message.tab" dense class="text-primary">
@@ -279,6 +279,7 @@
 					</q-tab-panel>
 				</q-tab-panels>
 			</q-menu>
+			<q-icon name="schedule" size="xs" />
 		</q-btn>
 	</div>
 </template>
@@ -355,6 +356,7 @@ export default {
 
 .date-time-dialog {
 	width: 370px;
+	color: $ink-1;
 }
 .date-time-table {
 	width: 100%;

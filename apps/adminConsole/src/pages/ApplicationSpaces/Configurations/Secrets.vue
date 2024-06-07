@@ -42,7 +42,7 @@ import DetailPage from '@packages/ui/src/containers/DetailPage.vue';
 import { t } from 'src/boot/i18n';
 import { getLocalTime } from 'src/utils';
 import { SECRET_TYPES } from 'src/utils/constants';
-import MyCard from 'src/components/MyCard.vue';
+import MyCard from '@packages/ui/src/components/MyCard2.vue';
 import MyPage from '@packages/ui/src/containers/MyPage.vue';
 import MyContentPage from 'src/components/MyContentPage.vue';
 import { safeBtoa } from '@packages/ui/src/utils/base64';

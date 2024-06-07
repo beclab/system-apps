@@ -1,75 +1,83 @@
 <template>
-	<q-btn
-		data-cy="syntax-guide-button"
-		size="md"
-		unelevated
-		class="q-pa-sm syntax-menu-button"
-		color="grey-4"
-		text-color="grey-7"
-		flat
-		icon="info"
-	>
-		<q-menu>
-			<q-card flat>
-				<q-card-section class="syntax-guide-title">
-					<div class="text-h6">{{ t('search.syntaxGuide') }}</div>
-				</q-card-section>
-				<q-separator />
-				<q-card-section class="q-pt-none answers">
-					<div class="syntax-section">
-						<div class="syntax-guide-sub-title">Search for Gold</div>
-						<div class="syntax-guide-text">Gold</div>
-					</div>
-					<div class="syntax-section">
-						<div class="syntax-guide-sub-title">Search for City with Paris</div>
-						<div class="syntax-guide-text">City:Paris</div>
-					</div>
-					<div class="syntax-section">
-						<div class="syntax-guide-sub-title">Search for City Not Paris</div>
-						<div class="syntax-guide-text">-City:Paris</div>
-					</div>
-					<div class="syntax-section">
-						<div class="syntax-guide-sub-title">
-							Search for City with Paris or Gold
+	<QButtonStyle>
+		<q-btn
+			size="xs"
+			data-cy="syntax-guide-button"
+			unelevated
+			class="q-pa-sm syntax-menu-button"
+			flat
+			icon="sym_r_info"
+		>
+			<q-menu>
+				<q-card flat>
+					<q-card-section class="syntax-guide-title">
+						<div class="text-h6">{{ t('search.syntaxGuide') }}</div>
+					</q-card-section>
+					<q-separator />
+					<q-card-section class="q-pt-none answers">
+						<div class="syntax-section">
+							<div class="syntax-guide-sub-title">Search for Gold</div>
+							<div class="syntax-guide-text">Gold</div>
 						</div>
-						<div class="syntax-guide-text">City:Paris Gold</div>
-					</div>
-					<div class="syntax-section">
-						<div class="syntax-guide-sub-title">
-							Search for City with Paris and Gold
+						<div class="syntax-section">
+							<div class="syntax-guide-sub-title">
+								Search for City with Paris
+							</div>
+							<div class="syntax-guide-text">City:Paris</div>
 						</div>
-						<div class="syntax-guide-text">+City:Paris +Gold</div>
-					</div>
-					<div class="syntax-section">
-						<div class="syntax-guide-sub-title">
-							Search for City with Paris but not Gold
+						<div class="syntax-section">
+							<div class="syntax-guide-sub-title">
+								Search for City Not Paris
+							</div>
+							<div class="syntax-guide-text">-City:Paris</div>
 						</div>
-						<div class="syntax-guide-text">+City:Paris -Gold</div>
-					</div>
-					<div class="syntax-section">
-						<div class="syntax-guide-sub-title">
-							Search for Medal Gold and Year>2000
+						<div class="syntax-section">
+							<div class="syntax-guide-sub-title">
+								Search for City with Paris or Gold
+							</div>
+							<div class="syntax-guide-text">City:Paris Gold</div>
 						</div>
-						<div class="syntax-guide-text">+Medal:Gold +Year:>2000</div>
-					</div>
-					<div class="syntax-section">
-						<div class="syntax-guide-sub-title">
-							Search text starting with par . e.g. Paris, Part, Paramater
+						<div class="syntax-section">
+							<div class="syntax-guide-sub-title">
+								Search for City with Paris and Gold
+							</div>
+							<div class="syntax-guide-text">+City:Paris +Gold</div>
 						</div>
-						<div class="syntax-guide-text">par*</div>
-					</div>
-				</q-card-section>
-			</q-card>
-		</q-menu>
-	</q-btn>
+						<div class="syntax-section">
+							<div class="syntax-guide-sub-title">
+								Search for City with Paris but not Gold
+							</div>
+							<div class="syntax-guide-text">+City:Paris -Gold</div>
+						</div>
+						<div class="syntax-section">
+							<div class="syntax-guide-sub-title">
+								Search for Medal Gold and Year>2000
+							</div>
+							<div class="syntax-guide-text">+Medal:Gold +Year:>2000</div>
+						</div>
+						<div class="syntax-section">
+							<div class="syntax-guide-sub-title">
+								Search text starting with par . e.g. Paris, Part, Paramater
+							</div>
+							<div class="syntax-guide-text">par*</div>
+						</div>
+					</q-card-section>
+				</q-card>
+			</q-menu>
+		</q-btn>
+	</QButtonStyle>
 </template>
 
 <script>
 import { t } from 'src/boot/i18n';
 import { defineComponent } from 'vue';
+import QButtonStyle from '@packages/ui/src/components/QButtonStyle.vue';
 
 export default defineComponent({
 	name: 'ComponentSearchSyntaxGuide',
+	components: {
+		QButtonStyle
+	},
 	setup() {
 		return {
 			t

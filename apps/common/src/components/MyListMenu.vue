@@ -1,5 +1,5 @@
 <template>
-	<q-list class="q-py-sm q-px-sm bg-white" dense style="height: 100%">
+	<q-list class="q-py-sm q-px-sm" dense style="height: 100%">
 		<q-item
 			clickable
 			v-ripple

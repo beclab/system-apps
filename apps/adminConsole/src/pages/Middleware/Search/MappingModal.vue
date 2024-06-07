@@ -13,7 +13,7 @@
 				<q-space />
 				<q-btn icon="close" flat round dense v-close-popup />
 			</q-card-section>
-			<q-separator dark color="grey-4" />
+			<q-separator />
 			<Yaml
 				v-if="aceVisible"
 				style="height: calc(100% - 59px)"

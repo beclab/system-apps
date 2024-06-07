@@ -21,7 +21,7 @@
 .my-scroll-area-wrapper {
 	height: calc(100vh - #{$content-header-height});
 	margin-top: $content-header-height;
-	background: $bg-content;
+	background: $background-6;
 
 	& > ::v-deep(.q-scrollarea__container) {
 		min-width: 0px;

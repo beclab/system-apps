@@ -29,10 +29,7 @@
 				</div>
 			</div>
 		</q-card-section>
-		<q-card-section
-			class="my-card-content"
-			:class="[noContentGap ? 'q-pa-none' : 'q-pa-lg bg-white']"
-		>
+		<q-card-section class="my-card-content q-px-lg q-pb-lg q-pt-none">
 			<slot></slot>
 		</q-card-section>
 	</q-card>
@@ -88,7 +85,7 @@ const titleShow = computed(
 <style lang="scss" scoped>
 .my-card-container {
 	position: relative;
-	background: rgba(0, 0, 0, 0);
+	background: red;
 
 	.my-card-section-wrapper {
 		background: rgba(0, 0, 0, 0);

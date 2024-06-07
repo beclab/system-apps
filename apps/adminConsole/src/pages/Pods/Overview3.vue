@@ -22,7 +22,7 @@
 				</q-btn>
 			</QButtonStyle>
 		</template>
-		<div style="background: #f5f7fa; margin: 0 -44px; margin-bottom: -44px">
+		<div style="margin: 0 -44px; margin-bottom: -44px">
 			<div class="q-px-md q-pb-md">
 				<Overview></Overview>
 				<ContainerWrapper></ContainerWrapper>

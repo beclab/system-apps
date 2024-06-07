@@ -1,7 +1,7 @@
 <template>
 	<q-item
 		class="my-menu-link q-py-none q-px-sm rounded-borders"
-		active-class="my-menu-link-active text-primary"
+		active-class="my-menu-link-active"
 		v-bind="$attrs"
 	>
 		<q-item-section
@@ -24,14 +24,14 @@
 
 		<q-item-section>
 			<q-item-label lines="1">
-				<div class="text-body2 text-grey-8 ellipsis">
+				<div class="text-body2 ellipsis">
 					<span :class="{ active: data.id === active }">
 						{{ data.title }}
 					</span>
 				</div>
 			</q-item-label>
 			<q-item-label caption lines="1">
-				<div class="text-overline text-grey-5">
+				<div class="text-overline text-ink-3">
 					{{ data.subTitle }}
 				</div>
 			</q-item-label>
@@ -51,14 +51,14 @@ defineProps<Props>();
 
 <style lang="scss" scoped>
 .my-menu-link {
-	color: $grey-8;
+	color: $ink-1;
 	min-height: 40px;
 }
 .my-menu-link-active {
-	background-color: rgba(51, 119, 255, 0.1);
-	color: $primary;
+	background-color: $blue-soft;
+	color: $blue-default;
 	.active {
-		color: $primary;
+		color: $blue-default;
 	}
 }
 .avatar-wrapper {

@@ -2,34 +2,34 @@
 	<div class="row justify-between">
 		<div class="col row justify-between">
 			<div class="col row items-center">
-				<q-input
-					v-model="searchQuery"
-					data-cy="search-bar-input"
-					:placeholder="t('search.typeSearch')"
-					dense
-					outlined
-					type="search"
-					class="search-field"
-					@change="searchData"
-					@keycode.enter="searchData"
-				>
-					<template #prepend>
-						<q-icon name="search" />
-					</template>
-					<template v-slot:append>
-						<syntax-guide />
-					</template>
-				</q-input>
+				<div class="search-field">
+					<q-input
+						v-model="searchQuery"
+						data-cy="search-bar-input"
+						:placeholder="t('search.typeSearch')"
+						dense
+						outlined
+						type="search"
+						class="search-field"
+						@change="searchData"
+						@keycode.enter="searchData"
+					>
+						<template #prepend>
+							<q-icon name="search" />
+						</template>
+						<template v-slot:append>
+							<syntax-guide />
+						</template>
+					</q-input>
+				</div>
 			</div>
 			<div class="q-ml-sm"><date-time v-model="dateVal" /></div>
 		</div>
 		<div class="q-ml-sm search-time">
-			<q-btn-group spread>
+			<q-btn-group outline>
 				<q-btn
 					data-cy="search-bar-refresh-button"
-					dense
-					color="primary"
-					label=""
+					outline
 					title="Search"
 					:icon="refreshIcon"
 					:loading="searching"
@@ -38,9 +38,10 @@
 				/>
 				<q-btn-dropdown
 					data-cy="search-bar-button-dropdown"
-					color="primary"
+					color="blue-default"
 					class="q-pa-sm search-dropdown"
 					no-caps
+					outline
 					:label="refreshTime"
 				>
 					<q-list>
@@ -53,7 +54,7 @@
 							@click="refreshTimeChange(item)"
 						>
 							<q-item-section>
-								<q-item-label>{{ item.label }}</q-item-label>
+								<q-item-label class="">{{ item.label }}</q-item-label>
 							</q-item-section>
 						</q-item>
 					</q-list>
@@ -66,7 +67,6 @@
 <script>
 import { defineComponent, nextTick, watch, ref } from 'vue';
 import { debounce } from 'quasar';
-
 import DateTime from './DateTime.vue';
 import SyntaxGuide from './SyntaxGuide.vue';
 import { t } from 'src/boot/i18n';
@@ -86,7 +86,7 @@ export default defineComponent({
 	emits: ['updated', 'refresh'],
 	setup(props, { emit }) {
 		const searching = ref(false);
-		const refreshIcon = ref('refresh');
+		const refreshIcon = ref('sym_r_refresh');
 		const refreshTime = ref('Off');
 		const refreshTimes = [
 			{ label: 'Off', value: 0 },
@@ -137,7 +137,7 @@ export default defineComponent({
 			if (searching.value) {
 				return;
 			}
-			refreshIcon.value = 'refresh';
+			refreshIcon.value = 'sym_r_refresh';
 			searching.value = true;
 			emit('updated', {
 				query: searchQuery.value,
@@ -152,7 +152,7 @@ export default defineComponent({
 
 		// when the datetime filter changes then update the results
 		watch(dateVal.value, (v) => {
-			refreshIcon.value = 'search';
+			refreshIcon.value = 'sym_r_search';
 			if (v.startDate != '' && v.endDate != '') {
 				dSearchData();
 			}
@@ -183,7 +183,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .search-field {
 	flex: 1;
 }
@@ -192,5 +192,15 @@ export default defineComponent({
 }
 .search-dropdown {
 	width: 60px !important;
+}
+.search-field {
+	flex: 1;
+}
+
+::v-deep(.q-field--dark .q-field__native) {
+	color: $ink-2;
+}
+::v-deep(.q-field__control::before) {
+	border-color: $btn-stroke;
 }
 </style>

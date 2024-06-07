@@ -6,11 +6,12 @@
 					dense-toggle
 					switch-toggle-side
 					group="expand"
+					expand-icon-class="text-ink-1"
 					:default-opened="defaultOpened?.includes(child.id)"
 					v-if="child.children"
 				>
 					<template #header>
-						<div class="ellipsis" style="align-self: center">
+						<div class="ellipsis text-ink-1" style="align-self: center">
 							{{ child.title }}
 						</div>
 					</template>

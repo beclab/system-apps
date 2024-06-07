@@ -151,7 +151,7 @@ import HighLight from '../HighLight.vue';
 import { byString, deepKeys } from '../../utils/json';
 import { t } from 'src/boot/i18n';
 import MylineChart from '@packages/ui/src/components/Charts/MyBarChart.vue';
-import MyCard from '@packages/ui/src/components/MyCard.vue';
+import MyCard from '@packages/ui/src/components/MyCard2.vue';
 import Empty from '@packages/ui/src/components/Empty2.vue';
 
 export default defineComponent({

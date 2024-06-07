@@ -1,7 +1,7 @@
 <template>
 	<div class="my-chip-list-container">
 		<table class="my-data-detail-table">
-			<tr v-for="item in data" :key="item.name" class="table-wrapper bg-white">
+			<tr v-for="item in data" :key="item.name" class="table-wrapper">
 				<td class="first-td q-py-md">
 					<div>
 						{{ item.name }}

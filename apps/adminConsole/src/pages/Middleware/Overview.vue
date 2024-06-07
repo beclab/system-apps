@@ -94,7 +94,7 @@
 import { t } from 'src/boot/i18n';
 import { computed, reactive, ref, watch } from 'vue';
 import DetailPage from '@packages/ui/src/containers/DetailPage.vue';
-import MyCard from '@packages/ui/src/components/MyCar4.vue';
+import MyCard from '@packages/ui/src/components/MyCard2.vue';
 import { useAppDetailStore } from 'src/stores/AppDetail';
 const appDetailStore = useAppDetailStore();
 const username = appDetailStore.user.username;

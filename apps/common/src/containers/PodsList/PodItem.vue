@@ -1,6 +1,10 @@
 <template>
 	<div>
-		<q-card class="pod-item-container q-px-lg" flat :bordered="bordered">
+		<q-card
+			class="pod-item-container q-px-lg bg-background-1"
+			flat
+			:bordered="bordered"
+		>
 			<div class="pod-item-content row items-center q-col-gutter-x-md">
 				<div class="col-4">
 					<ListItem size="sm" icon-size="lg">
@@ -195,23 +199,14 @@ const itemClick = (data: any) => {
 
 <style lang="scss" scoped>
 .pod-item-container {
-	border-radius: 12px;
+	border-radius: 8px;
+	border-color: $separator;
 	.pod-item-content {
 		height: 72px;
 	}
-	.label {
-		color: #79879c;
-	}
-	.pod-item-link {
-		color: #000;
-		text-decoration: none;
-		&:hover {
-			color: $primary;
-		}
-	}
 	.pod-title {
 		&:hover {
-			color: $primary;
+			color: $blue-6;
 			cursor: pointer;
 		}
 	}
@@ -222,18 +217,7 @@ const itemClick = (data: any) => {
 	}
 }
 .monitoring-empty {
-	color: $grey-6;
+	color: $ink-2;
 	font-size: 12px;
-}
-.container-item-hover {
-	overflow: hidden;
-	color: #1f1814;
-	font-size: 14px;
-	font-weight: 500;
-	line-height: 20px;
-	&:hover {
-		color: $primary;
-		cursor: pointer;
-	}
 }
 </style>

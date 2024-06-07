@@ -9,7 +9,7 @@
 	>
 		<q-card-section
 			v-if="titleShow"
-			class="my-card-section-wrapper q-py-sm q-px-lg bg-white"
+			class="my-card-section-wrapper q-py-sm q-px-lg"
 		>
 			<div class="row no-wrap justify-between items-center">
 				<MyTitle size="lg">

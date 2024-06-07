@@ -36,13 +36,14 @@
 			</MyCard>
 			<MyCard no-content-gap square flat :title="t('PODS')">
 				<template #extra>
-					<q-btn
-						flat
-						icon="refresh"
-						dense
-						color="grey-8"
-						@click="() => PodContainerRef.refresh()"
-					/>
+					<QButtonStyle>
+						<q-btn
+							flat
+							icon="refresh"
+							dense
+							@click="() => PodContainerRef.refresh()"
+						/>
+					</QButtonStyle>
 				</template>
 				<PodContainer
 					:detail="detail"
@@ -91,6 +92,7 @@ import PodContainer from '@packages/ui/src/containers/PodsList/PodContainer.vue'
 import WorkloadPanel from '@packages/ui/src/containers/WorkloadPanel.vue';
 import MyContentPage from 'src/components/MyContentPage.vue';
 import MyCard from '@packages/ui/src/components/MyCard2.vue';
+import QButtonStyle from '@packages/ui/src/components/QButtonStyle.vue';
 
 const $q = useQuasar();
 let loading = ref(false);

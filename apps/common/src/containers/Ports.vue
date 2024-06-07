@@ -1,6 +1,6 @@
 <template>
 	<div class="ports-wrapper q-gutter-y-md" v-if="ports">
-		<div v-for="(port, index) in ports" :key="index" class="ports q-px-lg">
+		<div v-for="(port, index) in ports" :key="index" class="ports q-pa-lg">
 			<div class="row ports-item items-center no-wrap q-col-gutter-x-md">
 				<ListItem
 					size="sm"
@@ -77,11 +77,8 @@ const props = withDefaults(defineProps<Props>(), {});
 	white-space: nowrap;
 	.ports {
 		position: relative;
-		border-radius: 4px;
-		background-color: #fff;
-		.ports-item {
-			height: 56px;
-		}
+		border-radius: 8px;
+		border: 1px solid $separator;
 		.protocol-style {
 			font-size: 10px;
 		}

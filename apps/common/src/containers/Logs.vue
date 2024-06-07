@@ -69,11 +69,7 @@
 				/>
 			</template>
 		</div>
-		<q-inner-loading
-			:dark="themeVar.loadingDark"
-			:color="themeVar.loadingColor"
-			:showing="loading"
-		>
+		<q-inner-loading class="logs-loading-wrapper" :showing="loading">
 		</q-inner-loading>
 	</div>
 </template>
@@ -396,6 +392,10 @@ const themeVar = reactive(themeStyle[type as Props['theme']]);
 	}
 	::v-deep(.log-scroll-wrapper) {
 		height: 100%;
+	}
+	::v-deep(.logs-loading-wrapper) {
+		background: var(--contentBG);
+		color: white;
 	}
 }
 </style>

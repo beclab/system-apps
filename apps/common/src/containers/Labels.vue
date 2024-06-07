@@ -3,15 +3,14 @@
 		<div
 			v-for="(value, key) in data"
 			:key="key"
-			style="display: inline-block; border: 1px solid #ebebeb"
-			class="rounded-borders q-pa-xs q-pr-sm"
+			class="labels-content rounded-borders q-pr-sm"
 		>
 			<q-chip
 				v-if="key"
 				square
 				size="12px"
-				color="primary"
-				text-color="white"
+				color="blue-default"
+				text-color="ink-on-brand"
 				class="q-ma-none"
 				style="border-radius: 4px"
 			>
@@ -39,5 +38,9 @@ const hasData = computed(() => {
 	return props.data && Object.keys(props.data).length > 0;
 });
 </script>
-
-<style></style>
+<style lang="scss" scoped>
+.labels-content {
+	display: inline-block;
+	border: 1px solid $separator;
+}
+</style>

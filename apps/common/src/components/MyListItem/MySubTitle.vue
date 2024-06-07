@@ -19,7 +19,7 @@ withDefaults(defineProps<Props>(), {});
 <style lang="scss" scoped>
 .sub-title {
 	overflow: hidden;
-	color: #b2b0af;
+	color: $ink-3;
 	font-size: 10px;
 	line-height: 12px;
 }

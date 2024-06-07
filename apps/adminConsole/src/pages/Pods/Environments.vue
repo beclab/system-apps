@@ -2,7 +2,7 @@
 	<MyCard no-content-gap square flat :title="t('ENVIRONMENT_VARIABLE_PL')">
 		<div class="q-gutter-y-md">
 			<div
-				class="environments-wrapper bg-white q-px-lg q-py-md"
+				class="environments-wrapper q-px-lg q-py-md"
 				v-for="item in envlist"
 				:key="item.name"
 			>
@@ -116,6 +116,7 @@ onMounted(() => {
 </script>
 <style lang="scss" scoped>
 .environments-wrapper {
-	border-radius: 12px;
+	border-radius: 8px;
+	border: 1px solid $separator;
 }
 </style>

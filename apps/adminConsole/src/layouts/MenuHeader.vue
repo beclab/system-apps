@@ -3,7 +3,7 @@
 		<template #title>
 			<div class="row items-center">
 				<slot v-if="$slots.title" name="title"></slot>
-				<span v-else class="text-h6 text-grey-10">{{ currentItem.label }}</span>
+				<span v-else class="text-h6 text-ink-1">{{ currentItem.label }}</span>
 				<slot v-if="$slots['title-after']" name="title-after"></slot>
 			</div>
 		</template>

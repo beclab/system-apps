@@ -12,17 +12,17 @@
 					:nodes="data"
 					node-key="id"
 					label-key="title"
-					selected-color="primary"
+					selected-color="blue-default"
 					:accordion="true"
 					v-model:selected="selected"
 					v-model:expanded="expanded"
 					@update:selected="onSelected"
 					@update:expanded="onExpanded"
-					style="background-color: #fff"
 					no-selection-unset
 					v-bind="$attrs"
 					no-results-label=" "
 					no-nodes-label=" "
+					text-color="ink-2"
 					class="my-tree-wrapper"
 				>
 					<template v-slot:default-body="prop">
@@ -374,7 +374,7 @@ defineExpose({ resetSelected, setExpanded, getExpandedNodes });
 
 ::v-deep(.q-tree__node-header:before) {
 	border-bottom-left-radius: 7px;
-	border-color: #e0e0e0;
+	border-color: $separator-2;
 }
 ::v-deep(
 		.q-tree__node--parent > .q-tree__node-collapsible > .q-tree__node-body:after
@@ -382,7 +382,7 @@ defineExpose({ resetSelected, setExpanded, getExpandedNodes });
 	border-color: #e0e0e0;
 }
 ::v-deep(.q-tree__node:after) {
-	border-color: #e0e0e0;
+	border-color: $separator-2;
 }
 ::v-deep(.my-menu-before-scroll .q-scrollarea__container) {
 	overflow-x: hidden;
@@ -393,6 +393,22 @@ defineExpose({ resetSelected, setExpanded, getExpandedNodes });
 }
 ::v-deep(.my-menu-before-scroll .q-tree__node-collapsible) {
 	overflow-x: hidden;
+}
+::v-deep(
+		.q-tree
+			> .q-tree__node--parent
+			> .q-tree__node-header
+			> .q-tree__node-header-content
+	) {
+	color: $ink-1 !important;
+}
+::v-deep(
+		.q-tree--dense
+			.q-tree__node--parent
+			> .q-tree__node-collapsible
+			> .q-tree__node-body
+	) {
+	padding-bottom: 0px;
 }
 </style>
 <style></style>

@@ -1,6 +1,6 @@
 <template>
 	<q-icon
-		color="primary"
+		color="blue-default"
 		name="sym_r_terminal"
 		flat
 		dense

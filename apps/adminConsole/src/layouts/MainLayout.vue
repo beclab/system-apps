@@ -1,8 +1,13 @@
 <template>
-	<q-layout view="hHh lpR fFf">
+	<q-layout class="control-hub-layout" view="hHh lpR fFf">
 		<q-drawer show-if-above :width="240" side="left" bordered :breakpoint="0">
 			<bt-scroll-area class="full-height" style="padding-top: 6px">
-				<bt-menu :items="items" v-model="active" @select="selectHandler" />
+				<bt-menu
+					active-class="my-active-link"
+					:items="items"
+					v-model="active"
+					@select="selectHandler"
+				/>
 			</bt-scroll-area>
 		</q-drawer>
 		<q-page-container class="settings_content_view">
@@ -89,6 +94,9 @@ onMounted(() => {
 	// background: $bg-content;
 	transform: translate(0);
 }
+.control-hub-sidebar {
+	border: 1px solid red;
+}
 .title {
 	color: #1f1814;
 	font-size: 24px;
@@ -96,4 +104,13 @@ onMounted(() => {
 	line-height: 32px;
 	padding: 20px 32px 0 32px;
 }
+
+::v-deep(.my-active-link) {
+	color: $blue-6;
+	background: $blue-soft;
+}
+::v-deep(.q-drawer.q-drawer--bordered) {
+	border-color: $separator;
+}
 </style>
+<style></style>

@@ -4,13 +4,17 @@ import { getLastMonitoringData } from 'src/utils/monitoring';
 import { _capitalize } from 'src/utils';
 import { firstToUpperWith_ } from 'src/constant';
 import memory_icon from '@apps/monitoring/src/assets/memory.svg';
+import memory_icon_dark from '@apps/monitoring/src/assets/memory-dark.svg';
 import memory_active_icon from '@apps/monitoring/src/assets/memory_active.svg';
+import memory_alt_icon_dark from '@apps/monitoring/src/assets/memory_alt-dark.svg';
 import memory_alt_active_icon from '@apps/monitoring/src/assets/memory_alt_active.svg';
 import memory_alt_icon from '@apps/monitoring/src/assets/memory_alt.svg';
 import hard_drive_active_icon from '@apps/monitoring/src/assets/hard_drive_active.svg';
 import hard_drive_icon from '@apps/monitoring/src/assets/hard_drive.svg';
+import hard_drive_icon_dark from '@apps/monitoring/src/assets/hard_drive-dark.svg';
 import package_2_active_icon from '@apps/monitoring/src/assets/package_2_active.svg';
 import package_2_icon from '@apps/monitoring/src/assets/package_2.svg';
+import package_2_icon_dark from '@apps/monitoring/src/assets/package_2-dark.svg';
 
 const resourceName_ = 'resource_name';
 
@@ -33,7 +37,8 @@ export const getValue = (data: PodItem) => get(data, 'value[1]', 0);
 export const getTabOptions = (
 	data: { [key: string]: string },
 	MetricTypes: any,
-	index = 0
+	index = 0,
+	isDark = false
 ) => {
 	const lastData: { [key: string]: any } = getLastMonitoringData(data);
 	const result = [
@@ -42,28 +47,28 @@ export const getTabOptions = (
 			unitType: 'cpu',
 			used: getValue(lastData[MetricTypes.cpu_usage]),
 			total: getValue(lastData[MetricTypes.cpu_total]),
-			img: memory_icon
+			img: isDark ? memory_icon_dark : memory_icon
 		},
 		{
 			name: 'MEMORY',
 			unitType: 'memory',
 			used: getValue(lastData[MetricTypes.memory_usage]),
 			total: getValue(lastData[MetricTypes.memory_total]),
-			img: memory_alt_icon
+			img: isDark ? memory_alt_icon_dark : memory_alt_icon
 		},
 		{
 			name: 'DISK',
 			unitType: 'disk',
 			used: getValue(lastData[MetricTypes.disk_size_usage]),
 			total: getValue(lastData[MetricTypes.disk_size_capacity]),
-			img: hard_drive_icon
+			img: isDark ? hard_drive_icon_dark : hard_drive_icon
 		},
 		{
 			name: 'PODS',
 			unit: '',
 			used: getValue(lastData[MetricTypes.pod_count]),
 			total: getValue(lastData[MetricTypes.pod_capacity]),
-			img: package_2_icon
+			img: isDark ? package_2_icon_dark : package_2_icon
 		}
 	];
 
@@ -73,7 +78,8 @@ export const getTabOptions = (
 export const getTabOptions3 = (
 	data: { [key: string]: string },
 	MetricTypes: any,
-	index = 0
+	index = 0,
+	isDark = false
 ) => {
 	const lastData: { [key: string]: any } = getLastMonitoringData(data);
 	const result = [
@@ -82,21 +88,21 @@ export const getTabOptions3 = (
 			unitType: 'cpu',
 			used: getValue(lastData[MetricTypes.cpu_usage]),
 			total: getValue(lastData[MetricTypes.cpu_total]),
-			img: memory_icon
+			img: isDark ? memory_icon_dark : memory_icon
 		},
 		{
 			name: 'MEMORY',
 			unitType: 'memory',
 			used: getValue(lastData[MetricTypes.memory_usage]),
 			total: getValue(lastData[MetricTypes.memory_total]),
-			img: memory_alt_icon
+			img: isDark ? memory_alt_icon_dark : memory_alt_icon
 		},
 		{
 			name: 'PODS',
 			unit: '',
 			used: getValue(lastData[MetricTypes.pod_count]),
 			total: getValue(lastData[MetricTypes.pod_capacity]),
-			img: package_2_icon
+			img: isDark ? package_2_icon_dark : package_2_icon
 		}
 	];
 

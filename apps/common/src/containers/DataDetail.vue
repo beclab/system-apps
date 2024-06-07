@@ -1,17 +1,9 @@
 <template>
 	<div class="my-table-container">
 		<table class="my-data-detail-table">
-			<tr
-				v-for="(value, key) in data"
-				:key="key + value"
-				class="table-wrapper bg-white"
-			>
+			<tr v-for="(value, key) in data" :key="key + value" class="table-wrapper">
 				<td class="first-td q-pl-lg q-pr-lg q-py-md">
-					<div
-						:style="{
-							maxWidth: `${maxWidth}px`
-						}"
-					>
+					<div>
 						{{ key }}
 						<q-resize-observer @resize="onResize" />
 					</div>
@@ -53,14 +45,19 @@ const props = withDefaults(defineProps<Props>(), {});
 	width: 100%;
 	.first-td {
 		vertical-align: baseline;
-		max-width: 20%;
+		max-width: 30%;
+	}
+	& tr td {
+		border: 1px solid $separator;
 	}
 	& tr.table-wrapper td:first-child {
 		border-radius: 12px 0 0 12px;
 		white-space: nowrap;
+		border-right: none;
 	}
 	& tr.table-wrapper td:last-child {
 		border-radius: 0 12px 12px 0;
+		border-left: none;
 	}
 	.text-wrap {
 		white-space: wrap;

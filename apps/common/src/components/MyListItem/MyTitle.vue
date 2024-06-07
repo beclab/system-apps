@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="my-title-container ellipsis full-width text-grey-10"
+		class="my-title-container ellipsis full-width text-ink-1"
 		:class="sizeClass"
 		:style="{ fontWeight: bold ? '500' : 'normal' }"
 	>

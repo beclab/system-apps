@@ -3,22 +3,18 @@
 		<div
 			class="row items-center no-wrap info-card-wrapper q-pa-lg"
 			:class="[props.active ? 'info-card-wrapper-active' : '']"
+			:style="{ background: props.active ? backgroundMode : undefined }"
 		>
 			<div
 				class="img-wrapper row items-center justify-center"
 				:class="[props.active ? 'img-active' : '']"
 			>
-				<q-img
-					:src="props.active && img_active ? img_active : img"
-					width="24px"
-					ratio="1"
-					no-spinner
-				/>
+				<q-img :src="props.img" width="24px" ratio="1" no-spinner />
 			</div>
 			<div class="row no-wrap items-center justify-between q-ml-lg">
 				<div>
 					<div
-						class="row items-center info-ratio no-wrap text-h5 text-grey-10 value-wrapper"
+						class="row items-center info-ratio no-wrap text-h5 text-ink-1 value-wrapper"
 					>
 						<q-skeleton v-if="loading" type="text" width="88px" />
 						<template v-else>
@@ -27,7 +23,7 @@
 							<span class="ratio-foolter">{{ _total || '-' }}</span>
 						</template>
 					</div>
-					<div class="text-subtitle1 text-grey-6 q-mt-xs">
+					<div class="text-subtitle1 text-ink-3 q-mt-xs">
 						<q-skeleton v-if="loading" type="text" width="64px" />
 						<template v-else>
 							<span>{{ _capitalize(name) }}&nbsp;</span>
@@ -45,6 +41,8 @@ import { getSuitableUnit, getValueByUnit } from 'src/utils/monitoring';
 import { computed, ref, toRefs } from 'vue';
 import { _capitalize } from 'src/utils/index';
 import { isNaN, round } from 'lodash';
+import { useQuasar } from 'quasar';
+const $q = useQuasar();
 
 export interface InfoCardItemProps {
 	used: string;
@@ -84,6 +82,12 @@ const activeColor = computed(() =>
 		? 'warning'
 		: 'positive'
 );
+
+const backgroundMode = computed(() =>
+	$q.dark.isActive
+		? 'linear-gradient(125deg, #1f1f1f 4.57%, #262e37 87.85%)'
+		: 'linear-gradient(125deg, #FFF 4.57%, #EBF5FF 87.85%)'
+);
 </script>
 
 <style lang="scss" scoped>
@@ -92,33 +96,18 @@ const activeColor = computed(() =>
 	.img-wrapper {
 		width: 48px;
 		height: 48px;
-		background: $grey-1;
 		border-radius: 50%;
+		background: $background-3;
 	}
 	.info-card-wrapper {
 		position: relative;
 		border-radius: 12px;
-		border: 1px solid $grey-2;
+		border: 1px solid $separator;
 		&.info-card-wrapper-active {
-			border: 1px solid $blue-6;
-			background: linear-gradient(
-				125deg,
-				#f9fdff 4.57%,
-				rgba(214, 233, 255, 0.6) 51.18%,
-				rgba(204, 227, 255, 0.6) 87.85%
-			);
-			.img-active {
-				background: $blue-2;
-			}
+			border: 1px solid $light-blue-6;
 		}
-		.info-item {
-			font-size: 12px;
-			line-height: 12px;
-			color: #5c5551;
-			line-height: 16px;
-			&.info-item-active {
-				color: #ffffff;
-			}
+		.img-active {
+			background: $blue-alpha;
 		}
 		.value-wrapper {
 			white-space: nowrap;

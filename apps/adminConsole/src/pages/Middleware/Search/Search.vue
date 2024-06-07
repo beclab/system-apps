@@ -70,7 +70,7 @@
 <script setup lang="ts">
 import { t } from 'src/boot/i18n';
 import { ref, watch } from 'vue';
-import MyCard from '@packages/ui/src/components/MyCar4.vue';
+import MyCard from '@packages/ui/src/components/MyCard2.vue';
 import { getZincSearchList } from 'src/network/search';
 import Empty from '@packages/ui/src/components/Empty.vue';
 import Empty2 from '@packages/ui/src/components/Empty2.vue';

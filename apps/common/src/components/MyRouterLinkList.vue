@@ -37,7 +37,11 @@
 		</template>
 		<template v-slot:after>
 			<div class="my-menu-after-wrapper row items-center q-px-md">
-				<MyRouterLinkListContentItem :data="currentItem" clickable v-ripple>
+				<MyRouterLinkListContentItem
+					:data="currentItem"
+					:clickable="props.clickable"
+					v-ripple="props.clickable"
+				>
 				</MyRouterLinkListContentItem>
 			</div>
 			<div style="flex: 1">
@@ -62,11 +66,13 @@ interface Props {
 	loading?: boolean;
 	loadMore?: boolean;
 	defaultOpened?: string[];
+	clickable?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
 	data: [] as any,
-	loading: false
+	loading: false,
+	clickable: true
 });
 
 const emits = defineEmits(['selected', 'load']);

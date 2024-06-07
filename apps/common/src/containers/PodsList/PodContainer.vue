@@ -7,6 +7,7 @@
 			:metrics="getPodMetrics(item)"
 			:loading="loading3"
 			:scroll="scroll"
+			bordered
 			@click="itemClick"
 		></PodItem>
 		<q-inner-loading :showing="loading2"> </q-inner-loading>

@@ -3,23 +3,16 @@
 		:flat="flat"
 		:bordered="bordered"
 		:dark="dark"
-		:square="square"
 		:tag="tag"
-		class="my-card-container q-mx-md"
+		class="my-card-container q-pa-none"
 	>
-		<q-card-section
-			v-if="titleShow"
-			class="my-card-section-wrapper q-px-none q-py-xs"
-		>
-			<div
-				class="row no-wrap justify-between items-center"
-				style="height: 32px"
-			>
-				<div class="text-subtitle2 text-grey-10">
+		<q-card-section v-if="titleShow" class="my-card-section-wrapper q-pa-none">
+			<div class="row no-wrap justify-between items-center q-pa-lg">
+				<div class="text-subtitle2 text-ink-1">
 					<slot v-if="$slots.title" name="title"></slot>
 					<span v-else>{{ title }}</span>
 				</div>
-				<div class="col-auto my-card-extra">
+				<div class="col-auto my-card-extra text-ink-2">
 					<slot name="extra" v-if="slots.extra"></slot>
 					<template v-if="extra">
 						{{ extra }}
@@ -27,10 +20,7 @@
 				</div>
 			</div>
 		</q-card-section>
-		<q-card-section
-			class="my-card-content"
-			:class="[noContentGap ? 'q-pa-none' : 'q-pa-lg bg-white']"
-		>
+		<q-card-section class="my-card-content q-px-lg q-pb-lg q-pt-none">
 			<slot></slot>
 		</q-card-section>
 	</q-card>
@@ -74,7 +64,9 @@ const slots = useSlots();
 
 const props = withDefaults(defineProps<Props>(), {
 	title: '',
-	extra: ''
+	extra: '',
+	square: false,
+	flat: true
 });
 
 const { title, extra, dark, square, flat, bordered, tag } = toRefs(props);
@@ -86,26 +78,25 @@ const titleShow = computed(
 <style lang="scss" scoped>
 .my-card-container {
 	position: relative;
-	background: rgba(0, 0, 0, 0);
+	background: $background-1;
+	border-radius: 12px;
 
 	.my-card-section-wrapper {
 		background: rgba(0, 0, 0, 0);
 	}
 
 	.my-card-title {
+		font-size: 14px;
+		font-style: normal;
 		font-weight: 500;
-		font-size: 16px;
-		line-height: 24px;
+		line-height: 20px;
 		color: $input-text-color;
 	}
 
 	.my-card-extra {
 		font-weight: 400;
 		font-size: 12px;
-	}
-	.my-card-content {
-		border-radius: 12px;
-		overflow: hidden;
+		color: $ink-2;
 	}
 }
 </style>

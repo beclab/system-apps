@@ -1,5 +1,5 @@
 <template>
-	<q-card flat class="q-px-lg q-py-md">
+	<q-card flat class="volume-item-container q-pa-lg">
 		<div bordered separator class="row no-wrap q-col-gutter-x-md">
 			<div class="col-4">
 				<ListItem
@@ -33,7 +33,7 @@
 				</div>
 			</div>
 		</div>
-		<q-separator spaced />
+		<q-separator color="separator" spaced style="margin: 20px 0" />
 		<div v-if="!isEmpty(volume.volumeMounts)" class="q-col-gutter-y-sm">
 			<div
 				v-for="(item, index) in volume.volumeMounts"
@@ -46,7 +46,7 @@
 							<q-img :src="dockerIcon" />
 						</template>
 						<template #title>
-							<span class="text-grey-8">{{ item.containerName }}</span>
+							<span class="text-ink-1">{{ item.containerName }}</span>
 						</template>
 					</ListItem>
 				</div>
@@ -56,10 +56,10 @@
 							<q-img :src="padlocIcon" />
 						</template>
 						<template #title>
-							<div class="row q-gutter-x-md text-grey-8">
+							<div class="row q-gutter-x-md text-ink-1">
 								<div>
 									<span>{{ item.mountPath }}</span>
-									<span class="q-ml-xs text-grey-5"
+									<span class="q-ml-xs text-ink-3"
 										>({{
 											item.readOnly
 												? t('READ_ONLY_LOW')
@@ -196,4 +196,9 @@ function updateData(volume: any) {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.volume-item-container {
+	border: 1px solid $separator;
+	border-radius: 8px;
+}
+</style>

@@ -23,7 +23,10 @@
 			<DataDetail :data="secretObj"> </DataDetail>
 		</my-card>
 		<my-card square flat animated :title="t('KUBECONFIG_SETTINGS')" v-if="yaml">
-			<div v-html="t('SERVICEACCOUNT_KUBECONFIG_DESC')"></div>
+			<div
+				class="service-desc-wrapper"
+				v-html="t('SERVICEACCOUNT_KUBECONFIG_DESC')"
+			></div>
 			<Yaml
 				class="q-mt-md"
 				style="height: 480px"
@@ -35,7 +38,7 @@
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
-import MyCard from 'src/components/MyCard.vue';
+import MyCard from '@packages/ui/src/components/MyCard2.vue';
 import {
 	onMounted,
 	ref,
@@ -149,3 +152,8 @@ watch(
 	}
 );
 </script>
+<style lang="scss" scoped>
+::v-deep(.service-desc-wrapper a) {
+	color: $blue-default;
+}
+</style>

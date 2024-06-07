@@ -2,7 +2,7 @@
 	<v-ace-editor
 		v-model:value="data"
 		:lang="lang"
-		:theme="theme"
+		:theme="$q.dark.isActive ? 'gruvbox_dark_hard' : 'textmate'"
 		:readonly="readonly"
 		style="height: 100%"
 		wrap
@@ -19,6 +19,7 @@
 </template>
 
 <script setup lang="ts">
+import { useQuasar } from 'quasar';
 import { getYaml } from 'src/network';
 import { onMounted, ref, toRef, toRefs } from 'vue';
 import yaml from 'js-yaml';
@@ -27,9 +28,9 @@ import ace from 'ace-builds';
 import 'ace-builds/src-noconflict/mode-yaml';
 import 'ace-builds/src-noconflict/snippets/yaml';
 import 'ace-builds/src-noconflict/theme-textmate';
+import 'ace-builds/src-noconflict/theme-gruvbox_dark_hard';
 
 import 'ace-builds/src-noconflict/mode-groovy';
-import 'ace-builds/src-noconflict/theme-chaos';
 import 'ace-builds/src-noconflict/keybinding-vscode';
 import 'ace-builds/src-noconflict/ext-searchbox';
 import 'ace-builds/src-noconflict/mode-javascript';
@@ -52,6 +53,8 @@ const props = withDefaults(defineProps<Props>(), {
 	theme: 'chaos',
 	lang: 'yaml'
 });
+
+const $q = useQuasar();
 
 const { data } = toRefs(props);
 </script>

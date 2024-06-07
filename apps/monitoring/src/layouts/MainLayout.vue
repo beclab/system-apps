@@ -7,7 +7,6 @@
 				v-model="active"
 				style="width: 239px"
 				@select="selectHandler"
-				show-theme-toggle
 			/>
 		</q-drawer>
 		<q-page-container class="relative-position dashboard-container">

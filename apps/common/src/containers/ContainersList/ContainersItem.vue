@@ -24,7 +24,7 @@
 							</div>
 							<q-icon
 								v-if="!hideLog"
-								color="primary"
+								color="blue-default"
 								name="sym_r_article"
 								flat
 								dense
@@ -233,7 +233,8 @@ const getMonitoringCfgs = computed(() => {
 
 <style lang="scss" scoped>
 .container-item {
-	border-radius: 12px;
+	border-radius: 8px;
+	border: 1px solid $separator;
 	.container-item-content {
 		height: 72px;
 	}

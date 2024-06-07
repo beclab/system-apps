@@ -1,7 +1,6 @@
 <template>
 	<QTableStyle>
 		<q-table
-			class="bg-white"
 			:rows="ports"
 			flat
 			:columns="columns"

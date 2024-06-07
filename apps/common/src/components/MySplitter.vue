@@ -63,7 +63,7 @@ $my_tree_left: -($my_tree_width_base + 8px);
 	}
 
 	&::v-deep(.q-tree--dense .q-tree__arrow) {
-		color: #5c5551;
+		color: $ink-1;
 	}
 
 	&::v-deep(.q-tree__children .q-tree__node-header-content) {

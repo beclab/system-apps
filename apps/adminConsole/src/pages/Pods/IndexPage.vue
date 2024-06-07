@@ -3,12 +3,12 @@
 		<MenuHeader size="xxl">
 			<template #title-after>
 				<q-tabs
-					class="q-pl-lg q-ml-md text-grey-8"
+					class="q-pl-lg q-ml-md text-ink-2"
 					content-class="tabs-content-wrapper"
 					style="font-size: 16px"
 					v-model="tab"
 					align="left"
-					active-color="primary"
+					active-color="blue-6"
 					:breakpoint="0"
 					no-caps
 					narrow-indicator

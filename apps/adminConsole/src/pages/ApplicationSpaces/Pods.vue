@@ -41,7 +41,6 @@ import MyQTabs from 'src/components/MyQTabs.vue';
 import { get, isEmpty } from 'lodash';
 import { t } from 'src/boot/i18n';
 import DetailPage from 'src/containers/DetailPage.vue';
-import MyCard from 'src/components/MyCard.vue';
 import { getLocalTime } from 'src/utils/index.js';
 import Metadata from 'src/containers/Metadata.vue';
 import { PodsMapper } from 'src/utils/object.mapper';

@@ -5,12 +5,10 @@
 				<MoreSelection :options="options" size="md"></MoreSelection>
 			</div>
 		</template>
-		<MyPage flat>
-			<EnvironmentVariables>
-				<DetailData ref="detaiDatalRef"></DetailData>
-			</EnvironmentVariables>
-			<Yaml ref="yamlRef" :name="t('EDIT_YAML')" @change="fetchList"></Yaml>
-		</MyPage>
+		<EnvironmentVariables>
+			<DetailData ref="detaiDatalRef"></DetailData>
+		</EnvironmentVariables>
+		<Yaml ref="yamlRef" :name="t('EDIT_YAML')" @change="fetchList"></Yaml>
 	</MyContentPage>
 </template>
 

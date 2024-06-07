@@ -55,9 +55,7 @@ import { computed, ref, StyleValue, toRefs } from 'vue';
 import { _capitalize } from 'src/utils/index';
 import { isNaN, round } from 'lodash';
 import { useQuasar } from 'quasar';
-import { useColor } from '@bytetrade/ui';
 const $q = useQuasar();
-const { color: bgColor }: any = useColor('background-1');
 export interface InfoCardItemProps {
 	used: string;
 	total: string;

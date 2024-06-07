@@ -34,6 +34,8 @@ import {
 } from './config';
 import { getAreaChartOps } from '@apps/monitoring/src/utils/monitoring';
 import MyCard from '@apps/monitoring/src/components/MyCard.vue';
+import { useQuasar } from 'quasar';
+const $q = useQuasar();
 
 interface Props {
 	data: any;
@@ -51,12 +53,17 @@ const listchange = (data: InfoCardItemProps, index: number) => {
 };
 
 watch(
-	() => props.data,
+	[() => props.data, () => $q.dark.isActive],
 	(data) => {
 		const MetricTypes = MetricTypesFormat(props.type);
-		clusterOptions.value = getTabOptions(data, MetricTypes);
-		clusterResource.value = getContentOptions(data, MetricTypes).map((item) =>
-			getAreaChartOps(item)
+		clusterOptions.value = getTabOptions(
+			props.data,
+			MetricTypes,
+			0,
+			$q.dark.isActive
+		);
+		clusterResource.value = getContentOptions(props.data, MetricTypes).map(
+			(item) => getAreaChartOps(item)
 		);
 	},
 	{

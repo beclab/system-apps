@@ -45,8 +45,8 @@
 				:loading="loading"
 			>
 				<template v-slot:body="props">
-					<q-tr :props="props" class="text-body2 text-grey-10">
-						<q-td key="name" :props="props" class="text-subtitle2 text-grey-10">
+					<q-tr :props="props" class="text-body2">
+						<q-td key="name" :props="props" class="text-subtitle2">
 							<q-img
 								:src="podIcon"
 								:ratio="1"
@@ -411,11 +411,11 @@ fetchData();
 	}
 }
 .pod-item-link {
-	color: #1f1814;
+	color: $ink-1;
 	font-weight: 500;
 	text-decoration: none;
 	&:hover {
-		color: $primary;
+		color: $blue-6;
 	}
 }
 </style>

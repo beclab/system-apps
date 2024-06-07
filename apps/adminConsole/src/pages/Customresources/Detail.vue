@@ -113,7 +113,7 @@ import { t } from 'src/boot/i18n';
 import { date } from 'quasar';
 import { get, isEmpty } from 'lodash';
 import DetailPage from '@packages/ui/src/containers/DetailPage.vue';
-import MyCar4 from '@packages/ui/src/components/MyCar4.vue';
+import MyCar4 from '@packages/ui/src/components/MyCard2.vue';
 import Refresh from '@packages/ui/src/components/Refresh.vue';
 import QInputStyle from '@packages/ui/src/components/QInputStyle.vue';
 import Empty3 from '@packages/ui/src/components/Empty3.vue';

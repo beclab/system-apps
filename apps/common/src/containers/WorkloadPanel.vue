@@ -1,16 +1,18 @@
 <template>
 	<q-card flat class="items-center q-px-lg relative-position">
-		<div class="q-py-lg" v-if="!isLoading && workloads.length === 0">
-			<Empty> </Empty>
+		<div>
+			<div class="q-py-lg" v-if="!isLoading && workloads.length === 0">
+				<Empty> </Empty>
+			</div>
+			<Item
+				v-for="workload in workloads"
+				:key="`${workload.module}-${workload.name}`"
+				prefix="prefix"
+				:detail="workload"
+			>
+			</Item>
+			<q-inner-loading :showing="isLoading"> </q-inner-loading>
 		</div>
-		<Item
-			v-for="workload in workloads"
-			:key="`${workload.module}-${workload.name}`"
-			prefix="prefix"
-			:detail="workload"
-		>
-		</Item>
-		<q-inner-loading :showing="isLoading"> </q-inner-loading>
 	</q-card>
 </template>
 
@@ -85,6 +87,9 @@ watch(
 </script>
 
 <style lang="scss" scoped>
+.items-center {
+	background: $background-1;
+}
 .empty {
 	text-align: center;
 }

@@ -26,7 +26,7 @@ import { get, isEmpty } from 'lodash-es';
 import DetailPage from '@packages/ui/src/containers/DetailPage.vue';
 import { t } from 'src/boot/i18n';
 import { getLocalTime } from 'src/utils';
-import MyCard from 'src/components/MyCard.vue';
+import MyCard from '@packages/ui/src/components/MyCard2.vue';
 import MyPage from '@packages/ui/src/containers/MyPage.vue';
 import MyContentPage from 'src/components/MyContentPage.vue';
 

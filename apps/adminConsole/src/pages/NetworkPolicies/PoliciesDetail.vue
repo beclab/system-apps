@@ -3,7 +3,7 @@
 		<MyPage2>
 			<template v-for="(item, index) in tabs" :key="index">
 				<MyCar4 square flat :title="item.name">
-					<QTableStyle2>
+					<QTableStyle2 stickyLast>
 						<q-table
 							:rows="tableData(detail, item.value)"
 							:columns="columns"
@@ -101,7 +101,7 @@ import Labels from '@packages/ui/src/containers/Labels.vue';
 import MyPage2 from '@packages/ui/src/containers/MyPage2.vue';
 import Empty3 from '@packages/ui/src/components/Empty3.vue';
 import MyContentPage from 'src/components/MyContentPage.vue';
-import MyCar4 from '@packages/ui/src/components/MyCar4.vue';
+import MyCar4 from '@packages/ui/src/components/MyCard2.vue';
 import QTableStyle2 from '@packages/ui/src/components/QTableStyle2.vue';
 import MyLoading2 from '@packages/ui/src/components/MyLoading2.vue';
 const tabs = [

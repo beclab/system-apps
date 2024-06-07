@@ -1,5 +1,5 @@
 <template>
-	<div class="fixed-full bg-white" style="z-index: 999">
+	<div class="fixed-full bg-background-1" style="z-index: 999">
 		<RouteBackBar :title="title" :avatar="avatar">
 			<template #extra>
 				<slot name="extra"></slot>

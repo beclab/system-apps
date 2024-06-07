@@ -1,7 +1,7 @@
 <template>
 	<MySplitter>
 		<template v-slot:before>
-			<MyScrollArea style="height: 100%" class="bg-white">
+			<MyScrollArea style="height: 100%">
 				<MyRouterLinkList
 					:data="list.items"
 					:defaultActive="defaultActive"

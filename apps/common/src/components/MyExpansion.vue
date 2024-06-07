@@ -1,5 +1,5 @@
 <template>
-	<div class="row items-center justify-between">
+	<div class="row items-center q-py-md justify-between">
 		<ListItemVue :title="label">
 			<template #avatar>
 				<q-img :src="dockerIcon" />
@@ -38,5 +38,3 @@ const props = withDefaults(defineProps<Props>(), {});
 
 const expanded = ref(false);
 </script>
-
-<style></style>

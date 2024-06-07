@@ -1,5 +1,5 @@
 <template>
-	<div class="bg-white">
+	<div>
 		<div
 			class="my-table-container"
 			:class="[
@@ -28,12 +28,12 @@ const { stickyFirst, stickyLast } = toRefs(props);
 <style lang="scss" scoped>
 .my-table-container {
 	::v-deep(.q-table__container thead) {
-		color: #b2b0af;
+		color: $ink-3;
 		font-size: 12px;
 		font-style: normal;
 		font-weight: 400;
 		line-height: 16px;
-		background: #fff;
+		background: $background-1;
 	}
 	::v-deep(td) {
 		padding: 20px 20px 20px 0;
@@ -41,17 +41,17 @@ const { stickyFirst, stickyLast } = toRefs(props);
 		font-style: normal;
 		font-weight: 400;
 		line-height: 20px;
-		color: $grey-10;
+		color: $ink-1;
 	}
 	::v-deep(th) {
 		padding: 20px 20px 20px 0;
 	}
 	::v-deep(.q-table th.sorted .q-table__sort-icon) {
-		color: $grey-5;
+		color: $ink-3;
 	}
 	::v-deep(.q-table__card .q-table__bottom) {
 		font-size: 12px;
-		color: $grey-5;
+		color: $ink-3;
 		border-top: 0 solid;
 		padding-right: 0;
 	}
@@ -60,21 +60,36 @@ const { stickyFirst, stickyLast } = toRefs(props);
 		) {
 		border-bottom-width: 1px;
 	}
+	::v-deep(td:last-child) {
+		position: sticky;
+		right: 0;
+		z-index: 1;
+	}
+
+	::v-deep(.q-table th) {
+		border-color: $separator;
+	}
+	::v-deep(.q-table--horizontal-separator tbody tr:not(:last-child) > td) {
+		border-color: $separator;
+	}
+	::v-deep(.q-field__native, .q-field__marginal) {
+		color: $ink-2;
+	}
 }
 </style>
 
 <style lang="scss" scoped>
 .first-sticky {
 	::v-deep(thead tr:first-child th:first-child) {
-		background-color: #fff;
+		background-color: $background-1;
 	}
 
 	::v-deep(td) {
-		background-color: #fff;
+		background-color: $background-1;
 	}
 
 	::v-deep(th) {
-		background-color: #fff;
+		background-color: $background-1;
 	}
 
 	::v-deep(th:first-child) {
@@ -91,20 +106,14 @@ const { stickyFirst, stickyLast } = toRefs(props);
 
 .last-sticky {
 	::v-deep(thead tr:first-child th:first-child) {
-		background-color: #fff;
+		background-color: $background-1;
 	}
 
 	::v-deep(td) {
-		background-color: #fff;
+		background-color: $background-1;
 	}
 
 	::v-deep(th:last-child) {
-		position: sticky;
-		right: 0;
-		z-index: 1;
-	}
-
-	::v-deep(td:last-child) {
 		position: sticky;
 		right: 0;
 		z-index: 1;

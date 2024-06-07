@@ -1,8 +1,8 @@
 <template>
 	<div
-		class="workload-item-container row items-center q-col-gutter-x-md no-wrap"
+		class="workload-item-container row items-center q-col-gutter-x-md no-wrap q-pa-lg"
 	>
-		<div class="col-4">
+		<div class="col-4 q-pa-none">
 			<ListItem size="sm" icon-size="lg">
 				<template #avatar>
 					<q-img :src="deploymentsIcon" width="32px"> </q-img>
@@ -109,13 +109,14 @@ fetchRevisions();
 
 <style lang="scss" scoped>
 .workload-item-container {
-	height: 72px;
+	border: 1px solid $separator;
+	border-radius: 8px;
 }
 .workload-item-link {
-	color: #000;
+	color: $ink-1;
 	text-decoration: none;
 	&:hover {
-		color: $primary;
+		color: $blue-default;
 	}
 }
 </style>

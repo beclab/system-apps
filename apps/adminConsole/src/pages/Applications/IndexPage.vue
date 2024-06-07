@@ -76,7 +76,7 @@
 										getSuitableValue(props.row.namespace_cpu_usage, 'cpu', '-')
 									}}
 								</div>
-								<div class="text-body3 text-grey-5 q-mt-xs">
+								<div class="text-body3 text-ink-3 q-mt-xs">
 									<span>Quota:&nbsp;</span>
 									<span>
 										{{
@@ -99,7 +99,7 @@
 								)
 							}}
 							<div>
-								<div class="text-body3 text-grey-5 q-mt-xs">
+								<div class="text-body3 text-ink-3 q-mt-xs">
 									<span>Quota:&nbsp;</span>
 									<span>{{
 										getSuitableValue(
@@ -114,7 +114,7 @@
 						<q-td key="namespace_pod_count">
 							<div>{{ props.row.namespace_pod_count || '-' }}</div>
 							<div>
-								<div class="text-body3 text-grey-5 q-mt-xs">
+								<div class="text-body3 text-ink-3 q-mt-xs">
 									<span>Quota:&nbsp;</span>
 									<span>
 										{{ props.row.namespace_pod_count_hard || '-' }}
@@ -437,20 +437,18 @@ onMounted(() => {
 	color: #414141;
 }
 .pod-item-link {
-	color: #1f1814;
+	color: $ink-1;
 	font-weight: 500;
 	text-decoration: none;
 	&:hover {
-		color: $primary;
+		color: $blue-6;
 	}
 }
 ::v-deep(.my-table-header-wrapper) {
-	color: #b2b0af;
 	font-size: 12px;
 	font-style: normal;
 	font-weight: 400;
 	line-height: 16px;
-	background: #fff;
 }
 ::v-deep(.my-tr-wrapper td) {
 	padding: 12px 8px 12px 0;

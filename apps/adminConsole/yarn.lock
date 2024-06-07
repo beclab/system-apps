@@ -307,9 +307,9 @@
     js-tokens "^4.0.0"
 
 "@babel/parser@^7.23.5":
-  version "7.24.6"
-  resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.24.6.tgz#5e030f440c3c6c78d195528c3b688b101a365328"
-  integrity sha512-eNZXdfU35nJC2h24RznROuOpO94h6x8sg9ju0tT9biNtLZ2vuP8SduLqqV+/8+cebSLV9SJEAN5Z3zQbJG/M+Q==
+  version "7.24.7"
+  resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.24.7.tgz#9a5226f92f0c5c8ead550b750f5608e766c8ce85"
+  integrity sha512-9uUYRm6OqQrCqQdG1iCBwBPZgN8ciDBro2nIOFaiRz1/BCxaI7CNvQbDHvsArAC7Tw9Hda/B3U+6ui9u4HWXPw==
 
 "@babel/parser@^7.23.9", "@babel/parser@^7.24.0":
   version "7.24.0"
@@ -1020,9 +1020,9 @@
   integrity sha512-x/rqGMdzj+fWZvCOYForTghzbtqPDZ5gPwaoNGHdgDfF2QA/XZbCBp4Moo5scrkAMPhB7z26XM/AaHuIJdgauA==
 
 "@babel/runtime@^7.21.0":
-  version "7.24.6"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.24.6.tgz#5b76eb89ad45e2e4a0a8db54c456251469a3358e"
-  integrity sha512-Ja18XcETdEl5mzzACGd+DKgaGJzPTCow7EglgwTmHdwokzDFYh/MHua6lU6DV/hjF2IaOJ4oX2nqnjG7RElKOw==
+  version "7.24.7"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.24.7.tgz#f4f0d5530e8dbdf59b3451b9b3e594b6ba082e12"
+  integrity sha512-UwgBRMjJP+xv857DCngvqXI3Iq6J4v0wXmwc6sapg+zyhbwmQX67LUEFrkK5tbyJ30jGuG3ZvWpBiB9LCy1kWw==
   dependencies:
     regenerator-runtime "^0.14.0"
 
@@ -1067,26 +1067,10 @@
     "@babel/helper-validator-identifier" "^7.22.20"
     to-fast-properties "^2.0.0"
 
-"@bytetrade/ui@0.0.81":
-  version "0.0.81"
-  resolved "https://registry.yarnpkg.com/@bytetrade/ui/-/ui-0.0.81.tgz#d16e6644333fc3340ee490431aa785043da89a2b"
-  integrity sha512-bA57AYgO6GpkMUvYOHy9wd/e12gGTnFX+SFyqiEUI5f8MGt8nS9JKBQipTltUBUqaZ8IFZX4nhdjC8jLaSsWzQ==
-  dependencies:
-    "@quasar/extras" "^1.16.7"
-    axios "^1.3.4"
-    core-js "^3.8.3"
-    crypto-browserify "^3.12.0"
-    moment "^2.29.4"
-    multiformats "9.6.4"
-    quasar "^2.0.0"
-    vue "^3.2.13"
-    vue-cropper "^1.0.8"
-    vue-router "^4.0.3"
-
-"@bytetrade/ui@^0.1.3":
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/@bytetrade/ui/-/ui-0.1.4.tgz#3da15b1c2cee93eef20a9dfa0e32e22177dcc2ca"
-  integrity sha512-vQ/z1PF0fKWoSynrdl7V+MU0ClgvwDXkMYjxJG/Hw3UmOiqm0PyDOYNN1kE2Y+LMEk2mkVbQvHDrDhx6cLLxxA==
+"@bytetrade/ui@0.1.6", "@bytetrade/ui@^0.1.3":
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/@bytetrade/ui/-/ui-0.1.6.tgz#e683ec294ca636527d0e8c73ac5587ed4bd2ed6b"
+  integrity sha512-QhDK5XWxOiMjBfWSfZE9jNu8kfUzSG07USLU5mzwfbyabbq98hYUGfZ0F0z7AOaYRC1Y8nGUoz7+fLlL67wr6A==
   dependencies:
     "@quasar/extras" "^1.16.7"
     axios "^1.3.4"
@@ -5428,7 +5412,7 @@ qs@^6.5.2:
   dependencies:
     side-channel "^1.0.6"
 
-quasar@^2.0.0, quasar@^2.6.0:
+quasar@^2.6.0:
   version "2.15.0"
   resolved "https://registry.yarnpkg.com/quasar/-/quasar-2.15.0.tgz#7be519c5bcedcdc63394540b38dd70cbee4dd7d8"
   integrity sha512-yREEAoG6bkH4Mt2NbRfIGU1K/t0Iw3ILx75evdR3qKT0XHjjyDnvu++MQc3b9K79AYqZvcmVfmNncKozC3NU5g==

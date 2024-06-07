@@ -10,7 +10,7 @@
 	>
 		<q-card class="q-ma-none">
 			<q-card-section class="row items-center q-pb-none">
-				<div class="text-h6">{{ t('Search') }}</div>
+				<div class="text-h6 text-ink-1">{{ t('Search') }}</div>
 				<q-space />
 				<q-btn icon="close" flat round dense v-close-popup />
 			</q-card-section>
@@ -22,9 +22,10 @@
 					@refresh="searchData"
 				/>
 			</q-card-section>
-			<q-separator dark color="grey-4" />
+			<q-separator />
 			<q-card-section class="q-pa-none">
 				<my-splitter
+					defaultValue="350"
 					style="height: calc(100vh - 171px)"
 					after-class="split-after-warpper"
 				>
@@ -176,6 +177,5 @@ export default defineComponent({
 </script>
 <style>
 .split-after-warpper {
-	background: #f1f5f9;
 }
 </style>

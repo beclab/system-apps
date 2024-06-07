@@ -8,8 +8,8 @@
 				:max="1"
 				:thickness="0.32"
 				size="100px"
-				track-color="grey-3"
-				color="primary"
+				track-color="background-3"
+				color="blue-default"
 			>
 				<div class="replication-status-value">
 					{{ status.current }}/{{ status.desire }}
@@ -18,14 +18,14 @@
 		</div>
 		<div class="column justify-center">
 			<QButtonStyle>
-				<q-btn dense unelevated color="primary" @click="add">
-					<q-icon name="add" color="white" />
+				<q-btn dense unelevated color="blue-default" @click="add">
+					<q-icon name="add" color="ink-on-brand" />
 				</q-btn>
 			</QButtonStyle>
 
 			<QButtonStyle class="q-mt-lg">
-				<q-btn dense unelevated color="primary" @click="remove">
-					<q-icon name="remove" color="white" />
+				<q-btn dense unelevated color="blue-default" @click="remove">
+					<q-icon name="remove" color="ink-on-brand" />
 				</q-btn>
 			</QButtonStyle>
 		</div>
@@ -93,7 +93,7 @@ function close() {
 
 <style lang="scss" scoped>
 .replication-status-value {
-	color: #000;
+	color: $ink-1;
 	font-size: 20px;
 	font-weight: 600;
 	line-height: 28px;
