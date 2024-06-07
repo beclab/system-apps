@@ -123,12 +123,10 @@
 	</MyDialog>
 
 	<MyDialog v-model="visible2" :title="currentContainer.name">
-		<MyPage style="background-color: rgb(241, 245, 249)">
-			<ContainerOverview
-				:container="currentContainer.name"
-				class="q-mb-md"
-			></ContainerOverview>
-		</MyPage>
+		<ContainerOverview
+			:container="currentContainer.name"
+			class="q-mb-md"
+		></ContainerOverview>
 	</MyDialog>
 </template>
 

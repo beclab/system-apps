@@ -1,5 +1,5 @@
 <template>
-	<bt-scroll-area style="height: calc(100vh - 110px)">
+	<bt-scroll-area class="overview-warpper" style="height: calc(100vh - 110px)">
 		<MyPage>
 			<MyCard square flat animated title="Detail">
 				<template #extra>
@@ -298,4 +298,8 @@ watch([() => route.params.name, () => route.params.container], fetchData);
 fetchData();
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.overview-warpper {
+	background: $background-6;
+}
+</style>
