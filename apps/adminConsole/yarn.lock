@@ -11,10 +11,10 @@
     "@jridgewell/trace-mapping" "^0.3.24"
 
 "@apps/monitoring@../monitoring":
-  version "0.2.13"
+  version "0.2.14"
   dependencies:
     "@apps/nodes" "../nodes"
-    "@bytetrade/ui" "0.1.9"
+    "@bytetrade/ui" "0.1.11"
     "@packages/ui" "../common"
     "@quasar/extras" "^1.16.9"
     ansi_up "^5.0.0"
@@ -1067,10 +1067,10 @@
     "@babel/helper-validator-identifier" "^7.22.20"
     to-fast-properties "^2.0.0"
 
-"@bytetrade/ui@0.1.9":
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/@bytetrade/ui/-/ui-0.1.9.tgz#bd9a980a0cf4fb673f33a93cfa557a6aff143184"
-  integrity sha512-y8be9pgww/u8/sLMFgMsyDsjj/hF84uU6/JIcKcH1YD4Pk24K/MfOPH/mRQQ1SwwYA7rB3At14PZcJJbF5sv1A==
+"@bytetrade/ui@0.1.11":
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/@bytetrade/ui/-/ui-0.1.11.tgz#05ff1c359868d7a1379698ce8d4f4e80ba4d9300"
+  integrity sha512-cxXCR9xXpc8go1cLeE6Rj8RvQx69Sm12o0bCLO6iKOQ+RjPM5GjDKi074mUwsGrCdkOzvkmSqCvcVKo1wHVarQ==
   dependencies:
     "@quasar/extras" "^1.16.7"
     axios "^1.3.4"
@@ -1531,9 +1531,9 @@
     "@types/lodash" "*"
 
 "@types/lodash@*", "@types/lodash@^4.14.182":
-  version "4.17.4"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.17.4.tgz#0303b64958ee070059e3a7184048a55159fe20b7"
-  integrity sha512-wYCP26ZLxaT3R39kiN2+HcJ4kTd3U1waI/cY7ivWYqFP6pW3ZNpvi6Wd6PHZx7T/t8z0vlkXMg3QYLa7DZ/IJQ==
+  version "4.17.5"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.17.5.tgz#e6c29b58e66995d57cd170ce3e2a61926d55ee04"
+  integrity sha512-MBIOHVZqVqgfro1euRDWX7OO0fBVUUMrN6Pwm8LQsz8cWhEpihlvR70ENj3f40j58TNxZaWv2ndSkInykNBBJw==
 
 "@types/lodash@^4.14.191":
   version "4.17.0"
@@ -3220,9 +3220,9 @@ electron-to-chromium@^1.4.668:
   integrity sha512-LYLXyEUsZ3nNSwiOWjI88N1PJUAMU2QphQSgGLVkFnb3FxZxNui2Vzi2PaKPgPWbsWbZstZnh6BMf/VQJamjiQ==
 
 element-plus@^2.2.32:
-  version "2.7.4"
-  resolved "https://registry.yarnpkg.com/element-plus/-/element-plus-2.7.4.tgz#1d649e15f9db7d8ac1eb45198d19f59069fffbc8"
-  integrity sha512-ADBN3zHdhg8R9m6IXR2B5txSWvCn1+nAD+aA9kaJ4rZHMr37DVX6EOdwUjqAMPKz2xC0tculgkJ5rh5zVNiDNQ==
+  version "2.7.5"
+  resolved "https://registry.yarnpkg.com/element-plus/-/element-plus-2.7.5.tgz#b6b3101f8c2c61b083c78cae2d8728b93a85039e"
+  integrity sha512-e4oqhfRGBpdblgsjEBK+tA2+fg1H1KZ2Qinty1SaJl0X49FrMLK0lpXQNheWyBqI4V/pyjVOF9sRjz2hfyoctw==
   dependencies:
     "@ctrl/tinycolor" "^3.4.1"
     "@element-plus/icons-vue" "^2.3.1"

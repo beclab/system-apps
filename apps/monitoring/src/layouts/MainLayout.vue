@@ -10,7 +10,6 @@
 			/>
 		</q-drawer>
 		<q-page-container class="relative-position dashboard-container">
-			<PageBackground class="page-bg-wrapper"></PageBackground>
 			<bt-scroll-area class="dashboard-scroll-wrapper" ref="scrollRef">
 				<div
 					class="text-h3 q-px-xxl q-mb-md text-ink-1"
@@ -31,7 +30,6 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import MyLayoutContainer from '@packages/ui/src/components/MyLayoutContainer.vue';
 import { getAppDetail } from '@packages/ui/src/network';
-import PageBackground from 'components/PageBackground.vue';
 import { useAppDetailStore } from 'src/stores/AppDetail';
 const AppDetailStore = useAppDetailStore();
 

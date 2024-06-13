@@ -1022,10 +1022,10 @@
     "@babel/helper-validator-identifier" "^7.22.20"
     to-fast-properties "^2.0.0"
 
-"@bytetrade/ui@0.1.9":
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/@bytetrade/ui/-/ui-0.1.9.tgz#bd9a980a0cf4fb673f33a93cfa557a6aff143184"
-  integrity sha512-y8be9pgww/u8/sLMFgMsyDsjj/hF84uU6/JIcKcH1YD4Pk24K/MfOPH/mRQQ1SwwYA7rB3At14PZcJJbF5sv1A==
+"@bytetrade/ui@0.1.11":
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/@bytetrade/ui/-/ui-0.1.11.tgz#05ff1c359868d7a1379698ce8d4f4e80ba4d9300"
+  integrity sha512-cxXCR9xXpc8go1cLeE6Rj8RvQx69Sm12o0bCLO6iKOQ+RjPM5GjDKi074mUwsGrCdkOzvkmSqCvcVKo1wHVarQ==
   dependencies:
     "@quasar/extras" "^1.16.7"
     axios "^1.3.4"

@@ -1,11 +1,14 @@
 import { colors } from 'quasar';
+import { useColor } from '@bytetrade/ui';
 
 const { getPaletteColor } = colors;
+const { color: color1 } = useColor('light-blue-default');
+const { color: color2 } = useColor('green-default');
 
 export const theme = {
 	color: [
-		getPaletteColor('primary'),
-		getPaletteColor('green-6'),
+		color1.value,
+		color2.value,
 		getPaletteColor('warning'),
 		'#29CC5F',
 		'#F73',

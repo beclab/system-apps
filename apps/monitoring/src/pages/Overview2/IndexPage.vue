@@ -1,4 +1,5 @@
 <template>
+	<PageBackground class="page-bg-wrapper"></PageBackground>
 	<div class="row q-col-gutter-x-xl">
 		<q-resize-observer @resize="onResize" />
 		<div style="flex: 1">
@@ -104,6 +105,8 @@ import ColumnFlex from './components/ColumnFlex.vue';
 import Analytics from './Analytics.vue';
 import { get, last } from 'lodash';
 import { useColor } from '@bytetrade/ui';
+import PageBackground from 'components/PageBackground.vue';
+
 const appDetail = useAppDetailStore();
 
 const router = useRouter();

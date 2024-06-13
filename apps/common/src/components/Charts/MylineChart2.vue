@@ -54,6 +54,7 @@ const { color: ink1 } = useColor('ink-1');
 const { color: ink2 } = useColor('ink-2');
 const { color: ink3 } = useColor('ink-3');
 const { color: separator } = useColor('separator');
+const { color: separator2 } = useColor('separator-2');
 const { color: background2 } = useColor('background-2');
 const { color: lightBlueDefault } = useColor('light-blue-default');
 const { getPaletteColor, changeAlpha } = colors;
@@ -188,9 +189,9 @@ const option = computed(() => {
 			type: 'category',
 			// onZero: false,
 			axisLine: {
-				show: false,
+				show: true,
 				lineStyle: {
-					color: separator.value
+					color: separator2.value
 				}
 			},
 			axisTick: {
