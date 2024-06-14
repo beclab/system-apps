@@ -21,7 +21,7 @@
 .circle-first {
 	position: absolute;
 	border-radius: 50%;
-	background: $light-blue-1;
+	background: $light-blue-soft;
 	filter: blur(250px);
 	right: 214px;
 	top: -102px;
@@ -29,7 +29,7 @@
 .circle-second {
 	position: absolute;
 	border-radius: 50%;
-	background: $teal-1;
+	background: $teal-soft;
 	filter: blur(250px);
 	right: 40px;
 	top: -39px;

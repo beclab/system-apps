@@ -28,12 +28,13 @@
 								class="progress-wrapper"
 								size="20px"
 								color="light-blue-soft"
+								track-color="transparent"
 								:value="progressLabel(item.z) / 100"
 							>
 								<div class="absolute-full flex items-center">
 									<span
 										style="font-size: 12px"
-										class="text-primary text-subtitle3 q-pr-sm my-progress-label"
+										class="text-light-blue-default text-subtitle3 q-pr-sm my-progress-label"
 									>
 										{{ progressLabel(item.z) }}%
 									</span>

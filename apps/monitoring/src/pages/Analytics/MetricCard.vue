@@ -85,7 +85,7 @@ watch(
 		color: $positive;
 	}
 	.down {
-		background: $red-1;
+		background: $red-soft;
 		color: $negative;
 	}
 }

@@ -1,7 +1,7 @@
 <template>
 	<div class="row items-center justify-between">
 		<div class="row items-center">
-			<div class="parent-container bg-teal-2">
+			<div class="parent-container" :class="iconCard">
 				<q-img :src="icon" :ratio="1" :width="iconWidth" />
 			</div>
 			<div class="text-h4 q-ml-lg text-ink-1">{{ value }}</div>
@@ -17,8 +17,11 @@
 
 <script setup lang="ts">
 import supervisorAccountIcon from 'assets/supervisor_account.svg';
+import supervisorAccountIconDark from 'assets/supervisor_account-dark.svg';
 import visibilityIcon from 'assets/visibility.svg';
+import visibilityIconDark from 'assets/visibility-dark.svg';
 import { computed } from 'vue';
+import { useQuasar } from 'quasar';
 
 interface Props {
 	type: 'view' | 'visit';
@@ -30,9 +33,15 @@ const props = withDefaults(defineProps<Props>(), {
 	value: 0
 });
 
-const icon = computed(() =>
-	props.type === 'view' ? visibilityIcon : supervisorAccountIcon
-);
+const $q = useQuasar();
+
+const icon = computed(() => {
+	if (props.type === 'view') {
+		return $q.dark.isActive ? visibilityIconDark : visibilityIcon;
+	} else {
+		return $q.dark.isActive ? supervisorAccountIconDark : supervisorAccountIcon;
+	}
+});
 
 const iconWidth = computed(() => (props.type === 'view' ? '28px' : '32px'));
 
@@ -50,6 +59,14 @@ const trendClass = computed(() =>
 		? 'text-positive bg-green-soft'
 		: props.change < 0
 		? 'text-negative bg-red-soft'
+		: ''
+);
+
+const iconCard = computed(() =>
+	props.change > 0
+		? 'bg-light-green-disabled'
+		: props.change < 0
+		? 'bg-light-blue-disabled'
 		: ''
 );
 </script>

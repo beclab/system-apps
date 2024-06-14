@@ -119,4 +119,7 @@ watch(
 	color: $light-blue-default;
 	background: $light-blue-soft;
 }
+::v-deep(.q-drawer.q-drawer--bordered) {
+	border-color: $separator;
+}
 </style>

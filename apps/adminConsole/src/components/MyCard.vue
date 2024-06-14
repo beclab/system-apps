@@ -85,10 +85,8 @@ const titleShow = computed(
 <style lang="scss" scoped>
 .my-card-container {
 	position: relative;
-	background: red;
-
+	background: rgba(0, 0, 0, 0);
 	.my-card-section-wrapper {
-		background: rgba(0, 0, 0, 0);
 	}
 
 	.my-card-title {
