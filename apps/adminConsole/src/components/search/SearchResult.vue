@@ -4,140 +4,143 @@
 			<MylineChart :data="charData" />
 		</MyCard>
 		<q-card flat class="q-mt-sm">
-			<q-table
-				ref="searchTable"
-				v-model:expanded="searchResult._source"
-				data-cy="search-result-area"
-				:rows="searchResult"
-				:columns="resultColumns"
-				:loading="searchLoading"
-				:pagination="pagination"
-				wrap-cells
-				row-key="_id"
-				flat
-				bordered
-			>
-				<template #header="props">
-					<q-tr :props="props">
-						<q-th auto-width />
-						<q-th v-for="col in props.cols" :key="col.name" :props="props">
-							{{ col.label }}
-						</q-th>
-					</q-tr>
-				</template>
+			<QTableStyle2>
+				<q-table
+					ref="searchTable"
+					v-model:expanded="searchResult._source"
+					data-cy="search-result-area"
+					:rows="searchResult"
+					:columns="resultColumns"
+					:loading="searchLoading"
+					:pagination="pagination"
+					wrap-cells
+					row-key="_id"
+					flat
+				>
+					<template #header="props">
+						<q-tr :props="props">
+							<q-th auto-width />
+							<q-th v-for="col in props.cols" :key="col.name" :props="props">
+								{{ col.label }}
+							</q-th>
+						</q-tr>
+					</template>
 
-				<template #body="props">
-					<q-tr :props="props">
-						<q-td width="30">
-							<q-btn
-								size="sm"
-								color="primary"
-								round
-								dense
-								:icon="props.expand ? 'remove' : 'add'"
-								@click="props.expand = !props.expand"
-							/>
-						</q-td>
-						<template v-for="col in props.cols" :key="col.name">
-							<q-td v-if="col.name == '@timestamp'" width="238">
-								<span v-text="col.value"></span>
+					<template #body="props">
+						<q-tr :props="props">
+							<q-td width="30">
+								<q-btn
+									size="sm"
+									color="primary"
+									round
+									dense
+									:icon="props.expand ? 'remove' : 'add'"
+									@click="props.expand = !props.expand"
+								/>
 							</q-td>
-							<q-td v-else>
-								<high-light
-									:content="col.value + ''"
-									:query-string="queryString"
-								></high-light>
-							</q-td>
-						</template>
-					</q-tr>
-					<q-tr v-show="props.expand" :props="props">
-						<q-td colspan="100%">
-							<pre class="expanded">
+							<template v-for="col in props.cols" :key="col.name">
+								<q-td v-if="col.name == '@timestamp'" width="238">
+									<span v-text="col.value"></span>
+								</q-td>
+								<q-td v-else>
+									<high-light
+										:content="col.value + ''"
+										:query-string="queryString"
+									></high-light>
+								</q-td>
+							</template>
+						</q-tr>
+						<q-tr v-show="props.expand" :props="props">
+							<q-td colspan="100%">
+								<pre class="expanded">
                  <high-light
                    :content="JSON.stringify(props.row, null, 2)"
                    :query-string="queryString"
                  ></high-light>
               </pre>
-						</q-td>
-					</q-tr>
-				</template>
+							</q-td>
+						</q-tr>
+					</template>
 
-				<template #bottom="scope">
-					<div class="q-table__control full-width row justify-between">
-						<div class="max-result">
-							<q-input
-								v-model="maxRecordToReturn"
-								:label="t('search.maxRecords')"
-								dense
-								filled
-								square
-								type="search"
-								class="search-field"
-							/>
-						</div>
-						<div class="q-table__control">
-							<span class="q-table__bottom-item">Records per page:</span>
-							<q-select
-								v-model="pagination.rowsPerPage"
-								borderless
-								:options="perPageOptions"
-								@update:modelValue="changePagination"
-							/>
+					<template #bottom="scope">
+						<div class="q-table__control full-width row justify-between">
+							<div class="max-result">
+								<q-input
+									v-model="maxRecordToReturn"
+									:label="t('search.maxRecords')"
+									dense
+									filled
+									square
+									type="search"
+									class="search-field"
+								/>
+							</div>
+							<div class="q-table__control">
+								<span class="q-table__bottom-item">Records per page:</span>
+								<q-select
+									v-model="pagination.rowsPerPage"
+									borderless
+									:options="perPageOptions"
+									@update:modelValue="changePagination"
+								/>
 
-							<span class="q-table__bottom-item"
-								>{{
-									(scope.pagination.page - 1) * scope.pagination.rowsPerPage +
-									1
-								}}-{{ scope.pagination.page * scope.pagination.rowsPerPage }} of
-								{{ resultTotal }}</span
-							>
-							<q-btn
-								icon="first_page"
-								color="grey-8"
-								size="sm"
-								round
-								dense
-								flat
-								:disable="scope.isFirstPage"
-								@click="scope.firstPage"
-							/>
-							<q-btn
-								icon="chevron_left"
-								color="grey-8"
-								size="sm"
-								round
-								dense
-								flat
-								:disable="scope.isFirstPage"
-								@click="scope.prevPage"
-							/>
-							<q-btn
-								icon="chevron_right"
-								color="grey-8"
-								size="sm"
-								round
-								dense
-								flat
-								:disable="scope.isLastPage"
-								@click="scope.nextPage"
-							/>
-							<q-btn
-								icon="last_page"
-								color="grey-8"
-								size="sm"
-								round
-								dense
-								flat
-								:disable="scope.isLastPage"
-								@click="scope.lastPage"
-							/>
+								<span class="q-table__bottom-item"
+									>{{
+										(scope.pagination.page - 1) * scope.pagination.rowsPerPage +
+										1
+									}}-{{
+										scope.pagination.page * scope.pagination.rowsPerPage
+									}}
+									of {{ resultTotal }}</span
+								>
+								<q-btn
+									icon="first_page"
+									color="grey-8"
+									size="sm"
+									round
+									dense
+									flat
+									:disable="scope.isFirstPage"
+									@click="scope.firstPage"
+								/>
+								<q-btn
+									icon="chevron_left"
+									color="grey-8"
+									size="sm"
+									round
+									dense
+									flat
+									:disable="scope.isFirstPage"
+									@click="scope.prevPage"
+								/>
+								<q-btn
+									icon="chevron_right"
+									color="grey-8"
+									size="sm"
+									round
+									dense
+									flat
+									:disable="scope.isLastPage"
+									@click="scope.nextPage"
+								/>
+								<q-btn
+									icon="last_page"
+									color="grey-8"
+									size="sm"
+									round
+									dense
+									flat
+									:disable="scope.isLastPage"
+									@click="scope.lastPage"
+								/>
+							</div>
 						</div>
-					</div>
-				</template>
-				<template v-slot:no-data>
-					<Empty></Empty>
-				</template>
-			</q-table>
+					</template>
+					<template v-slot:no-data>
+						<Empty></Empty>
+					</template>
+				</q-table>
+			</QTableStyle2>
 		</q-card>
 	</div>
 </template>
@@ -153,6 +156,7 @@ import { t } from 'src/boot/i18n';
 import MylineChart from '@packages/ui/src/components/Charts/MyBarChart.vue';
 import MyCard from '@packages/ui/src/components/MyCard2.vue';
 import Empty from '@packages/ui/src/components/Empty2.vue';
+import QTableStyle2 from '@packages/ui/src/components/QTableStyle2.vue';
 
 export default defineComponent({
 	name: 'SearchResult',
@@ -160,7 +164,8 @@ export default defineComponent({
 		HighLight,
 		MylineChart,
 		MyCard,
-		Empty
+		Empty,
+		QTableStyle2
 	},
 	props: {
 		data: {

@@ -76,10 +76,10 @@
 							outline
 							rounded
 							padding="6px xl"
-							style="color: #bbb"
 							@click="yamlHide"
 						>
-							<span style="color: #333">{{ t('CANCEL') }}</span>
+							<span>{{ t('CANCEL') }}</span
+							>tet
 						</q-btn>
 						<q-btn
 							no-caps

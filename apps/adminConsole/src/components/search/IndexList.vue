@@ -1,60 +1,62 @@
 <template>
 	<div class="column index-menu">
-		<div>
-			<q-select
-				v-model="selectedIndex"
-				data-cy="index-dropdown"
-				:options="options"
-				dense
-				use-input
-				input-debounce="0"
-				:label="t('search.selectIndex')"
-				behavior="menu"
-				class="q-mt-md q-mb-sm"
-				@filter="filterFn"
-				@update:model-value="selectFn"
-			>
-				<template #no-option>
-					<q-item>
-						<q-item-section class="text-grey">
-							{{ t('search.noResult') }}</q-item-section
-						>
-					</q-item>
-				</template>
-			</q-select>
-		</div>
+		<q-select
+			v-model="selectedIndex"
+			data-cy="index-dropdown"
+			:options="options"
+			dense
+			use-input
+			input-debounce="0"
+			:label="t('search.selectIndex')"
+			behavior="menu"
+			class="q-mt-md q-mb-sm"
+			@filter="filterFn"
+			@update:model-value="selectFn"
+		>
+			<template #no-option>
+				<q-item>
+					<q-item-section class="text-grey">
+						{{ t('search.noResult') }}</q-item-section
+					>
+				</q-item>
+			</template>
+		</q-select>
 		<div class="index-table">
-			<q-input
-				v-model="filterField"
-				data-cy="index-field-search-input"
-				dense
-				outlined
-				clearable
-				debounce="1"
-				:placeholder="t('search.searchField')"
-			>
-				<template #prepend>
-					<q-icon name="search" />
-				</template>
-			</q-input>
-			<q-table
-				v-model:selected="selectedFields"
-				:rows="indexFields"
-				row-key="name"
-				:filter="filterField"
-				:filter-method="filterFieldFn"
-				:pagination="{ rowsPerPage: 999 }"
-				dense
-				flat
-				hide-header
-				hide-bottom
-				selection="multiple"
-				class="field-table q-mt-md"
-				@row-click="clickFieldFn"
-				@update:selected="selectedFieldFn"
-				style="height: calc(100vh - 360px)"
-			>
-			</q-table>
+			<QInputStyle>
+				<q-input
+					v-model="filterField"
+					data-cy="index-field-search-input"
+					dense
+					outlined
+					clearable
+					debounce="1"
+					:placeholder="t('search.searchField')"
+				>
+					<template #prepend>
+						<q-icon name="search" />
+					</template>
+				</q-input>
+			</QInputStyle>
+			<QTableStyle2>
+				<q-table
+					v-model:selected="selectedFields"
+					:rows="indexFields"
+					row-key="name"
+					:filter="filterField"
+					:filter-method="filterFieldFn"
+					:pagination="{ rowsPerPage: 999 }"
+					dense
+					flat
+					hide-header
+					hide-bottom
+					selection="multiple"
+					class="field-table q-mt-md"
+					@row-click="clickFieldFn"
+					@update:selected="selectedFieldFn"
+					style="height: calc(100vh - 360px)"
+				>
+				</q-table>
+			</QTableStyle2>
 		</div>
 	</div>
 </template>
@@ -63,9 +65,16 @@
 import { t } from 'src/boot/i18n';
 import { defineComponent, ref } from 'vue';
 import { nameList } from '../../network/search';
+import QInputStyle from '@packages/ui/src/components/QInputStyle.vue';
+import QSectionStyle from '@packages/ui/src/components/QSectionStyle.vue';
+import QTableStyle2 from '@packages/ui/src/components/QTableStyle2.vue';
 
 export default defineComponent({
 	name: 'ComponentSearchIndexSelect',
+	components: {
+		QInputStyle,
+		QTableStyle2
+	},
 	props: {
 		data: {
 			type: Object,

@@ -72,6 +72,9 @@ const { stickyFirst, stickyLast } = toRefs(props);
 	::v-deep(.q-table--horizontal-separator tbody tr:not(:last-child) > td) {
 		border-color: $separator;
 	}
+	::v-deep(.q-table td) {
+		border-color: $separator;
+	}
 	::v-deep(.q-field__native, .q-field__marginal) {
 		color: $ink-2;
 	}

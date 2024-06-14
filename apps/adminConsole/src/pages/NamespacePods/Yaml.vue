@@ -76,10 +76,9 @@
 							outline
 							rounded
 							padding="6px xl"
-							style="color: #bbb"
 							@click="yamlHide"
 						>
-							<span style="color: #333">{{ t('CANCEL') }}</span>
+							<span>{{ t('CANCEL') }}</span>
 						</q-btn>
 						<q-btn
 							no-caps
@@ -94,9 +93,9 @@
 							{{ t('OK') }}
 						</q-btn>
 					</q-card-section>
-					<q-inner-loading :showing="loading"> </q-inner-loading>
 				</div>
 			</q-card>
+			<q-inner-loading :showing="loading"> </q-inner-loading>
 		</q-dialog>
 	</div>
 </template>

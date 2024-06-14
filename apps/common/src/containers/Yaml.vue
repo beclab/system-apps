@@ -2,7 +2,7 @@
 	<v-ace-editor
 		v-model:value="data"
 		:lang="lang"
-		:theme="$q.dark.isActive ? 'gruvbox_dark_hard' : 'textmate'"
+		theme="chaos"
 		:readonly="readonly"
 		style="height: 100%"
 		wrap
@@ -28,7 +28,7 @@ import ace from 'ace-builds';
 import 'ace-builds/src-noconflict/mode-yaml';
 import 'ace-builds/src-noconflict/snippets/yaml';
 import 'ace-builds/src-noconflict/theme-textmate';
-import 'ace-builds/src-noconflict/theme-gruvbox_dark_hard';
+import 'ace-builds/src-noconflict/theme-chaos';
 
 import 'ace-builds/src-noconflict/mode-groovy';
 import 'ace-builds/src-noconflict/keybinding-vscode';

@@ -457,35 +457,10 @@ onMounted(() => {
 	padding: 12px 8px 12px 0;
 }
 ::v-deep(.q-table th.sorted .q-table__sort-icon) {
-	color: $grey-5;
+	color: $ink-2;
 }
 ::v-deep(.q-table__card .q-table__bottom) {
 	font-size: 12px;
-	color: $grey-5;
+	color: $ink-2;
 }
-</style>
-<style lang="sass">
-.my-sticky-header-table
-  thead tr th
-    position: sticky
-    z-index: 1
-  thead tr:first-child th
-    top: 0
-
-  // &.q-table--loading thead tr:last-child th
-  //   top: 48px
-</style>
-
-<style lang="sass">
-.my-sticky-column-table
-  thead tr:first-child th:first-child
-    background-color: #fff
-
-  td:first-child
-    background-color: #fff
-
-  th:first-child,
-  td:first-child
-    position: sticky
-    left: 0
 </style>

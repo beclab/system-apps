@@ -217,5 +217,3 @@ onMounted(() => {
 	fetchData();
 });
 </script>
-
-<style></style>
