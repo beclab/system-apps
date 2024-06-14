@@ -1,6 +1,6 @@
 <template>
 	<PageBackground class="page-bg-wrapper"></PageBackground>
-	<div class="row q-col-gutter-x-xl">
+	<div class="row q-col-gutter-x-xl" style="margin-top: -12px">
 		<q-resize-observer @resize="onResize" />
 		<div style="flex: 1">
 			<MyCard2

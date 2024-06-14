@@ -17,7 +17,7 @@
 				>
 					{{ currentItem.label }}
 				</div>
-				<div class="q-px-xxl q-py-xl" style="min-width: 800px">
+				<div class="q-px-xxl q-pb-xl q-pt-md" style="min-width: 800px">
 					<router-view />
 				</div>
 			</bt-scroll-area>
