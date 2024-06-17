@@ -372,6 +372,15 @@ export const getWorkloadsControler = (
 	return api.get(`/apis/apps/v1/namespaces/${namespace}/${kind}/${name}`);
 };
 
+export const getDetail = (
+	apiVersion: string,
+	params: { namespace: string; kind: string; name: string }
+): Promise<AxiosResponse<ResourcesResponse>> => {
+	return api.get(
+		`${apiVersion}/namespaces/${params.namespace}/${params.kind}/${params.name}`
+	);
+};
+
 export const updateWorkloadsControler = (
 	namespace: string,
 	kind: string,
@@ -380,6 +389,17 @@ export const updateWorkloadsControler = (
 ): Promise<AxiosResponse<ResourcesResponse>> => {
 	return api.put(
 		`/apis/apps/v1/namespaces/${namespace}/${kind}/${name}`,
+		params
+	);
+};
+
+export const updateDetail = (
+	apiVersion: string,
+	obj: { namespace: string; kind: string; name: string },
+	params: any
+): Promise<AxiosResponse<ResourcesResponse>> => {
+	return api.put(
+		`${apiVersion}/namespaces/${obj.namespace}/${obj.kind}/${obj.name}`,
 		params
 	);
 };

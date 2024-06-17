@@ -11,7 +11,8 @@
 			useWorker: true,
 			keyboardHandler: 'vscode',
 			wrapEnabled: true,
-			tabSize: 2
+			tabSize: 2,
+			wrap: true
 		}"
 	/>
 </template>

@@ -1,5 +1,10 @@
 <template>
 	<MyContentPage>
+		<template #extra>
+			<div class="col-auto">
+				<MoreSelection :options="options" size="md"></MoreSelection>
+			</div>
+		</template>
 		<MyPage>
 			<my-card square flat animated :title="t('DETAILS')">
 				<DetailPage :data="detail"></DetailPage>
@@ -13,6 +18,7 @@
 			></Detail>
 			<q-inner-loading :showing="loading"> </q-inner-loading>
 		</MyPage>
+		<Yaml ref="yamlRef" :name="t('EDIT_YAML')" module="serviceaccounts"></Yaml>
 	</MyContentPage>
 </template>
 
@@ -29,6 +35,8 @@ import { getLocalTime } from 'src/utils';
 import MyCard from '@packages/ui/src/components/MyCard2.vue';
 import MyPage from '@packages/ui/src/containers/MyPage.vue';
 import MyContentPage from 'src/components/MyContentPage.vue';
+import MoreSelection from '@packages/ui/src/components/MoreSelection.vue';
+import Yaml from 'src/pages/NamespacePods/Yaml3.vue';
 
 const loading = ref(false);
 const secrets = ref();
@@ -36,7 +44,18 @@ const data = ref();
 const detail = ref();
 const route = useRoute();
 const serviceAccountName = ref();
+const yamlRef = ref();
 
+const options = [
+	{
+		label: t('EDIT_YAML'),
+		value: 'edit',
+		icon: 'sym_r_edit',
+		onClick: () => {
+			yamlRef.value.show();
+		}
+	}
+];
 const getAttrs = (detail: any) => {
 	const { cluster, namespace } = route.params;
 

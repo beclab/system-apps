@@ -1,5 +1,10 @@
 <template>
 	<MyContentPage>
+		<template #extra>
+			<div class="col-auto">
+				<MoreSelection :options="options" size="md"></MoreSelection>
+			</div>
+		</template>
 		<MyPage>
 			<my-card square flat animated :title="t('DETAILS')">
 				<DetailPage :data="detail"></DetailPage>
@@ -13,6 +18,7 @@
 			<q-inner-loading :showing="loading"> </q-inner-loading>
 		</MyPage>
 	</MyContentPage>
+	<Yaml ref="yamlRef" :name="t('EDIT_YAML')" module="configmaps"></Yaml>
 </template>
 
 <script setup lang="ts">
@@ -29,11 +35,25 @@ import MyCard from '@packages/ui/src/components/MyCard2.vue';
 import MyPage from '@packages/ui/src/containers/MyPage.vue';
 import MyContentPage from 'src/components/MyContentPage.vue';
 import DataDetail from '@packages/ui/src/containers/DataDetail.vue';
+import MoreSelection from '@packages/ui/src/components/MoreSelection.vue';
+import Yaml from 'src/pages/NamespacePods/Yaml3.vue';
 
 let loading = ref(false);
 const detail = ref();
 const route = useRoute();
 const configmapsData = ref<{ [key: string]: string }>({});
+const yamlRef = ref();
+
+const options = [
+	{
+		label: t('EDIT_YAML'),
+		value: 'edit',
+		icon: 'sym_r_edit',
+		onClick: () => {
+			yamlRef.value.show();
+		}
+	}
+];
 
 const getAttrs = (detail: any) => {
 	const { cluster, namespace }: any = route.params;

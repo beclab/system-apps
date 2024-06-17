@@ -26,7 +26,8 @@
 				:options="{
 					showGutter: true,
 					showPrintMargin: true,
-					useWorker: true
+					useWorker: true,
+					wrap: true
 				}"
 			/>
 		</q-card>

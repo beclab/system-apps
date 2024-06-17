@@ -2,23 +2,7 @@
 	<MyContentPage>
 		<template #extra>
 			<div class="col-auto">
-				<q-btn color="grey-7" round flat icon="more_vert">
-					<q-menu cover auto-close>
-						<q-list>
-							<q-item
-								clickable
-								v-close-popup
-								v-for="item in options"
-								:key="item.key"
-								@click="item.onClick"
-							>
-								<q-item-section>
-									<q-item-label>{{ item.text }}</q-item-label>
-								</q-item-section>
-							</q-item>
-						</q-list>
-					</q-menu>
-				</q-btn>
+				<MoreSelection :options="options" size="md"></MoreSelection>
 			</div>
 		</template>
 		<MyPage>
@@ -62,6 +46,7 @@
 			</MyCard>
 			<q-inner-loading :showing="loading"> </q-inner-loading>
 		</MyPage>
+		<Yaml ref="yamlRef" :name="t('EDIT_YAML')" module="services"></Yaml>
 	</MyContentPage>
 </template>
 
@@ -93,6 +78,8 @@ import WorkloadPanel from '@packages/ui/src/containers/WorkloadPanel.vue';
 import MyContentPage from 'src/components/MyContentPage.vue';
 import MyCard from '@packages/ui/src/components/MyCard2.vue';
 import QButtonStyle from '@packages/ui/src/components/QButtonStyle.vue';
+import MoreSelection from '@packages/ui/src/components/MoreSelection.vue';
+import Yaml from 'src/pages/NamespacePods/Yaml3.vue';
 
 const $q = useQuasar();
 let loading = ref(false);
@@ -103,6 +90,8 @@ const detail = ref();
 const PodContainerRef = ref();
 const workloads = ref([]);
 const pods = ref([]);
+const yamlRef = ref();
+
 const options = [
 	// {
 	//   key: 'edit',
@@ -124,9 +113,9 @@ const options = [
 	// },
 	{
 		key: 'editGateway',
-		icon: 'ip',
-		text: t('EDIT_EXTERNAL_ACCESS'),
-		action: 'edit',
+		icon: 'edit',
+		label: t('EDIT_EXTERNAL_ACCESS'),
+		value: 'editGateway',
 		// show: this.store.detail.type === SERVICE_TYPES.VirtualIP,
 		onClick: () => {
 			console.log('editGateway');
@@ -147,7 +136,7 @@ const options = [
 					console.log('Cancel');
 				});
 		}
-	}
+	},
 	// {
 	//   key: 'serviceMonitor',
 	//   icon: 'linechart',
@@ -157,15 +146,14 @@ const options = [
 	//     console.log('serviceMonitor');
 	//   },
 	// },
-	// {
-	//   key: 'editYaml',
-	//   icon: 'pen',
-	//   text: t('EDIT_YAML'),
-	//   action: 'edit',
-	//   onClick: () => {
-	//     console.log('editYaml');
-	//   },
-	// },
+	{
+		label: t('EDIT_YAML'),
+		value: 'edit',
+		icon: 'sym_r_edit',
+		onClick: () => {
+			yamlRef.value.show();
+		}
+	}
 	// {
 	//   key: 'delete',
 	//   icon: 'trash',

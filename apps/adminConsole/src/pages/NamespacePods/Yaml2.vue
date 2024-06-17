@@ -26,7 +26,7 @@
 					<q-space />
 					<q-btn icon="close" flat round dense v-close-popup />
 				</div>
-				<div class="relative-position" style="height: calc(100vh - 154px)">
+				<div class="relative-position" style="height: calc(100vh - 158px)">
 					<div
 						style="
 							height: calc(100%);
@@ -65,7 +65,8 @@
 								useWorker: true,
 								keyboardHandler: 'vscode',
 								wrapEnabled: true,
-								tabSize: 2
+								tabSize: 2,
+								wrap: true
 							}"
 						/>
 					</div>
@@ -256,6 +257,7 @@ const update = async (
 		//
 	}
 	loading2.value = false;
+	loading.value = false;
 };
 
 const handleFileAdded = (file: any) => {

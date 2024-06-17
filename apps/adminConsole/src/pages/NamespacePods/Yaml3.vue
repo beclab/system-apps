@@ -105,7 +105,9 @@
 import {
 	getWorkloadsControler,
 	getYaml,
-	updateWorkloadsControler
+	updateWorkloadsControler,
+	getDetail,
+	updateDetail
 } from 'src/network';
 import { computed, onMounted, ref, watch } from 'vue';
 import yaml, { load } from 'js-yaml';
@@ -131,10 +133,13 @@ import { ObjectMapper } from 'src/utils/object.mapper';
 import { t } from 'src/boot/i18n';
 import { get, set } from 'lodash-es';
 import { saveAs } from 'file-saver';
+import { API_VERSIONS } from 'src/utils/constants';
+import { cloneDeep, setWith } from 'lodash';
 ace.config.setModuleUrl('ace/mode/yaml_worker', workerJsonUrl);
 // src/components/Modals/EditYaml/index.jsx
 interface Props {
 	name?: string;
+	module?: 'secrets';
 }
 
 const emits = defineEmits(['change']);
@@ -186,14 +191,17 @@ const hide = (evt: Event) => {
 	data.value = undefined;
 };
 
+const apiVersion = API_VERSIONS[props.module] || '';
+
 const fetchData = () => {
 	const { namespace, kind, name } = route.params as Record<string, string>;
+	const type = props.module || kind;
 	loading.value = true;
-	getWorkloadsControler(namespace, kind, name)
+	getDetail(apiVersion, { namespace, kind: type, name })
 		.then((res) => {
 			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			// @ts-ignore
-			detail.value = ObjectMapper[kind](res.data);
+			detail.value = ObjectMapper[type](res.data);
 			data.value = objectToYaml(detail.value._originData);
 		})
 		.finally(() => {
@@ -232,24 +240,31 @@ const submit = async () => {
 
 const update = async (
 	params: Record<string, any>,
-	newObject: Record<string, any>
+	data: Record<string, any>
 ) => {
+	let newObject = yamlToObject(data, false)[0];
 	try {
 		loading2.value = true;
 		const { namespace, kind, name } = route.params as Record<string, string>;
-		const { data: result } = await getWorkloadsControler(namespace, kind, name);
+
+		const type = props.module || kind;
+		loading.value = true;
+		getDetail(apiVersion, { namespace, kind: type, name });
+		const { data: result } = await getDetail(apiVersion, {
+			namespace,
+			kind: type,
+			name
+		});
 
 		const resourceVersion = get(result, 'metadata.resourceVersion');
 		if (resourceVersion) {
-			// TODO: fix newObject is string
 			set(newObject, 'metadata.resourceVersion', resourceVersion);
 		}
-		// TODO: console.log('newObject', yamlToObject(newObject, !!detail.value.metadata));
+		newObject = objectToYaml(newObject);
 		const obj = yamlToObject(newObject, false);
-		const { data } = await updateWorkloadsControler(
-			namespace,
-			kind,
-			name,
+		const { data } = await updateDetail(
+			apiVersion,
+			{ namespace, kind: type, name },
 			obj[0]
 		);
 		yamlHide();
