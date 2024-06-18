@@ -255,6 +255,14 @@ export const getNamespacesList = (
 	});
 };
 
+export const getNamespacesGroup = (
+	params: Pagination
+): Promise<AxiosResponse<CustomresourcesResponse>> => {
+	return api.get('/capi/namespaces/group', {
+		params
+	});
+};
+
 export const getNamespaceDeployments = (
 	namespace: string,
 	params?: Pagination

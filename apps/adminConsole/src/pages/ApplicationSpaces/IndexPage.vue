@@ -15,16 +15,10 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { getNamespacesList } from 'src/network';
+import { getNamespacesGroup } from 'src/network';
 import MyTree from '@packages/ui/src/components/Menu/MyTree.vue';
 import { get } from 'lodash-es';
-import {
-	getNamespaceIcon,
-	systemNamespaces,
-	systemNamespacesOther,
-	customNamesapceIcon,
-	checkClusterScoped
-} from './config';
+import { getNamespaceIcon, customNamesapceIcon } from './config';
 import MenuHeader from 'src/layouts/MenuHeader.vue';
 
 const menuOptions = {
@@ -47,39 +41,6 @@ const userType = 'User Projects';
 const systmeType = 'System Projects';
 const defaultOpeneds = ref([userType, systmeType, route.params.namespace]);
 
-const workspaceSplit = (data: any): any => {
-	const systemWorkspace: any = [];
-	const UserWorkspace: any = [];
-	data.forEach((item: any) => {
-		if (!owner) {
-			owner = item.metadata.labels['bytetrade.io/ns-owner'];
-		}
-		/** Manual grouping of namespace */
-		if (
-			(get(item, 'metadata.labels.["kubesphere.io/workspace"]') ===
-				'system-workspace' &&
-				systemNamespaces(owner).includes(get(item, 'metadata.name'))) ||
-			systemNamespacesOther.includes(get(item, 'metadata.name')) ||
-			checkClusterScoped(get(item, 'metadata.name'))
-		) {
-			systemWorkspace.push(item);
-		} else {
-			UserWorkspace.push(item);
-		}
-	});
-
-	return [
-		{
-			title: defaultOpeneds.value[0],
-			data: UserWorkspace
-		},
-		{
-			title: defaultOpeneds.value[1],
-			data: systemWorkspace
-		}
-	];
-};
-
 const fetchData = () => {
 	const params = {
 		sortBy: 'createTime',
@@ -87,29 +48,18 @@ const fetchData = () => {
 	};
 	loading.value = true;
 
-	getNamespacesList(params)
+	getNamespacesGroup(params)
 		.then((res) => {
-			const result = res.data.items;
-			const data = workspaceSplit(result);
-			const userReg = new RegExp(`-${owner}$`);
-			let title = '';
-
+			const result = res.data;
+			const data: any = result;
 			const newData = data.map((workspace: any) => ({
 				title: workspace.title,
 				id: workspace.title,
 				selectable: false,
 				icon: getNamespaceIcon('default'),
 				children: workspace.data.map((item: any) => {
-					title = item.metadata.name;
-					if (
-						workspace.title === userType &&
-						!Object.keys(customNamesapceIcon(owner)).includes(title)
-					) {
-						title = title.replace(userReg, '');
-					}
-
 					return {
-						title,
+						title: item.metadata.name,
 						id: item.metadata.name,
 						img: getNamespaceIcon(item.metadata.name),
 						route: {
@@ -122,6 +72,8 @@ const fetchData = () => {
 			list.value = newData.filter(
 				(item: any) => item.children && item.children.length > 0
 			);
+
+			defaultOpeneds.value = [data[0].title];
 		})
 		.finally(() => {
 			loading.value = false;

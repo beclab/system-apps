@@ -27,7 +27,9 @@ const {
 	getMyApps,
 	getAllMetric,
 	getUserMetric,
-	getClusterMetric
+	getClusterMetric,
+	getUsers,
+	getNamespaces
 } = require('../services/session');
 const {
 	setUserInfo,
@@ -168,13 +170,13 @@ const monitoringMetric = async (ctx) => {
 
 		cluster_cpu_utilisation.data.result[0][valueName] = isValues
 			? cluster_cpu_utilisation_value.map((item, index) => [
-					item[0],
-					item[1] / cluster_cpu_total_target[index][1]
-			  ])
+				item[0],
+				item[1] / cluster_cpu_total_target[index][1]
+			])
 			: [
-					cluster_cpu_utilisation_value[0],
-					cluster_cpu_utilisation_value[1] / cluster_cpu_total_target[1]
-			  ];
+				cluster_cpu_utilisation_value[0],
+				cluster_cpu_utilisation_value[1] / cluster_cpu_total_target[1]
+			];
 
 		const cluster_memory_utilisation = cloneDeep(
 			find(list, {
@@ -185,13 +187,13 @@ const monitoringMetric = async (ctx) => {
 			cluster_memory_utilisation.data.result[0][valueName];
 		cluster_memory_utilisation.data.result[0][valueName] = isValues
 			? cluster_memory_utilisation_value.map((item, index) => [
-					item[0],
-					item[1] / cluster_memory_total_target[index][1]
-			  ])
+				item[0],
+				item[1] / cluster_memory_total_target[index][1]
+			])
 			: [
-					cluster_memory_utilisation_value[0],
-					cluster_memory_utilisation_value[1] / cluster_memory_total_target[1]
-			  ];
+				cluster_memory_utilisation_value[0],
+				cluster_memory_utilisation_value[1] / cluster_memory_total_target[1]
+			];
 
 		list = list.concat([
 			{ ...cluster_cpu_utilisation, metric_name: 'cluster_cpu_utilisation' },
@@ -204,6 +206,42 @@ const monitoringMetric = async (ctx) => {
 
 	ctx.body = { results: list };
 };
+
+function endsWith(str, name) {
+	const regex = new RegExp(`-${name}$`); //;
+	return regex.test(str);
+}
+
+const namespaceGroup = async (ctx) => {
+	const namespaces = await getNamespaces(ctx);
+	const users = await getUsers(ctx)
+	const SYSTEM = 'System'
+	const usersData = users.data.items;
+	usersData.sort((a, b) => a.creation_timestamp - b.creation_timestamp)
+	const system = {
+		name: SYSTEM,
+	}
+	const list = [...usersData, system]
+
+	const result = list.map(item => {
+		if (item.name === SYSTEM) {
+			const data = namespaces.items.filter(namespace => !usersData.some(str => endsWith(namespace.metadata.name, str.name)))
+			return {
+				title: item.name,
+				data: data,
+			}
+		} else {
+			const data = namespaces.items.filter(namespace => endsWith(namespace.metadata.name, item.name))
+			return {
+				title: item.name,
+				data: data,
+			}
+		}
+
+	});
+
+	ctx.body = result;
+}
 
 const cacheUser = async (ctx, next) => {
 	const target = checkUrl(ctx.path);
@@ -247,5 +285,6 @@ module.exports = {
 	userDetail,
 	cacheUser,
 	appList,
-	monitoringMetric
+	monitoringMetric,
+	namespaceGroup
 };

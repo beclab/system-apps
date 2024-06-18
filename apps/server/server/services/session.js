@@ -224,7 +224,7 @@ const getUserDetail = async (token, clusterRole, isMulticluster) => {
 		}
 
 		user.globalRules = roles;
-	} catch (error) {}
+	} catch (error) { }
 
 	return user;
 };
@@ -404,7 +404,7 @@ const getSupportGpuList = async (ctx) => {
 
 			gpuKinds = [...defaultGpu, ...otherGpus];
 		}
-	} catch (error) {}
+	} catch (error) { }
 
 	return gpuKinds;
 };
@@ -416,6 +416,34 @@ const getGitOpsEngine = async (ctx) => {
 		return [];
 	}
 	return 'argocd';
+};
+
+const getNamespaces = async (ctx) => {
+	const token = ctx.cookies.get('auth_token');
+
+	const resp = await send_gateway_request({
+		method: 'GET',
+		url: `/kapis/resources.kubesphere.io/v1alpha3/namespaces`,
+		params: {
+			sortBy: 'createTime',
+			labelSelector: 'kubesphere.io/workspace!=kubesphere.io/devopsproject'
+		},
+		token
+	});
+	return resp;
+
+}
+
+const getUsers = async (ctx, clusterRole, isMulticluster) => {
+	const token = ctx.cookies.get('auth_token');
+
+
+	const resp = await send_gateway_request({
+		method: 'GET',
+		url: `/bfl/iam/v1alpha1/users`,
+		token
+	});
+	return resp;
 };
 
 const getCurrentUser = async (ctx, clusterRole, isMulticluster) => {
@@ -532,5 +560,7 @@ module.exports = {
 	getMyApps,
 	getAllMetric,
 	getUserMetric,
-	getClusterMetric
+	getClusterMetric,
+	getUsers,
+	getNamespaces
 };

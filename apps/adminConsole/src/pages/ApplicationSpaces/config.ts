@@ -2,6 +2,7 @@ import userSpace from 'src/assets/user-space.svg';
 import osSystem from 'src/assets/os-system.svg';
 import userSystem from 'src/assets/user-system.svg';
 import defaultIcon from 'src/assets/default.svg';
+import gpuIcon from 'src/assets/gpu.svg';
 import { useAppDetailStore } from 'src/stores/AppDetail';
 import kubeIcon from 'src/assets/kube.png';
 import kubesphereIcon from 'src/assets/kubesphere.png';
@@ -32,7 +33,8 @@ export const namespaceIcon: any = (username: string) => ({
 	'kubesphere-monitoring-system': kubesphereIcon,
 	'kube-system': kubeIcon,
 	'kube-public': kubeIcon,
-	'kube-node-lease': kubeIcon
+	'kube-node-lease': kubeIcon,
+	'gpu-system': gpuIcon
 });
 
 export const getNamespaceIcon = (namespace: string) => {
@@ -52,23 +54,4 @@ export const getNamespaceIcon = (namespace: string) => {
 		: icons[app]
 		? icons[app]
 		: defaultIcon;
-};
-
-export const systemNamespaces = (username: string) => [
-	'os-system',
-	'kubesphere-monitoring-federated',
-	'kubesphere-controls-system',
-	'kubesphere-system',
-	'kubesphere-monitoring-system',
-	'default',
-	'kube-system',
-	'kube-public',
-	'kube-node-lease'
-];
-
-export const systemNamespacesOther = ['kubekey-system'];
-
-export const checkClusterScoped = (namespace: string) => {
-	const target = appList.data.find((item) => item.namespace === namespace);
-	return target ? target.isClusterScoped : false;
 };

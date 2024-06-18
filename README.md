@@ -27,8 +27,8 @@ Create an local_config.yaml file with the following
 ```
 server:
   apiServer:
-    url: https://monitoring.webos-acount.myterminus.com
-    wsUrl: https://monitoring.webos-acount.myterminus.com
+    url: https://dashboard.webos-acount.myterminus.com
+    wsUrl: https://dashboard.webos-acount.myterminus.com
 
 ```
 

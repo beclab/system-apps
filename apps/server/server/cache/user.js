@@ -14,7 +14,8 @@ const systemNamespaces = [
 	'default',
 	'kube-system',
 	'kube-public',
-	'kube-node-lease'
+	'kube-node-lease',
+	'gpu-system'
 ];
 
 const resources_filter = (ctx, query) => {
