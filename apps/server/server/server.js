@@ -41,7 +41,7 @@ const app = new Koa();
 const serverConfig = getServerConfig().server;
 
 global.HOSTNAME = serverConfig.http.hostname || 'localhost';
-global.PORT = 8003
+global.PORT = serverConfig.http.port || 8000;
 
 app.keys = ['kubesphere->_<'];
 
