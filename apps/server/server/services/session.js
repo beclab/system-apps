@@ -437,10 +437,9 @@ const getNamespaces = async (ctx) => {
 const getUsers = async (ctx, clusterRole, isMulticluster) => {
 	const token = ctx.cookies.get('auth_token');
 
-
 	const resp = await send_gateway_request({
 		method: 'GET',
-		url: `/bfl/iam/v1alpha1/users`,
+		url: `/kapis/iam.kubesphere.io/v1alpha2/users`,
 		token
 	});
 	return resp;

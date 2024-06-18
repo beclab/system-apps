@@ -208,7 +208,7 @@ const monitoringMetric = async (ctx) => {
 };
 
 function endsWith(str, name) {
-	const regex = new RegExp(`-${name}$`); //;
+	const regex = new RegExp(`-${name}$`);
 	return regex.test(str);
 }
 
@@ -216,8 +216,11 @@ const namespaceGroup = async (ctx) => {
 	const namespaces = await getNamespaces(ctx);
 	const users = await getUsers(ctx)
 	const SYSTEM = 'System'
-	const usersData = users.data.items;
-	usersData.sort((a, b) => a.creation_timestamp - b.creation_timestamp)
+	const usersData = users.items.map(item => ({ name: item.metadata.name, creation_timestamp: item.metadata.creationTimestamp }));
+
+	let adminUser = usersData.pop();
+	usersData.unshift(adminUser);
+
 	const system = {
 		name: SYSTEM,
 	}
