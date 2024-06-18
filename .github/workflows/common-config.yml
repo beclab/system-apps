@@ -29,6 +29,9 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v3
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
@@ -78,9 +81,10 @@ jobs:
 
       - name: Build and push Docker image
         id: docker_build_push
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           context: .
           file: ${{ inputs.DOCKERFILE_PATH }}
           push: true
           tags: beclab/${{ inputs.PACKAGE_NAME }}:${{ steps.docker-tag.outputs.version }}
+          platforms: linux/amd64,linux/arm64
