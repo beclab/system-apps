@@ -45,8 +45,7 @@ $dialogPadding: 8px 16px;
 		margin-bottom: 1px;
 	}
 	.my-dialog-content {
-		// padding: $dialogPadding;
-		height: calc(100% - 50px);
+		height: calc(100% - 52px);
 	}
 }
 </style>

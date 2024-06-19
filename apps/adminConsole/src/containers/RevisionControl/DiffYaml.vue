@@ -24,17 +24,19 @@
 			</q-tooltip>
 		</q-icon>
 	</div>
-	<div style="background: #fff" v-html="diffHtml"></div>
+	<div class="diff-yaml-wrapper" v-html="diffHtml"></div>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 
 import { createPatch } from 'diff';
-import { parse, html } from 'diff2html';
+import { parse, html, Diff2HtmlConfig } from 'diff2html';
 import { t } from 'src/boot/i18n';
-
 import 'diff2html/bundles/css/diff2html.min.css';
+import { useQuasar } from 'quasar';
+
+const $q = useQuasar();
 
 interface Props {
 	datas: any;
@@ -50,8 +52,9 @@ const getDiffHtml = ([oldData, newData]: any, options = {}) => {
 	const diffJson = parse(diffStr);
 	return html(diffJson, {
 		drawFileList: false,
+		colorScheme: $q.dark.isActive ? 'dark' : 'light',
 		...options
-	});
+	} as Diff2HtmlConfig & { colorScheme: 'dark' | 'light'; auto });
 };
 
 const diffHtml = computed(() =>
@@ -62,5 +65,3 @@ const modeChange = (type: string) => {
 	mode.value = type;
 };
 </script>
-
-<style></style>

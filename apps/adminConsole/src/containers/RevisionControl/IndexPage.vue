@@ -1,67 +1,69 @@
 <template>
-	<q-select outlined v-model="model" :options="options">
-		<template v-slot:selected>
-			<q-item>
-				<q-item-section avatar center>
-					<q-icon size="md" name="history" />
-				</q-item-section>
-				<q-item-section>
-					<q-item-label>
-						<div style="line-height: 30px">
-							<span>{{ labelFormat(model) }}</span>
+	<QSectionStyle2>
+		<q-select outlined v-model="model" :options="options">
+			<template v-slot:selected>
+				<q-item>
+					<q-item-section avatar center>
+						<q-icon size="md" name="history" />
+					</q-item-section>
+					<q-item-section>
+						<q-item-label>
+							<div style="line-height: 30px">
+								<span>{{ labelFormat(model) }}</span>
+								<q-chip
+									v-if="model && model.revision === curRevision"
+									dense
+									square
+									color="primary"
+									text-color="white"
+									>{{ t('RUNNING') }}
+								</q-chip>
+							</div>
+						</q-item-label>
+						<q-item-label caption>
+							{{
+								t('CREATED_TIME', {
+									diff: getLocalTime(model.createTime).format(
+										'YYYY-MM-DD HH:mm:ss'
+									)
+								})
+							}}
+						</q-item-label>
+					</q-item-section>
+				</q-item>
+			</template>
+
+			<template v-slot:option="scope">
+				<q-item v-bind="scope.itemProps">
+					<q-item-section avatar>
+						<q-icon size="md" name="history" />
+					</q-item-section>
+					<q-item-section>
+						<q-item-label>
+							<span> {{ labelFormat(scope.opt) }}</span>
 							<q-chip
-								v-if="model && model.revision === curRevision"
+								v-if="scope.opt.revision === curRevision"
 								dense
 								square
 								color="primary"
 								text-color="white"
 								>{{ t('RUNNING') }}
 							</q-chip>
-						</div>
-					</q-item-label>
-					<q-item-label caption>
-						{{
-							t('CREATED_TIME', {
-								diff: getLocalTime(model.createTime).format(
-									'YYYY-MM-DD HH:mm:ss'
-								)
-							})
-						}}
-					</q-item-label>
-				</q-item-section>
-			</q-item>
-		</template>
-
-		<template v-slot:option="scope">
-			<q-item v-bind="scope.itemProps">
-				<q-item-section avatar>
-					<q-icon size="md" name="history" />
-				</q-item-section>
-				<q-item-section>
-					<q-item-label>
-						<span> {{ labelFormat(scope.opt) }}</span>
-						<q-chip
-							v-if="scope.opt.revision === curRevision"
-							dense
-							square
-							color="primary"
-							text-color="white"
-							>{{ t('RUNNING') }}
-						</q-chip>
-					</q-item-label>
-					<q-item-label caption>
-						{{
-							t('CREATED_TIME', {
-								diff: getLocalTime(scope.opt.createTime).format(
-									'YYYY-MM-DD HH:mm:ss'
-								)
-							})
-						}}
-					</q-item-label>
-				</q-item-section>
-			</q-item>
-		</template>
-	</q-select>
+						</q-item-label>
+						<q-item-label caption>
+							{{
+								t('CREATED_TIME', {
+									diff: getLocalTime(scope.opt.createTime).format(
+										'YYYY-MM-DD HH:mm:ss'
+									)
+								})
+							}}
+						</q-item-label>
+					</q-item-section>
+				</q-item>
+			</template>
+		</q-select>
+	</QSectionStyle2>
 	<DiffYaml :datas="renderDiff"></DiffYaml>
 	<q-inner-loading :showing="loading"> </q-inner-loading>
 </template>
@@ -77,6 +79,7 @@ import { getValue } from 'src/utils/yaml';
 import DiffYaml from './DiffYaml.vue';
 import { ObjectMapper } from 'src/utils/object.mapper';
 import { MODULE_KIND_MAP } from 'src/utils/constants';
+import QSectionStyle2 from '@packages/ui/src/components/QSectionStyle2.vue';
 
 interface Props {
 	detail: any;
