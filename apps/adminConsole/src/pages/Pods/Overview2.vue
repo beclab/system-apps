@@ -32,6 +32,7 @@ import { ref, watch } from 'vue';
 import MyContentPage from '../../components/MyContentPage.vue';
 import MyPage from '@packages/ui/src/containers/MyPage.vue';
 import Yaml from './Yaml.vue';
+import MoreSelection from '@packages/ui/src/components/MoreSelection.vue';
 import { t } from 'src/boot/i18n';
 
 const options = [
