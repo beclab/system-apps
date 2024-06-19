@@ -17,7 +17,6 @@ import { ref } from 'vue';
 import { t } from 'src/boot/i18n';
 import EnvironmentVariables from 'src/containers/EnvironmentVariables.vue';
 import Yaml from 'src/pages/NamespacePods/Yaml.vue';
-import MyPage from '@packages/ui/src/containers/MyPage.vue';
 import MyContentPage from 'src/components/MyContentPage.vue';
 import DetailData from './DetailData.vue';
 import MoreSelection from '@packages/ui/src/components/MoreSelection.vue';

@@ -35,7 +35,8 @@ const {
 	setUserInfo,
 	getUserInfo,
 	checkUrl,
-	isAdmin
+	isAdmin,
+	namespaceFormat
 } = require('../cache/user.js');
 
 const {
@@ -215,6 +216,12 @@ function endsWith(str, name) {
 const namespaceGroup = async (ctx) => {
 	const namespaces = await getNamespaces(ctx);
 	const users = await getUsers(ctx)
+
+	const originalData = namespaceFormat(
+		ctx.req,
+		namespaces,
+	);
+
 	const SYSTEM = 'System'
 	const usersData = users.items.map(item => ({ name: item.metadata.name, creation_timestamp: item.metadata.creationTimestamp }));
 
@@ -228,13 +235,13 @@ const namespaceGroup = async (ctx) => {
 
 	const result = list.map(item => {
 		if (item.name === SYSTEM) {
-			const data = namespaces.items.filter(namespace => !usersData.some(str => endsWith(namespace.metadata.name, str.name)))
+			const data = originalData.items.filter(namespace => !usersData.some(str => endsWith(namespace.metadata.name, str.name)))
 			return {
 				title: item.name,
 				data: data,
 			}
 		} else {
-			const data = namespaces.items.filter(namespace => endsWith(namespace.metadata.name, item.name))
+			const data = originalData.items.filter(namespace => endsWith(namespace.metadata.name, item.name))
 			return {
 				title: item.name,
 				data: data,
@@ -242,8 +249,8 @@ const namespaceGroup = async (ctx) => {
 		}
 
 	});
-
-	ctx.body = result;
+	const res = result.filter(item => item.data.length > 0)
+	ctx.body = res;
 }
 
 const cacheUser = async (ctx, next) => {

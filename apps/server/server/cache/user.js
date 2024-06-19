@@ -80,6 +80,29 @@ function podListFormat(ctx, data) {
 	};
 }
 
+function namespaceFormat(ctx, data) {
+	const user = getUserInfo(ctx);
+	console.log('user', user);
+	const newData = data.items.filter((item) => {
+		const namespace = get(item, 'metadata.name');
+		const userTarget = namespace
+			.split('-')
+			.find((item) => item === user.username);
+		const systemTarget = systemNamespaces.find(
+			(system_namespace) => namespace === system_namespace
+		);
+		return user.globalrole === ADMIN_ROLE
+			? true
+			: userTarget;
+	});
+	return {
+		...data,
+		totalItems: newData.length,
+		items: newData,
+		total: data.totalItems
+	};
+}
+
 function namespaceListFormat(ctx, data) {
 	const user = getUserInfo(ctx);
 	const newData = data.items.filter((item) => {
@@ -134,5 +157,6 @@ module.exports = {
 	systemNamespaces,
 	checkUrl,
 	isAdmin,
-	canModify
+	canModify,
+	namespaceFormat
 };

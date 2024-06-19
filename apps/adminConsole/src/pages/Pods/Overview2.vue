@@ -1,26 +1,9 @@
 <template>
 	<MyContentPage>
 		<template #extra>
-			<Yaml name="" ref="yamlRef"></Yaml>
-			<QButtonStyle size="sm">
-				<q-btn dense color="grey-8" flat icon="more_vert">
-					<q-menu cover auto-close>
-						<q-list dense>
-							<q-item
-								clickable
-								v-close-popup
-								v-for="item in options"
-								:key="item.key"
-								@click="item.onClick"
-							>
-								<q-item-section class="text-no-wrap">
-									{{ item.text }}
-								</q-item-section>
-							</q-item>
-						</q-list>
-					</q-menu>
-				</q-btn>
-			</QButtonStyle>
+			<div class="col-auto">
+				<MoreSelection :options="options" size="md"></MoreSelection>
+			</div>
 		</template>
 		<MyPage>
 			<Overview></Overview>
@@ -31,6 +14,7 @@
 			<Events></Events>
 			<q-inner-loading :showing="loading"></q-inner-loading>
 		</MyPage>
+		<Yaml name="" ref="yamlRef"></Yaml>
 	</MyContentPage>
 </template>
 
@@ -52,9 +36,9 @@ import { t } from 'src/boot/i18n';
 
 const options = [
 	{
-		key: 'viewYAML',
-		icon: 'ip',
-		text: t('VIEW_YAML'),
+		key: 'edit',
+		icon: 'sym_r_edit',
+		label: t('VIEW_YAML'),
 		action: 'edit',
 		onClick: () => {
 			yamlRef.value.show();
