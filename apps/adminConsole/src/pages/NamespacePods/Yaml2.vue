@@ -79,8 +79,7 @@
 							padding="6px xl"
 							@click="yamlHide"
 						>
-							<span>{{ t('CANCEL') }}</span
-							>tet
+							<span>{{ t('CANCEL') }}</span>
 						</q-btn>
 						<q-btn
 							no-caps
