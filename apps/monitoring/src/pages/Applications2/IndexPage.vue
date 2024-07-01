@@ -62,7 +62,7 @@
 						</div>
 					</div>
 					<div class="row items-center" v-if="item.state">
-						<MyBadge type="running"></MyBadge>
+						<MyBadge :type="$t('RUNNING')"></MyBadge>
 						<span class="text-subtitle3 text-ink-2 q-ml-sm">{{
 							capitalize(item.state)
 						}}</span>
@@ -115,22 +115,22 @@ enum EntranceState {
 
 const options = [
 	{
-		label: 'Sort by CPU usage',
+		label: t('SORT_BY_NODE_CPU_UTILISATION'),
 		value: 'namespace_cpu_usage',
 		sortBy: 'cpu_usage'
 	},
 	{
-		label: 'Sort by memory usage',
-		value: 'namespace_memory_usage_wo_cache',
+		label: t('SORT_BY_NODE_MEMORY_UTILISATION'),
+		value: t('SORT_BY_NODE_MEMORY_UTILISATION'),
 		sortBy: 'memory_usage'
 	},
 	{
-		label: 'Sort by inbound traffic',
+		label: t('SORT_BY_INBOUND_TRAFFIC'),
 		value: 'namespace_net_bytes_received',
 		sortBy: 'net_received'
 	},
 	{
-		label: 'Sort by outbound traffic',
+		label: t('SORT_BY_OUTBOUND_TRAFFIC'),
 		value: 'namespace_net_bytes_transmitted',
 		sortBy: 'net_transmitted'
 	}

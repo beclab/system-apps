@@ -2,6 +2,7 @@
 	<MetricsTable
 		:websiteId="websiteId"
 		type="browser"
+		:valueLabel="$t('BROWSER')"
 		:loading="loading"
 	></MetricsTable>
 </template>

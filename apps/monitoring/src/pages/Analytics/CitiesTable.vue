@@ -2,6 +2,7 @@
 	<MetricsTable
 		:websiteId="websiteId"
 		type="city"
+		:valueLabel="$t('CITY')"
 		:loading="loading"
 	></MetricsTable>
 </template>

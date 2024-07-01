@@ -12,7 +12,7 @@
 			<span class="text-subtitle1 q-ml-sm">{{ trend }}{{ change || '' }}</span>
 		</div>
 	</div>
-	<div class="text-subtitle1 text-ink-2 q-mt-lg">{{ subtile }} in 24 hours</div>
+	<div class="text-subtitle1 text-ink-2 q-mt-lg">{{ subtile }}</div>
 </template>
 
 <script setup lang="ts">
@@ -22,7 +22,8 @@ import visibilityIcon from 'assets/visibility.svg';
 import visibilityIconDark from 'assets/visibility-dark.svg';
 import { computed } from 'vue';
 import { useQuasar } from 'quasar';
-
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 interface Props {
 	type: 'view' | 'visit';
 	value: number;
@@ -45,7 +46,11 @@ const icon = computed(() => {
 
 const iconWidth = computed(() => (props.type === 'view' ? '28px' : '32px'));
 
-const subtile = computed(() => (props.type === 'view' ? 'Views' : 'Visitors'));
+const subtile = computed(() =>
+	props.type === 'view'
+		? t('VIEWS_COUNT_VIEW', { count: 24 })
+		: t('VISITORS_COUNT_VISITOR', { count: 24 })
+);
 const trend = computed(() => (props.change > 0 ? '+' : ''));
 const trendIcon = computed(() =>
 	props.change > 0

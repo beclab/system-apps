@@ -1,7 +1,10 @@
 import { boot } from 'quasar/wrappers';
 import { createI18n } from 'vue-i18n';
 
-import messages from '@packages/ui/src/i18n';
+import messagesDashboard from '../i18n';
+import messagesKube from '@packages/ui/src/i18n';
+
+const messages = { ...messagesKube, ...messagesDashboard };
 
 export type MessageLanguages = keyof typeof messages;
 // Type-define 'en-US' as the master schema for the resource

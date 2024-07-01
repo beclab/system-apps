@@ -2,6 +2,7 @@
 	<MetricsTable
 		:websiteId="websiteId"
 		type="device"
+		:valueLabel="$t('DEVICE')"
 		:loading="loading"
 	></MetricsTable>
 </template>

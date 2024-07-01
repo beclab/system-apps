@@ -91,7 +91,7 @@ const selectItemformat = (opt: string) => {
 	const tempOptions = getTimeOptions(options);
 	const target = tempOptions.find((item: any) => item.value === opt);
 	if (target) {
-		return `last ${target.label}`;
+		return `${target.label}`;
 	}
 	return opt;
 };

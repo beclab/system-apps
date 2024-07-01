@@ -11,6 +11,7 @@ import {
 	getSuitableUnit,
 	getValueByUnit
 } from 'src/utils/monitoring';
+import { t } from 'boot/i18n';
 
 const MetricTypes = {
 	cpu_usage: 'pod_cpu_usage',
@@ -96,9 +97,9 @@ const getLastMonitoringData = (data: any) => {
 function chartConfigCpu(data: any) {
 	return {
 		type: 'cpu',
-		title: 'CPU_USAGE',
+		title: t('CPU_USAGE'),
 		unitType: 'cpu',
-		legend: ['CPU'],
+		legend: [t('CPU')],
 		data: [data]
 	};
 }
@@ -106,9 +107,9 @@ function chartConfigCpu(data: any) {
 function chartConfigMemory(data: any) {
 	return {
 		type: 'memory',
-		title: 'MEMORY_USAGE',
+		title: t('MEMORY_USAGE'),
 		unitType: 'memory',
-		legend: ['Memory'],
+		legend: [t('MEMORY')],
 		data: [data]
 	};
 }
@@ -116,9 +117,9 @@ function chartConfigMemory(data: any) {
 function chartConfigTraffic(data: any) {
 	return {
 		type: 'bandwidth',
-		title: 'OUTBOUND_TRAFFIC',
+		title: t('OUTBOUND_TRAFFIC'),
 		unitType: 'bandwidth',
-		legend: ['OUTBOUND'],
+		legend: [t('OUTBOUND')],
 		data: [data]
 	};
 }

@@ -4,8 +4,8 @@
 		<q-resize-observer @resize="onResize" />
 		<div style="flex: 1">
 			<MyCard2
-				title="Cluster Physic Resource"
-				link="More Details"
+				:title="$t('CLUSTER_PHYSIC_RESOURCE')"
+				:link="$t('MORE_DETAILS')"
 				@link-handler="detailsHandler"
 			>
 				<template #avatar>
@@ -39,7 +39,10 @@
 		</div>
 	</div>
 	<div class="row q-col-gutter-x-xl">
-		<MyCard2 style="flex: 1" :title="`${appDetail.user.username}’s Resources`">
+		<MyCard2
+			style="flex: 1"
+			:title="$t('USER_RESOURCES', { name: appDetail.user.username })"
+		>
 			<template #avatar>
 				<TerminusAvatar
 					:info="{ terminusName: `${appDetail.user.username}@myterminus.com` }"
@@ -59,8 +62,8 @@
 		</div>
 		<MyCard2
 			:class="[!rightSideVisible ? 'col-6' : 'side-wrapper']"
-			title="Analytics"
-			link="More"
+			:title="$t('ANALYTICS')"
+			:link="$t('MORE')"
 			@link-handler="routeToAnalytics"
 		>
 			<Analytics></Analytics>

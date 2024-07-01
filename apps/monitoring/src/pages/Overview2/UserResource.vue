@@ -11,7 +11,7 @@
 							class="q-mr-md"
 						/>
 						<div class="text-subtitle1 text-ink-1">
-							CPU {{ cpuData.unit }}aa
+							{{ $t('CPU') }} {{ cpuData.unit }}
 						</div>
 					</div>
 					<div class="text-h5 text-ink-1">
@@ -37,7 +37,7 @@
 							class="q-mr-md"
 						/>
 						<div class="text-subtitle1 text-ink-1">
-							Memory {{ memoryData.unit }}
+							{{ $t('MEMORY') }} {{ memoryData.unit }}
 						</div>
 					</div>
 					<div class="text-h5 text-ink-1">

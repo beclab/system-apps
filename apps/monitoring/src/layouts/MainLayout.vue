@@ -31,33 +31,28 @@ import { useRouter, useRoute } from 'vue-router';
 import MyLayoutContainer from '@packages/ui/src/components/MyLayoutContainer.vue';
 import { getAppDetail } from '@packages/ui/src/network';
 import { useAppDetailStore } from 'src/stores/AppDetail';
+import { useI18n } from 'vue-i18n';
 const AppDetailStore = useAppDetailStore();
-
+const { t } = useI18n();
 const options = [
 	{
 		key: 'overview',
-		label: 'Overview',
+		label: t('OVERVIEW'),
 		icon: 'sym_r_dashboard',
 		link: '/overview'
 	},
 	{
 		key: 'applications',
-		label: 'Applications',
+		label: t('APPLICATIONS'),
 		icon: 'sym_r_wysiwyg',
 		link: '/applications'
 	},
 	{
 		key: 'analytics',
-		label: 'Analytics',
+		label: t('ANALYTICS'),
 		icon: 'sym_r_leaderboard',
 		link: '/analytics'
 	}
-	// {
-	//   key: 'notifications',
-	//   label: 'Notifications',
-	//   icon: 'sym_r_notifications',
-	//   link: '/notifications',
-	// },
 ];
 const initOption = {
 	key: 'sub1',

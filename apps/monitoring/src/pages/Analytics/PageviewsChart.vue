@@ -63,7 +63,7 @@ import MylineChart2 from '@packages/ui/src/components/Charts/MylineChart2.vue';
 import QBtnToggleStyle from '@packages/ui/src/components/QBtnToggleStyle.vue';
 import Chart from 'components/Skeleton/Chart.vue';
 import { t } from 'boot/i18n';
-
+import { useI18n } from 'vue-i18n';
 interface Props {
 	data: any;
 	websiteId: string;
@@ -78,7 +78,7 @@ const props = withDefaults(defineProps<Props>(), {});
 const type = ref('line');
 const chartData = reactive({
 	unit: [t('VISITORS'), t('VIEWS')],
-	legend: ['Unique visitors', 'Page views'],
+	legend: [t('UNIQUE_VISITORS'), t('PAGE_VIEWS')],
 	data: [],
 	type: 'line',
 	toggle: false

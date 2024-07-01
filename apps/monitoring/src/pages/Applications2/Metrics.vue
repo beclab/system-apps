@@ -20,7 +20,9 @@
 								:src="trafficIcon"
 								:loading="loading"
 							></MyImg>
-							<div class="text-subtitle3 text-ink-2 q-ml-sm">Traffic</div>
+							<div class="text-subtitle3 text-ink-2 q-ml-sm">
+								{{ $t('TRAFFIC') }}
+							</div>
 						</div>
 						<div>
 							<div class="text-subtitle3 text-ink-1">
@@ -62,7 +64,9 @@
 					<div class="full-width row items-center justify-between">
 						<div class="row items-center">
 							<MyImg type="circle" :src="pods2Icon" :loading="loading"></MyImg>
-							<div class="text-subtitle3 text-ink-2 q-ml-md">Pods</div>
+							<div class="text-subtitle3 text-ink-2 q-ml-md">
+								{{ $t('PODS') }}
+							</div>
 						</div>
 						<q-skeleton v-if="loading" type="text" width="24px" />
 						<div v-else class="text-h6 text-ink-1">{{ podCounts }}</div>

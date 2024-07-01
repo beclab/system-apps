@@ -1,5 +1,7 @@
 import { _capitalize } from '../../utils/index';
 import { get } from 'lodash';
+import { t } from 'boot/i18n';
+
 export const MetricTypes = {
 	cpu_utilisation: 'cluster_cpu_utilisation',
 	memory_utilisation: 'cluster_memory_utilisation',
@@ -24,22 +26,26 @@ export const MetricTypes = {
 export const getMonitoringCfgs = (data: { [key: string]: any }) => [
 	{
 		type: 'utilisation',
-		title: 'CPU_USAGE',
+		title: t('CPU_USAGE'),
 		unit: '%',
-		legend: ['USAGE'],
+		legend: [t('USAGE')],
 		data: get(data, `${MetricTypes.cpu_utilisation}.data.result`)
 	},
 	{
 		type: 'utilisation',
-		title: 'MEMORY_USAGE',
+		title: t('MEMORY_USAGE'),
 		unit: '%',
-		legend: ['USAGE'],
+		legend: [t('USAGE')],
 		data: get(data, `${MetricTypes.memory_utilisation}.data.result`)
 	},
 	{
 		type: 'load',
-		title: 'AVERAGE_CPU_LOAD',
-		legend: ['1 minute', '5 minutes', '15 minutes'],
+		title: t('AVERAGE_CPU_LOAD'),
+		legend: [
+			t('MINUTE_TIME', { count: 1 }),
+			t('MINUTE_TIME', { count: 5 }),
+			t('MINUTE_TIME', { count: 15 })
+		],
 		data: [
 			get(data, `${MetricTypes.cpu_load1}.data.result[0]`, {}),
 			get(data, `${MetricTypes.cpu_load5}.data.result[0]`, {}),
@@ -48,16 +54,16 @@ export const getMonitoringCfgs = (data: { [key: string]: any }) => [
 	},
 	{
 		type: 'usage',
-		title: 'DISK_USAGE',
+		title: t('DISK_USAGE'),
 		unitType: 'disk',
-		legend: ['USAGE'],
+		legend: [t('USAGE')],
 		data: get(data, `${MetricTypes.disk_size_usage}.data.result`)
 	},
 	{
 		type: 'utilisation',
-		title: 'INODE_USAGE',
+		title: t('INODE_USAGE'),
 		unit: '%',
-		legend: ['USAGE'],
+		legend: [t('USAGE')],
 		data: get(data, `${MetricTypes.disk_inode_utilisation}.data.result`)
 		// renderTooltip: () => {
 		//   const usageData = getChartData({
@@ -88,9 +94,9 @@ export const getMonitoringCfgs = (data: { [key: string]: any }) => [
 	},
 	{
 		type: 'throughput',
-		title: 'DISK_THROUGHPUT',
+		title: t('DISK_THROUGHPUT'),
 		unitType: 'throughput',
-		legend: ['READ', 'WRITE'],
+		legend: [t('READ'), t('WRITE')],
 		data: [
 			get(data, `${MetricTypes.disk_read_throughput}.data.result[0]`, {}),
 			get(data, `${MetricTypes.disk_write_throughput}.data.result[0]`, {})
@@ -98,8 +104,8 @@ export const getMonitoringCfgs = (data: { [key: string]: any }) => [
 	},
 	{
 		type: 'iops',
-		title: 'IOPS',
-		legend: ['READ', 'WRITE'],
+		title: t('IOPS'),
+		legend: [t('READ'), t('WRITE')],
 		data: [
 			get(data, `${MetricTypes.disk_read_iops}.data.result[0]`, {}),
 			get(data, `${MetricTypes.disk_write_iops}.data.result[0]`, {})
@@ -107,9 +113,9 @@ export const getMonitoringCfgs = (data: { [key: string]: any }) => [
 	},
 	{
 		type: 'bandwidth',
-		title: 'NETWORK_TRAFFIC',
+		title: t('NETWORK_TRAFFIC'),
 		unitType: 'bandwidth',
-		legend: ['OUT', 'IN'],
+		legend: [t('OUT'), t('IN')],
 		data: [
 			get(data, `${MetricTypes.net_transmitted}.data.result[0]`, {}),
 			get(data, `${MetricTypes.net_received}.data.result[0]`, {})
@@ -117,9 +123,9 @@ export const getMonitoringCfgs = (data: { [key: string]: any }) => [
 	},
 	{
 		type: 'count',
-		title: 'POD_STATUS',
+		title: t('POD_STATUS'),
 		unit: '',
-		legend: ['RUNNING', 'COMPLETED', 'WARNING'],
+		legend: [t('RUNNING'), t('COMPLETED'), t('WARNING')],
 		data: [
 			get(data, `${MetricTypes.pod_running_count}.data.result[0]`, {}),
 			get(data, `${MetricTypes.pod_completed_count}.data.result[0]`, {}),

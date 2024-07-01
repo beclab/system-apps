@@ -3,7 +3,7 @@
 		<ColumnFlex>
 			<template #header>
 				<div class="row items-center justify-between q-py-lg">
-					<div class="text-h5 text-ink-1">Usage Ranking</div>
+					<div class="text-h5 text-ink-1">{{ $t('USAGE_RANKING') }}</div>
 					<div
 						class="text-h6 text-light-blue-default cursor-pointer"
 						@click="routeToApplication"
@@ -72,7 +72,8 @@ import { getValue } from './config';
 import { useAppDetailStore } from 'src/stores/AppDetail';
 import { useRouter } from 'vue-router';
 import { fetchWorkloadsMetrics } from '../Applications2/config';
-
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 interface Props {
 	vertical?: boolean;
 }
@@ -108,11 +109,11 @@ const fetchData = () => {
 				.then((data) => {
 					monitoringData.value = [
 						{
-							title: 'Top 5 CPU Usage Apps',
+							title: t('TOP_COUNT_CPU_USAGE_APPS', { count: 5 }),
 							data: data.cpu_usage
 						},
 						{
-							title: 'Top 5 Memory Usage Apps',
+							title: t('TOP_COUNT_MEMORY_USAGE_APPS', { count: 5 }),
 							data: data.memory_usage
 						}
 					];

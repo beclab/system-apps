@@ -2,7 +2,7 @@
 	<MetricsTable
 		:websiteId="websiteId"
 		type="url"
-		label="pages"
+		:label="$t('PAGES')"
 		:valueLabel="t('VIEWS')"
 		:loading="loading"
 	></MetricsTable>

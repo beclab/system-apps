@@ -47,7 +47,7 @@ export const getLastTimeStr = (step, times) => {
 
 export const getTimeLabel = (timeStr) => {
 	const unit = timeStr.slice(-1).toUpperCase();
-	return t(`TIME_${unit}`, { num: parseInt(timeStr, 10) });
+	return t(`LAST_TIME_${unit}`, { count: parseInt(timeStr, 10) });
 };
 
 export const getTimeOptions = (times) =>

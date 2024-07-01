@@ -2,13 +2,13 @@
 	<MyGridLayout col-width="135px">
 		<MetricCard
 			:value="data.pageviews.value"
-			label="Views"
+			:label="$t('VIEWS')"
 			:change="data.pageviews.change"
 			:loading="loading"
 		/>
 		<MetricCard
 			:value="data.uniques.value"
-			label="Visitors"
+			:label="$t('VISITORS')"
 			:change="data.uniques.change"
 			:loading="loading"
 		/>
@@ -31,7 +31,7 @@
 					? data.totaltime.value / (data.pageviews.value - data.bounces.value)
 					: 0
 			"
-			label="Average visit time"
+			:label="$t('AVERAGE_VISIT_TIME')"
 			unit="s"
 			:change="
 				data.totaltime.value && data.pageviews.value
