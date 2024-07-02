@@ -10,9 +10,9 @@
 				<div v-if="item.name === 'Cluster'">
 					<span>{{ Cluster }}</span>
 				</div>
-				<div v-else-if="item.name === 'Status'" class="row items-center">
+				<div v-else-if="item.name === $t('STATUS')" class="row items-center">
 					<MyBadge :type="item.type" class="q-mr-xs"></MyBadge>
-					<span>{{ item.value }}</span>
+					<span>{{ $t(item.value.toUpperCase()) }}</span>
 				</div>
 				<div v-else-if="item.name === 'Endpoint'">
 					{{ EndpointList(item.value) }}

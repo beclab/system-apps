@@ -77,7 +77,7 @@
 									}}
 								</div>
 								<div class="text-body3 text-grey-5 q-mt-xs">
-									<span>Quota:&nbsp;</span>
+									<span>{{ $t('QUOTA') }}:&nbsp;</span>
 									<span>
 										{{
 											getSuitableValue(
@@ -100,7 +100,7 @@
 							}}
 							<div>
 								<div class="text-body3 text-grey-5 q-mt-xs">
-									<span>Quota:&nbsp;</span>
+									<span>{{ $t('QUOTA') }}:&nbsp;</span>
 									<span>{{
 										getSuitableValue(
 											props.row.namespace_memory_limit_hard,
@@ -115,7 +115,7 @@
 							<div>{{ props.row.namespace_pod_count || '-' }}</div>
 							<div>
 								<div class="text-body3 text-grey-5 q-mt-xs">
-									<span>Quota:&nbsp;</span>
+									<span>{{ $t('QUOTA') }}:&nbsp;</span>
 									<span>
 										{{ props.row.namespace_pod_count_hard || '-' }}
 									</span>
@@ -240,7 +240,7 @@ const columns: any = [
 	}
 ];
 
-const DEFAULT_OPTION = 'All';
+const DEFAULT_OPTION = t('ALL');
 const options2 = ref([DEFAULT_OPTION]);
 const nodeSelected = ref(options2.value[0]);
 const namespaceInNode: any = ref([]);

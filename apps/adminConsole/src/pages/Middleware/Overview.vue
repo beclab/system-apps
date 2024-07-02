@@ -25,6 +25,7 @@
 					flat
 					hide-pagination
 					v-model:pagination="pagination"
+					:rows-per-page-label="$t('RECORDS_PER_PAGE')"
 				>
 					<template v-slot:no-data>
 						<Empty2></Empty2>
@@ -111,7 +112,8 @@ import { PATTERN_PASSWORD } from '@packages/ui/src/utils/constants.js';
 import { useRoute } from 'vue-router';
 import QTableStyle from '@packages/ui/src/components/QTableStyle.vue';
 import MyPage2 from '@packages/ui/src/containers/MyPage2.vue';
-
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 const route = useRoute();
 const $q = useQuasar();
 const visible = ref(false);
@@ -126,18 +128,18 @@ const columns: any = [
 	{
 		name: 'app',
 		required: true,
-		label: 'App',
+		label: t('App'),
 		align: 'center',
 		field: 'app'
 	},
 	{
 		name: 'username',
 		align: 'center',
-		label: 'DB User',
+		label: t('DB_USER'),
 		field: 'username'
 	},
-	{ name: 'name', label: 'Databases', field: 'name', align: 'center' },
-	{ name: 'password', label: 'Password', field: 'password', align: 'center' }
+	{ name: 'name', label: t('DATABASE'), field: 'name', align: 'center' },
+	{ name: 'password', label: t('PASSWORD'), field: 'password', align: 'center' }
 ];
 const pagination = ref({
 	rowsNumber: 0
@@ -151,67 +153,67 @@ const detailsFormat = (data: MiddlewareItem) => {
 	const { type: middleware, namespace }: Record<string, any> = route.params;
 	const postgresqlConfig = [
 		{
-			name: 'Host',
+			name: t('HOST'),
 			value: `citus-master-svc.user-system-${username}`
 		},
 		{
-			name: 'User',
+			name: t('USER'),
 			value: data.adminUser
 		},
 		{
-			name: 'Password',
+			name: t('PASSWORD'),
 			value: data.password
 		}
 	];
 	const mongoConfig = [
 		{
-			name: 'Host',
+			name: t('HOST'),
 			value: `mongo-cluster-mongos.user-system-${username}`
 		},
 		{
-			name: 'User',
+			name: t('USER'),
 			value: data.adminUser
 		},
 		{
-			name: 'Password',
+			name: t('PASSWORD'),
 			value: data.password
 		},
 		{
-			name: 'Mongos',
+			name: t('MONGOS'),
 			value: data.mongos.endpoint
 		},
 		{
-			name: 'Size',
+			name: t('SIZE'),
 			value: data.mongos.size
 		}
 	];
 
 	const redisConfig = [
 		{
-			name: 'Host',
+			name: t('HOST'),
 			value: `redis-cluster-proxy.user-system-${username}`
 		},
 		{
-			name: 'Password',
+			name: t('PASSWORD'),
 			value: data.password
 		},
 		{
-			name: 'Proxy',
+			name: t('PROXY'),
 			value: data.redisProxy.endpoint
 		}
 	];
 
 	const normal = [
 		{
-			name: 'Cluster',
+			name: t('CLUSTER'),
 			value: 'default'
 		},
 		{
-			name: 'Namespace',
+			name: t('NAMESPACE'),
 			value: data.namespace
 		},
 		{
-			name: 'Nodes',
+			name: t('NODES'),
 			value: data.name
 		}
 	];

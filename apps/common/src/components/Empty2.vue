@@ -4,7 +4,7 @@
 		:class="{ 'my-empty-container-center': center }"
 	>
 		<span class="empty-content" :class="{ 'empty-content-center': center }">
-			No data available</span
+			{{ $t('NO_DATA_AVAILABLE') }}</span
 		>
 	</div>
 </template>

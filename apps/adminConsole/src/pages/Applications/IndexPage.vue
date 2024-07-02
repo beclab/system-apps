@@ -1,5 +1,5 @@
 <template>
-	<MyCard3 title="Usage Ranking" flat>
+	<MyCard3 :title="$t('USAGE_RANKING')" flat>
 		<template #extra>
 			<div class="row items-center q-gutter-x-md">
 				<Refresh @click="fetchData"></Refresh>
@@ -45,6 +45,7 @@
 				flat
 				binary-state-sort
 				:loading="loading"
+				:rows-per-page-label="$t('RECORDS_PER_PAGE')"
 			>
 				<template v-slot:body="props">
 					<q-tr :props="props" class="my-tr-wrapper">
@@ -77,7 +78,7 @@
 									}}
 								</div>
 								<div class="text-body3 text-ink-3 q-mt-xs">
-									<span>Quota:&nbsp;</span>
+									<span>{{ $t('QUOTA') }}:&nbsp;</span>
 									<span>
 										{{
 											getSuitableValue(
@@ -100,7 +101,7 @@
 							}}
 							<div>
 								<div class="text-body3 text-ink-3 q-mt-xs">
-									<span>Quota:&nbsp;</span>
+									<span>{{ $t('QUOTA') }}&nbsp;</span>
 									<span>{{
 										getSuitableValue(
 											props.row.namespace_memory_limit_hard,
@@ -115,7 +116,7 @@
 							<div>{{ props.row.namespace_pod_count || '-' }}</div>
 							<div>
 								<div class="text-body3 text-ink-3 q-mt-xs">
-									<span>Quota:&nbsp;</span>
+									<span>{{ $t('QUOTA') }}&nbsp;</span>
 									<span>
 										{{ props.row.namespace_pod_count_hard || '-' }}
 									</span>
@@ -187,20 +188,21 @@ import { selectValue } from '@apps/monitoring/src/containers/UserSelect/config';
 import QTableStyle2 from '@packages/ui/src/components/QTableStyle2.vue';
 import MyLoading2 from '@packages/ui/src/components/MyLoading2.vue';
 import Empty3 from '@packages/ui/src/components/Empty3.vue';
-
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 const appDetail = useAppDetailStore();
 
 const columns: any = [
 	{
 		name: 'namespace',
-		label: 'Namespaces',
+		label: t('NAMESPACE'),
 		align: 'left',
 		field: 'namespace',
 		required: true
 	},
 	{
 		name: 'namespace_cpu_usage',
-		label: 'CPU Usage',
+		label: t('CPU_USAGE'),
 		align: 'left',
 		field: 'namespace_cpu_usage',
 		sortable: true,
@@ -208,7 +210,7 @@ const columns: any = [
 	},
 	{
 		name: 'namespace_memory_usage_wo_cache',
-		label: 'Memory Usage',
+		label: t('MEMORY_USAGE'),
 		align: 'left',
 		field: 'namespace_memory_usage_wo_cache',
 		sortable: true,
@@ -216,7 +218,7 @@ const columns: any = [
 	},
 	{
 		name: 'namespace_pod_count',
-		label: 'Pods',
+		label: t('PODS'),
 		align: 'left',
 		field: 'namespace_pod_count',
 		sortable: true,
@@ -224,7 +226,7 @@ const columns: any = [
 	},
 	{
 		name: 'namespace_net_bytes_transmitted',
-		label: 'Outbound Traffic',
+		label: t('OUTBOUND_TRAFFIC'),
 		align: 'left',
 		field: 'namespace_net_bytes_transmitted',
 		sortable: true,
@@ -232,7 +234,7 @@ const columns: any = [
 	},
 	{
 		name: 'namespace_net_bytes_received',
-		label: 'Inbound Traffic',
+		label: t('INBOUND_TRAFFIC'),
 		align: 'left',
 		field: 'namespace_net_bytes_received',
 		sortable: true,
@@ -240,7 +242,7 @@ const columns: any = [
 	}
 ];
 
-const DEFAULT_OPTION = 'All';
+const DEFAULT_OPTION = t('ALL');
 const options2 = ref([DEFAULT_OPTION]);
 const nodeSelected = ref(options2.value[0]);
 const namespaceInNode: any = ref([]);

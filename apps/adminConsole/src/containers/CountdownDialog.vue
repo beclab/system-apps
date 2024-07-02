@@ -3,7 +3,7 @@
 		<q-card style="min-width: 200px">
 			<q-card-section>
 				<p class="text-h6">{{ title }}</p>
-				<p>{{ content }}</p>
+				<p v-html="content"></p>
 			</q-card-section>
 			<q-card-actions align="right">
 				<q-btn

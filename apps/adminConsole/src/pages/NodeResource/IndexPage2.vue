@@ -1,5 +1,5 @@
 <template>
-	<MyCard title="Resources" flat>
+	<MyCard :title="$t('RESOURCE')" flat>
 		<template #extra>
 			<div class="row q-gutter-x-md">
 				<Refresh dense flat icon="sym_r_refresh" @click="init" />

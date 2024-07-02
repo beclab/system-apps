@@ -67,7 +67,7 @@
 							<div class="max-result">
 								<q-input
 									v-model="maxRecordToReturn"
-									:label="t('search.maxRecords')"
+									:label="t('MAX_RECORDS')"
 									dense
 									filled
 									square
@@ -181,7 +181,7 @@ export default defineComponent({
 					name: '@timestamp',
 					field: (row) =>
 						date.formatDate(row['@timestamp'], 'MMM DD, YYYY HH:mm:ss.SSS Z'),
-					label: t('search.timestamp'),
+					label: t('TIMESTAMP'),
 					align: 'left',
 					sortable: true,
 					headerStyle: { whiteSpace: 'nowrap' }
@@ -189,7 +189,7 @@ export default defineComponent({
 				{
 					name: '_source',
 					field: (row) => JSON.stringify(row),
-					label: '_source',
+					label: t('SOURCE'),
 					align: 'left',
 					sortable: true,
 					headerStyle: { whiteSpace: 'nowrap' }
@@ -416,12 +416,11 @@ export default defineComponent({
 						nextTick(() => {
 							searchResult.value = results;
 							resultTotal.value = results.length;
-							resultCount.value =
-								'Found ' +
-								res.data.hits.total.value.toLocaleString() +
-								' hits in ' +
-								res.data.took +
-								' ms';
+							resultCount.value = t('FOUND_HITS', {
+								count: res.data.hits.total.value.toLocaleString(),
+								time: res.data.took
+							});
+
 							searchLoading.value = false;
 
 							// rerender the chart

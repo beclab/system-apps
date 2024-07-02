@@ -1,8 +1,8 @@
 import { ref } from 'vue';
-
+import { t } from 'src/boot/i18n';
 export const initOptions = [
 	{
-		label: 'All',
+		label: t('ALL'),
 		value: ''
 	}
 ];

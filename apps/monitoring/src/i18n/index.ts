@@ -1,5 +1,6 @@
 import enUS from './en-US';
+import kubeEnUS from '@packages/ui/src/i18n';
 
 export default {
-	'en-US': enUS
+	'en-US': { ...kubeEnUS['en-US'], ...enUS }
 };

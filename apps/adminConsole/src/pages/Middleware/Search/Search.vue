@@ -16,6 +16,7 @@
 					:loading="loading"
 					:rows-per-page-options="rowsPerPageOptions"
 					@request="onRequest"
+					:rows-per-page-label="$t('RECORDS_PER_PAGE')"
 				>
 					<template v-slot:body-cell-actions="scope">
 						<q-td class="text-center">
@@ -30,7 +31,7 @@
 									anchor="top middle"
 									self="bottom middle"
 									:offset="[10, 10]"
-									>Mappings</q-tooltip
+									>{{ $t('MAPPINGS') }}</q-tooltip
 								>
 							</q-btn>
 							<q-btn
@@ -44,7 +45,7 @@
 									anchor="top middle"
 									self="bottom middle"
 									:offset="[10, 10]"
-									>Search</q-tooltip
+									>{{ $t('SEARCH') }}</q-tooltip
 								>
 							</q-btn>
 						</q-td>
@@ -105,41 +106,41 @@ const columns: any = [
 	{
 		name: 'name',
 		field: (row: Record<string, any>) => row.name,
-		label: 'NAME',
+		label: t('NAME'),
 		align: 'left',
 		sortable: true
 	},
 	{
 		name: 'doc_num',
 		field: (row: Record<string, any>) => row.doc_num,
-		label: 'DOC_NUM',
+		label: t('DOC_NUM'),
 		align: 'left',
 		sortable: true
 	},
 	{
 		name: 'shard_num',
 		field: (row: Record<string, any>) => row.shard_num,
-		label: 'SHARD_NUM',
+		label: t('SHARD_NUM'),
 		align: 'left',
 		sortable: true
 	},
 	{
 		name: 'storage_size',
 		field: (row: Record<string, any>) => row.storage_size,
-		label: 'STORAGE_SIZE',
+		label: t('STORAGE_SIZE'),
 		align: 'left',
 		sortable: true
 	},
 	{
 		name: 'storage_type',
 		field: (row: Record<string, any>) => row.storage_type,
-		label: 'STORAGE_TYPE',
+		label: t('STORAGE_TYPE'),
 		align: 'left'
 	},
 	{
 		name: 'actions',
 		field: (row: Record<string, any>) => row.actions,
-		label: 'ACTIONS',
+		label: t('ACTIONS'),
 		align: 'center'
 	}
 ];

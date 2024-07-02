@@ -24,6 +24,7 @@
 import { onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useSplitMenu } from '@packages/ui/src/stores/menu';
+import { useI18n } from 'vue-i18n';
 import {
 	updateBreadcrumbs,
 	options,
@@ -32,22 +33,24 @@ import {
 	options2,
 	options3
 } from './breadcrumbs';
+const { t } = useI18n();
+
 const splitMenu = useSplitMenu();
 
 const items = [
 	{
 		key: 'terminus',
-		label: 'Terminus',
+		label: t('TERMINUS'),
 		children: options
 	},
 	{
 		key: 'resource',
-		label: 'Resource',
+		label: t('RESOURCE'),
 		children: options2
 	},
 	{
 		key: 'middleware',
-		label: 'Middleware',
+		label: t('MIDDLEWARE'),
 		children: options3
 	}
 ];

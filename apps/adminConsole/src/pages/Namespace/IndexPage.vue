@@ -14,9 +14,9 @@
 					narrow-indicator
 				>
 					<q-tab :ripple="false" content-class="tabs-content-wrapper" :name="1">
-						Usage Ranking
+						{{ $t('USAGE_RANKING') }}
 					</q-tab>
-					<q-tab :ripple="false" :name="2"> Resources </q-tab>
+					<q-tab :ripple="false" :name="2">{{ $t('RESOURCE') }}</q-tab>
 				</q-tabs>
 			</template>
 		</MenuHeader>

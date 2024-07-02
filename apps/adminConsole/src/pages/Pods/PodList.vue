@@ -1,5 +1,5 @@
 <template>
-	<MyCard3 title="Pod List">
+	<MyCard3 :title="$t('POD_LIST')">
 		<template #extra>
 			<div class="row items-center q-gutter-x-md">
 				<Refresh @click="fetchData"></Refresh>
@@ -43,6 +43,7 @@
 				flat
 				binary-state-sort
 				:loading="loading"
+				:rows-per-page-label="$t('RECORDS_PER_PAGE')"
 			>
 				<template v-slot:body="props">
 					<q-tr :props="props" class="text-body2">
@@ -65,7 +66,9 @@
 						<q-td key="status" :props="props">
 							<div class="row items-center no-wrap">
 								<MyBadge :type="props.row.podStatus.type"></MyBadge>
-								<span class="q-ml-sm">{{ props.row.podStatus.status }}</span>
+								<span class="q-ml-sm">{{
+									$t(props.row.podStatus.status.toUpperCase())
+								}}</span>
 							</div>
 						</q-td>
 						<q-td key="node" :props="props">
@@ -116,7 +119,7 @@
 import { computed, onBeforeUnmount, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { deletePod, getPodsList } from 'src/network';
-import { get, isEmpty, omitBy } from 'lodash';
+import { get, isEmpty, omitBy, snakeCase, upperCase } from 'lodash';
 import { UsePod } from '@packages/ui/src/stores/PodData';
 import { useSplitMenu } from '@packages/ui/src/stores/menu';
 import podIcon from '@packages/ui/src/assets/pod.svg';
@@ -125,7 +128,6 @@ import MyBadge from '@packages/ui/src/components/MyBadge.vue';
 import { date } from 'quasar';
 import QTableStyle2 from '@packages/ui/src/components/QTableStyle2.vue';
 import MyCard3 from '@packages/ui/src/components/MyCard3.vue';
-import { t } from 'src/boot/i18n';
 import QInputStyle from '@packages/ui/src/components/QInputStyle.vue';
 import Refresh from '@packages/ui/src/components/Refresh.vue';
 import NodeSelect from '@apps/monitoring/src/containers/NodeSelect/IndexPage.vue';
@@ -136,8 +138,9 @@ import Yaml from 'src/pages/Pods/Yaml.vue';
 import DeleteDialog from '@packages/ui/src/components/DeleteDialog.vue';
 import { useQuasar } from 'quasar';
 import MyLoading2 from '@packages/ui/src/components/MyLoading2.vue';
+import { useI18n } from 'vue-i18n';
 const $q = useQuasar();
-
+const { t } = useI18n();
 const options = [
 	{
 		label: t('VIEW_YAML'),
@@ -161,31 +164,31 @@ const options = [
 const columns: any = [
 	{
 		name: 'name',
-		label: 'Name',
+		label: t('NAME'),
 		align: 'left',
 		field: 'name'
 	},
 	{
 		name: 'status',
-		label: 'States',
+		label: t('STATES'),
 		align: 'left',
 		field: 'status'
 	},
 	{
 		name: 'node',
-		label: 'Node',
+		label: t('NODE'),
 		align: 'left',
 		field: 'node'
 	},
 	{
 		name: 'podIp',
-		label: 'Pod IP address',
+		label: t('POD_IP_ADDRESS_SCAP'),
 		align: 'left',
 		field: 'podIp'
 	},
 	{
 		name: 'createTime',
-		label: 'Creation Time',
+		label: t('CREATION_TIME'),
 		align: 'left',
 		field: 'createTime',
 		sortable: true,
@@ -193,7 +196,7 @@ const columns: any = [
 	},
 	{
 		name: 'operations',
-		label: 'Operations',
+		label: t('OPERATIONS'),
 		align: 'center',
 		field: 'status'
 	}

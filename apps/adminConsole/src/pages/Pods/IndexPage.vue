@@ -14,9 +14,9 @@
 					narrow-indicator
 				>
 					<q-tab :ripple="false" content-class="tabs-content-wrapper" :name="1">
-						Pod List
+						{{ $t('POD_LIST') }}
 					</q-tab>
-					<q-tab :ripple="false" :name="2"> Resources </q-tab>
+					<q-tab :ripple="false" :name="2">{{ $t('RESOURCE') }}</q-tab>
 				</q-tabs>
 			</template>
 		</MenuHeader>

@@ -3,7 +3,7 @@
 		<FullPageWithBack :title="namespace">
 			<div class="q-gutter-y-xl">
 				<q-card flat>
-					<MyTitle size="lg">Quota</MyTitle>
+					<MyTitle size="lg">{{ $t('QUOTA') }}</MyTitle>
 					<Quota class="q-mt-sm"></Quota>
 				</q-card>
 				<q-card class="my-card" flat>
@@ -96,22 +96,22 @@ import QSectionStyle from '@packages/ui/src/components/QSectionStyle.vue';
 
 const options = [
 	{
-		label: 'Sort by memory usage',
+		label: t('SORT_BY_NODE_MEMORY_UTILISATION'),
 		value: 'pod_memory_usage_wo_cache',
 		sortBy: 'memory_usage_wo_cache'
 	},
 	{
-		label: 'Sort by CPU usage',
+		label: t('SORT_BY_NODE_CPU_UTILISATION'),
 		value: 'pod_cpu_usage',
 		sortBy: 'cpu_usage'
 	},
 	{
-		label: 'Sort by inbound traffic',
+		label: t('SORT_BY_INBOUND_TRAFFIC'),
 		value: 'pod_net_bytes_received',
 		sortBy: 'net_bytes_received'
 	},
 	{
-		label: 'Sort by outbound traffic',
+		label: t('SORT_BY_OUTBOUND_TRAFFIC'),
 		value: 'pod_net_bytes_transmitted',
 		sortBy: 'net_bytes_transmitted'
 	}

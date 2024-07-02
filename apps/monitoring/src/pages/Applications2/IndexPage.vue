@@ -64,7 +64,7 @@
 					<div class="row items-center" v-if="item.state">
 						<MyBadge :type="$t('RUNNING')"></MyBadge>
 						<span class="text-subtitle3 text-ink-2 q-ml-sm">{{
-							capitalize(item.state)
+							$t(item.state.toUpperCase())
 						}}</span>
 					</div>
 				</div>

@@ -29,7 +29,7 @@
 			</defs>
 		</svg>
 		<div class="q-mt-lg text-body3 text-grey-8">
-			Some important process is in progress. Please wait...
+			{{ $t('PROGRESS_WAIT') }}
 		</div>
 	</div>
 </template>

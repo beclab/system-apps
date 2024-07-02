@@ -124,8 +124,9 @@ import { useQuasar } from 'quasar';
 import QTableStyle2 from '@packages/ui/src/components/QTableStyle2.vue';
 import DeleteDialog from '@packages/ui/src/components/DeleteDialog.vue';
 import MyLoading2 from '@packages/ui/src/components/MyLoading2.vue';
+import { useI18n } from 'vue-i18n';
 const $q = useQuasar();
-
+const { t } = useI18n();
 const options = [
 	{
 		label: t('EDIT_YAML'),
@@ -150,26 +151,26 @@ const columns: any = computed(() => {
 	const data = [
 		{
 			name: 'name',
-			label: 'Name',
+			label: t('NAME'),
 			align: 'left',
 			field: 'name',
 			required: true
 		},
 		{
 			name: 'namespace',
-			label: 'Namespace',
+			label: t('NAMESPACE'),
 			align: 'left',
 			field: 'namespace'
 		},
 		{
 			name: 'createTime',
-			label: 'Creation Time',
+			label: t('CREATED_TIME'),
 			align: 'left',
 			field: 'createTime'
 		},
 		{
 			name: 'Operations',
-			label: 'Operations',
+			label: t('OPERATIONS'),
 			align: 'center',
 			field: 'name'
 		}

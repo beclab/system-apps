@@ -6,7 +6,7 @@
 					<q-input
 						v-model="searchQuery"
 						data-cy="search-bar-input"
-						:placeholder="t('search.typeSearch')"
+						:placeholder="t('TYPE_SEARCH')"
 						dense
 						outlined
 						type="search"

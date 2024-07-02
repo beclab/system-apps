@@ -1,5 +1,5 @@
 <template>
-	<div class="row q-col-gutter-x-lg">
+	<div class="row q-gutter-x-lg">
 		<InfoCardItem
 			v-for="item in clusterOptions"
 			:key="item.name"
@@ -9,6 +9,7 @@
 			:unit-type="item.unitType"
 			:img="item.img"
 			:icon="item.icon"
+			class="quota-wrapper"
 		></InfoCardItem>
 	</div>
 </template>
@@ -60,4 +61,9 @@ watch(
 );
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.quota-wrapper {
+	border: 1px solid $separator;
+	border-radius: 8px;
+}
+</style>

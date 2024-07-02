@@ -56,27 +56,29 @@ import {
 	getPosdListFormatter
 } from '@packages/ui/src/containers/PodsList/config';
 import podIcon from '@packages/ui/src/assets/pod.svg';
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const PodListData = usePodList();
 
 const router = useRouter();
 const data = [
 	{
-		label: 'Deployments',
+		label: t('DEPLOYMENT_PL'),
 		kind: 'Deployment',
 		value: 'deployments',
 		icon: hddRack,
 		activeIcon: hddRackLight
 	},
 	{
-		label: 'Statefulsets',
+		label: t('STATEFULSETS_PL'),
 		kind: 'StatefulSet',
 		value: 'statefulsets',
 		icon: collectionPlay,
 		activeIcon: collectionPlayLight
 	},
 	{
-		label: 'Daemonsets',
+		label: t('DAEMONSET_PL'),
 		kind: 'Daemonset',
 		value: 'daemonsets',
 		icon: menuButtonWide,

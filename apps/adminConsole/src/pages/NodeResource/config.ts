@@ -15,6 +15,7 @@ import hard_drive_icon_dark from '@apps/monitoring/src/assets/hard_drive-dark.sv
 import package_2_active_icon from '@apps/monitoring/src/assets/package_2_active.svg';
 import package_2_icon from '@apps/monitoring/src/assets/package_2.svg';
 import package_2_icon_dark from '@apps/monitoring/src/assets/package_2-dark.svg';
+import { t } from 'src/boot/i18n';
 
 const resourceName_ = 'resource_name';
 
@@ -43,28 +44,28 @@ export const getTabOptions = (
 	const lastData: { [key: string]: any } = getLastMonitoringData(data);
 	const result = [
 		{
-			name: 'CPU',
+			name: t('CPU'),
 			unitType: 'cpu',
 			used: getValue(lastData[MetricTypes.cpu_usage]),
 			total: getValue(lastData[MetricTypes.cpu_total]),
 			img: isDark ? memory_icon_dark : memory_icon
 		},
 		{
-			name: 'MEMORY',
+			name: t('MEMORY'),
 			unitType: 'memory',
 			used: getValue(lastData[MetricTypes.memory_usage]),
 			total: getValue(lastData[MetricTypes.memory_total]),
 			img: isDark ? memory_alt_icon_dark : memory_alt_icon
 		},
 		{
-			name: 'DISK',
+			name: t('DISK'),
 			unitType: 'disk',
 			used: getValue(lastData[MetricTypes.disk_size_usage]),
 			total: getValue(lastData[MetricTypes.disk_size_capacity]),
 			img: isDark ? hard_drive_icon_dark : hard_drive_icon
 		},
 		{
-			name: 'PODS',
+			name: t('PODS'),
 			unit: '',
 			used: getValue(lastData[MetricTypes.pod_count]),
 			total: getValue(lastData[MetricTypes.pod_capacity]),
@@ -84,21 +85,21 @@ export const getTabOptions3 = (
 	const lastData: { [key: string]: any } = getLastMonitoringData(data);
 	const result = [
 		{
-			name: 'CPU',
+			name: t('CPU'),
 			unitType: 'cpu',
 			used: getValue(lastData[MetricTypes.cpu_usage]),
 			total: getValue(lastData[MetricTypes.cpu_total]),
 			img: isDark ? memory_icon_dark : memory_icon
 		},
 		{
-			name: 'MEMORY',
+			name: t('MEMORY'),
 			unitType: 'memory',
 			used: getValue(lastData[MetricTypes.memory_usage]),
 			total: getValue(lastData[MetricTypes.memory_total]),
 			img: isDark ? memory_alt_icon_dark : memory_alt_icon
 		},
 		{
-			name: 'PODS',
+			name: t('PODS'),
 			unit: '',
 			used: getValue(lastData[MetricTypes.pod_count]),
 			total: getValue(lastData[MetricTypes.pod_capacity]),
@@ -117,31 +118,31 @@ export const getContentOptions = (
 	const result = [
 		{
 			type: 'utilisation',
-			title: 'CPU_USAGE',
+			title: t('CPU_USAGE'),
 			unit: '%',
-			legend: ['USAGE'],
+			legend: [t('USAGE')],
 			data: [get(data, `${MetricTypes.cpu_utilisation}.data.result[${index}]`)]
 		},
 		{
 			type: 'utilisation',
-			title: 'MEMORY_USAGE',
+			title: t('MEMORY_USAGE'),
 			unit: '%',
-			legend: ['USAGE'],
+			legend: [t('USAGE')],
 			data: [
 				get(data, `${MetricTypes.memory_utilisation}.data.result[${index}]`)
 			]
 		},
 		{
 			type: 'utilisation',
-			title: 'DISK_USAGE',
+			title: t('DISK_USAGE'),
 			unit: '%',
-			legend: ['USAGE'],
+			legend: [t('USAGE')],
 			data: [get(data, `${MetricTypes.disk_utilisation}.data.result[${index}]`)]
 		},
 		{
-			title: 'PODS',
+			title: t('PODS'),
 			unit: '',
-			legend: ['COUNT'],
+			legend: [t('COUNT')],
 			data: [get(data, `${MetricTypes.pod_count}.data.result[${index}]`)],
 			img: package_2_icon,
 			img_active: package_2_active_icon
@@ -159,24 +160,24 @@ export const getContentOptions3 = (
 	const result = [
 		{
 			type: 'utilisation',
-			title: 'CPU_USAGE',
+			title: t('CPU_USAGE'),
 			unit: '%',
-			legend: ['USAGE'],
+			legend: [t('USAGE')],
 			data: [get(data, `${MetricTypes.cpu_utilisation}.data.result[${index}]`)]
 		},
 		{
 			type: 'utilisation',
-			title: 'MEMORY_USAGE',
+			title: t('MEMORY_USAGE'),
 			unit: '%',
-			legend: ['USAGE'],
+			legend: [t('USAGE')],
 			data: [
 				get(data, `${MetricTypes.memory_utilisation}.data.result[${index}]`)
 			]
 		},
 		{
-			title: 'PODS',
+			title: t('PODS'),
 			unit: '',
-			legend: ['COUNT'],
+			legend: [t('COUNT')],
 			data: [get(data, `${MetricTypes.pod_count}.data.result[${index}]`)],
 			img: package_2_icon,
 			img_active: package_2_active_icon

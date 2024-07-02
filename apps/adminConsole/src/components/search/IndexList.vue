@@ -7,7 +7,7 @@
 			dense
 			use-input
 			input-debounce="0"
-			:label="t('search.selectIndex')"
+			:label="t('SELECT_INDEX')"
 			behavior="menu"
 			class="q-mt-md q-mb-sm"
 			@filter="filterFn"
@@ -16,7 +16,7 @@
 			<template #no-option>
 				<q-item>
 					<q-item-section class="text-grey">
-						{{ t('search.noResult') }}</q-item-section
+						{{ t('NO_RESULT') }}</q-item-section
 					>
 				</q-item>
 			</template>
@@ -30,7 +30,7 @@
 					outlined
 					clearable
 					debounce="1"
-					:placeholder="t('search.searchField')"
+					:placeholder="t('SEARCH_FIELD')"
 				>
 					<template #prepend>
 						<q-icon name="search" />

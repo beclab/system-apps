@@ -48,7 +48,7 @@
 					</template>
 					<template #subTitle>
 						<template v-if="reason">
-							{{ t(reason) }}
+							{{ t(reason.toUpperCase()) }}
 						</template>
 						<template v-else>
 							{{ t('IMAGE_VALUE', { value: container.image }) }}
@@ -60,7 +60,7 @@
 				<div class="row no-wrap q-col-gutter-md">
 					<div class="col-2">
 						<ListItem size="sm" icon-size="lg">
-							<template #title>{{ capitalize(status) }}</template>
+							<template #title>{{ $t(status.toUpperCase()) }}</template>
 							<template #subTitle>{{ t('STATUS') }}</template>
 						</ListItem>
 					</div>

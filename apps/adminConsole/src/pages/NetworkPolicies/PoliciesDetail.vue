@@ -146,7 +146,7 @@ const columns: any = [
 	{
 		name: 'namespace',
 		required: true,
-		label: t('Target Project'),
+		label: t('TARGET_PROJECT'),
 		align: 'left',
 		field: 'namespace'
 	},
@@ -164,7 +164,7 @@ const columns: any = [
 	},
 	{
 		name: 'namespaceSelector',
-		label: t('Destination Project'),
+		label: t('DESTINATION_PROJECT'),
 		align: 'left',
 		field: 'namespaceSelector'
 	},
@@ -176,7 +176,7 @@ const columns: any = [
 	},
 	{
 		name: 'ipBlock',
-		label: 'CIDR',
+		label: t('CIDR'),
 		align: 'left',
 		field: 'ipBlock'
 	},

@@ -167,17 +167,17 @@ const getMonitoringCfgs = computed(() => {
 	const data = [
 		{
 			type: 'cpu',
-			title: 'CPU',
+			title: t('CPU'),
 			unitType: 'cpu',
-			legend: ['USED'],
+			legend: [t('USED')],
 			data: [props.metrics.cpu],
 			bgColor: 'transparent'
 		},
 		{
 			type: 'memory',
-			title: 'MEMORY',
+			title: t('MEMORY'),
 			unitType: 'memory',
-			legend: ['USED'],
+			legend: [t('USED')],
 			data: [props.metrics.memory],
 			bgColor: 'transparent'
 		}

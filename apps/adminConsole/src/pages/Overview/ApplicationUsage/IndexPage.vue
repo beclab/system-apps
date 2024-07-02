@@ -71,7 +71,7 @@
 								}}
 							</div>
 							<div class="usage-rangking-cell-sub">
-								<span>Quota:&nbsp;</span>
+								<span>{{ $t('QUOTA') }}:&nbsp;</span>
 								<span>
 									{{
 										getSuitableValue(
@@ -94,7 +94,7 @@
 						}}
 						<div>
 							<div class="usage-rangking-cell-sub">
-								<span>Quota:&nbsp;</span>
+								<span>{{ $t('QUOTA') }}:&nbsp;</span>
 								<span>{{
 									getSuitableValue(
 										props.row.namespace_memory_limit_hard,
@@ -109,7 +109,7 @@
 						<div>{{ props.row.namespace_pod_count || '-' }}</div>
 						<div>
 							<div class="usage-rangking-cell-sub">
-								<span>Quota:&nbsp;</span>
+								<span>{{ $t('QUOTA') }}:&nbsp;</span>
 								<span>
 									{{ props.row.namespace_pod_count_hard || '-' }}
 								</span>
@@ -161,26 +161,27 @@ import saveAs from 'file-saver';
 import MyLoading from 'src/components/MyLoading.vue';
 import QSectionStyle from 'src/components/QSectionStyle.vue';
 import Empty from '@packages/ui/src/components/Empty2.vue';
-
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 const options = [
 	{
-		label: 'Sort by CPU usage',
+		label: t('SORT_BY_NODE_CPU_UTILISATION'),
 		value: 'namespace_cpu_usage'
 	},
 	{
-		label: 'Sort by memory usage',
+		label: t('SORT_BY_NODE_MEMORY_UTILISATION'),
 		value: 'namespace_memory_usage_wo_cache'
 	},
 	{
-		label: 'Sort by pod count',
+		label: t('SORT_BY_NAMESPACE_POD_COUNT'),
 		value: 'namespace_pod_count'
 	},
 	{
-		label: 'Sort by inbound traffic',
+		label: t('SORT_BY_INBOUND_TRAFFIC'),
 		value: 'namespace_net_bytes_received'
 	},
 	{
-		label: 'Sort by outbound traffic',
+		label: t('SORT_BY_OUTBOUND_TRAFFIC'),
 		value: 'namespace_net_bytes_transmitted'
 	}
 ];
