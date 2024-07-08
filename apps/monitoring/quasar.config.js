@@ -32,7 +32,7 @@ module.exports = configure(function (ctx) {
 		// app boot file (/src/boot)
 		// --> boot files are part of "main.js"
 		// https://v2.quasar.dev/quasar-cli-webpack/boot-files
-		boot: ['i18n', 'axios', 'element-plus', 'bytetrade-ui'],
+		boot: ['i18n', 'axios', 'bytetrade-ui'],
 
 		// https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-css
 		css: ['app.scss', ctx.dev ? 'font.pro.scss' : 'font.pro.scss'],
@@ -68,7 +68,31 @@ module.exports = configure(function (ctx) {
 			// preloadChunks: true,
 			// showProgress: false,
 			// gzip: true,
-			analyze: false
+			analyze: true,
+			chainWebpack(chain) {
+				chain.optimization.splitChunks({
+					chunks: 'all', // The type of chunk that requires code segmentation
+					minSize: 20000, // Minimum split file size
+					minRemainingSize: 0, // Minimum remaining file size after segmentation
+					minChunks: 1, // The number of times it has been referenced before it is split
+					maxAsyncRequests: 30, // Maximum number of asynchronous requests
+					maxInitialRequests: 30, // Maximum number of initialization requests
+					enforceSizeThreshold: 50000,
+					cacheGroups: {
+						// Cache Group configuration
+						defaultVendors: {
+							test: /[\\/]node_modules[\\/]/,
+							priority: -10,
+							reuseExistingChunk: true
+						},
+						default: {
+							minChunks: 2,
+							priority: -20,
+							reuseExistingChunk: true // Reuse the chunk that has been split
+						}
+					}
+				});
+			},
 
 			// Options below are automatically set depending on the env, set them if you want to override
 			// extractCSS: false,
