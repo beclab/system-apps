@@ -11,7 +11,7 @@
     "@jridgewell/trace-mapping" "^0.3.24"
 
 "@apps/monitoring@../monitoring":
-  version "0.2.17"
+  version "0.2.18"
   dependencies:
     "@apps/nodes" "../nodes"
     "@bytetrade/ui" "^0.1.12"
