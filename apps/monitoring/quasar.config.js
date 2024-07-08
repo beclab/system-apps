@@ -68,7 +68,7 @@ module.exports = configure(function (ctx) {
 			// preloadChunks: true,
 			// showProgress: false,
 			// gzip: true,
-			analyze: true,
+			analyze: false,
 			chainWebpack(chain) {
 				chain.optimization.splitChunks({
 					chunks: 'all', // The type of chunk that requires code segmentation

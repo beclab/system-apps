@@ -69,7 +69,7 @@ module.exports = configure(function (ctx) {
 			// preloadChunks: true,
 			// showProgress: false,
 			// gzip: true,
-			analyze: true,
+			analyze: false,
 			chainWebpack(config) {
 				config.resolve.symlinks(false);
 				config.resolve.alias.set('vue', path.resolve('./node_modules/vue'));
