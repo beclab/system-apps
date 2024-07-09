@@ -80,12 +80,6 @@ export const options3 = [
 		label: t('REDIS'),
 		icon: 'sym_r_monitor_heart',
 		link: '/site-middleware/db/redis'
-	},
-	{
-		key: 'Zinc',
-		label: t('ZINC'),
-		icon: 'sym_r_newsmode',
-		link: '/site-middleware/search/zinc'
 	}
 ];
 

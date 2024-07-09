@@ -167,10 +167,6 @@ const routes: RouteRecordRaw[] = [
 					{
 						path: '/site-middleware/db/:type',
 						component: () => import('src/pages/Middleware/Overview.vue')
-					},
-					{
-						path: '/site-middleware/search/:type',
-						component: () => import('src/pages/Middleware/Search/Search.vue')
 					}
 				]
 			}

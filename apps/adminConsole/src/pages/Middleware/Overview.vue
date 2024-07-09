@@ -1,6 +1,5 @@
 <template>
 	<MyPage2>
-		<Empty v-if="!currentData && !loading" center size="large"></Empty>
 		<MyCard flat :title="t('DETAILS')">
 			<DetailPage :data="details" colWidth="240px">
 				<!-- <template v-slot:Password="data">
@@ -15,6 +14,7 @@
           </div>
         </template> -->
 			</DetailPage>
+			<Empty v-if="!details.length && !loading"></Empty>
 		</MyCard>
 		<MyCard no-content-gap flat :title="t('Database')">
 			<QTableStyle>
@@ -92,7 +92,6 @@
 </template>
 
 <script setup lang="ts">
-import { t } from 'src/boot/i18n';
 import { computed, reactive, ref, watch } from 'vue';
 import DetailPage from '@packages/ui/src/containers/DetailPage.vue';
 import MyCard from '@packages/ui/src/components/MyCard2.vue';
@@ -273,8 +272,8 @@ const fetchData = () => {
 	const { type: middleware }: Record<string, any> = route.params;
 	Promise.all([getMiddlewareList(middleware), getMiddlewareAll()])
 		.then(([middleWareList, databaseList]) => {
-			const target: any = middleWareList.data.data[0];
-			if (target) {
+			try {
+				const target: any = middleWareList?.data?.data[0];
 				const databases = databaseList.data.data.filter((child: any) =>
 					middleware !== 'redis'
 						? child.type === middleware
@@ -284,6 +283,8 @@ const fetchData = () => {
 					...target,
 					databases
 				};
+			} catch (error) {
+				currentData.value = undefined;
 			}
 		})
 		.finally(() => {

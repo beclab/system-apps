@@ -1,4 +1,4 @@
-export type MiddlewareType = 'postgres' | 'mongodb' | 'redis' | 'zinc';
+export type MiddlewareType = 'postgres' | 'mongodb' | 'redis';
 
 export interface MiddlewareItem {
 	name: string;

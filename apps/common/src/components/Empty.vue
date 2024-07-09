@@ -5,7 +5,7 @@
 	>
 		<div class="empty-content" :class="{ 'empty-content-center': center }">
 			<img :class="emptyLogoZize" :src="emptyIcon" alt="" />
-			<div style="font-size: 12px">
+			<div style="font-size: 12px" class="text-ink-2">
 				{{ text ? text : $t('NO_DATA_AVAILABLE') }}
 			</div>
 		</div>

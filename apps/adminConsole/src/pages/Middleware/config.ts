@@ -19,12 +19,5 @@ export const subSystemList = [
 		link: '/redis',
 		key: 'redis',
 		change: true
-	},
-	{
-		name: 'Search',
-		icon: 'img:/imgs/root/user_management.svg',
-		link: '/search',
-		key: 'zinc',
-		change: true
 	}
 ];

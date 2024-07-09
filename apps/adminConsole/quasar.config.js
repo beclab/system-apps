@@ -160,11 +160,6 @@ module.exports = configure(function (ctx) {
 					changeOrigin: true,
 					secure: false
 				},
-				'/zinc_search': {
-					target: `https://${proxyTarget}`,
-					changeOrigin: true,
-					secure: false
-				}
 			},
 			port: 8080
 		},

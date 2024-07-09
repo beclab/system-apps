@@ -11,7 +11,6 @@ const options = {
 	POSTGRES: 'Postgres',
 	MONGO_DB: 'MongoDB',
 	REDIS: 'Redis',
-	ZINC: 'Zinc',
 	RECORDS_PER_PAGE: 'Records per page',
 	TARGET_PROJECT: 'Target Project',
 	DESTINATION_PROJECT: 'Destination Project',
