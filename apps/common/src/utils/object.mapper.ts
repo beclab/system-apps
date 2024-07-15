@@ -1,4 +1,4 @@
-import { get, isEmpty, omit } from 'lodash';
+import { get, includes, isEmpty, omit } from 'lodash';
 import moment from 'moment-mini';
 import { t } from 'src/boot/i18n';
 import {
@@ -466,6 +466,21 @@ const RevisionMapper = (item: any) => {
 	};
 };
 
+const StorageclasscapabilitiesMapper = (item: any) => {
+	const { metadata, spec } = item;
+	const volumeFeature = get(spec, 'features.volume');
+	return {
+		metadata,
+		spec,
+		snapshotFeature: get(spec, 'features.snapshot'),
+		volumeFeature,
+		supportExpandVolume: includes(
+			['OFFLINE', 'ONLINE'],
+			volumeFeature.expandMode
+		)
+	};
+};
+
 export const ObjectMapper = {
 	pods: PodsMapper,
 	endpoints: EndpointMapper,
@@ -484,7 +499,9 @@ export const ObjectMapper = {
 	statefulsets: WorkLoadMapper,
 	workLoadMapper: WorkLoadMapper,
 	volumes: VolumeMapper,
+	persistentvolumeclaims: VolumeMapper,
 	nodes: NodeMapper,
 	jobs: JobMapper,
-	revisions: RevisionMapper
+	revisions: RevisionMapper,
+	storageclasscapabilities: StorageclasscapabilitiesMapper
 };

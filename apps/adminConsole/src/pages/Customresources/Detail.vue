@@ -2,7 +2,7 @@
 	<MyContentPage>
 		<MyPage2>
 			<MyCar4 :title="t('Details')">
-				<DetailPage :data="details" class="q-mt-lg"></DetailPage>
+				<DetailPage :data="attrs" class="q-mt-lg"></DetailPage>
 			</MyCar4>
 			<MyCar4 :title="t('Custom Resource')">
 				<template #extra>
@@ -84,11 +84,12 @@
 		:namespace="currentNamespace"
 		:originData="currentYamlData._originData"
 		@hide="hideHandler"
+		@change="fetchData"
 	>
 	</Yaml2>
 	<DeleteDialog
-		title="Delete Custom Resource"
-		desc="custom resource"
+		:title="`${$t('DELETE')} ${$t('CUSTOM_RESOURCE')}`"
+		:desc="$t('CUSTOM_RESOURCE_LOW')"
 		:name="currentYamlData.name"
 		:loading="deleteLoading"
 		ref="deleteDialogRef"
@@ -109,7 +110,6 @@ import {
 import { DefaultMapper, ObjectMapper } from 'src/utils/object.mapper';
 import MyPage2 from '@packages/ui/src/containers/MyPage2.vue';
 import MyContentPage from 'src/components/MyContentPage.vue';
-import { t } from 'src/boot/i18n';
 import { date } from 'quasar';
 import { get, isEmpty } from 'lodash';
 import DetailPage from '@packages/ui/src/containers/DetailPage.vue';
@@ -119,7 +119,6 @@ import QInputStyle from '@packages/ui/src/components/QInputStyle.vue';
 import Empty3 from '@packages/ui/src/components/Empty3.vue';
 import MoreSelection from '@packages/ui/src/components/MoreSelection.vue';
 import Yaml2 from '../NamespacePods/Yaml2.vue';
-import MyQDialog2 from '@packages/ui/src/components/MyQDialog2.vue';
 import { useQuasar } from 'quasar';
 import QTableStyle2 from '@packages/ui/src/components/QTableStyle2.vue';
 import DeleteDialog from '@packages/ui/src/components/DeleteDialog.vue';
@@ -188,12 +187,17 @@ const list = ref();
 const loading = ref(false);
 const deleteLoading = ref(false);
 const details = ref();
+const attrs = ref();
 const name = ref();
 const route = useRoute();
-
-const apiVersion = computed(() =>
-	get(currentYamlData.value, '_originData.apiVersion')
-);
+//
+const apiVersion = computed(() => {
+	if (!details.value) {
+		return '';
+	}
+	const { group, latestVersion } = details.value;
+	return `${group}/${latestVersion}`;
+});
 
 const currentName = computed(() => get(currentYamlData.value, 'name'));
 const currentNamespace = computed(() =>
@@ -243,33 +247,24 @@ const refreshHandler = () => {
 };
 
 const confirmHandler = async () => {
-	const { group, version, module }: { [key: string]: any } = route.params;
+	const { module, name, namespace } = details.value;
+
 	deleteLoading.value = true;
-	const originData = currentYamlData.value._originData;
 	let params = {};
-	let fn = deleteCustomResources;
-	if (originData.kind === 'Application') {
-		params = {
-			apiVersion: originData.apiVersion,
-			name: currentYamlData.value.name
-		};
-		fn = deleteCustomApplications;
-	} else {
-		params = {
-			apiVersion: originData.apiVersion,
-			namespaces: currentYamlData.value.namespace,
-			module: module,
-			name: currentYamlData.value.name
-		};
-		let fn = deleteCustomResources;
-	}
+	params = {
+		apiVersion: apiVersion.value,
+		namespaces: currentYamlData.value.namespace,
+		module: module,
+		name: currentYamlData.value.name
+		// cluster: 'default'
+	};
 	try {
-		const res = await fn(params);
+		const res = await deleteCustomResources(params);
 		deleteLoading.value = false;
 		deleteDialogRef.value && deleteDialogRef.value.hide();
 		$q.notify({
 			type: 'positive',
-			message: res.data.status
+			message: t('DELETED_SUCCESSFULLY')
 		});
 		fetchData();
 	} catch (error) {
@@ -277,7 +272,7 @@ const confirmHandler = async () => {
 
 		$q.notify({
 			type: 'negative',
-			message: error
+			message: JSON.stringify(error)
 		});
 	}
 };
@@ -339,7 +334,8 @@ const fetchDetails = () => {
 	const type = `${module}.${group}`;
 	getCustomresourcedefinitions(type).then((res) => {
 		const result = ObjectMapper.customresourcedefinitions(res.data);
-		details.value = getAttrs(result);
+		details.value = result;
+		attrs.value = getAttrs(result);
 	});
 };
 

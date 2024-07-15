@@ -1,5 +1,5 @@
 <template>
-	<MyQDialog2 v-bind="$attrs" v-model="visible">
+	<MyQDialog2 v-bind="$attrs" v-model="visible" @before-hide="beforeHide">
 		<div style="width: 400px" class="q-gutter-y-md">
 			<div class="text-grey-8">
 				Enter the <span>{{ desc }}</span> name
@@ -68,6 +68,10 @@ const dialogHide = () => {
 
 const confirmHandler = () => {
 	emits('submit');
+};
+
+const beforeHide = () => {
+	deleteId.value = undefined;
 };
 
 defineExpose({ show: dialogShow, hide: dialogHide });

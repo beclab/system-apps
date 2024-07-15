@@ -10,6 +10,7 @@
 							row-key="name"
 							hide-pagination
 							flat
+							:loading="loading"
 							:pagination="pagination"
 							@refresh="fetchData"
 						>
@@ -76,9 +77,12 @@
 									</div>
 								</q-td>
 							</template>
+							<template #loading>
+								<MyLoading2> </MyLoading2>
+							</template>
 							<template #no-data>
-								<div class="full-width relative-position" style="height: 480px">
-									<Empty3 @click="fetchData"></Empty3>
+								<div class="full-width relative-position" style="height: 280px">
+									<Empty3 v-show="!loading" @click="fetchData"></Empty3>
 								</div>
 							</template>
 						</q-table>
@@ -86,7 +90,6 @@
 				</MyCar4>
 			</template>
 		</MyPage2>
-		<MyLoading2 v-show="loading"> </MyLoading2>
 	</MyContentPage>
 </template>
 

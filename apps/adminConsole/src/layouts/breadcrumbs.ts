@@ -36,24 +36,24 @@ export const options = [
 ];
 
 export const options2 = [
-	// {
-	// 	key: 'storages',
-	// 	label: t('STORAGES'),
-	// 	icon: 'sym_r_hard_drive',
-	// 	link: '/storages'
-	// },
+	{
+		key: 'storages',
+		label: t('STORAGES'),
+		icon: 'sym_r_hard_drive',
+		link: '/storages'
+	},
 	{
 		key: 'network-policies',
 		label: t('NETWORKS'),
 		icon: 'sym_r_sensors',
 		link: '/network-policies'
 	},
-	// {
-	// 	key: 'jobs',
-	// 	label: t('JOBS'),
-	// 	icon: 'sym_r_work',
-	// 	link: '/jobs'
-	// },
+	{
+		key: 'jobs',
+		label: t('JOBS'),
+		icon: 'sym_r_work',
+		link: '/jobs'
+	},
 	{
 		key: 'customresources',
 		label: t('CRD_PL'),

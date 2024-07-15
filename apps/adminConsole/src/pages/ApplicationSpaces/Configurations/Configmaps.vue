@@ -18,7 +18,7 @@
 			<q-inner-loading :showing="loading"> </q-inner-loading>
 		</MyPage>
 	</MyContentPage>
-	<Yaml ref="yamlRef" :name="t('EDIT_YAML')" module="configmaps"></Yaml>
+	<Yaml ref="yamlRef" :title="t('EDIT_YAML')" module="configmaps"></Yaml>
 </template>
 
 <script setup lang="ts">
