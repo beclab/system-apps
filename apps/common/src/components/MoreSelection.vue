@@ -1,5 +1,5 @@
 <template>
-	<q-btn icon="sym_r_more_vert" flat dense :size="size">
+	<q-btn icon="sym_r_more_vert" color="ink-2" flat dense :size="size">
 		<q-menu class="my-menu-wrapper">
 			<q-list style="min-width: 160px">
 				<q-item
@@ -18,7 +18,7 @@
 								size="16px"
 								class="q-mr-sm"
 							/>
-							<span class="text-subtitle3 text-grey-8">{{ item.label }}</span>
+							<span class="text-subtitle3 text-ink-2">{{ item.label }}</span>
 						</div>
 					</q-item-section>
 				</q-item>

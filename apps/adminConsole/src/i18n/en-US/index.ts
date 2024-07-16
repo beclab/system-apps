@@ -41,7 +41,8 @@ const options = {
 	SHARD_NUM: 'Shard Num',
 	STORAGE_SIZE: 'Storage Size',
 	STORAGE_TYPE: 'Storage Type',
-	ACTIONS: 'Actions'
+	ACTIONS: 'Actions',
+	CONFIRM: 'Confirm'
 };
 
 export default options;

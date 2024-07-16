@@ -754,3 +754,22 @@ export const deletePersistentvolumeclaims = (params: {
 	let path = getPath({ cluster, namespace });
 	return api.delete(`/${apiVersion}${path}/${module}/${name}`);
 };
+
+export const patchPersistentvolumeclaims = (
+	params: {
+		apiVersion: string;
+		namespace: string;
+		cluster?: string;
+		module: string;
+		name: string;
+	},
+	data: any
+): Promise<AxiosResponse<any>> => {
+	const { apiVersion, cluster, namespace, name, module } = params;
+	let path = getPath({ cluster, namespace });
+	return api.patch(`/${apiVersion}${path}/${module}/${name}`, data, {
+		headers: {
+			'Content-Type': 'application/merge-patch+json'
+		}
+	});
+};
