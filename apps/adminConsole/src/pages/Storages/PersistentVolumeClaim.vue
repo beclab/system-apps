@@ -431,6 +431,7 @@ const onSubmit = async () => {
 			message: JSON.stringify(error || '')
 		});
 	}
+	editFormLoading.value = false;
 };
 const onReset = () => {
 	//
