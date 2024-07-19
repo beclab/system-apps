@@ -813,12 +813,28 @@ export const getJobEvent = (
 export const fetchListByK8s = (
 	params: any
 ): Promise<AxiosResponse<CustomresourcesResponse>> => {
-	const { cluster, module, namespace, selector, ...rest } = params;
+	const { cluster, module, namespace, selector, name, ...rest } = params;
 	if (!isEmpty(selector)) {
 		params.labelSelector = joinSelector(selector);
 	}
+	return api.get(
+		`apis/batch/v1${getPath({ cluster, namespace })}/${module}/${name}`,
+		{
+			params: rest
+		}
+	);
+};
 
-	return api.get(`apis/batch/v1${getPath({ cluster, namespace })}/${module}`, {
-		params: rest
-	});
+export const jobRerun = (
+	resourceVersion: string,
+	params: PodMonitoringParamAll
+): Promise<AxiosResponse<CustomresourcesResponse>> => {
+	const { name, cluster, namespace } = params;
+
+	return api.post(
+		`kapis/operations.kubesphere.io/v1alpha2${getPath({
+			cluster,
+			namespace
+		})}/jobs/${name}?action=rerun&resourceVersion=${resourceVersion}`
+	);
 };

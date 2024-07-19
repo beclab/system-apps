@@ -1,13 +1,12 @@
 <template>
 	<MyContentPage>
+		<template #extra>
+			<div class="col-auto">
+				<MoreSelection :options="options" size="md"></MoreSelection>
+			</div>
+		</template>
 		<MyPage2>
-			<template #extra>
-				<div class="col-auto">
-					<MoreSelection :options="options" size="md"></MoreSelection>
-				</div>
-			</template>
-			{{ tableList }}
-			<MyCar4 square flat :title="$t('DETAILS')">
+			<MyCar4 square flat :title="$t('RUN_RECORDS')">
 				<QTableStyle>
 					<q-table
 						flat
@@ -16,7 +15,14 @@
 						:rows="tableList"
 						:columns="columns"
 						row-key="name"
-					/>
+					>
+						<template v-slot:body-cell-status="props">
+							<q-td :props="props" class="row items-center">
+								<Status :type="props.value"></Status>
+								{{ $t(props.value.toUpperCase()) }}
+							</q-td>
+						</template>
+					</q-table>
 				</QTableStyle>
 			</MyCar4>
 			<MyCar4 square flat :title="$t('DETAILS')" :loading="loading">
@@ -35,6 +41,27 @@
 		</MyPage2>
 		<q-inner-loading :showing="loading"> </q-inner-loading>
 	</MyContentPage>
+
+	<Yaml2
+		ref="yamlRef"
+		:apiVersion="apiVersion"
+		:name="detail.name"
+		:namespace="detail.namespace"
+		:originData="detail._originData"
+		@hide="hideHandler"
+		@change="fetchData"
+	>
+	</Yaml2>
+
+	<DeleteDialog
+		:title="`${$t('DELETE')} ${$t('JOB')}`"
+		:desc="$t('CUSTOM_RESOURCE_LOW')"
+		:name="detail.name"
+		:loading="deleteLoading"
+		ref="deleteDialogRef"
+		@submit="confirmHandler"
+		@hide="hideHandler"
+	></DeleteDialog>
 </template>
 
 <script setup lang="ts">
@@ -44,12 +71,17 @@ import EnvironmentVariables from 'src/containers/EnvironmentVariables.vue';
 import Yaml from 'src/pages/NamespacePods/Yaml.vue';
 import MyContentPage from 'src/components/MyContentPage.vue';
 import MoreSelection from '@packages/ui/src/components/MoreSelection.vue';
-import { getCornJobsDetail, getJobEvent, fetchListByK8s } from 'src/network';
+import {
+	getCornJobsDetail,
+	getJobEvent,
+	fetchListByK8s,
+	jobRerun
+} from 'src/network';
 import { API_VERSIONS, MODULE_KIND_MAP } from 'src/utils/constants';
 import { useRoute } from 'vue-router';
 import { ObjectMapper } from '@packages/ui/src/utils/object.mapper';
 import DetailPage from '@packages/ui/src/containers/DetailPage.vue';
-import { get, isEmpty, orderBy } from 'lodash';
+import { get, isEmpty, orderBy, upperCase } from 'lodash';
 import MyPage2 from '@packages/ui/src/containers/MyPage2.vue';
 import MyCar4 from '@packages/ui/src/components/MyCard2.vue';
 import MetadataVue from '@packages/ui/src/containers/Metadata.vue';
@@ -57,6 +89,9 @@ import { getLocalTime, joinSelector } from 'src/utils';
 import Event from '@packages/ui/src/containers/Event.vue';
 import Refresh from '@packages/ui/src/components/Refresh.vue';
 import QTableStyle from '@packages/ui/src/components/QTableStyle.vue';
+import Status from '@packages/ui/src/components/Status.vue';
+import Yaml2 from '../NamespacePods/Yaml2.vue';
+import DeleteDialog from '@packages/ui/src/components/DeleteDialog.vue';
 
 const module = 'jobs';
 const apiVersion = API_VERSIONS[module];
@@ -67,13 +102,31 @@ const yamlRef = ref();
 const loading = ref(false);
 const loading2 = ref(false);
 const tableList = ref([]);
+const deleteDialogRef = ref();
+const deleteLoading = ref(false);
 const options = [
+	{
+		label: t('RERUN'),
+		value: 'refresh',
+		icon: 'sym_r_refresh',
+		onClick: () => {
+			rerunHanlder();
+		}
+	},
 	{
 		label: t('EDIT_YAML'),
 		value: 'edit',
 		icon: 'sym_r_edit',
 		onClick: () => {
 			yamlRef.value.show();
+		}
+	},
+	{
+		label: t('DELETE'),
+		value: 'delete',
+		icon: 'sym_r_delete',
+		onClick: () => {
+			deleteDialogRef.value && deleteDialogRef.value.show();
 		}
 	}
 ];
@@ -116,29 +169,36 @@ const columns = [
 	// }
 
 	{
-		title: t('SN_NO'),
+		label: t('SN_NO'),
 		name: 'id',
-		field: 'id'
+		field: 'id',
+		align: 'left'
 	},
 	{
-		title: t('STATUS'),
+		label: t('STATUS'),
 		name: 'status',
-		field: 'status'
+		field: 'status',
+		align: 'left'
 	},
 	{
-		title: t('MESSAGE'),
-		name: 'messages[0]',
-		field: 'messages[0]'
+		label: t('MESSAGE'),
+		name: 'messages',
+		field: (row) => get(row, 'messages[0]') || '-',
+		align: 'left'
 	},
 	{
-		title: t('START_TIME'),
+		label: t('START_TIME'),
 		name: 'start-time',
-		field: 'start-time'
+		field: (row) =>
+			getLocalTime(row['start-time']).format('YYYY-MM-DD HH:mm:ss'),
+		align: 'left'
 	},
 	{
-		title: t('END_TIME'),
+		label: t('END_TIME'),
 		name: 'completion-time',
-		field: 'completion-time'
+		field: (row) =>
+			getLocalTime(row['completion-time']).format('YYYY-MM-DD HH:mm:ss'),
+		align: 'left'
 	}
 ];
 const getAttrs = () => {
@@ -245,20 +305,57 @@ const fetchEvent = async () => {
 };
 
 const fetchRecords = async (params = {}) => {
-	const { cluster, namespace } = detail.value;
+	const { cluster, namespace, name } = detail.value;
 	const selector = get(detail.value, 'spec.jobTemplate.metadata.labels', {});
 
-	const {
-		data: { items }
-	} = await fetchListByK8s({
+	const { data } = await fetchListByK8s({
 		...params,
 		cluster,
 		namespace,
 		selector,
-		module
+		module,
+		name
 	});
 
-	tableList.value = items.map(ObjectMapper[module]);
+	const temp = ObjectMapper[module](data);
+
+	const records = JSON.parse(get(temp, 'annotations.revisions', {}));
+	tableList.value = Object.entries(records).map(([key, value]) => {
+		const typedValue = value as Record<string, any>;
+
+		return {
+			...typedValue,
+			id: key
+		};
+	});
+};
+
+const hideHandler = () => {
+	currentYamlData.value = {};
+};
+
+const confirmHandler = () => {
+	//
+};
+
+const rerunHanlder = async () => {
+	const { namespace, name }: Record<string, any> = route.params;
+	const params = {};
+	loading.value = true;
+
+	try {
+		const { data } = await getCornJobsDetail(
+			apiVersion,
+			namespace,
+			module,
+			name,
+			params
+		);
+		const resourceVersion = get(data, 'metadata.resourceVersion');
+		console.log('resourceVersion', resourceVersion);
+
+		jobRerun(resourceVersion, { name, namespace });
+	} catch (error) {}
 };
 
 watch(
