@@ -36,6 +36,7 @@ import {
 	MiddlewarePasswordResponse,
 	MiddlewareType
 } from './middleware';
+import { isEmpty } from 'lodash';
 export * from './bfl';
 
 export const getNodeMonitoring = (
@@ -793,5 +794,31 @@ export const getCornJobsDetail = (
 ): Promise<AxiosResponse<CustomresourcesResponse>> => {
 	return api.get(`${apiVersion}/namespaces/${namespace}/${module}/${name}`, {
 		params
+	});
+};
+
+export const getJobEvent = (
+	params: PodMonitoringParamAll
+): Promise<AxiosResponse<CustomresourcesResponse>> => {
+	const { name, cluster, namespace, ...rest } = params;
+
+	const clusterPath = cluster ? `/klusters/${cluster}` : '';
+	const namespacePath = namespace ? `/namespaces/${namespace}` : '';
+
+	return api.get(`api/v1${clusterPath}${namespacePath}/events`, {
+		params: rest
+	});
+};
+
+export const fetchListByK8s = (
+	params: any
+): Promise<AxiosResponse<CustomresourcesResponse>> => {
+	const { cluster, module, namespace, selector, ...rest } = params;
+	if (!isEmpty(selector)) {
+		params.labelSelector = joinSelector(selector);
+	}
+
+	return api.get(`apis/batch/v1${getPath({ cluster, namespace })}/${module}`, {
+		params: rest
 	});
 };
