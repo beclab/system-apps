@@ -304,3 +304,8 @@ export interface AppListResponse {
 		totals: number;
 	};
 }
+
+export enum jobType {
+	cronjobs,
+	jobs
+}

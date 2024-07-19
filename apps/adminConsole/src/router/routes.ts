@@ -58,7 +58,22 @@ const routes: RouteRecordRaw[] = [
 			},
 			{
 				path: '/jobs',
-				component: () => import('src/pages/Jobs/IndexPage.vue')
+				component: () => import('src/pages/Jobs/IndexPage.vue'),
+				children: [
+					...podRoute('/jobs').children,
+					{
+						path: '/jobs/job/:namespace/:name',
+						component: () => import('src/pages/Jobs/JobsDetails.vue')
+					},
+					{
+						path: '/jobs/cronjob/:namespace/:name',
+						component: () => import('src/pages/Jobs/CronJobsDetails.vue')
+					},
+					{
+						path: '/jobs/workloads/:kind/:namespace/:name/container/:container',
+						component: () => import('src/pages/Containers/Overview.vue')
+					}
+				]
 			},
 			{
 				path: '/nodes',

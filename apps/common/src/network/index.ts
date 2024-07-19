@@ -24,7 +24,8 @@ import {
 	CustomresourceDetailParam,
 	SecretsDataResponse,
 	ServiceaccountsItemResponse,
-	DeploymentsDetailResponse
+	DeploymentsDetailResponse,
+	jobType
 } from './network';
 import { AxiosResponse } from 'axios';
 import { api } from '../boot/axios';
@@ -771,5 +772,26 @@ export const patchPersistentvolumeclaims = (
 		headers: {
 			'Content-Type': 'application/merge-patch+json'
 		}
+	});
+};
+
+export const getJobs = (
+	module: jobType,
+	params?: Pagination
+): Promise<AxiosResponse<CustomresourcesResponse>> => {
+	return api.get(`/kapis/resources.kubesphere.io/v1alpha3/${module}`, {
+		params
+	});
+};
+
+export const getCornJobsDetail = (
+	apiVersion: string,
+	namespace: string,
+	module: string,
+	name: string,
+	params: any
+): Promise<AxiosResponse<CustomresourcesResponse>> => {
+	return api.get(`${apiVersion}/namespaces/${namespace}/${module}/${name}`, {
+		params
 	});
 };

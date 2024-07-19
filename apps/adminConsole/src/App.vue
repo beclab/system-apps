@@ -61,6 +61,6 @@ body.desktop .q-focus-helper {
 	background: $background-1;
 }
 body.body--dark .q-dialog__backdrop {
-	background: $background-6;
+	background: rgba(0, 0, 0, 0.7);
 }
 </style>

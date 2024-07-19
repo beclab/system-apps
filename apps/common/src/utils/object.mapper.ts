@@ -481,6 +481,18 @@ const StorageclasscapabilitiesMapper = (item: any) => {
 	};
 };
 
+const CronJobMapper = (item: any) => ({
+	...getBaseInfo(item),
+	labels: get(item, 'metadata.labels', {}),
+	namespace: get(item, 'metadata.namespace'),
+	annotations: get(item, 'metadata.annotations'),
+	status: get(item, 'status'),
+	spec: get(item, 'spec', {}),
+	selector: get(item, 'spec.jobTemplate.metadata.labels'),
+	suspend: get(item, 'spec.suspend'),
+	_originData: getOriginData(item)
+});
+
 export const ObjectMapper = {
 	pods: PodsMapper,
 	endpoints: EndpointMapper,
@@ -502,6 +514,7 @@ export const ObjectMapper = {
 	persistentvolumeclaims: VolumeMapper,
 	nodes: NodeMapper,
 	jobs: JobMapper,
+	cronjobs: CronJobMapper,
 	revisions: RevisionMapper,
 	storageclasscapabilities: StorageclasscapabilitiesMapper
 };
