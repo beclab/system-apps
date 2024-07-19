@@ -91,7 +91,7 @@
 							>
 						</q-td>
 						<q-td key="status" :props="props">
-							<div class="row items-center">
+							<div class="row items-center no-wrap">
 								<Status :type="props.row.phase"></Status>
 								<span class="q-ml-xs">{{
 									$t(`VOLUME_STATUS_${props.row.phase.toUpperCase()}`)
