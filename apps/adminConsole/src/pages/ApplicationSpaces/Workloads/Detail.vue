@@ -5,6 +5,10 @@
 				<MoreSelection :options="options" size="md"></MoreSelection>
 			</div>
 		</template>
+		<EnvironmentVariables>
+			<DetailData ref="detaiDatalRef"></DetailData>
+		</EnvironmentVariables>
+		<Yaml ref="yamlRef" :name="t('EDIT_YAML')" @change="fetchList"></Yaml>
 	</MyContentPage>
 </template>
 
@@ -14,6 +18,7 @@ import { t } from 'src/boot/i18n';
 import EnvironmentVariables from 'src/containers/EnvironmentVariables.vue';
 import Yaml from 'src/pages/NamespacePods/Yaml.vue';
 import MyContentPage from 'src/components/MyContentPage.vue';
+import DetailData from './DetailData.vue';
 import MoreSelection from '@packages/ui/src/components/MoreSelection.vue';
 
 const yamlRef = ref();
