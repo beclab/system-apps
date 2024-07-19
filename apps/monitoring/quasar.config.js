@@ -38,7 +38,7 @@ module.exports = configure(function (ctx) {
 		css: ['app.scss', ctx.dev ? 'font.pro.scss' : 'font.pro.scss'],
 
 		// https://github.com/quasarframework/quasar/tree/dev/extras
-		extras: ['material-icons'],
+		extras: ['material-icons', 'roboto-font'],
 
 		// Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-build
 		build: {
