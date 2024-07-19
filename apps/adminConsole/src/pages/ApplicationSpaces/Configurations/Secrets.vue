@@ -34,7 +34,7 @@
 			<q-inner-loading :showing="loading"> </q-inner-loading>
 		</MyPage>
 	</MyContentPage>
-	<Yaml ref="yamlRef" :name="t('EDIT_YAML')" module="secrets"></Yaml>
+	<Yaml ref="yamlRef" :title="t('EDIT_YAML')" module="secrets"></Yaml>
 </template>
 
 <script setup lang="ts">

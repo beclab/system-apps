@@ -250,10 +250,17 @@ const update = async (
 			props.apiVersion,
 			newObject
 		);
+		$q.notify({
+			type: 'positive',
+			message: t('CHANGED_SUCCESSFULLY')
+		});
 		yamlHide();
 		emits('change');
-	} catch {
-		//
+	} catch (error) {
+		$q.notify({
+			type: 'negative',
+			message: JSON.stringify(error)
+		});
 	}
 	loading2.value = false;
 	loading.value = false;

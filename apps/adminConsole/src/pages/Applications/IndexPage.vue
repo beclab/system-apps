@@ -179,7 +179,6 @@ import SortButtom from '@packages/ui/src/components/SortButton.vue';
 import MyCard3 from '@packages/ui/src/components/MyCard3.vue';
 import Refresh from '@packages/ui/src/components/Refresh.vue';
 import QInputStyle from '@packages/ui/src/components/QInputStyle.vue';
-import { t } from 'src/boot/i18n';
 import QSectionStyle from '@packages/ui/src/components/QSectionStyle.vue';
 import { useAppDetailStore } from 'src/stores/AppDetail';
 import { GLOBAL_ROLE } from '@packages/ui/src/constant/user';

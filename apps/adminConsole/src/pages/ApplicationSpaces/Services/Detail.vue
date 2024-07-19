@@ -46,7 +46,7 @@
 			</MyCard>
 			<q-inner-loading :showing="loading"> </q-inner-loading>
 		</MyPage>
-		<Yaml ref="yamlRef" :name="t('EDIT_YAML')" module="services"></Yaml>
+		<Yaml ref="yamlRef" :title="t('EDIT_YAML')" module="services"></Yaml>
 	</MyContentPage>
 </template>
 

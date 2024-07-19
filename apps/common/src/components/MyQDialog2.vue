@@ -7,13 +7,15 @@
 		@show="emits('show')"
 	>
 		<q-card class="my-dialog-wrapper">
-			<div class="row items-center my-dialog-title bg-grey-1 q-py-sm q-px-md">
-				<div class="text-subtitle3 text-grey-10">{{ title }}</div>
+			<div
+				class="row items-center my-dialog-title bg-background-3 q-py-sm q-px-md"
+			>
+				<div class="text-ink-1">{{ title }}</div>
 				<q-space />
 				<QButtonStyle size="sm">
 					<q-btn
 						icon="close"
-						color="grey-5"
+						color="text-ink-3"
 						size="sm"
 						flat
 						dense

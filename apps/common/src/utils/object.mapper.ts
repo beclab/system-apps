@@ -1,4 +1,4 @@
-import { get, isEmpty, omit } from 'lodash';
+import { get, includes, isEmpty, omit } from 'lodash';
 import moment from 'moment-mini';
 import { t } from 'src/boot/i18n';
 import {
@@ -466,6 +466,33 @@ const RevisionMapper = (item: any) => {
 	};
 };
 
+const StorageclasscapabilitiesMapper = (item: any) => {
+	const { metadata, spec } = item;
+	const volumeFeature = get(spec, 'features.volume');
+	return {
+		metadata,
+		spec,
+		snapshotFeature: get(spec, 'features.snapshot'),
+		volumeFeature,
+		supportExpandVolume: includes(
+			['OFFLINE', 'ONLINE'],
+			volumeFeature.expandMode
+		)
+	};
+};
+
+const CronJobMapper = (item: any) => ({
+	...getBaseInfo(item),
+	labels: get(item, 'metadata.labels', {}),
+	namespace: get(item, 'metadata.namespace'),
+	annotations: get(item, 'metadata.annotations'),
+	status: get(item, 'status'),
+	spec: get(item, 'spec', {}),
+	selector: get(item, 'spec.jobTemplate.metadata.labels'),
+	suspend: get(item, 'spec.suspend'),
+	_originData: getOriginData(item)
+});
+
 export const ObjectMapper = {
 	pods: PodsMapper,
 	endpoints: EndpointMapper,
@@ -484,7 +511,10 @@ export const ObjectMapper = {
 	statefulsets: WorkLoadMapper,
 	workLoadMapper: WorkLoadMapper,
 	volumes: VolumeMapper,
+	persistentvolumeclaims: VolumeMapper,
 	nodes: NodeMapper,
 	jobs: JobMapper,
-	revisions: RevisionMapper
+	cronjobs: CronJobMapper,
+	revisions: RevisionMapper,
+	storageclasscapabilities: StorageclasscapabilitiesMapper
 };

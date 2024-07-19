@@ -1,7 +1,7 @@
 <template>
-	<MyQDialog2 v-bind="$attrs" v-model="visible">
+	<MyQDialog2 v-bind="$attrs" v-model="visible" @before-hide="beforeHide">
 		<div style="width: 400px" class="q-gutter-y-md">
-			<div class="text-grey-8">
+			<div class="text-ink-2">
 				Enter the <span>{{ desc }}</span> name
 				<span class="text-weight-bold">{{ name }}</span> to confirm that you
 				understand the risks of this operation.
@@ -18,12 +18,12 @@
 			<q-btn
 				outline
 				unelevated
-				color="grey-2"
+				color="background-1"
 				no-caps
 				v-close-popup
 				class="btn-border"
 			>
-				<span class="text-body3 text-grey-8">Cancel</span>
+				<span class="text-body3 text-ink-2">Cancel</span>
 			</q-btn>
 			<q-btn
 				unelevated
@@ -68,6 +68,10 @@ const dialogHide = () => {
 
 const confirmHandler = () => {
 	emits('submit');
+};
+
+const beforeHide = () => {
+	deleteId.value = undefined;
 };
 
 defineExpose({ show: dialogShow, hide: dialogHide });

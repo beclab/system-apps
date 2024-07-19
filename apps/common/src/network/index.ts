@@ -24,7 +24,8 @@ import {
 	CustomresourceDetailParam,
 	SecretsDataResponse,
 	ServiceaccountsItemResponse,
-	DeploymentsDetailResponse
+	DeploymentsDetailResponse,
+	jobType
 } from './network';
 import { AxiosResponse } from 'axios';
 import { api } from '../boot/axios';
@@ -35,6 +36,7 @@ import {
 	MiddlewarePasswordResponse,
 	MiddlewareType
 } from './middleware';
+import { isEmpty } from 'lodash';
 export * from './bfl';
 
 export const getNodeMonitoring = (
@@ -414,13 +416,19 @@ export const updateCustomResources = (
 	namespace: string,
 	module: string,
 	name: string,
-	path: string,
-	params: any
+	apiVersion: string,
+	params: any,
+	cluster?: string
 ): Promise<AxiosResponse<ResourcesResponse>> => {
-	return api.put(
-		`/apis/${path}/namespaces/${namespace}/${module}/${name}`,
-		params
-	);
+	let path = '';
+	if (cluster) {
+		// path += `/klusters/${cluster}`
+	}
+	if (namespace) {
+		path += `/namespaces/${namespace}`;
+	}
+
+	return api.put(`/apis/${apiVersion}${path}/${module}/${name}`, params);
 };
 
 export const getEvent = (
@@ -556,7 +564,7 @@ const getPath = ({
 	cluster,
 	namespace
 }: {
-	cluster: string;
+	cluster?: string;
 	namespace: string;
 }) => {
 	let path = '';
@@ -682,11 +690,21 @@ export const getCustomresourcedefinitions = (
 export const deleteCustomResources = (params: {
 	apiVersion: string;
 	namespaces: string;
+	cluster?: string;
 	module: string;
 	name: string;
 }): Promise<AxiosResponse<any>> => {
+	const { apiVersion, cluster, namespaces, name, module } = params;
+	let path = '';
+	if (cluster) {
+		// path += `/klusters/${cluster}`
+	}
+	if (namespaces) {
+		path += `/namespaces/${namespaces}`;
+	}
+
 	return api.delete(
-		`/apis/${params.apiVersion}/namespaces/${params.namespaces}/${params.module}/${params.name}`
+		`/apis/${apiVersion}${path}/${params.module}/${params.name}`
 	);
 };
 
@@ -694,7 +712,7 @@ export const deleteCustomApplications = (params: {
 	apiVersion: string;
 	name: string;
 }): Promise<AxiosResponse<any>> => {
-	return api.delete(`/apis/${params.apiVersion}/applications/${params.name}`);
+	return api.delete(`/${params.apiVersion}/klusters/${params.name}`);
 };
 
 export const getCustomresourceItem = (
@@ -713,4 +731,110 @@ export const deletePod = (
 	pod: string
 ): Promise<AxiosResponse<any>> => {
 	return api.delete(`/api/v1/namespaces/${namespace}/pods/${pod}`);
+};
+
+export const getPersistentvolumeclaims = (
+	params: { namespace: string } & PodsParam
+) => {
+	const { namespace, ...rest } = params;
+	const path = namespace
+		? `/namespaces/${namespace}/persistentvolumeclaims`
+		: `/persistentvolumeclaims`;
+	return api.get(`/kapis/resources.kubesphere.io/v1alpha3${path}`, {
+		params: rest
+	});
+};
+
+export const deletePersistentvolumeclaims = (params: {
+	apiVersion: string;
+	namespace: string;
+	cluster?: string;
+	module: string;
+	name: string;
+}): Promise<AxiosResponse<any>> => {
+	const { apiVersion, cluster, namespace, name, module } = params;
+	let path = getPath({ cluster, namespace });
+	return api.delete(`/${apiVersion}${path}/${module}/${name}`);
+};
+
+export const patchPersistentvolumeclaims = (
+	params: {
+		apiVersion: string;
+		namespace: string;
+		cluster?: string;
+		module: string;
+		name: string;
+	},
+	data: any
+): Promise<AxiosResponse<any>> => {
+	const { apiVersion, cluster, namespace, name, module } = params;
+	let path = getPath({ cluster, namespace });
+	return api.patch(`/${apiVersion}${path}/${module}/${name}`, data, {
+		headers: {
+			'Content-Type': 'application/merge-patch+json'
+		}
+	});
+};
+
+export const getJobs = (
+	module: jobType,
+	params?: Pagination
+): Promise<AxiosResponse<CustomresourcesResponse>> => {
+	return api.get(`/kapis/resources.kubesphere.io/v1alpha3/${module}`, {
+		params
+	});
+};
+
+export const getCornJobsDetail = (
+	apiVersion: string,
+	namespace: string,
+	module: string,
+	name: string,
+	params: any
+): Promise<AxiosResponse<CustomresourcesResponse>> => {
+	return api.get(`${apiVersion}/namespaces/${namespace}/${module}/${name}`, {
+		params
+	});
+};
+
+export const getJobEvent = (
+	params: PodMonitoringParamAll
+): Promise<AxiosResponse<CustomresourcesResponse>> => {
+	const { name, cluster, namespace, ...rest } = params;
+
+	const clusterPath = cluster ? `/klusters/${cluster}` : '';
+	const namespacePath = namespace ? `/namespaces/${namespace}` : '';
+
+	return api.get(`api/v1${clusterPath}${namespacePath}/events`, {
+		params: rest
+	});
+};
+
+export const fetchListByK8s = (
+	params: any
+): Promise<AxiosResponse<CustomresourcesResponse>> => {
+	const { cluster, module, namespace, selector, name, ...rest } = params;
+	if (!isEmpty(selector)) {
+		params.labelSelector = joinSelector(selector);
+	}
+	return api.get(
+		`apis/batch/v1${getPath({ cluster, namespace })}/${module}/${name}`,
+		{
+			params: rest
+		}
+	);
+};
+
+export const jobRerun = (
+	resourceVersion: string,
+	params: PodMonitoringParamAll
+): Promise<AxiosResponse<CustomresourcesResponse>> => {
+	const { name, cluster, namespace } = params;
+
+	return api.post(
+		`kapis/operations.kubesphere.io/v1alpha2${getPath({
+			cluster,
+			namespace
+		})}/jobs/${name}?action=rerun&resourceVersion=${resourceVersion}`
+	);
 };

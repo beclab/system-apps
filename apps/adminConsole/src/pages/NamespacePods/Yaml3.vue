@@ -20,9 +20,7 @@
 		>
 			<q-card>
 				<div class="row items-center q-pa-md">
-					<div class="q-h6">
-						{{ name }}
-					</div>
+					<div class="q-h6">{{ title }}</div>
 					<q-space />
 					<q-btn icon="close" flat round dense v-close-popup />
 				</div>
@@ -138,8 +136,10 @@ import { cloneDeep, setWith } from 'lodash';
 ace.config.setModuleUrl('ace/mode/yaml_worker', workerJsonUrl);
 // src/components/Modals/EditYaml/index.jsx
 interface Props {
+	title?: string;
 	name?: string;
 	module?: 'secrets';
+	namespace?: string;
 }
 
 const emits = defineEmits(['change']);
@@ -166,6 +166,8 @@ const mode = computed(() => {
 			return 'statefulset';
 		case 'daemonsets':
 			return 'daemonset';
+		case 'persistentvolumeclaims':
+			return 'persistentvolumeclaims';
 		default:
 			return 'deployment';
 	}
@@ -197,7 +199,11 @@ const fetchData = () => {
 	const { namespace, kind, name } = route.params as Record<string, string>;
 	const type = props.module || kind;
 	loading.value = true;
-	getDetail(apiVersion, { namespace, kind: type, name })
+	getDetail(apiVersion, {
+		namespace: props.namespace || namespace,
+		kind: type,
+		name: props.name || name
+	})
 		.then((res) => {
 			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			// @ts-ignore
@@ -246,15 +252,15 @@ const update = async (
 	try {
 		loading2.value = true;
 		const { namespace, kind, name } = route.params as Record<string, string>;
-
 		const type = props.module || kind;
-		loading.value = true;
-		getDetail(apiVersion, { namespace, kind: type, name });
-		const { data: result } = await getDetail(apiVersion, {
-			namespace,
+
+		const params = {
+			namespace: props.namespace || namespace,
 			kind: type,
-			name
-		});
+			name: props.name || name
+		};
+		loading.value = true;
+		const { data: result } = await getDetail(apiVersion, params);
 
 		const resourceVersion = get(result, 'metadata.resourceVersion');
 		if (resourceVersion) {
@@ -262,11 +268,7 @@ const update = async (
 		}
 		newObject = objectToYaml(newObject);
 		const obj = yamlToObject(newObject, false);
-		const { data } = await updateDetail(
-			apiVersion,
-			{ namespace, kind: type, name },
-			obj[0]
-		);
+		const { data } = await updateDetail(apiVersion, params, obj[0]);
 		yamlHide();
 		emits('change');
 	} catch {
