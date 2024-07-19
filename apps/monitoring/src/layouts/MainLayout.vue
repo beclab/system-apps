@@ -101,7 +101,6 @@ watch(
 <style lang="scss" scoped>
 .dashboard-scroll-wrapper {
 	height: calc(100vh);
-	contain: none;
 }
 .title {
 	color: #1f1814;
