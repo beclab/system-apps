@@ -36,7 +36,9 @@
 								</q-td>
 							</template>
 							<template #loading>
-								<MyLoading2> </MyLoading2>
+								<div class="relative-position" style="min-height: 240px">
+									<MyLoading2 class="absolute-center"> </MyLoading2>
+								</div>
 							</template>
 							<template #no-data>
 								<div class="full-width relative-position" style="height: 280px">
