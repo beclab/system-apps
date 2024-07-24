@@ -20,7 +20,9 @@
 				</q-td>
 			</template>
 			<template v-slot:no-data>
-				<Empty></Empty>
+				<div class="row justify-center">
+					<Empty></Empty>
+				</div>
 			</template>
 		</q-table>
 	</QTableStyle>
@@ -35,7 +37,8 @@ import { MODULE_KIND_MAP } from 'src/utils/constants';
 import { ObjectMapper } from 'src/utils/object.mapper';
 import { onMounted, ref, watch } from 'vue';
 import MyLoading from 'src/components/MyLoading.vue';
-import Empty from '@packages/ui/src/components/Empty2.vue';
+import Empty from '@packages/ui/src/components/Empty.vue';
+
 import QTableStyle from '@packages/ui/src/components/QTableStyle.vue';
 
 const loading = ref(false);

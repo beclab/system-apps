@@ -7,7 +7,7 @@
 		<div class="row items-center" @click="routeBack">
 			<q-icon
 				name="arrow_back_ios_new"
-				size="20px"
+				:size="size === 'md' ? '16px' : '20px'"
 				class="my-icon"
 				v-if="!isContent"
 			/>
@@ -21,7 +21,12 @@
 				:height="!isContent ? '32px' : '48px'"
 				:class="!isContent ? 'q-mr-sm' : 'q-mr-lg'"
 			></MyAvatarImg>
-			<span class="text-ink-1" :class="[!isContent ? 'text-h5' : 'text-h3']">
+			<span
+				class="text-ink-1"
+				:class="[
+					size === 'md' ? 'text-h6' : !isContent ? 'text-h5' : 'text-h3'
+				]"
+			>
 				{{ title }}
 			</span>
 		</div>
@@ -41,8 +46,11 @@ interface Props {
 	subTitle?: string;
 	avatar?: string;
 	isContent?: boolean;
+	size: 'md' | 'lg';
 }
-const props = withDefaults(defineProps<Props>(), {});
+const props = withDefaults(defineProps<Props>(), {
+	size: 'lg'
+});
 const { title, subTitle } = toRefs(props);
 
 const router = useRouter();

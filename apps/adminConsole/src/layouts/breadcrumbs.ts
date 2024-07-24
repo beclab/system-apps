@@ -48,12 +48,12 @@ export const options2 = [
 		icon: 'sym_r_sensors',
 		link: '/network-policies'
 	},
-	// {
-	// 	key: 'jobs',
-	// 	label: t('JOBS'),
-	// 	icon: 'sym_r_work',
-	// 	link: '/jobs'
-	// },
+	{
+		key: 'jobs',
+		label: t('JOBS'),
+		icon: 'sym_r_work',
+		link: '/jobs'
+	},
 	{
 		key: 'customresources',
 		label: t('CRD_PL'),

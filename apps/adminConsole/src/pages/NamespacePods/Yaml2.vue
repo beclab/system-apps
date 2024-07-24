@@ -26,7 +26,10 @@
 					<q-space />
 					<q-btn icon="close" flat round dense v-close-popup />
 				</div>
-				<div class="relative-position" style="height: calc(100vh - 158px)">
+				<div
+					class="relative-position"
+					:style="{ height: `calc(100vh - ${footerHeight})` }"
+				>
 					<div
 						style="
 							height: calc(100%);
@@ -57,7 +60,7 @@
 							v-model:value="data"
 							lang="yaml"
 							theme="chaos"
-							:readonly="loading2"
+							:readonly="readonly || loading2"
 							style="height: calc(100%)"
 							:options="{
 								showGutter: true,
@@ -70,7 +73,7 @@
 							}"
 						/>
 					</div>
-					<q-card-section class="row justify-end q-pa-sm">
+					<q-card-section class="row justify-end q-pa-sm" v-if="!readonly">
 						<q-btn
 							no-caps
 							unelevated
@@ -140,13 +143,16 @@ interface Props {
 	apiVersion: string;
 	namespace: string;
 	originData: any;
+	readonly?: boolean;
 }
 
 const emits = defineEmits(['change', 'show', 'hide']);
 
 const $q = useQuasar();
 
-const props = withDefaults(defineProps<Props>(), {});
+const props = withDefaults(defineProps<Props>(), {
+	readonly: false
+});
 
 const data = ref();
 const detail = ref();
@@ -172,6 +178,7 @@ const mode = computed(() => {
 });
 
 const route = useRoute();
+const footerHeight = computed(() => (props.readonly ? '114px' : '158px'));
 
 const yamlShow = () => {
 	visible2.value = true;

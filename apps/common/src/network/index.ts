@@ -810,7 +810,7 @@ export const getJobEvent = (
 	});
 };
 
-export const fetchListByK8s = (
+export const fetchJobRecords = (
 	params: any
 ): Promise<AxiosResponse<CustomresourcesResponse>> => {
 	const { cluster, module, namespace, selector, name, ...rest } = params;
@@ -825,6 +825,18 @@ export const fetchListByK8s = (
 	);
 };
 
+export const fetchListByK8s = (
+	params: any
+): Promise<AxiosResponse<CustomresourcesResponse>> => {
+	const { cluster, module, namespace, selector, ...rest } = params;
+	if (!isEmpty(selector)) {
+		params.labelSelector = joinSelector(selector);
+	}
+	return api.get(`apis/batch/v1${getPath({ cluster, namespace })}/${module}`, {
+		params: rest
+	});
+};
+
 export const jobRerun = (
 	resourceVersion: string,
 	params: PodMonitoringParamAll
@@ -837,4 +849,16 @@ export const jobRerun = (
 			namespace
 		})}/jobs/${name}?action=rerun&resourceVersion=${resourceVersion}`
 	);
+};
+
+export const deleteJob = (
+	apiVersion: string,
+	namespace: string,
+	module: string,
+	name: string,
+	params: any
+): Promise<AxiosResponse<CustomresourcesResponse>> => {
+	return api.delete(`${apiVersion}/namespaces/${namespace}/${module}/${name}`, {
+		params
+	});
 };

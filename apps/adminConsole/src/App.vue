@@ -42,7 +42,7 @@ export default defineComponent({
 .q-menu {
 	padding: 12px;
 }
-body.desktop .q-focus-helper {
+body.desktop .q-focus-helper ～ .q-btn--rounded {
 	border-radius: 4px;
 }
 .q-menu .q-item {

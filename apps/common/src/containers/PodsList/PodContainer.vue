@@ -64,6 +64,7 @@ interface Props {
 	module?: string;
 	detail?: any;
 	scroll?: boolean;
+	routePrefix?: string;
 }
 
 const PodListData = usePodList();
@@ -335,7 +336,9 @@ const clearLocker = () => {
 const itemClick = (data: any) => {
 	const podTemplateHash = data.labels['pod-template-hash'];
 	const name = data.name.split(`-${podTemplateHash}`)[0];
-	const path = `/application-spaces/pods/overview/${data.node}/${data.namespace}/${data.name}/${data.createTime}`;
+	const path = `/${props.routePrefix || 'application-spaces'}/pods/overview/${
+		data.node
+	}/${data.namespace}/${data.name}/${data.createTime}`;
 	router.push({
 		path,
 		query: {

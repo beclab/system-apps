@@ -16,7 +16,12 @@
 					<template #title>
 						<div class="row items-center no-wrap">
 							<div
-								:class="[isInit ? 'text-grey-7' : 'container-item-hover']"
+								:class="[
+									isInit ? 'text-grey-7' : '',
+									status !== 'terminated'
+										? 'container-item-hover'
+										: 'container-disabled'
+								]"
 								class="ellipsis"
 								@click="containerOverviewHandler(container)"
 							>
@@ -246,6 +251,12 @@ const getMonitoringCfgs = computed(() => {
 	&:hover {
 		color: $primary;
 		cursor: pointer;
+	}
+}
+
+.container-disabled {
+	&:hover {
+		cursor: not-allowed;
 	}
 }
 .monitoring-empty {

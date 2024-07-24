@@ -1,46 +1,80 @@
 <template>
-	<MyContentPage>
-		<template #extra>
-			<div class="col-auto">
-				<MoreSelection :options="options" size="md"></MoreSelection>
-			</div>
-		</template>
-		<MyPage2>
-			<MyCar4 square flat :title="$t('RUN_RECORDS')">
-				<QTableStyle>
-					<q-table
-						flat
-						hide-pagination
-						v-model:pagination="pagination"
-						:rows="tableList"
-						:columns="columns"
-						row-key="name"
-					>
-						<template v-slot:body-cell-status="props">
-							<q-td :props="props" class="row items-center">
-								<Status :type="props.value"></Status>
-								{{ $t(props.value.toUpperCase()) }}
-							</q-td>
-						</template>
-					</q-table>
-				</QTableStyle>
-			</MyCar4>
-			<MyCar4 square flat :title="$t('DETAILS')" :loading="loading">
-				<DetailPage :data="attrData"></DetailPage>
-			</MyCar4>
+	<div class="absolute-position">
+		<MyContentPage>
+			<template #extra>
+				<div class="col-auto">
+					<MoreSelection :options="options" size="md"></MoreSelection>
+				</div>
+			</template>
+			<MyPage2>
+				<MyCard4 square flat :title="$t('DETAILS')" :loading="loading">
+					<DetailPage :data="attrData"></DetailPage>
+				</MyCard4>
+				<MyCard4 square flat :title="$t('RUN_RECORDS')">
+					<QTableStyle>
+						<q-table
+							flat
+							hide-pagination
+							v-model:pagination="pagination"
+							:rows="tableList"
+							:columns="columns"
+							:loading="tableLoading"
+							row-key="name"
+						>
+							<template v-slot:body-cell-status="props">
+								<q-td :props="props" class="row items-center">
+									<Status :type="props.value"></Status>
+									{{ $t(props.value.toUpperCase()) }}
+									<span v-show="props.row.succeed">
+										<span
+											>({{ props.row.succeed }}/{{ props.row.desire }})</span
+										>
+									</span>
+								</q-td>
+							</template>
+							<template #loading>
+								<MyLoading2> </MyLoading2>
+							</template>
+							<template #no-data>
+								<div class="full-width relative-position" style="height: 280px">
+									<Empty3 v-show="!tableLoading" @click="fetchRecords"></Empty3>
+								</div>
+							</template>
+						</q-table>
+					</QTableStyle>
+				</MyCard4>
 
-			<MetadataVue :data="metadata"></MetadataVue>
+				<MyCard4 no-content-gap square flat :title="t('PODS')">
+					<PodContainer
+						:detail="detail"
+						ref="PodContainerRef"
+						:route-prefix="`job-inner/${detail.name}/${detail.uid}`"
+					></PodContainer>
+				</MyCard4>
 
-			<MyCar4 square flat :title="$t('EVENT_PL')">
-				<template #extra>
-					<Refresh @click="fetchEvent"></Refresh>
-				</template>
-				<Event :data="evnetList"></Event>
-				<q-inner-loading :showing="loading2"> </q-inner-loading>
-			</MyCar4>
-		</MyPage2>
-		<q-inner-loading :showing="loading"> </q-inner-loading>
-	</MyContentPage>
+				<MetadataVue :data="metadata"></MetadataVue>
+
+				<MyCard4
+					no-content-gap
+					square
+					flat
+					:title="t('ENVIRONMENT_VARIABLE_PL')"
+				>
+					<EnvironmentsLayout :detail="detail"></EnvironmentsLayout>
+				</MyCard4>
+
+				<MyCard4 square flat :title="$t('EVENT_PL')">
+					<template #extra>
+						<Refresh @click="fetchEvent"></Refresh>
+					</template>
+					<Event :data="evnetList"></Event>
+					<q-inner-loading :showing="loading2"> </q-inner-loading>
+				</MyCard4>
+			</MyPage2>
+			<q-inner-loading :showing="loading"> </q-inner-loading>
+		</MyContentPage>
+		<RouterViewTransition></RouterViewTransition>
+	</div>
 
 	<Yaml2
 		ref="yamlRef"
@@ -48,6 +82,7 @@
 		:name="detail.name"
 		:namespace="detail.namespace"
 		:originData="detail._originData"
+		readonly
 		@hide="hideHandler"
 		@change="fetchData"
 	>
@@ -55,7 +90,7 @@
 
 	<DeleteDialog
 		:title="`${$t('DELETE')} ${$t('JOB')}`"
-		:desc="$t('CUSTOM_RESOURCE_LOW')"
+		:desc="$t('JOB')"
 		:name="detail.name"
 		:loading="deleteLoading"
 		ref="deleteDialogRef"
@@ -66,7 +101,6 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch, computed } from 'vue';
-import { t } from 'src/boot/i18n';
 import EnvironmentVariables from 'src/containers/EnvironmentVariables.vue';
 import Yaml from 'src/pages/NamespacePods/Yaml.vue';
 import MyContentPage from 'src/components/MyContentPage.vue';
@@ -74,16 +108,17 @@ import MoreSelection from '@packages/ui/src/components/MoreSelection.vue';
 import {
 	getCornJobsDetail,
 	getJobEvent,
-	fetchListByK8s,
-	jobRerun
+	fetchJobRecords,
+	jobRerun,
+	deleteJob
 } from 'src/network';
 import { API_VERSIONS, MODULE_KIND_MAP } from 'src/utils/constants';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { ObjectMapper } from '@packages/ui/src/utils/object.mapper';
 import DetailPage from '@packages/ui/src/containers/DetailPage.vue';
 import { get, isEmpty, orderBy, upperCase } from 'lodash';
 import MyPage2 from '@packages/ui/src/containers/MyPage2.vue';
-import MyCar4 from '@packages/ui/src/components/MyCard2.vue';
+import MyCard4 from '@packages/ui/src/components/MyCard2.vue';
 import MetadataVue from '@packages/ui/src/containers/Metadata.vue';
 import { getLocalTime, joinSelector } from 'src/utils';
 import Event from '@packages/ui/src/containers/Event.vue';
@@ -92,18 +127,31 @@ import QTableStyle from '@packages/ui/src/components/QTableStyle.vue';
 import Status from '@packages/ui/src/components/Status.vue';
 import Yaml2 from '../NamespacePods/Yaml2.vue';
 import DeleteDialog from '@packages/ui/src/components/DeleteDialog.vue';
+import { useQuasar } from 'quasar';
+import { useI18n } from 'vue-i18n';
+import PodContainer from '@packages/ui/src/containers/PodsList/PodContainer.vue';
+import RouterViewTransition from '@packages/ui/src/components/RouterViewTransition.vue';
+import { getCronJobStatus, getJobStatus } from 'src/utils/status';
+import EnvironmentsLayout from 'src/pages/Containers/EnvironmentsLayout.vue';
+import MyLoading2 from '@packages/ui/src/components/MyLoading2.vue';
+import Empty3 from '@packages/ui/src/components/Empty3.vue';
+
+const $q = useQuasar();
+const { t } = useI18n();
 
 const module = 'jobs';
 const apiVersion = API_VERSIONS[module];
 const detail = ref<any>({});
 const evnetList = ref();
 const route = useRoute();
+const router = useRouter();
 const yamlRef = ref();
 const loading = ref(false);
 const loading2 = ref(false);
 const tableList = ref([]);
 const deleteDialogRef = ref();
 const deleteLoading = ref(false);
+const tableLoading = ref(false);
 const options = [
 	{
 		label: t('RERUN'),
@@ -114,7 +162,7 @@ const options = [
 		}
 	},
 	{
-		label: t('EDIT_YAML'),
+		label: t('VIEW_YAML'),
 		value: 'edit',
 		icon: 'sym_r_edit',
 		onClick: () => {
@@ -137,37 +185,10 @@ const attrData = computed(() => getAttrs());
 const pagination = ref({
 	rowsNumber: 0
 });
-const getCronJobStatus = (spec) => {
-	if (spec.suspend) {
-		return 'Paused';
-	}
-	return 'running';
-};
 
 const detailData = detail.value || {};
 
 const columns = [
-	// {
-	// 	label: t('JOB'),
-	// 	name: 'name',
-	// 	field: 'name'
-	// },
-	// {
-	// 	label: t('STATUS'),
-	// 	name: 'status',
-	// 	field: 'status'
-	// },
-	// {
-	// 	label: t('START_TIME'),
-	// 	name: 'status.startTime',
-	// 	field: (row) => row.status.startTime
-	// },
-	// {
-	// 	label: t('END_TIME'),
-	// 	name: 'status.completionTime',
-	// 	field: (row) => row.status.completionTime
-	// }
-
 	{
 		label: t('SN_NO'),
 		name: 'id',
@@ -205,15 +226,20 @@ const getAttrs = () => {
 	if (isEmpty(detail.value)) {
 		return;
 	}
-	const { spec = {} } = detail.value || { spec: {} };
-	const status = getCronJobStatus(spec);
+	const {
+		cluster = 'default',
+		namespace,
+		jobName: name
+	}: Record<string, any> = route.params;
 
-	const { namespace, name }: Record<string, any> = route.params;
+	const { spec = {} } = detail.value;
+
+	const status = getJobStatus(detail.value);
 
 	return [
 		{
 			name: t('CLUSTER'),
-			value: 'default'
+			value: cluster
 		},
 		{
 			name: t('PROJECT'),
@@ -221,32 +247,23 @@ const getAttrs = () => {
 		},
 		{
 			name: t('STATUS'),
-			value: t(status)
+			value: status
 		},
 		{
-			name: t('SCHEDULE'),
-			value: spec.schedule
+			name: t('MAXIMUM_RETRIES'),
+			value: spec.backoffLimit
 		},
 		{
-			name: t('MAXIMUM_DELAY'),
-			value: spec.startingDeadlineSeconds
+			name: t('COMPLETE_PODS'),
+			value: spec.completions
 		},
 		{
-			name: t('SUCCESSFUL_JOBS_RETAINED'),
-			value: spec.successfulJobsHistoryLimit
+			name: t('PARALLEL_PODS'),
+			value: spec.parallelism
 		},
 		{
-			name: t('FAILED_JOBS_RETAINED'),
-			value: spec.failedJobsHistoryLimit
-		},
-		{
-			name: t('CONCURRENCY_POLICY'),
-			value:
-				spec.concurrencyPolicy === 'Allow'
-					? t('RUN_JOBS_CONCURRENTLY')
-					: spec.concurrencyPolicy === 'Forbid'
-					? t('SKIP_NEW_JOB')
-					: t('SKIP_OLD_JOB')
+			name: t('MAXIMUM_DURATION'),
+			value: spec.activeDeadlineSeconds
 		},
 		{
 			name: t('CREATION_TIME_TCAP'),
@@ -260,7 +277,7 @@ const getAttrs = () => {
 };
 
 const fetchData = async () => {
-	const { namespace, name }: Record<string, any> = route.params;
+	const { namespace, jobName: name }: Record<string, any> = route.params;
 	const params = {};
 	loading.value = true;
 	try {
@@ -307,39 +324,69 @@ const fetchEvent = async () => {
 const fetchRecords = async (params = {}) => {
 	const { cluster, namespace, name } = detail.value;
 	const selector = get(detail.value, 'spec.jobTemplate.metadata.labels', {});
+	tableLoading.value = true;
+	try {
+		const { data } = await fetchJobRecords({
+			...params,
+			cluster,
+			namespace,
+			selector,
+			module,
+			name
+		});
 
-	const { data } = await fetchListByK8s({
-		...params,
-		cluster,
-		namespace,
-		selector,
-		module,
-		name
-	});
+		const temp = ObjectMapper[module](data);
 
-	const temp = ObjectMapper[module](data);
+		const records = JSON.parse(get(temp, 'annotations.revisions', {}));
+		tableList.value = Object.entries(records).map(([key, value]) => {
+			const typedValue = value as Record<string, any>;
 
-	const records = JSON.parse(get(temp, 'annotations.revisions', {}));
-	tableList.value = Object.entries(records).map(([key, value]) => {
-		const typedValue = value as Record<string, any>;
-
-		return {
-			...typedValue,
-			id: key
-		};
-	});
+			return {
+				...typedValue,
+				id: key
+			};
+		});
+	} catch (error) {}
+	tableLoading.value = false;
 };
 
 const hideHandler = () => {
 	currentYamlData.value = {};
 };
 
-const confirmHandler = () => {
-	//
+const confirmHandler = async () => {
+	const { namespace, jobName: name }: Record<string, any> = route.params;
+	const params = {
+		kind: 'DeleteOptions',
+		apiVersion: 'v1',
+		propagationPolicy: 'Background'
+	};
+	deleteLoading.value = true;
+	try {
+		const res = await deleteJob(apiVersion, namespace, module, name, params);
+		$q.notify({
+			type: 'positive',
+			message: t('DELETED_SUCCESSFULLY')
+		});
+
+		deleteDialogRef.value && deleteDialogRef.value.hide();
+		router.replace({
+			path: '/jobs',
+			query: {
+				refresh: 1
+			}
+		});
+	} catch (error) {
+		$q.notify({
+			type: 'negative',
+			message: JSON.stringify(error || '')
+		});
+	}
+	deleteLoading.value = false;
 };
 
 const rerunHanlder = async () => {
-	const { namespace, name }: Record<string, any> = route.params;
+	const { namespace, jobName: name }: Record<string, any> = route.params;
 	const params = {};
 	loading.value = true;
 
@@ -352,14 +399,15 @@ const rerunHanlder = async () => {
 			params
 		);
 		const resourceVersion = get(data, 'metadata.resourceVersion');
-		console.log('resourceVersion', resourceVersion);
 
-		jobRerun(resourceVersion, { name, namespace });
+		await jobRerun(resourceVersion, { name, namespace });
+		fetchData();
 	} catch (error) {}
+	loading.value = false;
 };
 
 watch(
-	() => route.params.name,
+	() => route.params.jobName,
 	() => {
 		fetchData();
 	},
