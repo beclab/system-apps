@@ -11,6 +11,9 @@
 					<DetailPage :data="attrData"></DetailPage>
 				</MyCard4>
 				<MyCard4 square flat :title="$t('RUN_RECORDS')">
+					<template #extra>
+						<Refresh @click="fetchRecords"></Refresh>
+					</template>
 					<QTableStyle>
 						<q-table
 							flat
