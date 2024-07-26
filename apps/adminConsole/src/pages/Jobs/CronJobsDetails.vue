@@ -135,7 +135,7 @@ const options = [
 	{
 		label: t('VIEW_YAML'),
 		value: 'edit',
-		icon: 'sym_r_edit',
+		icon: 'sym_r_preview',
 		onClick: () => {
 			yamlRef.value.show();
 		}

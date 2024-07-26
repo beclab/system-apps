@@ -56,7 +56,7 @@ import FullPageWithBack from '@packages/ui/src/components/FullPageWithBack.vue';
 const options = [
 	{
 		key: 'viewYAML',
-		icon: 'ip',
+		icon: 'sym_r_preview',
 		text: t('VIEW_YAML'),
 		action: 'edit',
 		onClick: () => {

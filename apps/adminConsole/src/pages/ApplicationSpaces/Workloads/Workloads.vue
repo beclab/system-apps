@@ -99,7 +99,7 @@ const menuOptions = {
 const route = useRoute();
 const list = ref<any[]>([]);
 const loading = ref(false);
-const defaultActive = ref();
+const defaultActive = ref(route.params.uid);
 const workloadChildren = ref([]);
 const shouldExecuteResponseHandler = ref(true);
 let firstListIndexs: [number, number] | undefined = undefined;
@@ -124,7 +124,7 @@ const fetchData = async () => {
 		sortBy: 'createTime',
 		namespace
 	};
-	defaultActive.value = undefined;
+	// defaultActive.value = undefined;
 	searchText.value = '';
 	loading.value = true;
 	const [workloadData, configurationsData, servicesData] = await Promise.all([
@@ -180,7 +180,7 @@ const workloadsDataFormatter = (
 			id: child.value,
 			selectable: false,
 			children: childData.map((item: any, childIndex: number) => {
-				path = `/application-spaces/workloads/${child.value}/${namespace}/detail/${item.metadata.name}/${item.metadata.creationTimestamp}`;
+				path = `/application-spaces/workloads/${child.value}/${namespace}/detail/${item.metadata.name}/${item.metadata.creationTimestamp}/${item.metadata.uid}`;
 				id = item.metadata.uid;
 				if (!firstPath) {
 					firstPath = path;
@@ -268,10 +268,17 @@ const tabList = (item: any, node: string) => {
 };
 
 watch(
+	() => route.params.uid,
+	() => {
+		const { namespace, name, kind, uid }: { [key: string]: any } = route.params;
+		defaultActive.value = uid;
+	}
+);
+
+watch(
 	() => route.query.type,
 	(type) => {
-		const { namespace, name, kind }: { [key: string]: any } = route.params;
-
+		const { namespace, name, kind, uid }: { [key: string]: any } = route.params;
 		if (type === 'pod') {
 			myTreeRef.value.setExpanded(`${route.query.uid}`, true);
 			layzLoadData(route.query.uid as string, PodListData.data);

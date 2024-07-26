@@ -40,7 +40,7 @@ import RouterViewTransition from '@packages/ui/src/components/RouterViewTransiti
 const options = [
 	{
 		key: 'edit',
-		icon: 'sym_r_edit',
+		icon: 'sym_r_preview',
 		label: t('VIEW_YAML'),
 		action: 'edit',
 		onClick: () => {

@@ -157,7 +157,7 @@ const options = [
 	{
 		label: t('RERUN'),
 		value: 'refresh',
-		icon: 'sym_r_refresh',
+		icon: 'sym_r_reopen_window',
 		onClick: () => {
 			rerunHanlder();
 		}
@@ -165,7 +165,7 @@ const options = [
 	{
 		label: t('VIEW_YAML'),
 		value: 'edit',
-		icon: 'sym_r_edit',
+		icon: 'sym_r_preview',
 		onClick: () => {
 			yamlRef.value.show();
 		}
