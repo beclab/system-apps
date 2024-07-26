@@ -10,7 +10,8 @@
 		>
 			<slot></slot>
 		</q-btn>
-		<q-dialog
+		<Dialog
+			:title="title"
 			persistent
 			full-width
 			full-height
@@ -18,23 +19,16 @@
 			@show="show"
 			@hide="hide"
 		>
-			<q-card>
-				<div class="row items-center q-pa-md">
-					<div class="q-h6">{{ title }}</div>
-					<q-space />
-					<q-btn icon="close" flat round dense v-close-popup />
-				</div>
-				<div class="relative-position" style="height: calc(100vh - 158px)">
-					<div
-						style="
-							height: calc(100%);
-							border-radius: 6px;
-							overflow: hidden;
-							position: relative;
-						"
-						class="q-mx-sm q-b-sm"
-					>
-						<!-- <q-btn
+			<div style="height: calc(100% - 56px)">
+				<div
+					style="
+						height: calc(100%);
+						border-radius: 6px;
+						overflow: hidden;
+						position: relative;
+					"
+				>
+					<!-- <q-btn
             color="primary"
             dense
             rounded
@@ -50,52 +44,52 @@
             <q-separator spaced inset vertical dark />
             <q-icon name="download" @click="handleDownload" />
           </q-btn> -->
-						<v-ace-editor
-							v-if="aceVisileb"
-							v-model:value="data"
-							lang="yaml"
-							theme="chaos"
-							:readonly="loading2"
-							style="height: calc(100%)"
-							:options="{
-								showGutter: true,
-								showPrintMargin: false,
-								useWorker: true,
-								keyboardHandler: 'vscode',
-								wrapEnabled: true,
-								tabSize: 2,
-								wrap: true
-							}"
-						/>
-					</div>
-					<q-card-section class="row justify-end q-pa-sm">
-						<q-btn
-							no-caps
-							unelevated
-							outline
-							rounded
-							padding="6px xl"
-							@click="yamlHide"
-						>
-							<span>{{ t('CANCEL') }}</span>
-						</q-btn>
-						<q-btn
-							no-caps
-							color="primary"
-							unelevated
-							rounded
-							padding="6px xl"
-							style="margin-left: 12px"
-							:loading="loading2"
-							@click="submit"
-						>
-							{{ t('OK') }}
-						</q-btn>
-					</q-card-section>
+					<v-ace-editor
+						v-if="aceVisileb"
+						v-model:value="data"
+						lang="yaml"
+						theme="chaos"
+						:readonly="loading2"
+						style="height: calc(100%)"
+						:options="{
+							showGutter: true,
+							showPrintMargin: false,
+							useWorker: true,
+							keyboardHandler: 'vscode',
+							wrapEnabled: true,
+							tabSize: 2,
+							wrap: true
+						}"
+					/>
 				</div>
-			</q-card>
-			<q-inner-loading :showing="loading"> </q-inner-loading>
-		</q-dialog>
+				<div class="row justify-end q-mt-lg">
+					<q-btn
+						no-caps
+						unelevated
+						outline
+						rounded
+						padding="6px xl"
+						@click="yamlHide"
+					>
+						<span>{{ t('CANCEL') }}</span>
+					</q-btn>
+					<q-btn
+						no-caps
+						color="primary"
+						unelevated
+						rounded
+						padding="6px xl"
+						style="margin-left: 12px"
+						:loading="loading2"
+						@click="submit"
+					>
+						{{ t('OK') }}
+					</q-btn>
+				</div>
+			</div>
+			<q-inner-loading :showing="loading" style="z-index: 999999">
+			</q-inner-loading>
+		</Dialog>
 	</div>
 </template>
 
@@ -133,6 +127,8 @@ import { get, set } from 'lodash-es';
 import { saveAs } from 'file-saver';
 import { API_VERSIONS } from 'src/utils/constants';
 import { cloneDeep, setWith } from 'lodash';
+import Dialog from '@packages/ui/src/components/Dialog/Dialog.vue';
+
 ace.config.setModuleUrl('ace/mode/yaml_worker', workerJsonUrl);
 // src/components/Modals/EditYaml/index.jsx
 interface Props {

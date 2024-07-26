@@ -117,7 +117,7 @@ const routes: RouteRecordRaw[] = [
 						children: [
 							...podRoute('/application-spaces').children,
 							{
-								path: '/application-spaces/workloads/:kind/:namespace/detail/:name',
+								path: '/application-spaces/workloads/:kind/:namespace/detail/:name/:createTime?',
 								component: () =>
 									import('src/pages/ApplicationSpaces/Workloads/Detail.vue'),
 								name: 'workload-detail',

@@ -1,28 +1,23 @@
 <template>
 	<MyLoading :showing="loading">
-		<my-card flat title="Monitoring" animated>
+		<my-card bordered flat title="Monitoring" animated>
 			<template #extra>
-				<div class="row items-center">
+				<div class="row items-center q-gutter-x-md">
 					<DateRangeMonitoring
 						:step="selectValue.step"
 						:times="selectValue.times"
 						@change="selecteChange"
 					/>
-					<q-btn
-						outline
-						padding="4px"
-						dense
-						color="grey-5"
-						style="margin-left: 8px; border-radius: 8px"
-						:disable="loading"
-					>
-						<q-icon name="refresh" class="refresh-icon" @click="init"></q-icon>
-					</q-btn>
+					<QButtonStyle>
+						<q-btn outline dense :disable="loading">
+							<q-icon name="refresh" @click="init"></q-icon>
+						</q-btn>
+					</QButtonStyle>
 				</div>
 			</template>
 			<div class="row q-col-gutter-lg">
 				<div class="col-12" v-for="item in list" :key="`md-${item.title}`">
-					<MylineChart :data="item" />
+					<MylineChart :data="item" style="height: 238px" :split-number-y="3" />
 				</div>
 			</div>
 		</my-card>
@@ -30,21 +25,17 @@
 </template>
 
 <script setup lang="ts">
-import RouteBackBar from 'src/components/RouteBackBar.vue';
 import { useRoute } from 'vue-router';
 import MylineChart from '../../components/Charts/MylineChart.vue';
 import MyCard from '../../components/MyCard2.vue';
 import { onMounted, ref } from 'vue';
 import { getContainersMonitoring } from 'src/network';
-import { date } from 'quasar';
 import { chartConfig, getResult, MetricTypes } from './config';
-import DateRangeMonitoring, {
-	DateRangeItem,
-	options
-} from './DateRangeMonitoring.vue';
+import DateRangeMonitoring from './DateRangeMonitoring.vue';
 import MyLoading from '../../components/MyLoading.vue';
 import { getAreaChartOps } from 'src/utils/monitoring';
 import { fillEmptyMetrics, getParams, ParamsFormat } from './config';
+import QButtonStyle from '../../components/QButtonStyle.vue';
 
 interface Props {
 	createTime?: string;

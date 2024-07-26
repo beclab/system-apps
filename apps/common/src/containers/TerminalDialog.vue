@@ -9,47 +9,27 @@
 	>
 		<slot></slot>
 	</q-icon>
-	<q-dialog
-		persistent
-		full-width
-		full-height
-		v-model="visible2"
-		@show="show"
-		@hide="hide"
-	>
-		<q-card>
-			<q-card-section class="row items-center q-px-md q-py-sm">
-				<MyTitle size="sm">
-					{{ data.container }}
-				</MyTitle>
-				<q-space />
-				<QButtonStyle size="sm">
-					<q-btn icon="close" flat round dense v-close-popup />
-				</QButtonStyle>
-			</q-card-section>
-			<div
-				style="height: calc(100% - 45px); border-radius: 4px; overflow: hidden"
-				class="q-pa-md"
-			>
+	<Dialog :title="data.container" v-model="visible2" @show="show" @hide="hide">
+		<div class="absolute-full">
+			<div class="absolute-full" style="border-radius: 4px; overflow: hidden">
 				<div class="relative-position terminal-content">
 					<div class="terminal-content-wrapper">
 						<div style="height: calc(100%)" ref="terminalRef"></div>
 					</div>
 				</div>
 			</div>
-		</q-card>
-	</q-dialog>
+		</div>
+	</Dialog>
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, ref } from 'vue';
+import { ref } from 'vue';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
 import 'xterm/css/xterm.css';
 import SocketClient from '../utils/socket.client';
 import { debounce } from 'lodash';
-import MyTitle from '../components/MyListItem/MyTitle.vue';
-import QButtonStyle from '../components/QButtonStyle.vue';
+import Dialog from '../components/Dialog/Dialog.vue';
 
 interface Props {
 	data: {

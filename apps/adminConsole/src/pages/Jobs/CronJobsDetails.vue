@@ -29,14 +29,9 @@
 								{{ $t(props.value) }}
 							</q-td>
 						</template>
-						<template #loading>
-							<div class="relative-position" style="min-height: 240px">
-								<MyLoading2 class="absolute-center"> </MyLoading2>
-							</div>
-						</template>
 						<template #no-data>
-							<div class="full-width relative-position" style="height: 280px">
-								<Empty3 v-show="!tableLoading" @click="fetchRecords"></Empty3>
+							<div class="row justify-center full-width q-mt-lg">
+								<Empty v-show="!tableLoading" @click="fetchRecords"></Empty>
 							</div>
 						</template>
 					</q-table>
@@ -110,7 +105,7 @@ import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
 import { getJobStatus } from 'src/utils/status';
 import MyLoading2 from '@packages/ui/src/components/MyLoading2.vue';
-import Empty3 from '@packages/ui/src/components/Empty3.vue';
+import Empty from '@packages/ui/src/components/Empty.vue';
 
 const $q = useQuasar();
 const { t } = useI18n();

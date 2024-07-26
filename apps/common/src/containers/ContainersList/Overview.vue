@@ -1,59 +1,44 @@
 <template>
-	<bt-scroll-area class="overview-warpper" style="height: calc(100vh - 110px)">
-		<MyPage>
-			<MyCard square flat animated title="Detail">
-				<template #extra>
-					<div class="row">
-						<!-- <Terminal :data="containerPath">{{ t('TERMINAL') }}</Terminal> -->
-						<!-- <q-btn
-            class="q-ml-md"
-            no-caps
-            outline
-            color="primary"
-            :label="t('CONTAINER_LOGS')"
-            @click="() => (visible = true)"
-          /> -->
-					</div>
-				</template>
-				<DetailPage :data="detail"> </DetailPage>
-			</MyCard>
-			<MyCard no-content-gap square flat :title="t('VOLUMES')">
-				<VolumeContainer
-					:volumes="volumes"
-					:containers="containersTarget"
-					:isMultiProject="podDetail.isFedManaged"
-				></VolumeContainer>
-			</MyCard>
-			<ContainerMonitoring :container="container"></ContainerMonitoring>
-			<MyCard
-				no-content-gap
-				square
-				flat
-				:title="t('ENVIRONMENT_VARIABLE_PL')"
-				outline
-			>
-				<div class="q-gutter-y-md">
-					<div
-						class="environments-wrapper q-px-lg q-py-md"
-						v-for="item in envlist"
-						:key="item.name"
-					>
-						<MyExpansion :label="labelFormat(item)" :default-opened="true">
-							<MyChipList v-if="item.variables.length" :data="item.variables">
-							</MyChipList>
-							<div v-else>
-								<Empty></Empty>
-							</div>
-						</MyExpansion>
-					</div>
+	<div class="q-gutter-y-lg">
+		<MyCard bordered square flat animated title="Detail">
+			<template #extra>
+				<div class="row">
+					<!-- <Terminal :data="containerPath">{{ t('TERMINAL') }}</Terminal> -->
+					<!-- <q-btn
+					class="q-ml-md"
+					no-caps
+					outline
+					color="primary"
+					:label="t('CONTAINER_LOGS')"
+					@click="() => (visible = true)"
+				/> -->
 				</div>
-			</MyCard>
-			<q-inner-loading :showing="loading"> </q-inner-loading>
-			<MyDialog v-model="visible">
-				<Log></Log>
-			</MyDialog>
-		</MyPage>
-	</bt-scroll-area>
+			</template>
+			<DetailPage :data="detail"> </DetailPage>
+		</MyCard>
+		<MyCard bordered no-content-gap square flat :title="t('VOLUMES')">
+			<VolumeContainer
+				:volumes="volumes"
+				:containers="containersTarget"
+				:isMultiProject="podDetail.isFedManaged"
+			></VolumeContainer>
+		</MyCard>
+		<ContainerMonitoring :container="container"></ContainerMonitoring>
+		<MyCard
+			bordered
+			no-content-gap
+			square
+			flat
+			:title="t('ENVIRONMENT_VARIABLE_PL')"
+			outline
+		>
+			<EnvironmentsLayout :detail="envDetail"></EnvironmentsLayout>
+		</MyCard>
+		<q-inner-loading :showing="loading"> </q-inner-loading>
+		<MyDialog v-model="visible">
+			<Log></Log>
+		</MyDialog>
+	</div>
 </template>
 
 <script setup lang="ts">
@@ -76,6 +61,7 @@ import VolumeContainer from '../VolumeContainer.vue';
 import { getWorkloadVolumes } from '../../utils/workload.js';
 import ContainerMonitoring from '../Monitoring/ContainerMonitoring.vue';
 import { fetcEnvList } from '../env';
+import EnvironmentsLayout from '../../containers/EnvironmentsLayout.vue';
 
 interface Props {
 	container?: string;
@@ -87,7 +73,6 @@ const props = withDefaults(defineProps<Props>(), {});
 const route = useRoute();
 const detail = ref();
 const loading = ref(false);
-const envlist = ref();
 const envDetail = ref();
 const visible = ref(false);
 const podDetail = ref<any>({});
@@ -230,41 +215,6 @@ const containerPath = computed(() => {
 	};
 });
 
-const labelFormat = (item: any) => {
-	let label = '';
-	label =
-		item.type === 'init'
-			? t('INIT_CONTAINER_VALUE', { value: item.name })
-			: t('CONTAINER_VALUE', { value: item.name });
-	return label;
-};
-
-const containers = computed(() => {
-	const data = envDetail.value || {};
-	const { spec, containers = [] } = data;
-
-	return [data];
-});
-
-const initContainers = computed(() => {
-	const data = envDetail.value || {};
-	const { spec, initContainers: initContainersData = [] } = data;
-
-	return [data];
-
-	return [];
-});
-
-const fetchEnv = async () => {
-	const { namespace, cluster }: { [key: string]: any } = route.params;
-	envlist.value = await fetcEnvList({
-		namespace: namespace,
-		cluster: cluster,
-		containers: containers.value,
-		initContainers: initContainers.value
-	});
-};
-
 async function fetchData() {
 	const { namespace, name: podName }: Record<string, any> = route.params;
 	const containerName = route.params.container || props.container;
@@ -277,6 +227,8 @@ async function fetchData() {
 				podDetail.value = pod;
 				volumes.value = workloadRes;
 			});
+			envDetail.value = pod;
+
 			const data =
 				pod.containers.find((item: any) => item.name === containerName) ||
 				pod.initContainers.find((item: any) => item.name === containerName);
@@ -285,8 +237,6 @@ async function fetchData() {
 			data.app = data.app || pod.app;
 			// detail.cluster = cluster
 			detail.value = getAttrs(data);
-			envDetail.value = data;
-			fetchEnv();
 		})
 		.finally(() => {
 			loading.value = false;

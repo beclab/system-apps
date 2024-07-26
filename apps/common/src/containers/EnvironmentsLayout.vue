@@ -1,6 +1,10 @@
 <template>
 	<div class="q-gutter-y-md">
-		<div class="environments-wrapper" v-for="item in envlist" :key="item.name">
+		<div
+			class="environments-wrapper q-px-lg q-py-md"
+			v-for="item in envlist"
+			:key="item.name"
+		>
 			<MyExpansion :label="item.name" :default-opened="!item.env">
 				<MyChipList
 					v-if="envFilter(item.env).length > 0"
@@ -54,3 +58,9 @@ watchEffect(async () => {
 	}
 });
 </script>
+<style lang="scss" scoped>
+.environments-wrapper {
+	border-radius: 8px;
+	border: 1px solid $separator;
+}
+</style>

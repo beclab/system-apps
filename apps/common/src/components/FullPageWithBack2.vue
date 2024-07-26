@@ -1,7 +1,7 @@
 <template>
 	<div
 		class="fixed-full bg-background-1"
-		:style="{ left: $q.screen.lt.lg ? '0px' : '240px', zIndex: 1000 }"
+		:style="{ left: '0px', zIndex: 1000 }"
 	>
 		<RouteBackBar
 			:title="!visible ? title : ''"

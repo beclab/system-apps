@@ -862,3 +862,31 @@ export const deleteJob = (
 		params
 	});
 };
+
+export const getWorkloadsMetrics2 = (
+	namespace: string,
+	workload: string,
+	pod: string,
+	params: PodsParam
+): Promise<AxiosResponse<MonitoringResponse>> => {
+	return api.get(
+		`/kapis/monitoring.kubesphere.io/v1alpha3/namespaces/${namespace}/workloads/${workload}/${pod}/pods`,
+		{
+			params
+		}
+	);
+};
+
+export const getWorkloadsPods = (
+	namespace: string,
+	workload: string,
+	pod: string,
+	params: PodsParam
+): Promise<AxiosResponse<MonitoringResponse>> => {
+	return api.get(
+		`kapis/monitoring.kubesphere.io/v1alpha3/namespaces/${namespace}/workloads/${workload}/${pod}/pods`,
+		{
+			params
+		}
+	);
+};

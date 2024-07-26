@@ -20,7 +20,7 @@
 				</q-td>
 			</template>
 			<template v-slot:no-data>
-				<div class="row justify-center">
+				<div class="row justify-center full-width q-mt-lg">
 					<Empty></Empty>
 				</div>
 			</template>

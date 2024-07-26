@@ -128,10 +128,7 @@
 	</MyDialog>
 
 	<MyDialog v-model="visible2" :title="currentContainer.name">
-		<ContainerOverview
-			:container="currentContainer.name"
-			class="q-mb-md"
-		></ContainerOverview>
+		<ContainerOverview :container="currentContainer.name"></ContainerOverview>
 	</MyDialog>
 </template>
 
@@ -142,7 +139,7 @@ import MyBadge from '../../components/MyBadge.vue';
 import dockerIcon from '../../assets/docker.svg';
 import Terminal from '../TerminalDialog.vue';
 import { useRoute } from 'vue-router';
-import MyDialog from '../../components/MyQDialog.vue';
+import MyDialog from '../../components/Dialog/Dialog.vue';
 import Logs from '../Logs.vue';
 import MyPage from '../MyPage.vue';
 import { isArray, capitalize, isUndefined, isEmpty } from 'lodash-es';
