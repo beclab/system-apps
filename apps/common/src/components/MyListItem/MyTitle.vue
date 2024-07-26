@@ -1,7 +1,7 @@
 <template>
 	<div
-		class="my-title-container ellipsis full-width text-ink-1"
-		:class="sizeClass"
+		class="my-title-container full-width text-ink-1"
+		:class="[sizeClass, ellipsis ? 'ellipsis' : '']"
 		:style="{ fontWeight: bold ? '500' : 'normal' }"
 	>
 		<template v-if="$slots.default">
@@ -20,11 +20,13 @@ interface Props {
 	title?: string;
 	bolder?: boolean;
 	size?: 'sm' | 'md' | 'lg';
+	ellipsis?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
 	bolder: true,
-	size: 'md'
+	size: 'md',
+	ellipsis: true
 });
 
 const { bolder: bold } = toRefs(props);

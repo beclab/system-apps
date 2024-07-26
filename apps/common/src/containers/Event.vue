@@ -34,7 +34,9 @@
 				</q-td>
 			</template>
 			<template v-slot:no-data>
-				<Empty></Empty>
+				<div style="flex: 1" class="row justify-center q-mt-lg">
+					<Empty v-show="!loading"></Empty>
+				</div>
 			</template>
 		</q-table>
 	</QTableStyle>
@@ -48,7 +50,7 @@ import { joinSelector } from 'src/utils';
 import { ObjectMapper } from 'src/utils/object.mapper';
 import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import Empty from '../components/Empty2.vue';
+import Empty from '../components/Empty.vue';
 import QTableStyle from '../components/QTableStyle.vue';
 import MyBadge from '../components/MyBadge.vue';
 import { MODULE_KIND_MAP } from '@packages/ui/src/utils/constants';

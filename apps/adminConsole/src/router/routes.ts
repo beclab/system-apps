@@ -62,11 +62,17 @@ const routes: RouteRecordRaw[] = [
 				children: [
 					...podRoute('/jobs').children,
 					{
-						path: '/jobs/job/:namespace/:name',
-						component: () => import('src/pages/Jobs/JobsDetails.vue')
+						path: '/jobs/job/:namespace/:jobName/:jobUid',
+						component: () => import('src/pages/Jobs/JobsDetails.vue'),
+						children: [
+							{
+								path: '/job-inner/:jobName/:jobUid/pods/overview/:node/:namespace/:name/:createTime?',
+								component: () => import('src/pages/Jobs/Pods.vue')
+							}
+						]
 					},
 					{
-						path: '/jobs/cronjob/:namespace/:name',
+						path: '/jobs/cronjob/:namespace/:name/:jobUid',
 						component: () => import('src/pages/Jobs/CronJobsDetails.vue')
 					},
 					{
@@ -111,7 +117,7 @@ const routes: RouteRecordRaw[] = [
 						children: [
 							...podRoute('/application-spaces').children,
 							{
-								path: '/application-spaces/workloads/:kind/:namespace/detail/:name',
+								path: '/application-spaces/workloads/:kind/:namespace/detail/:name/:createTime?',
 								component: () =>
 									import('src/pages/ApplicationSpaces/Workloads/Detail.vue'),
 								name: 'workload-detail',

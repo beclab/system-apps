@@ -33,7 +33,7 @@
 									:options="options"
 									dense
 									outlined
-									style="width: 220px"
+									style="width: 230px"
 								/>
 							</QSectionStyle>
 						</div>

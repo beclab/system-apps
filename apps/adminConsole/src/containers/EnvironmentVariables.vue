@@ -41,29 +41,7 @@
 			<PortsTable :ports="ports"></PortsTable>
 		</MyCard>
 		<MyCard no-content-gap square flat :title="t('ENVIRONMENT_VARIABLE_PL')">
-			<div class="q-gutter-y-md">
-				<div
-					class="environments-wrapper q-px-lg q-py-md"
-					v-for="item in envlist"
-					:key="item.name"
-				>
-					<MyExpansion
-						:label="item.name"
-						:default-opened="!loading && !item.env"
-					>
-						<MyChipList
-							v-if="envFilter(item.env).length > 0"
-							:data="envFilter(item.env)"
-							dense-toggle
-						>
-						</MyChipList>
-						<div v-else>
-							<Empty></Empty>
-						</div>
-					</MyExpansion>
-				</div>
-			</div>
-			<q-inner-loading :showing="loading"> </q-inner-loading>
+			<EnvironmentsLayout :detail="detail"></EnvironmentsLayout>
 		</MyCard>
 		<Metadata v-if="detail" :detail="detail" :data="detail"></Metadata>
 		<MyCard no-content-gap square flat animated :title="t('EVENT_PL')">
@@ -96,22 +74,19 @@ import { safeAtob } from '@packages/ui/src/utils/base64';
 import axios from 'axios';
 import MyCard from '@packages/ui/src/components/MyCard2.vue';
 import { t } from 'src/boot/i18n';
-import MyChipList from '@packages/ui/src/containers/MyChipList.vue';
 import { joinSelector } from 'src/utils';
 import { ObjectMapper } from 'src/utils/object.mapper';
 import Event from '@packages/ui/src/containers/Event.vue';
 import Metadata from '@packages/ui/src/containers/Metadata.vue';
 import ReplicaCard from './ReplicaCard.vue';
-import Empty from '@packages/ui/src/components/Empty.vue';
 import RevisionControl from './RevisionControl/IndexPage.vue';
 import MyQDialog from 'src/components/MyQDialog.vue';
 import PodContainer from '@packages/ui/src/containers/PodsList/PodContainer.vue';
-import SocketClient from 'src/utils/socket.client';
 import PortsTable from '@packages/ui/src/containers/PortsTable.vue';
-import MyExpansion from '@packages/ui/src/components/MyExpansion.vue';
 import MyPage from '@packages/ui/src/containers/MyPage.vue';
 import QButtonStyle from '@packages/ui/src/components/QButtonStyle.vue';
 import Refresh from '@packages/ui/src/components/Refresh.vue';
+import EnvironmentsLayout from '@packages/ui/src/containers/EnvironmentsLayout.vue';
 
 interface Props {
 	module?: string;
@@ -121,7 +96,6 @@ const loading = ref(false);
 const route = useRoute();
 const envDetail = ref();
 const detail = ref();
-const envlist = ref();
 const params = ref();
 const variables = ref();
 const childComponentRef = ref();
@@ -129,13 +103,6 @@ const visible = ref(false);
 const PodContainerRef = ref();
 
 const props = withDefaults(defineProps<Props>(), {});
-
-const envFilter = (data: any[]) => {
-	const newData = data || [];
-	const temp = newData.filter((item) => item.value);
-	console.log('bbbbb', data, temp);
-	return temp;
-};
 
 const getPath = ({ cluster, namespace }: { [key: string]: string } = {}) => {
 	let path = '';
@@ -215,30 +182,6 @@ const etchVariables = async (container: any) => {
 	return container;
 };
 
-const containers = computed(() => {
-	const data = envDetail.value || {};
-	const { spec, containers = [] } = data;
-
-	if (props.module === 'containers') return [data];
-
-	if (!isEmpty(containers)) return containers;
-	if (!isEmpty(spec)) return get(spec, 'template.spec.containers', []);
-
-	return [];
-});
-
-const initContainers = computed(() => {
-	const data = envDetail.value || {};
-	const { spec, initContainers: initContainersData = [] } = data;
-
-	if (props.module === 'containers') return [data];
-
-	if (!isEmpty(initContainersData)) return initContainersData;
-	if (!isEmpty(spec)) return get(spec, 'template.spec.initContainers', []);
-
-	return [];
-});
-
 const fetchList2 = async ({
 	cluster,
 	namespace,
@@ -263,16 +206,6 @@ const fetchList2 = async ({
 	return data;
 };
 
-const fetchData = async () => {
-	const { namespace, cluster }: { [key: string]: any } = route.params;
-	envlist.value = await fetchList2({
-		namespace: namespace,
-		cluster: cluster,
-		containers: containers.value,
-		initContainers: initContainers.value
-	});
-};
-
 const fetchEnv = async () => {
 	const { namespace, kind, name }: { [key: string]: any } = route.params;
 	loading.value = true;
@@ -281,8 +214,6 @@ const fetchEnv = async () => {
 	loading.value = false;
 
 	params.value = getParams('default');
-
-	fetchData();
 };
 
 function updateDetail(data: any) {

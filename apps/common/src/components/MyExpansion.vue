@@ -1,5 +1,8 @@
 <template>
-	<div class="row items-center q-py-md justify-between">
+	<div
+		class="row items-center q-py-md justify-between"
+		@click="expanded = !expanded"
+	>
 		<ListItemVue :title="label">
 			<template #avatar>
 				<q-img :src="dockerIcon" />
@@ -11,7 +14,6 @@
 				flat
 				dense
 				:icon="expanded ? 'arrow_drop_up' : 'arrow_drop_down'"
-				@click="expanded = !expanded"
 			/>
 		</QButtonStyle>
 	</div>

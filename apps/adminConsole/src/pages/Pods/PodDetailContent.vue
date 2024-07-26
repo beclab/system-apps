@@ -1,38 +1,20 @@
 <template>
-	<FullPageWithBack :title="namespace">
+	<FullPageWithBack :title="$route.params.name">
 		<template #extra>
-			<Yaml name="" ref="yamlRef"></Yaml>
-			<QButtonStyle size="sm">
-				<q-btn dense color="grey-8" flat icon="more_vert">
-					<q-menu cover auto-close>
-						<q-list dense>
-							<q-item
-								clickable
-								v-close-popup
-								v-for="item in options"
-								:key="item.key"
-								@click="item.onClick"
-							>
-								<q-item-section class="text-no-wrap">
-									{{ item.text }}
-								</q-item-section>
-							</q-item>
-						</q-list>
-					</q-menu>
-				</q-btn>
-			</QButtonStyle>
-		</template>
-		<div style="margin: 0 -44px; margin-bottom: -44px">
-			<div class="q-px-md q-pb-md">
-				<Overview></Overview>
-				<ContainerWrapper></ContainerWrapper>
-				<Volumes></Volumes>
-				<Metadata></Metadata>
-				<Environments></Environments>
-				<Events></Events>
-				<q-inner-loading :showing="loading"></q-inner-loading>
+			<div class="col-auto">
+				<MoreSelection :options="options" size="md"></MoreSelection>
 			</div>
+		</template>
+		<div class="q-gutter-y-lg bg-red">
+			<Overview></Overview>
+			<ContainerWrapper></ContainerWrapper>
+			<Volumes></Volumes>
+			<Metadata></Metadata>
+			<Environments></Environments>
+			<Events></Events>
 		</div>
+		<q-inner-loading :showing="loading"></q-inner-loading>
+		<Yaml name="" ref="yamlRef"></Yaml>
 	</FullPageWithBack>
 </template>
 
@@ -46,18 +28,20 @@ import ContainerWrapper from './ContainerWrapper.vue';
 import { getPodDetail } from 'src/network';
 import { useRoute } from 'vue-router';
 import { UsePod } from '@packages/ui/src/stores/PodData';
-import { computed, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import MyContentPage from '../../components/MyContentPage.vue';
 import MyPage from '@packages/ui/src/containers/MyPage.vue';
 import Yaml from './Yaml.vue';
+import MoreSelection from '@packages/ui/src/components/MoreSelection.vue';
 import { t } from 'src/boot/i18n';
 import FullPageWithBack from '@packages/ui/src/components/FullPageWithBack.vue';
+import RouterViewTransition from '@packages/ui/src/components/RouterViewTransition.vue';
 
 const options = [
 	{
-		key: 'viewYAML',
+		key: 'edit',
 		icon: 'sym_r_preview',
-		text: t('VIEW_YAML'),
+		label: t('VIEW_YAML'),
 		action: 'edit',
 		onClick: () => {
 			yamlRef.value.show();
@@ -69,8 +53,6 @@ const usePod = UsePod();
 const route = useRoute();
 const loading = ref(false);
 const yamlRef = ref();
-
-const namespace = computed(() => route.params.namespace as string);
 
 const fetchData = () => {
 	const { namespace, name }: any = route.params;
@@ -92,4 +74,8 @@ const fetchData = () => {
 watch(() => route.params, fetchData, { immediate: true });
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.border-grey-2 {
+	border: 1px solid $grey-2;
+}
+</style>

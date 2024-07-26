@@ -33,7 +33,6 @@ const options = {
 	NO_DATA_AVAILABLE: 'No data available',
 	POD_LIST: 'Pod List',
 	TIMESTAMP: 'timestamp',
-	SOURCE: '_source',
 	MAX_RECORDS: 'Max records to return',
 	SYNTAX_GUIDE: 'Syntax guide',
 	FOUND_HITS: 'Found {count} hits in {time} ms',

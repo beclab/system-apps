@@ -114,7 +114,12 @@
 				></MyContentHeader>
 			</div>
 			<div style="flex: 1" class="my-menu-after-content">
-				<router-view></router-view>
+				<router-view v-slot="{ Component }">
+					<component :is="Component" />
+					<template v-if="!Component">
+						<slot name="after-default"></slot>
+					</template>
+				</router-view>
 			</div>
 		</template>
 	</MySplitter>
@@ -133,7 +138,7 @@ import {
 } from 'vue';
 import { defaultMenuOptions, MenuItem, MenuOptions } from '../../types/menu';
 import { useRouter } from 'vue-router';
-import _, { isArray, isNil } from 'lodash';
+import _, { isArray, isNil, isFunction } from 'lodash';
 import Empty from '../Empty.vue';
 import MyBadge from '../MyBadge.vue';
 import MySplitter from '../MySplitter.vue';

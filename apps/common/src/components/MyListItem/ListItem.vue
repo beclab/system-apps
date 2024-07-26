@@ -1,5 +1,5 @@
 <template>
-	<div class="title-contianer row no-wrap items-center overflow-hidden">
+	<div class="title-contianer row no-wrap items-center">
 		<template v-if="$slots.avatar">
 			<div
 				class="title-avatra"
@@ -9,11 +9,15 @@
 				<slot name="avatar"></slot>
 			</div>
 		</template>
-		<div class="column justify-between full-width ellipsis">
-			<MyTitle v-bind="props" v-if="$slots.title">
+		<div
+			class="column justify-between full-width"
+			:class="[ellipsis ? 'ellipsis' : '']"
+		>
+			<MyTitle v-bind="props" :ellipsis="ellipsis" v-if="$slots.title">
 				<slot name="title"></slot>
 			</MyTitle>
-			<MyTitle v-bind="props" v-else :title="title"> </MyTitle>
+			<MyTitle v-bind="props" v-else :ellipsis="ellipsis" :title="title">
+			</MyTitle>
 			<MySubTitle class="q-mt-xs" v-bind="props" v-if="$slots.subTitle">
 				<slot name="subTitle"></slot>
 			</MySubTitle>
@@ -36,12 +40,14 @@ interface Props {
 	iconSize: 'sm' | 'md' | 'lg';
 	titleClass?: string;
 	titleStyle?: CSSProperties | undefined;
+	ellipsis?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
 	bolder: true,
 	size: 'md',
-	iconSize: 'md'
+	iconSize: 'md',
+	ellipsis: true
 });
 
 const listItemTitleSize = computed(() => `title-avatra-${props.iconSize}`);

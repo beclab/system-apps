@@ -8,11 +8,11 @@
 			`${size}-icon`,
 			flicker ? 'flicker' : ''
 		]"
-	/>
+	></div>
 </template>
 
 <script setup lang="ts">
-import _, { lowerFirst } from 'lodash';
+import _, { lowerCase, lowerFirst } from 'lodash';
 import { computed, defineProps } from 'vue';
 
 interface StatusProps {
@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<StatusProps>(), {
 	size: 'md'
 });
 
-const typeFormat = computed(() => lowerFirst(props.type));
+const typeFormat = computed(() => lowerCase(props.type));
 </script>
 
 <style lang="scss" scoped>

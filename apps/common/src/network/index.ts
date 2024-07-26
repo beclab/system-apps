@@ -810,7 +810,7 @@ export const getJobEvent = (
 	});
 };
 
-export const fetchListByK8s = (
+export const fetchJobRecords = (
 	params: any
 ): Promise<AxiosResponse<CustomresourcesResponse>> => {
 	const { cluster, module, namespace, selector, name, ...rest } = params;
@@ -825,6 +825,18 @@ export const fetchListByK8s = (
 	);
 };
 
+export const fetchListByK8s = (
+	params: any
+): Promise<AxiosResponse<CustomresourcesResponse>> => {
+	const { cluster, module, namespace, selector, ...rest } = params;
+	if (!isEmpty(selector)) {
+		params.labelSelector = joinSelector(selector);
+	}
+	return api.get(`apis/batch/v1${getPath({ cluster, namespace })}/${module}`, {
+		params: rest
+	});
+};
+
 export const jobRerun = (
 	resourceVersion: string,
 	params: PodMonitoringParamAll
@@ -836,5 +848,45 @@ export const jobRerun = (
 			cluster,
 			namespace
 		})}/jobs/${name}?action=rerun&resourceVersion=${resourceVersion}`
+	);
+};
+
+export const deleteJob = (
+	apiVersion: string,
+	namespace: string,
+	module: string,
+	name: string,
+	params: any
+): Promise<AxiosResponse<CustomresourcesResponse>> => {
+	return api.delete(`${apiVersion}/namespaces/${namespace}/${module}/${name}`, {
+		params
+	});
+};
+
+export const getWorkloadsMetrics2 = (
+	namespace: string,
+	workload: string,
+	pod: string,
+	params: PodsParam
+): Promise<AxiosResponse<MonitoringResponse>> => {
+	return api.get(
+		`/kapis/monitoring.kubesphere.io/v1alpha3/namespaces/${namespace}/workloads/${workload}/${pod}/pods`,
+		{
+			params
+		}
+	);
+};
+
+export const getWorkloadsPods = (
+	namespace: string,
+	workload: string,
+	pod: string,
+	params: PodsParam
+): Promise<AxiosResponse<MonitoringResponse>> => {
+	return api.get(
+		`kapis/monitoring.kubesphere.io/v1alpha3/namespaces/${namespace}/workloads/${workload}/${pod}/pods`,
+		{
+			params
+		}
 	);
 };

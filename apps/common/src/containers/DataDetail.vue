@@ -1,5 +1,5 @@
 <template>
-	<div class="my-table-container">
+	<div class="my-table-container" v-if="hasData">
 		<table class="my-data-detail-table">
 			<tr v-for="(value, key) in data" :key="key + value" class="table-wrapper">
 				<td class="first-td q-pl-lg q-pr-lg q-py-md">
@@ -14,13 +14,18 @@
 			</tr>
 		</table>
 	</div>
+	<Empty v-else-if="!noEmpty" size="small"></Empty>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import MyEllips from '../components/MyEllips.vue';
+import Empty from '../components/Empty.vue';
+import { isEmpty } from 'lodash';
+
 interface Props {
 	data: { [key: string]: any };
+	noEmpty: boolean;
 }
 
 const maxWidth = ref(200);
@@ -31,6 +36,9 @@ const onResize = (size: { width: number; height: number }) => {
 	size = size;
 };
 const props = withDefaults(defineProps<Props>(), {});
+const hasData = computed(() => {
+	return !isEmpty(props.data);
+});
 </script>
 
 <style lang="scss" scoped>

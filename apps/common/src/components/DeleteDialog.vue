@@ -2,7 +2,7 @@
 	<MyQDialog2 v-bind="$attrs" v-model="visible" @before-hide="beforeHide">
 		<div style="width: 400px" class="q-gutter-y-md">
 			<div class="text-ink-2">
-				Enter the <span>{{ desc }}</span> name
+				Enter the <span>{{ lowerCase(desc) }}</span> name
 				<span class="text-weight-bold">{{ name }}</span> to confirm that you
 				understand the risks of this operation.
 			</div>
@@ -42,6 +42,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import MyQDialog2 from './MyQDialog2.vue';
+import { lowerCase } from 'lodash';
+
 interface Props {
 	name: string;
 	desc: string;

@@ -4,7 +4,7 @@
 		<div class="text-body3 text-ink-2 q-mb-lg">
 			{{ $t('NO_MATCHING_RESULT_FOUND') }}
 		</div>
-		<QButtonStyle>
+		<QButtonStyle v-if="refresh">
 			<q-btn
 				dense
 				outline
@@ -25,6 +25,14 @@
 <script setup lang="ts">
 import empty3Icon from '../assets/empty3.svg';
 import QButtonStyle from './QButtonStyle.vue';
+
+interface Props {
+	refresh?: boolean;
+}
+
+withDefaults(defineProps<Props>(), {
+	refresh: true
+});
 
 const emits = defineEmits(['click']);
 

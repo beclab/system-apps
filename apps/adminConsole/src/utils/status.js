@@ -116,7 +116,7 @@ export const getJobStatus = ({ spec, status }) => {
 };
 
 export const getCronJobStatus = ({ spec }) => {
-	if (spec.suspend) {
+	if (spec && spec.suspend) {
 		return 'Paused';
 	}
 	return 'Running';
