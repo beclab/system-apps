@@ -1,5 +1,5 @@
 <template>
-	<ListItem size="lg">
+	<ListItem size="lg" :ellipsis="false">
 		<template #title>
 			<v-chart
 				class="chart"

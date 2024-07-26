@@ -1,5 +1,5 @@
 <template>
-	<div class="relative-position">
+	<div>
 		<slot></slot>
 		<q-inner-loading v-bind="$attrs" />
 	</div>
