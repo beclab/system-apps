@@ -2,21 +2,12 @@
 	<div class="q-gutter-y-lg">
 		<div class="row items-center justify-between">
 			<div class="text-h6 text-ink-1">{{ $t('MONITORING') }}</div>
-			<div class="row items-center">
+			<div class="row items-center q-col-gutter-x-xs">
 				<QButtonStyle>
-					<q-btn
-						class="q-pa-xs"
-						dense
-						flat
-						icon="refresh"
-						color="ink-2"
-						style="margin-left: 16px; border-radius: 8px"
-						:disable="loading"
-						@click="refresh"
-					>
+					<q-btn dense flat icon="refresh" :disable="loading" @click="refresh">
 					</q-btn>
 				</QButtonStyle>
-				<QButtonStyle>
+				<QButtonStyle class="q-mr-md">
 					<q-btn
 						dense
 						flat

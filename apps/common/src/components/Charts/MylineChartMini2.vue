@@ -39,6 +39,13 @@ import { capitalize, get, isArray, last } from 'lodash';
 import { _capitalize } from 'src/utils/index';
 import MySubTitle from '../MyListItem/MySubTitle.vue';
 import ListItem from '../MyListItem/ListItem.vue';
+import { useColor } from '@bytetrade/ui';
+
+const { color: ink1 } = useColor('ink-1');
+const { color: ink2 } = useColor('ink-2');
+const { color: ink3 } = useColor('ink-3');
+const { color: background2 } = useColor('background-2');
+const { color: lightBlueDefault } = useColor('light-blue-default');
 
 use([
 	GridComponent,
@@ -108,17 +115,31 @@ const option = computed(() => ({
 	},
 	tooltip: {
 		trigger: 'axis',
-		valueFormatter: (value: number) => `${value} ${unit.value}`,
+		formatter: (params: any, ticket: string) => {
+			console.log('params', params);
+
+			let dom = '';
+			let domItem = '';
+			params.forEach((item: any) => {
+				console.log('item', item);
+				domItem = `<div>${item.marker}${item.seriesName} <span style="margin-left: 8px;">${item.value} ${unit.value}</span></div>`;
+				dom += domItem;
+			});
+			return `<div>${params[0].name}</div>${dom}`;
+		},
 		axisPointer: {
 			type: 'line',
-			label: {
-				color: '#414141',
-				backgroundColor: '#eee',
-				precision: 2,
-				formatter: (params: any) => params.seriesData[0].name
-			},
-			crossStyle: {}
-		}
+			lineStyle: {
+				color: lightBlueDefault.value
+			}
+		},
+		backgroundColor: background2.value,
+		textStyle: {
+			color: ink1.value
+		},
+		borderWidth: 0,
+		renderMode: 'html',
+		className: 'echart-tooltip-container'
 	},
 	xAxis: {
 		type: 'category',
@@ -181,9 +202,11 @@ const option = computed(() => ({
 .chart {
 	height: 16px;
 }
-.mylinechartmini-container {
-	// overflow: hidden;
-	color: #b2b0af;
-	text-overflow: ellipsis;
+</style>
+<style>
+.echart-tooltip-container {
+	box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.2);
+	border-radius: 12px;
+	overflow: hidden;
 }
 </style>

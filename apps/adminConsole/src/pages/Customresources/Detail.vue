@@ -44,7 +44,7 @@
 						<template v-slot:body="props">
 							<q-tr :props="props">
 								<q-td key="name" :props="props">
-									<div class="text-subtitle2 text-grey-10">
+									<div class="text-subtitle2">
 										{{ props.row.name }}
 									</div>
 								</q-td>
