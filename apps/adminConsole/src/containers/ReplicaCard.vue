@@ -1,5 +1,9 @@
 <template>
-	<ReplicaStatus :status="replicaStatus" @change="change" />
+	<ReplicaStatus
+		:status="replicaStatus"
+		:onScale="module !== 'daemonsets'"
+		@change="change"
+	/>
 </template>
 
 <script setup lang="ts">
@@ -16,9 +20,9 @@ interface Props {
 const emits = defineEmits(['change']);
 
 const props = withDefaults(defineProps<Props>(), {});
+const { module, detail, enableScale } = toRefs(props);
 
 const replicaStatus: any = computed(() => {
-	const { module, detail, enableScale } = toRefs(props);
 	let status = {};
 	if (!detail.value) {
 		return status;
@@ -45,8 +49,8 @@ const replicaStatus: any = computed(() => {
 		}
 		case 'daemonsets': {
 			status = {
-				current: get(detail, 'status.numberReady', 0),
-				desire: get(detail, 'status.desiredNumberScheduled', 0)
+				current: get(detail.value, 'status.numberReady', 0),
+				desire: get(detail.value, 'status.desiredNumberScheduled', 0)
 			};
 			break;
 		}

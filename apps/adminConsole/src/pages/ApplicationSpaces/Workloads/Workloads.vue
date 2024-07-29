@@ -79,7 +79,7 @@ const data = [
 	},
 	{
 		label: t('DAEMONSET_PL'),
-		kind: 'Daemonset',
+		kind: 'DaemonSet',
 		value: 'daemonsets',
 		icon: menuButtonWide,
 		activeIcon: menuButtonWideLight

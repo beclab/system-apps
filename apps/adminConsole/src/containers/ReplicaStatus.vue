@@ -16,7 +16,7 @@
 				</div>
 			</q-circular-progress>
 		</div>
-		<div class="column justify-center">
+		<div class="column justify-center" v-if="onScale">
 			<QButtonStyle>
 				<q-btn dense unelevated color="blue-default" @click="add">
 					<q-icon name="add" color="ink-on-brand" />
@@ -24,7 +24,13 @@
 			</QButtonStyle>
 
 			<QButtonStyle class="q-mt-lg">
-				<q-btn dense unelevated color="blue-default" @click="remove">
+				<q-btn
+					dense
+					unelevated
+					color="blue-default"
+					@click="remove"
+					:disable="removeDisabled"
+				>
 					<q-icon name="remove" color="ink-on-brand" />
 				</q-btn>
 			</QButtonStyle>
@@ -55,8 +61,11 @@ interface Props {
 		current: number;
 		desire: number;
 	};
+	onScale: boolean;
 }
-const props = withDefaults(defineProps<Props>(), {});
+const props = withDefaults(defineProps<Props>(), {
+	onScale: true
+});
 const emits = defineEmits(['change']);
 
 const visible = ref(false);
@@ -64,6 +73,7 @@ const count = ref(props.status.current);
 const currentText = t('REPLICAS_CURRENT');
 const desireText = t('REPLICAS_DESIRED');
 
+const removeDisabled = computed(() => count.value <= 0);
 watch(
 	() => props.status,
 	() => {
@@ -81,6 +91,9 @@ function add() {
 }
 
 function remove() {
+	if (count.value <= 0) {
+		return;
+	}
 	visible.value = true;
 	count.value = props.status.desire - 1;
 }
