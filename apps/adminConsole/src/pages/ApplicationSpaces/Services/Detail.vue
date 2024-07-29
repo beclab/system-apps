@@ -113,7 +113,7 @@ const options = [
 	// },
 	{
 		key: 'editGateway',
-		icon: 'edit',
+		icon: 'sym_r_edit',
 		label: t('EDIT_EXTERNAL_ACCESS'),
 		value: 'editGateway',
 		// show: this.store.detail.type === SERVICE_TYPES.VirtualIP,

@@ -8,7 +8,8 @@
 	>
 		<slot></slot>
 	</q-btn>
-	<q-dialog
+	<Dialog
+		:title="name"
 		persistent
 		full-width
 		full-height
@@ -16,18 +17,22 @@
 		@show="show"
 		@hide="hide"
 	>
-		<q-card class="dialog-margin-0 relative-position">
-			<q-card-section class="row items-center q-pb-none">
-				<div class="text-h6">{{ name }}</div>
-				<q-space />
-				<q-btn icon="close" flat round dense v-close-popup />
-			</q-card-section>
-			<div class="q-mx-sm q-b-sm" style="height: calc(100% - 60px)">
-				<Yaml v-if="aceVisileb" v-model:data="data" readonly></Yaml>
+		<div class="full-height">
+			<div style="height: calc(100%)">
+				<div
+					style="
+						height: calc(100%);
+						border-radius: 6px;
+						overflow: hidden;
+						position: relative;
+					"
+				>
+					<Yaml v-if="aceVisileb" v-model:data="data" readonly></Yaml>
+				</div>
 			</div>
 			<q-inner-loading :showing="loading"> </q-inner-loading>
-		</q-card>
-	</q-dialog>
+		</div>
+	</Dialog>
 </template>
 
 <script setup lang="ts">
@@ -54,6 +59,7 @@ import { ObjectMapper } from 'src/utils/object.mapper';
 import Yaml from '@packages/ui/src/containers/Yaml.vue';
 ace.config.setModuleUrl('ace/mode/yaml_worker', workerJsonUrl);
 // @packages/ui/src/components/Modals/EditYaml/index.jsx
+import Dialog from '@packages/ui/src/components/Dialog/Dialog.vue';
 
 interface Props {
 	name?: string;

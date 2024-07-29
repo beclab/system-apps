@@ -3,10 +3,22 @@
 		<template #extra>
 			<div class="col-auto">
 				<QButtonStyle>
-					<q-btn dense flat icon="sym_r_insert_chart" @click="clickHandler" />
+					<q-btn dense flat icon="sym_r_insert_chart" @click="clickHandler">
+						<q-tooltip>
+							<div style="white-space: nowrap">
+								{{ $t('MONITORING') }}
+							</div>
+						</q-tooltip>
+					</q-btn>
 				</QButtonStyle>
 				<QButtonStyle>
-					<q-btn dense flat icon="sym_r_edit_square" @click="clickHandler2" />
+					<q-btn dense flat icon="sym_r_edit_square" @click="clickHandler2">
+						<q-tooltip>
+							<div style="white-space: nowrap">
+								{{ $t('EDIT_YAML') }}
+							</div>
+						</q-tooltip>
+					</q-btn>
 				</QButtonStyle>
 			</div>
 		</template>

@@ -2,7 +2,15 @@
 	<MyContentPage>
 		<template #extra>
 			<div class="col-auto">
-				<MoreSelection :options="options" size="md"></MoreSelection>
+				<QButtonStyle>
+					<q-btn dense flat icon="sym_r_preview" @click="clickHandler">
+						<q-tooltip>
+							<div style="white-space: nowrap">
+								{{ $t('VIEW_YAML') }}
+							</div>
+						</q-tooltip>
+					</q-btn>
+				</QButtonStyle>
 			</div>
 		</template>
 		<MyPage>
@@ -14,7 +22,7 @@
 			<Events></Events>
 			<q-inner-loading :showing="loading"></q-inner-loading>
 		</MyPage>
-		<Yaml name="" ref="yamlRef"></Yaml>
+		<Yaml :name="name" ref="yamlRef"></Yaml>
 	</MyContentPage>
 </template>
 
@@ -28,30 +36,19 @@ import ContainerWrapper from './ContainerWrapper.vue';
 import { getPodDetail } from 'src/network';
 import { useRoute } from 'vue-router';
 import { UsePod } from '@packages/ui/src/stores/PodData';
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import MyContentPage from '../../components/MyContentPage.vue';
 import MyPage from '@packages/ui/src/containers/MyPage.vue';
 import Yaml from './Yaml.vue';
-import MoreSelection from '@packages/ui/src/components/MoreSelection.vue';
+import QButtonStyle from '@packages/ui/src/components/QButtonStyle.vue';
 import { t } from 'src/boot/i18n';
-
-const options = [
-	{
-		key: 'edit',
-		icon: 'sym_r_preview',
-		label: t('VIEW_YAML'),
-		action: 'edit',
-		onClick: () => {
-			yamlRef.value.show();
-		}
-	}
-];
+import { get } from 'lodash';
 
 const usePod = UsePod();
 const route = useRoute();
 const loading = ref(false);
 const yamlRef = ref();
-
+const name = computed(() => get(usePod, 'data.name'));
 const fetchData = () => {
 	const { namespace, name }: any = route.params;
 	const params = {
@@ -70,6 +67,9 @@ const fetchData = () => {
 };
 
 watch(() => route.params, fetchData, { immediate: true });
+const clickHandler = () => {
+	yamlRef.value.show();
+};
 </script>
 
 <style></style>
