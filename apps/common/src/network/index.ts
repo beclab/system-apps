@@ -890,3 +890,19 @@ export const getWorkloadsPods = (
 		}
 	);
 };
+
+export const toggleJob = (
+	urlParams: PodMonitoringParamAll & { apiVersion: string },
+	params: any
+): Promise<AxiosResponse<CustomresourcesResponse>> => {
+	const { apiVersion, name, cluster, namespace } = urlParams;
+
+	return api.patch(
+		`${apiVersion}${getPath({
+			cluster,
+			namespace
+		})}/cronjobs/${name}`,
+		params,
+		{ headers: { 'Content-Type': 'application/merge-patch+json' } }
+	);
+};

@@ -320,7 +320,7 @@ const onRequest = (props) => {
 	pagination.value = {
 		...pagination.value,
 		page,
-		rowsPerPage,
+		rowsPerPage: rowsPerPage || undefined,
 		sortBy,
 		descending
 	};

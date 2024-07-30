@@ -224,7 +224,9 @@ const update = async (
 ) => {
 	try {
 		loading2.value = true;
-		const { module } = route.params as Record<string, string>;
+		const { module: paramModule } = route.params as Record<string, string>;
+		const { module: metaModule } = route.meta as Record<string, string>;
+		const module = paramModule || metaModule;
 		const { data: result } = await getCustomresourceItem(
 			props.apiVersion,
 			props.namespace,

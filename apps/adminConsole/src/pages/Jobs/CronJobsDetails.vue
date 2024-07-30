@@ -29,6 +29,18 @@
 								{{ $t(props.value) }}
 							</q-td>
 						</template>
+						<template v-slot:body-cell-uid="props">
+							<q-td :props="props" class="row items-center justify-center">
+								<QButtonStyle>
+									<q-btn
+										flat
+										dense
+										icon="sym_r_reopen_window"
+										@click="returnHandler(props.row)"
+									/>
+								</QButtonStyle>
+							</q-td>
+						</template>
 						<template #no-data>
 							<div class="row justify-center full-width q-mt-lg">
 								<Empty v-show="!tableLoading" @click="fetchRecords"></Empty>
@@ -52,11 +64,11 @@
 
 	<Yaml2
 		ref="yamlRef"
-		:apiVersion="apiVersion"
+		:apiVersion="apiVersion.replace('apis/', '')"
 		:name="detail.name"
 		:namespace="detail.namespace"
 		:originData="detail._originData"
-		readonly
+		:module="module"
 		@hide="hideHandler"
 		@change="fetchData"
 	>
@@ -84,7 +96,8 @@ import {
 	getJobEvent,
 	fetchListByK8s,
 	jobRerun,
-	deleteJob
+	deleteJob,
+	toggleJob
 } from 'src/network';
 import { API_VERSIONS, MODULE_KIND_MAP } from 'src/utils/constants';
 import { useRoute, useRouter } from 'vue-router';
@@ -106,6 +119,7 @@ import { useI18n } from 'vue-i18n';
 import { getJobStatus } from 'src/utils/status';
 import MyLoading2 from '@packages/ui/src/components/MyLoading2.vue';
 import Empty from '@packages/ui/src/components/Empty.vue';
+import QButtonStyle from '@packages/ui/src/components/QButtonStyle.vue';
 
 const $q = useQuasar();
 const { t } = useI18n();
@@ -123,19 +137,19 @@ const tableList = ref([]);
 const deleteDialogRef = ref();
 const deleteLoading = ref(false);
 const tableLoading = ref(false);
-const options = [
+const options = computed(() => [
 	{
-		label: t('RERUN'),
-		value: 'refresh',
-		icon: 'sym_r_refresh',
+		label: detail.value.suspend ? t('START') : t('PAUSE'),
+		value: 'pause',
+		icon: detail.value.suspend ? 'sym_r_play_circle' : 'sym_r_pause_circle',
 		onClick: () => {
 			rerunHanlder();
 		}
 	},
 	{
-		label: t('VIEW_YAML'),
+		label: t('EDIT_YAML'),
 		value: 'edit',
-		icon: 'sym_r_preview',
+		icon: 'sym_r_edit',
 		onClick: () => {
 			yamlRef.value.show();
 		}
@@ -148,7 +162,7 @@ const options = [
 			deleteDialogRef.value && deleteDialogRef.value.show();
 		}
 	}
-];
+]);
 
 const metadata = computed(() => get(detail.value, '_originData.metadata', {}));
 
@@ -191,6 +205,11 @@ const columns = [
 		field: (row) =>
 			getLocalTime(row.status.completionTime).format('YYYY-MM-DD HH:mm:ss'),
 		align: 'left'
+	},
+	{
+		label: t('OPERATIONS'),
+		name: 'uid',
+		align: 'center'
 	}
 ];
 const getAttrs = () => {
@@ -366,11 +385,38 @@ const rerunHanlder = async () => {
 			params
 		);
 		const resourceVersion = get(data, 'metadata.resourceVersion');
-
-		await jobRerun(resourceVersion, { name, namespace });
+		const params2 = { spec: { suspend: !detail.value.suspend } };
+		await toggleJob({ apiVersion, name, namespace }, params2);
 		fetchData();
 	} catch (error) {}
 	loading.value = false;
+};
+
+const returnHandler = async (row) => {
+	console.log('row', row);
+	// jobRerun()
+
+	const { namespace, name }: Record<string, any> = row;
+	const params = {};
+
+	const module = 'jobs';
+	const apiVersion = API_VERSIONS[module];
+	loading.value = true;
+	try {
+		const { data } = await getCornJobsDetail(
+			apiVersion,
+			namespace,
+			module,
+			name,
+			params
+		);
+		const resourceVersion = get(data, 'metadata.resourceVersion');
+
+		await jobRerun(resourceVersion, { name, namespace });
+		fetchData();
+	} catch (error) {
+		loading.value = false;
+	}
 };
 
 watch(

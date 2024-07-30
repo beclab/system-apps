@@ -73,7 +73,10 @@ const routes: RouteRecordRaw[] = [
 					},
 					{
 						path: '/jobs/cronjob/:namespace/:name/:jobUid',
-						component: () => import('src/pages/Jobs/CronJobsDetails.vue')
+						component: () => import('src/pages/Jobs/CronJobsDetails.vue'),
+						meta: {
+							module: 'cronjobs'
+						}
 					},
 					{
 						path: '/jobs/workloads/:kind/:namespace/:name/container/:container',
