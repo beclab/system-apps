@@ -176,8 +176,8 @@ function closeWs() {
 
 function podWsHandler(message: any) {
 	const selectCluster = '';
-	const fetchPods2 = throttle(fetchPods, 2000);
-	const updateDetail2 = throttle(updateDetail, 2000);
+	const fetchPods2 = throttle(fetchPods, 350);
+	const updateDetail2 = throttle(updateDetail, 350);
 
 	if (message.object.kind === 'Pod') {
 		if (message.type === 'MODIFIED') {
@@ -212,7 +212,11 @@ function monitoringWs() {
 	if (createWS2) {
 		return;
 	}
-	const { namespace, kind, name }: Record<string, any> = route.params;
+	const {
+		namespace,
+		kind,
+		pods_name: name
+	}: Record<string, any> = route.params;
 	const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
 	const url = `${protocol}//${window.location.host}/apis/apps/v1/watch/namespaces/${namespace}/${kind}/${name}`;
 	createWS2 = new SocketClient(url, {
@@ -242,7 +246,11 @@ function closeWs2() {
 
 function replicaChange(value: number) {
 	const params = { spec: { replicas: value } };
-	const { namespace, kind, name }: { [key: string]: any } = route.params;
+	const {
+		namespace,
+		kind,
+		pods_name: name
+	}: { [key: string]: any } = route.params;
 	patchWorkloadsControler(namespace, kind, name, params).finally(() => {
 		loading.value = false;
 	});
@@ -277,11 +285,7 @@ const getResult = (result: MonitoringResponse['results']) => {
 };
 
 function fetchMetrics() {
-	const {
-		namespace,
-		kind,
-		name: podName
-	}: { [key: string]: any } = route.params;
+	const { namespace, kind }: { [key: string]: any } = route.params;
 	const podListData = podList.value ?? [];
 
 	const resources = podListData.map((item: any) => item.name);
