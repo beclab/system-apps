@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute, useRouter } from 'vue-router';
+import { RouteLocationRaw, useRoute, useRouter } from 'vue-router';
 import {
 	onMounted,
 	ref,
@@ -59,12 +59,16 @@ import {
 } from './config';
 import Empty from '../../components/Empty.vue';
 import axios from 'axios';
+import isFunction from 'lodash';
 
 interface Props {
 	module?: string;
 	detail?: any;
 	scroll?: boolean;
 	routePrefix?: string;
+	path?: string;
+	componentName?: string;
+	routePushFunction?: (data: any) => void;
 }
 
 const PodListData = usePodList();
@@ -111,13 +115,12 @@ async function fetchPods(showLoading = true) {
 	try {
 		const res = await getPosdList(props.detail, { cancelToken: source.token });
 		console.log('aaaa', props.detail);
-		if (shouldExecuteResponseHandler.value) {
-			podList.value = getPosdListFormatter(res);
-			PodListData.updateData(podList.value);
-			fetchMetrics();
-			loading2.value = false;
-			PodListData.updateLoading(false);
-		}
+		podList.value = getPosdListFormatter(res);
+		PodListData.updateData(podList.value);
+		fetchMetrics();
+		loading2.value = false;
+		PodListData.updateLoading(false);
+		console.log('fffffff');
 	} catch (error) {
 		loading2.value = false;
 	}
@@ -334,11 +337,30 @@ const clearLocker = () => {
 };
 
 const itemClick = (data: any) => {
+	if (props.componentName) {
+		router.push({
+			name: props.componentName,
+			params: {
+				...route.params,
+				name: data.name,
+				uid: data.uid,
+				node: data.node,
+				createTime: data.createTime
+			}
+		});
+		return;
+	}
+	if (props.routePushFunction && isFunction(props.routePushFunction)) {
+		props.routePushFunction(data);
+		return;
+	}
 	const podTemplateHash = data.labels['pod-template-hash'];
 	const name = data.name.split(`-${podTemplateHash}`)[0];
-	const path = `/${props.routePrefix || 'application-spaces'}/pods/overview/${
-		data.node
-	}/${data.namespace}/${data.name}/${data.createTime}`;
+	const path = props.path
+		? props.path
+		: `/${props.routePrefix || 'application-spaces'}/pods/overview/${
+				data.node
+		  }/${data.namespace}/${data.name}/${data.createTime}`;
 	router.push({
 		path,
 		query: {

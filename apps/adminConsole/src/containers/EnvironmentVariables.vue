@@ -33,6 +33,7 @@
 			</template>
 			<PodContainer
 				:detail="detail"
+				:routePushFunction="routePushHandler"
 				ref="PodContainerRef"
 				@podChange="updateDetail"
 			></PodContainer>
@@ -66,7 +67,7 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { onMounted, ref, watch, computed, toRef, onBeforeUnmount } from 'vue';
 import { getWorkloadsControler, patchWorkloadsControler } from 'src/network';
 import { get, has, isEmpty, isNil, uniqBy, flatten } from 'lodash';
@@ -87,13 +88,17 @@ import MyPage from '@packages/ui/src/containers/MyPage.vue';
 import QButtonStyle from '@packages/ui/src/components/QButtonStyle.vue';
 import Refresh from '@packages/ui/src/components/Refresh.vue';
 import EnvironmentsLayout from '@packages/ui/src/containers/EnvironmentsLayout.vue';
+import { usePodList } from '@packages/ui/src/stores/podList';
+import { componentName } from 'src/router/const';
 
 interface Props {
 	module?: string;
 }
+const PodListData = usePodList();
 
 const loading = ref(false);
 const route = useRoute();
+const router = useRouter();
 const envDetail = ref();
 const detail = ref();
 const params = ref();
@@ -207,7 +212,11 @@ const fetchList2 = async ({
 };
 
 const fetchEnv = async () => {
-	const { namespace, kind, name }: { [key: string]: any } = route.params;
+	const {
+		namespace,
+		kind,
+		pods_name: name
+	}: { [key: string]: any } = route.params;
 	loading.value = true;
 	const { data } = await getWorkloadsControler(namespace, kind, name);
 	updateDetail(data);
@@ -217,9 +226,8 @@ const fetchEnv = async () => {
 };
 
 function updateDetail(data: any) {
-	const { namespace, kind, name }: { [key: string]: any } = route.params;
+	const { namespace, kind }: { [key: string]: any } = route.params;
 	envDetail.value = data;
-	console.log('updateDetail', data);
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore
 	detail.value = ObjectMapper[kind](data);
@@ -266,7 +274,11 @@ const getParams = (cluster: string) => {
 
 function replicaChange(value: number) {
 	const params = { spec: { replicas: value } };
-	const { namespace, kind, name }: { [key: string]: any } = route.params;
+	const {
+		namespace,
+		kind,
+		pods_name: name
+	}: { [key: string]: any } = route.params;
 	patchWorkloadsControler(namespace, kind, name, params).finally(() => {
 		loading.value = false;
 	});
@@ -290,12 +302,26 @@ const ports = computed(() => {
 	return ports;
 });
 
+const routePushHandler = (data) => {
+	router.push({
+		name: componentName.WORKLOAD_PODS,
+		params: {
+			...route.params,
+			name: data.name,
+			uid: data.uid,
+			node: data.node,
+			createTime: data.createTime
+		}
+	});
+};
+
 watch(
-	() => route.params,
+	() => route.params.pods_uid,
 	async (newId) => {
 		fetchEnv();
 	}
 );
+
 onMounted(() => {
 	fetchEnv();
 });

@@ -121,13 +121,16 @@ ace.config.setModuleUrl('ace/mode/yaml_worker', workerJsonUrl);
 // src/components/Modals/EditYaml/index.jsx
 interface Props {
 	name?: string;
+	nameKey?: string;
 }
 
 const emits = defineEmits(['change']);
 
 const $q = useQuasar();
 
-const props = withDefaults(defineProps<Props>(), {});
+const props = withDefaults(defineProps<Props>(), {
+	nameKey: 'name'
+});
 
 const data = ref();
 const detail = ref();
@@ -175,7 +178,11 @@ const hide = () => {
 };
 
 const fetchData = () => {
-	const { namespace, kind, name } = route.params as Record<string, string>;
+	const {
+		namespace,
+		kind,
+		[props.nameKey]: name
+	} = route.params as Record<string, string>;
 	loading.value = true;
 	getWorkloadsControler(namespace, kind, name)
 		.then((res) => {
@@ -224,7 +231,11 @@ const update = async (
 ) => {
 	try {
 		loading2.value = true;
-		const { namespace, kind, name } = route.params as Record<string, string>;
+		const {
+			namespace,
+			kind,
+			[props.nameKey]: name
+		} = route.params as Record<string, string>;
 		const { data: result } = await getWorkloadsControler(namespace, kind, name);
 
 		const resourceVersion = get(result, 'metadata.resourceVersion');

@@ -21,7 +21,6 @@
 				</template>
 			</ListItem>
 		</div>
-
 		<div class="col-4">
 			<ListItem size="sm" icon-size="lg">
 				<template #title>
@@ -101,8 +100,9 @@ const fetchRevisions = () => {
 		});
 };
 
-const pathFormat = (data: any) =>
-	`/application-spaces/workloads/deployments/${data.namespace}/detail/${data.name}?type=workload&kind=${data.module}`;
+const pathFormat = (data: any) => {
+	return `/application-spaces/workloads/${data.module}/${data.namespace}/${data.name}/${data.uid}/${data.createTime}?type=workload`;
+};
 
 fetchRevisions();
 </script>

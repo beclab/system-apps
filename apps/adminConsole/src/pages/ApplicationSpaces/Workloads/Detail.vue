@@ -1,5 +1,5 @@
 <template>
-	<MyContentPage>
+	<component :is="drawer ? MyContentPage2 : MyContentPage">
 		<template #extra>
 			<div class="col-auto">
 				<QButtonStyle>
@@ -25,7 +25,12 @@
 		<EnvironmentVariables>
 			<DetailData ref="detaiDatalRef"></DetailData>
 		</EnvironmentVariables>
-		<Yaml ref="yamlRef" :name="t('EDIT_YAML')" @change="fetchList"></Yaml>
+		<Yaml
+			ref="yamlRef"
+			:name="t('EDIT_YAML')"
+			name-key="pods_name"
+			@change="fetchList"
+		></Yaml>
 		<Dialog2
 			:title="$route.params.name"
 			ref="dialog2Ref"
@@ -34,21 +39,28 @@
 		>
 			<PodsMonitoring></PodsMonitoring>
 		</Dialog2>
-	</MyContentPage>
+	</component>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, withDefaults } from 'vue';
 import { t } from 'src/boot/i18n';
 import EnvironmentVariables from 'src/containers/EnvironmentVariables.vue';
 import Yaml from 'src/pages/NamespacePods/Yaml.vue';
 import MyContentPage from 'src/components/MyContentPage.vue';
+import MyContentPage2 from 'src/components/MyContentPage2.vue';
 import DetailData from './DetailData.vue';
-import MoreSelection from '@packages/ui/src/components/MoreSelection.vue';
 import QButtonStyle from '@packages/ui/src/components/QButtonStyle.vue';
 import Dialog2 from '@packages/ui/src/components/Dialog/Dialog.vue';
 import PodsMonitoring from './PodsMonitoring/PodsMonitoring.vue';
 
+interface Props {
+	drawer: boolean;
+}
+
+withDefaults(defineProps<Props>(), {
+	drawer: false
+});
 const dialog2Ref = ref();
 const yamlRef = ref();
 const detaiDatalRef = ref();

@@ -1,39 +1,39 @@
 <template>
-	<MyLoading :showing="loading2">
-		<my-card no-content-gap square flat animated>
-			<template #title>
-				<div>{{ t('DATA') }}&nbsp;{{ secret }}</div>
-			</template>
-			<template #extra>
-				<QButtonStyle size="sm">
-					<q-btn
-						color="grey-5"
-						flat
-						dense
-						no-caps
-						size="sm"
-						:icon="
-							secretValueVisible ? 'sym_r_visibility_off' : 'sym_r_visibility'
-						"
-						@click="secretValueVisibleHandler"
-					>
-					</q-btn>
-				</QButtonStyle>
-			</template>
-			<DataDetail :data="secretObj"> </DataDetail>
-		</my-card>
-		<my-card square flat animated :title="t('KUBECONFIG_SETTINGS')" v-if="yaml">
-			<div
-				class="service-desc-wrapper"
-				v-html="t('SERVICEACCOUNT_KUBECONFIG_DESC')"
-			></div>
-			<Yaml
-				class="q-mt-md"
-				style="height: 480px"
-				:data="getValue(kubeconfig)"
-			></Yaml>
-		</my-card>
-	</MyLoading>
+	<my-card no-content-gap square flat animated>
+		<template #title>
+			<div>{{ t('DATA') }}&nbsp;{{ secret }}</div>
+		</template>
+		<template #extra>
+			<QButtonStyle size="sm">
+				<q-btn
+					color="grey-5"
+					flat
+					dense
+					no-caps
+					size="sm"
+					:icon="
+						secretValueVisible ? 'sym_r_visibility_off' : 'sym_r_visibility'
+					"
+					@click="secretValueVisibleHandler"
+				>
+				</q-btn>
+			</QButtonStyle>
+		</template>
+		<DataDetail :data="secretObj"> </DataDetail>
+	</my-card>
+	<my-card square flat animated :title="t('KUBECONFIG_SETTINGS')" v-if="yaml">
+		<div
+			class="service-desc-wrapper"
+			v-html="t('SERVICEACCOUNT_KUBECONFIG_DESC')"
+		></div>
+		<Yaml
+			class="q-mt-md"
+			style="height: 480px"
+			:data="getValue(kubeconfig)"
+		></Yaml>
+		<q-inner-loading :showing="loading2" style="z-index: 9999">
+		</q-inner-loading>
+	</my-card>
 </template>
 
 <script setup lang="ts">

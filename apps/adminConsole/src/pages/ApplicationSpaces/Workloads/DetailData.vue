@@ -23,7 +23,7 @@ const statusList = ref();
 const route = useRoute();
 
 const fetchList = () => {
-	const { namespace, kind, name }: any = route.params;
+	const { namespace, kind, pods_name: name }: any = route.params;
 
 	loading.value = true;
 	getWorkloadsControler(namespace, kind, name)
@@ -72,7 +72,7 @@ const getAttrs = (detail: any) => {
 };
 
 watch(
-	() => route.params.name,
+	() => route.params.pods_name,
 	async (newId) => {
 		fetchList();
 	}

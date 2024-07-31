@@ -9,22 +9,26 @@ import { useRoute } from 'vue-router';
 import Secrets from 'src/assets/Secrets.svg';
 import Configmaps from 'src/assets/Configmaps.svg';
 import ServiceAccounts from 'src/assets/ServiceAccounts.svg';
+import { componentName } from 'src/router/const';
 
 const data = [
 	{
 		label: t('SECRET_PL'),
 		value: 'secret',
-		icon: Secrets
+		icon: Secrets,
+		componentName: componentName.SECRETS
 	},
 	{
 		label: t('CONFIGMAP_PL'),
 		value: 'configmap',
-		icon: Configmaps
+		icon: Configmaps,
+		componentName: componentName.CONFIGMAPS
 	},
 	{
 		label: t('SERVICE_ACCOUNT_PL'),
 		value: 'service-account',
-		icon: ServiceAccounts
+		icon: ServiceAccounts,
+		componentName: componentName.SERVICE_ACCOUNTS
 	}
 ];
 
@@ -41,23 +45,24 @@ export const getConfigurationsData = (
 };
 
 export const configurationsDataFormatter = (res: any, namespace: string) => {
-	let path = '';
-	let id = '';
 	const dataTemp = data.map((child, index) => ({
 		title: child.label,
 		id: child.value,
 		selectable: false,
 		children: res[index].data.items.map((item: any) => {
-			path = `/application-spaces/configurations/${namespace}/detail/${child.value}/${item.metadata.name}`;
-			id = `configurations-${item.metadata.name}`;
 			return {
-				id,
+				id: item.metadata.uid,
 				title: item.metadata.name,
 				img: child.icon,
+				lazy: false,
 				route: {
-					path,
-					key: item.metadata.name,
-					id: item.metadata.name
+					name: child.componentName,
+					params: {
+						kind: child.value,
+						namespace,
+						name: item.metadata.name,
+						pods_uid: item.metadata.uid
+					}
 				}
 			};
 		})

@@ -1,57 +1,61 @@
 <template>
-	<MyContentPage>
-		<template #extra>
-			<div class="col-auto">
-				<MoreSelection :options="options" size="md"></MoreSelection>
-			</div>
-		</template>
-		<MyPage>
-			<MyCard square flat animated :title="t('ATTRIBUTES')">
-				<DetailPage :data="statusList"> </DetailPage>
-			</MyCard>
-			<MyCard no-content-gap square flat animated :title="t('WORKLOAD_PL')">
-				<WorkloadPanel
-					:selector="selector"
-					@update="workloadUpdateHandler"
-				></WorkloadPanel>
-			</MyCard>
-			<MyCard no-content-gap square flat animated :title="t('Ports')">
-				<Ports v-if="detail" :ports="detail.ports"></Ports>
-			</MyCard>
-			<MyCard no-content-gap square flat :title="t('PODS')">
-				<template #extra>
-					<QButtonStyle>
-						<q-btn
-							flat
-							icon="refresh"
-							dense
-							@click="() => PodContainerRef.refresh()"
-						/>
-					</QButtonStyle>
-				</template>
-				<PodContainer
-					:detail="detail"
-					ref="PodContainerRef"
-					@podChange="init"
-					@update="podUpdateHandler"
-					scroll
-				></PodContainer>
-			</MyCard>
-			<Metadata
-				v-if="detail && detail._originData"
-				:data="detail._originData.metadata"
-			></Metadata>
-			<MyCard no-content-gap square flat animated :title="t('EVENT_PL')">
-				<Event v-if="detail" :detail="detail"></Event>
-			</MyCard>
-			<q-inner-loading :showing="loading"> </q-inner-loading>
-		</MyPage>
-		<Yaml ref="yamlRef" :title="t('EDIT_YAML')" module="services"></Yaml>
-	</MyContentPage>
+	<div class="absolute-position">
+		<MyContentPage>
+			<template #extra>
+				<div class="col-auto">
+					<MoreSelection :options="options" size="md"></MoreSelection>
+				</div>
+			</template>
+			<MyPage>
+				<MyCard square flat animated :title="t('ATTRIBUTES')">
+					<DetailPage :data="statusList"> </DetailPage>
+				</MyCard>
+				<MyCard no-content-gap square flat animated :title="t('WORKLOAD_PL')">
+					<WorkloadPanel
+						:selector="selector"
+						@update="workloadUpdateHandler"
+					></WorkloadPanel>
+				</MyCard>
+				<MyCard no-content-gap square flat animated :title="t('Ports')">
+					<Ports v-if="detail" :ports="detail.ports"></Ports>
+				</MyCard>
+				<MyCard no-content-gap square flat :title="t('PODS')">
+					<template #extra>
+						<QButtonStyle>
+							<q-btn
+								flat
+								icon="refresh"
+								dense
+								@click="() => PodContainerRef.refresh()"
+							/>
+						</QButtonStyle>
+					</template>
+					<PodContainer
+						:detail="detail"
+						ref="PodContainerRef"
+						@podChange="init"
+						:routePushFunction="routePushHandler"
+						@update="podUpdateHandler"
+						scroll
+					></PodContainer>
+				</MyCard>
+				<Metadata
+					v-if="detail && detail._originData"
+					:data="detail._originData.metadata"
+				></Metadata>
+				<MyCard no-content-gap square flat animated :title="t('EVENT_PL')">
+					<Event v-if="detail" :detail="detail"></Event>
+				</MyCard>
+				<q-inner-loading :showing="loading"> </q-inner-loading>
+			</MyPage>
+			<Yaml ref="yamlRef" :title="t('EDIT_YAML')" module="services"></Yaml>
+		</MyContentPage>
+		<RouterViewTransition></RouterViewTransition>
+	</div>
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import {
 	onMounted,
 	ref,
@@ -80,11 +84,14 @@ import MyCard from '@packages/ui/src/components/MyCard2.vue';
 import QButtonStyle from '@packages/ui/src/components/QButtonStyle.vue';
 import MoreSelection from '@packages/ui/src/components/MoreSelection.vue';
 import Yaml from 'src/pages/NamespacePods/Yaml3.vue';
+import RouterViewTransition from '@packages/ui/src/components/RouterViewTransition.vue';
+import { componentName } from 'src/router/const';
 
 const $q = useQuasar();
 let loading = ref(false);
 const statusList = ref();
 const route = useRoute();
+const router = useRouter();
 const endpoints = ref([]);
 const detail = ref();
 const PodContainerRef = ref();
@@ -346,6 +353,20 @@ const podUpdateHandler = (data) => {
 const init = () => {
 	fetchList();
 	fetchDetail();
+};
+
+const routePushHandler = (data) => {
+	router.push({
+		name: componentName.SERVICES_PODS,
+		params: {
+			...route.params,
+			pods_name: route.params.name,
+			name: data.name,
+			uid: data.uid,
+			node: data.node,
+			createTime: data.createTime
+		}
+	});
 };
 
 watch(

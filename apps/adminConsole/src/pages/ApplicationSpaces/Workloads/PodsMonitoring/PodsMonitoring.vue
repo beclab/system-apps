@@ -96,7 +96,7 @@ const fetchData = async (autofresh = false) => {
 	const {
 		cluster = 'default',
 		namespace,
-		name,
+		pods_name: name,
 		kind
 	}: Record<string, any> = route.params;
 	if (isEmpty(_pods)) {

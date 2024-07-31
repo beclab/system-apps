@@ -2,7 +2,7 @@
 	<MyTree
 		:data="listComputed"
 		active-text-color="#1976D2"
-		:default-active="defaultActive"
+		:default-active="active"
 		:menu-options="menuOptions"
 		:default-openeds="defaultOpeneds"
 		:loading="loading"
@@ -57,6 +57,8 @@ import {
 } from '@packages/ui/src/containers/PodsList/config';
 import podIcon from '@packages/ui/src/assets/pod.svg';
 import { useI18n } from 'vue-i18n';
+import { componentName } from 'src/router/const';
+import { isEmpty } from 'lodash';
 const { t } = useI18n();
 
 const PodListData = usePodList();
@@ -85,8 +87,6 @@ const data = [
 		activeIcon: menuButtonWideLight
 	}
 ];
-const workloadsOpeneds = data.map((item) => item.value);
-const defaultOpeneds = ref();
 
 const menuOptions = {
 	title: 'title',
@@ -99,13 +99,15 @@ const menuOptions = {
 const route = useRoute();
 const list = ref<any[]>([]);
 const loading = ref(false);
-const defaultActive = ref();
 const workloadChildren = ref([]);
 const shouldExecuteResponseHandler = ref(true);
 let firstListIndexs: [number, number] | undefined = undefined;
 const myTreeRef = ref();
 
 const searchText = ref('');
+const defaultOpeneds = ref([route.params.kind]);
+
+const active = computed(() => route.params.uid || route.params.pods_uid);
 const listComputed = computed(() => {
 	if (!searchText.value) return list.value;
 	const newList = list.value.map((item) => ({
@@ -124,7 +126,6 @@ const fetchData = async () => {
 		sortBy: 'createTime',
 		namespace
 	};
-	defaultActive.value = undefined;
 	searchText.value = '';
 	loading.value = true;
 	const [workloadData, configurationsData, servicesData] = await Promise.all([
@@ -153,7 +154,14 @@ const fetchData = async () => {
 		...newConfigurationsData,
 		...newServicesData
 	];
-	defaultOpeneds.value = [list.value[0].id];
+
+	nextTick(() => {
+		if (route.params.pods_uid) {
+			myTreeRef.value.setExpanded(route.params.pods_uid, true);
+		} else {
+			myTreeRef.value.setExpanded(listComputed.value[0].id, true);
+		}
+	});
 };
 
 const getWorkloadsData = (namespace: string, params: Pagination) => {
@@ -180,7 +188,7 @@ const workloadsDataFormatter = (
 			id: child.value,
 			selectable: false,
 			children: childData.map((item: any, childIndex: number) => {
-				path = `/application-spaces/workloads/${child.value}/${namespace}/detail/${item.metadata.name}/${item.metadata.creationTimestamp}`;
+				path = `/application-spaces/workloads/${child.value}/${namespace}/${item.metadata.name}/${item.metadata.uid}/${item.metadata.creationTimestamp}`;
 				id = item.metadata.uid;
 				if (!firstPath) {
 					firstPath = path;
@@ -220,22 +228,8 @@ const workloadsDataFormatter = (
 	const newData = dataTemp.filter(
 		(item) => item.children && item.children.length > 0
 	);
-	// if (!defaultActive.value) {
-	//   toDefaultRoute(firstPath, firstActive);
-	// }
+
 	return newData;
-};
-
-const toDefaultRoute = (firstPath: string, firstActive: string) => {
-	if (shouldExecuteResponseHandler.value) {
-		firstPath && router.push(firstPath);
-		updateSelectedAndExpanded(firstActive);
-	}
-};
-
-const updateSelectedAndExpanded = (id: string) => {
-	defaultActive.value = id;
-	defaultOpeneds.value.push(id);
 };
 
 let doneFnList: any = {};
@@ -243,56 +237,33 @@ let doneFn = (key: string) => doneFnList[key] ?? (() => undefined);
 
 const onLazyLoad = async ({ node, key, done, fail }: any) => {
 	doneFnList[key] = done;
+
 	const detail = ObjectMapper.workLoadMapper(node._originData);
 	const result = await getPosdList({ ...detail, kind: node.kind });
 	const newData = getPosdListFormatter(result);
 	done(podDataformate(newData));
 };
 
-const containerId = (namespace: any, container: any, uid: string) =>
-	container ? `${namespace}-${container}-${uid}` : undefined;
-
-const tabList = (item: any, node: string) => {
-	let status = 'running';
-	return item.containers.map((container: any) => {
-		status = container.ready ? 'running' : 'warning';
-		return {
-			title: container.name,
-			status,
-			id: containerId(item.namespace, item.name, container.name),
-			route: {
-				path: `/application-spaces/pods/containers/overview/${node}/${item.namespace}/${item.name}/${container.name}`
-			}
-		};
-	});
-};
-
 watch(
 	() => route.query.type,
-	(type) => {
-		const { namespace, name, kind }: { [key: string]: any } = route.params;
-
-		if (type === 'pod') {
-			myTreeRef.value.setExpanded(`${route.query.uid}`, true);
-			layzLoadData(route.query.uid as string, PodListData.data);
-			myTreeRef.value.setExpanded(`${namespace}-${name}`, true);
-			defaultActive.value = `${namespace}-${name}`;
-			setTimeout(() => {
-				route.query.scroll === 'true' && scrollToView(`${route.query.uid}`);
-			});
-		} else if (type === 'workload') {
-			const all = list.value.find(
-				(item) => item.id === route.query.kind
-			).children;
-			const target = all.find((item) => item.title === name);
-			const id = target.id;
-			myTreeRef.value.setExpanded(route.query.kind, true);
-			defaultActive.value = id;
+	(newValue, oldValue) => {
+		if (newValue && !oldValue) {
+			const { pods_uid }: { [key: string]: any } = route.params;
+			myTreeRef.value.setExpanded(route.params.kind, true);
 			nextTick(() => {
 				setTimeout(() => {
-					scrollToView(id);
+					scrollToView(pods_uid);
 				}, 650);
 			});
+		}
+	}
+);
+
+watch(
+	() => route.params.uid,
+	(newValue, oldValue) => {
+		if (!isEmpty(newValue) && isEmpty(oldValue)) {
+			myTreeRef.value.setExpanded(route.params.pods_uid, true);
 		}
 	}
 );
@@ -307,10 +278,7 @@ watch(
 			firstListIndexs = undefined;
 		}
 		if (newData.length > 0) {
-			const expandedNodes = myTreeRef.value.getExpandedNodes();
-			const expandedIds = expandedNodes.map((item: any) => item?.id);
-			const { name }: any = route.params;
-			expandedIds.includes(name) && layzLoadData(name, newData);
+			layzLoadData(route.params.pods_uid as string, newData);
 		}
 	},
 	{
@@ -327,16 +295,22 @@ const podDataformate = (data: any) => {
 	const { namespace, kind, name }: { [key: string]: any } = route.params;
 	return data.map((item: any) => ({
 		title: `${item.name}`,
-		id: `${item.namespace}-${item.name}`,
+		id: item.uid,
 		_originData: item,
 		type: 'pod',
 		img: podIcon,
 		status: item.podStatus.type,
 		selectToExpend: true,
 		route: {
-			path: `/application-spaces/pods/overview/${item.spec.nodeName}/${item.namespace}/${item.name}/${item.createTime}`
+			name: componentName.WORKLOAD_PODS,
+			params: {
+				...route.params,
+				name: item.name,
+				node: item.spec.nodeName,
+				uid: item.uid,
+				createTime: item.createTime
+			}
 		}
-		// children: tabList(item, item.spec.nodeName),
 	}));
 };
 
@@ -360,7 +334,6 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
 	shouldExecuteResponseHandler.value = false;
-	defaultActive.value = undefined;
 });
 </script>
 
