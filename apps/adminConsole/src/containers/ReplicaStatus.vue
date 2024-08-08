@@ -3,7 +3,7 @@
 		<div class="q-mr-lg">
 			<q-circular-progress
 				show-value
-				:value="status.current / status.desire"
+				:value="status.current / count"
 				:min="0"
 				:max="1"
 				:thickness="0.32"
@@ -12,7 +12,7 @@
 				color="blue-default"
 			>
 				<div class="replication-status-value">
-					{{ status.current }}/{{ status.desire }}
+					{{ status.current || 0 }}/{{ count }}
 				</div>
 			</q-circular-progress>
 		</div>
@@ -43,8 +43,8 @@
 					num: count
 				})
 			"
-			v-if="visible"
-			@close="close"
+			v-model="visible"
+			@cancel="cancel"
 			@confirm="change"
 		/>
 	</q-card>
@@ -69,15 +69,18 @@ const props = withDefaults(defineProps<Props>(), {
 const emits = defineEmits(['change']);
 
 const visible = ref(false);
-const count = ref(props.status.current);
-const currentText = t('REPLICAS_CURRENT');
-const desireText = t('REPLICAS_DESIRED');
+const count = ref(0);
 
 const removeDisabled = computed(() => count.value <= 0);
 watch(
-	() => props.status,
-	() => {
-		count.value = props.status.current;
+	() => props.status.desire,
+	(newValue, oldValue) => {
+		if (newValue !== oldValue) {
+			count.value = props.status.desire;
+		}
+	},
+	{
+		immediate: true
 	}
 );
 
@@ -98,7 +101,7 @@ function remove() {
 	count.value = props.status.desire - 1;
 }
 
-function close() {
+function cancel() {
 	visible.value = false;
 	count.value = props.status.current;
 }

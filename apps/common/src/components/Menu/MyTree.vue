@@ -275,7 +275,7 @@ const onExpanded = (values: readonly string[]) => {
 };
 
 const isSelected = (key: string, hasChildren: boolean) => {
-	return hasChildren ? false : selected.value === key;
+	return selected.value === key;
 };
 
 const isExpanded = (prop: Record<string, any>) => {

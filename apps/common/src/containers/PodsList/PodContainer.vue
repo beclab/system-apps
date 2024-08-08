@@ -16,36 +16,12 @@
 </template>
 
 <script setup lang="ts">
-import { RouteLocationRaw, useRoute, useRouter } from 'vue-router';
-import {
-	onMounted,
-	ref,
-	watch,
-	computed,
-	toRef,
-	onBeforeUnmount,
-	watchEffect
-} from 'vue';
-import {
-	getMetrics,
-	getNameSpacePodsList,
-	getWorkloadsControler,
-	patchWorkloadsControler
-} from 'src/network';
-import {
-	get,
-	has,
-	isArray,
-	isEmpty,
-	isNil,
-	set,
-	sortBy,
-	throttle
-} from 'lodash';
-import { joinSelector } from 'src/utils';
+import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
+import { ref, watch, watchEffect } from 'vue';
+import { getMetrics, patchWorkloadsControler } from 'src/network';
+import { get, isArray, isEmpty, throttle } from 'lodash';
 import { ObjectMapper } from '../../utils/object.mapper';
 import PodItem from './PodItem.vue';
-import SocketClient from '../../utils/socket.client';
 import { MonitoringResponse } from 'src/network/network';
 import { usePodList } from '../../stores/podList';
 import {
@@ -61,6 +37,9 @@ import Empty from '../../components/Empty.vue';
 import axios from 'axios';
 import isFunction from 'lodash';
 
+import ReconnectingWebSocket from 'reconnecting-websocket';
+import { useQuasar } from 'quasar';
+
 interface Props {
 	module?: string;
 	detail?: any;
@@ -70,21 +49,18 @@ interface Props {
 	componentName?: string;
 	routePushFunction?: (data: any) => void;
 }
-
+const $q = useQuasar();
 const PodListData = usePodList();
 const CancelToken = axios.CancelToken;
 let source = CancelToken.source();
 
 const loading = ref(false);
-const loading2 = ref(false);
+const loading2 = ref(true);
 const loading3 = ref(false);
 const route = useRoute();
 const router = useRouter();
-const envDetail = ref();
 const podList = ref();
-const envlist = ref();
 const params = ref();
-const variables = ref();
 const childComponentRef = ref();
 const monitoringData = ref();
 const shouldExecuteResponseHandler = ref(true);
@@ -92,7 +68,6 @@ const shouldExecuteResponseHandler = ref(true);
 let locker: any = null;
 let autofresh = false;
 let createWS: any = undefined;
-let websocket: any = undefined;
 
 const props = withDefaults(defineProps<Props>(), {});
 const emits = defineEmits(['podChange', 'update']);
@@ -101,7 +76,6 @@ const fetchEnv = async (showLoading = true) => {
 	params.value = getParams(props.detail);
 
 	fetchPods(showLoading);
-	wsInit();
 };
 
 function updateDetail(data: any) {
@@ -114,13 +88,11 @@ async function fetchPods(showLoading = true) {
 	}
 	try {
 		const res = await getPosdList(props.detail, { cancelToken: source.token });
-		console.log('aaaa', props.detail);
 		podList.value = getPosdListFormatter(res);
 		PodListData.updateData(podList.value);
 		fetchMetrics();
 		loading2.value = false;
 		PodListData.updateLoading(false);
-		console.log('fffffff');
 	} catch (error) {
 		loading2.value = false;
 	}
@@ -144,19 +116,15 @@ function wsInit() {
 	const selectCluster = '';
 	const { namespace, labelSelector }: any = params.value;
 	const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-	const url = `${protocol}//${window.location.host}/api/v1/watch${
-		selectCluster ? `/klusters/${selectCluster}` : ''
-	}/namespaces/${namespace}/pods?labelSelector=${labelSelector}`;
 
-	closeWs();
-	createWS = new SocketClient(url, {
-		onmessage: podWsHandler,
-		onclose: onclose,
-		onerror: (error: any) => {
-			console.log('error1', error);
-			closeWs();
-		}
-	});
+	const urlProvider = async () => {
+		return `${protocol}//${window.location.host}/api/v1/watch${
+			selectCluster ? `/klusters/${selectCluster}` : ''
+		}/namespaces/${namespace}/pods?labelSelector=${labelSelector}`;
+	};
+
+	createWS = new ReconnectingWebSocket(urlProvider);
+	createWS.addEventListener('message', podWsHandler);
 }
 
 function onclose() {
@@ -169,15 +137,15 @@ function onclose() {
 
 function closeWs() {
 	if (createWS) {
-		createWS.close(true);
+		createWS.close(1000);
 		createWS = null;
 	}
 }
 
-function podWsHandler(message: any) {
+function podWsHandler(MessageEvent: any) {
+	const message = JSON.parse(MessageEvent.data);
 	const selectCluster = '';
 	const fetchPods2 = throttle(fetchPods, 350);
-	const updateDetail2 = throttle(updateDetail, 350);
 
 	if (message.object.kind === 'Pod') {
 		if (message.type === 'MODIFIED') {
@@ -192,7 +160,6 @@ function podWsHandler(message: any) {
 			}
 		}
 	} else {
-		updateDetail2(message.object);
 	}
 }
 
@@ -217,14 +184,16 @@ function monitoringWs() {
 		kind,
 		pods_name: name
 	}: Record<string, any> = route.params;
+
+	const updateDetail2 = throttle(updateDetail, 350);
+
 	const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
 	const url = `${protocol}//${window.location.host}/apis/apps/v1/watch/namespaces/${namespace}/${kind}/${name}`;
-	createWS2 = new SocketClient(url, {
-		onclose: onclose2,
-		onerror: (error: any) => {
-			console.log('error2', error);
-			closeWs2();
-		}
+	createWS2 = new ReconnectingWebSocket(url);
+
+	createWS2.addEventListener('message', (MessageEvent: any) => {
+		const message = JSON.parse(MessageEvent.data);
+		updateDetail2(message.object);
 	});
 }
 
@@ -239,7 +208,7 @@ function onclose2() {
 
 function closeWs2() {
 	if (createWS2) {
-		createWS2.close(true);
+		createWS2.close(1000);
 		createWS2 = null;
 	}
 }
@@ -254,10 +223,6 @@ function replicaChange(value: number) {
 	patchWorkloadsControler(namespace, kind, name, params).finally(() => {
 		loading.value = false;
 	});
-}
-
-function refreshEvent() {
-	childComponentRef.value && childComponentRef.value.fetchData();
 }
 
 const getPodMetrics = (pod: any) => {
@@ -392,22 +357,20 @@ watch(
 			if (newData.uid === oldData?.uid) {
 				fetchEnv(false);
 			} else {
-				closeWs();
-				closeWs2();
-				resetConfig();
 				fetchEnv();
+				wsInit();
 				monitoringWs();
 			}
 		}
 	}
 );
 
-onBeforeUnmount(() => {
+onBeforeRouteUpdate(() => {
+	closeWs();
+	closeWs2();
 	CancelTokenHandler();
 	shouldExecuteResponseHandler.value = false;
 	PodListData.updateData([]);
-	closeWs();
-	closeWs2();
 	resetConfig();
 });
 

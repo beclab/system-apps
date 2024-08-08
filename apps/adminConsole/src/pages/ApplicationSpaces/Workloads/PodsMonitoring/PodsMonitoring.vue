@@ -33,8 +33,8 @@
 				/>
 			</q-card>
 		</div>
-		<q-inner-loading :showing="mountLoading"> </q-inner-loading>
 	</div>
+	<q-inner-loading :showing="mountLoading"> </q-inner-loading>
 </template>
 
 <script setup lang="ts">

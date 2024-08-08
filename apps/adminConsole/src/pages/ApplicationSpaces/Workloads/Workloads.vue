@@ -317,7 +317,7 @@ const podDataformate = (data: any) => {
 const scrollToView = (id: string) => {
 	const target = document.querySelector(`#${id}`);
 	if (target) {
-		target.scrollIntoView({ behavior: 'smooth' });
+		target.scrollIntoView({ behavior: 'smooth', block: 'center' });
 	}
 };
 

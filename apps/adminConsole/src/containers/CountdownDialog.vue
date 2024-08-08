@@ -10,7 +10,7 @@
 					no-caps
 					dense
 					:label="t('REPLICAS_SCALE_NOTIFY_CANCEL')"
-					@click="closeDialog"
+					@click="cancelHandler"
 				/>
 				<q-btn
 					color="primary"
@@ -25,26 +25,41 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, toRefs } from 'vue';
+import { ref, onMounted, toRefs, watch } from 'vue';
 import { t } from 'src/boot/i18n';
 
 interface DialogData {
 	title: string;
 	content: string;
 	count: number;
+	modelValue: boolean;
 }
 
 const props = withDefaults(defineProps<DialogData>(), {});
-const emits = defineEmits(['close', 'confirm']);
+const emits = defineEmits(['cancel', 'confirm', 'update:modelValue']);
 
-const showDialog = ref(true);
+const showDialog = ref(false);
 const countdown = ref(0);
 
 const { title, content } = toRefs(props);
 
+watch(
+	() => props.modelValue,
+	() => {
+		showDialog.value = props.modelValue;
+		props.modelValue && init();
+	},
+	{
+		immediate: true
+	}
+);
+
+const cancelHandler = () => {
+	emits('cancel');
+	closeDialog();
+};
 const closeDialog = () => {
-	showDialog.value = false;
-	emits('close');
+	emits('update:modelValue', false);
 };
 
 const init = () => {
@@ -64,8 +79,4 @@ const confirm = () => {
 	emits('confirm');
 	closeDialog();
 };
-
-onMounted(() => {
-	init();
-});
 </script>
