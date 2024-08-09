@@ -305,6 +305,12 @@ export interface AppListResponse {
 	};
 }
 
+export interface AppListAllResponse {
+	code: number;
+	message: string | null;
+	data: Record<string, AppListItem[]>;
+}
+
 export enum jobType {
 	cronjobs,
 	jobs

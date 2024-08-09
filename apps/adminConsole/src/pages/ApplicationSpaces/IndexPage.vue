@@ -7,13 +7,14 @@
 		:default-active="defaultActive"
 		:loading="loading"
 		:accordion="false"
+		ref="myTreeRef"
 	>
 		<MenuHeader></MenuHeader>
 	</MyTree>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, nextTick, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { getNamespacesGroup } from 'src/network';
 import MyTree from '@packages/ui/src/components/Menu/MyTree.vue';
@@ -31,7 +32,7 @@ const menuOptions = {
 const list = ref([]);
 const loading = ref(false);
 const route = useRoute();
-let owner = '';
+const myTreeRef = ref();
 
 const defaultActive = computed(() => {
 	return route.params.namespace;
@@ -61,7 +62,7 @@ const fetchData = () => {
 					return {
 						title: item.metadata.name,
 						id: item.metadata.name,
-						img: getNamespaceIcon(item.metadata.name),
+						img: getNamespaceIcon(item.metadata.name, workspace.title),
 						route: {
 							path: `/application-spaces/workloads/${item.metadata.name}`
 						}
@@ -74,6 +75,18 @@ const fetchData = () => {
 			);
 
 			defaultOpeneds.value = [data[0].title];
+			const users = data.map((item) => item.title);
+
+			const target = users.find((item) =>
+				route.params.namespace.includes(item)
+			);
+			nextTick(() => {
+				if (target) {
+					myTreeRef.value.setExpanded(target, true);
+				} else {
+					myTreeRef.value.setExpanded(users[users.length - 1], true);
+				}
+			});
 		})
 		.finally(() => {
 			loading.value = false;

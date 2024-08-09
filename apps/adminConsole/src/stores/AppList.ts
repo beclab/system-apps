@@ -1,19 +1,19 @@
-import { AppListItem } from '@packages/ui/src/network/network';
+import { AppListAllResponse } from '@packages/ui/src/network/network';
 import { defineStore } from 'pinia';
-import { getAppsList } from 'src/network';
+import { getAppsListAll } from 'src/network';
 
 interface AppDetailState {
-	data: AppListItem[];
+	data: AppListAllResponse['data'];
 }
 export const useAppList = defineStore('appList', {
 	state: (): AppDetailState => ({
-		data: []
+		data: {}
 	}),
 	getters: {},
 	actions: {
 		async init() {
-			return getAppsList().then((res) => {
-				this.data = res.data.data.items;
+			return getAppsListAll().then((res) => {
+				this.data = res.data.data;
 			});
 		}
 	}

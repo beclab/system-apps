@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios';
 import { api } from '../boot/axios';
 import { Cookies } from 'quasar';
-import { AppListResponse } from './network';
+import { AppListAllResponse, AppListResponse } from './network';
 
 export const getUserList = (): Promise<AxiosResponse<any>> => {
 	return api.get('/bfl/iam/v1alpha1/users', {
@@ -13,6 +13,16 @@ export const getUserList = (): Promise<AxiosResponse<any>> => {
 
 export const getAppsList = (): Promise<AxiosResponse<AppListResponse>> => {
 	return api.get('/bfl/app_process/v1alpha1/myapps', {
+		headers: {
+			'X-Authorization': Cookies.get('auth_token')
+		}
+	});
+};
+
+export const getAppsListAll = (): Promise<
+	AxiosResponse<AppListAllResponse>
+> => {
+	return api.get('/bfl/app_process/v1alpha1/allapps', {
 		headers: {
 			'X-Authorization': Cookies.get('auth_token')
 		}

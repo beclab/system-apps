@@ -7,6 +7,7 @@ import { useAppDetailStore } from 'src/stores/AppDetail';
 import kubeIcon from 'src/assets/kube.png';
 import kubesphereIcon from 'src/assets/kubesphere.png';
 import { useAppList } from 'src/stores/AppList';
+import { get } from 'lodash';
 
 const appList = useAppList();
 const USERSPACE = 'user-space';
@@ -37,12 +38,12 @@ export const namespaceIcon: any = (username: string) => ({
 	'gpu-system': gpuIcon
 });
 
-export const getNamespaceIcon = (namespace: string) => {
+export const getNamespaceIcon = (namespace: string, user?: string) => {
 	username = appDetail.data?.user.username;
 	const app = namespace.substring(0, namespace.lastIndexOf('-'));
 	icons = { ...customNamesapceIcon(username), ...namespaceIcon(username) };
-
-	const appTarget = appList.data.find((item) => item.namespace === namespace);
+	const apps = get(appList, `data[${user}]`, []);
+	const appTarget = apps.find((item) => item.namespace === namespace);
 	return namespace.includes(USERSPACE)
 		? userSpace
 		: namespace.includes(USERSYSTEM)

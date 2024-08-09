@@ -238,12 +238,13 @@ const getMonitoringCfgs = computed(() => {
 	.container-item-content {
 		height: 72px;
 	}
+	.my-containers-badge {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+	}
 }
-.my-containers-badge {
-	position: absolute;
-	right: 0;
-	bottom: 0;
-}
+
 .container-item-hover {
 	&:hover {
 		color: $primary;
