@@ -12,7 +12,7 @@
 		>
 			<template v-slot:body-cell-type="props">
 				<q-td :props="props">
-					<div class="row items-center no-wrap">
+					<div class="row items-center no-wrap text-ink-1">
 						<MyBadge
 							class="q-mr-xs"
 							:type="props.row.type ? 'success' : 'failed'"
@@ -158,7 +158,6 @@ defineExpose({ fetchData });
 	width: max-content;
 }
 .event-type {
-	color: #1f1814;
 	font-weight: 500;
 	line-height: 16px;
 }

@@ -1,23 +1,26 @@
 <template>
 	<my-card no-content-gap square flat animated>
 		<template #title>
-			<div>{{ t('DATA') }}&nbsp;{{ secret }}</div>
+			<div>{{ t('DATA') }}&nbsp;</div>
 		</template>
 		<template #extra>
-			<QButtonStyle size="sm">
-				<q-btn
-					color="grey-5"
-					flat
-					dense
-					no-caps
-					size="sm"
-					:icon="
-						secretValueVisible ? 'sym_r_visibility_off' : 'sym_r_visibility'
-					"
-					@click="secretValueVisibleHandler"
-				>
-				</q-btn>
-			</QButtonStyle>
+			<div class="row items-center q-gutter-x-md">
+				<span>{{ secret }}</span>
+				<QButtonStyle size="sm">
+					<q-btn
+						color="grey-5"
+						flat
+						dense
+						no-caps
+						size="sm"
+						:icon="
+							secretValueVisible ? 'sym_r_visibility_off' : 'sym_r_visibility'
+						"
+						@click="secretValueVisibleHandler"
+					>
+					</q-btn>
+				</QButtonStyle>
+			</div>
 		</template>
 		<DataDetail :data="secretObj"> </DataDetail>
 	</my-card>

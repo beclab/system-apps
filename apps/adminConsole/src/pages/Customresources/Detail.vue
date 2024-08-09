@@ -107,7 +107,10 @@ import {
 	getCRDItemList,
 	getCustomresourcedefinitions
 } from 'src/network';
-import { DefaultMapper, ObjectMapper } from 'src/utils/object.mapper';
+import {
+	DefaultMapper2 as DefaultMapper,
+	ObjectMapper
+} from 'src/utils/object.mapper';
 import MyPage2 from '@packages/ui/src/containers/MyPage2.vue';
 import MyContentPage from 'src/components/MyContentPage.vue';
 import { date } from 'quasar';
@@ -133,6 +136,7 @@ const options = [
 		icon: 'sym_r_edit',
 		onClick: () => {
 			yamlRef.value && yamlRef.value.show();
+			console.log('currentYamlData', currentYamlData.value);
 		}
 	},
 	{

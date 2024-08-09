@@ -719,10 +719,11 @@ export const getCustomresourceItem = (
 	apiVersion: string,
 	namespace: string,
 	module: string,
-	name: string
+	name: string,
+	cluster?: string
 ): Promise<AxiosResponse<any>> => {
 	return api.get(
-		`/apis/${apiVersion}/namespaces/${namespace}/${module}/${name}`
+		`/apis/${apiVersion}${getPath({ cluster, namespace })}/${module}/${name}`
 	);
 };
 

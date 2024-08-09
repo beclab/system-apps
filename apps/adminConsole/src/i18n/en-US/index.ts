@@ -30,7 +30,6 @@ const options = {
 	SELECT_INDEX: 'Select Index first',
 	NO_RESULT: 'No Result',
 	SEARCH_FIELD: 'Search for a field',
-	NO_DATA_AVAILABLE: 'No data available',
 	POD_LIST: 'Pod List',
 	TIMESTAMP: 'timestamp',
 	MAX_RECORDS: 'Max records to return',

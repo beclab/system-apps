@@ -1,5 +1,8 @@
 <template>
-	<div class="absolute-full column items-center justify-center">
+	<div
+		class="absolute-full column items-center justify-center"
+		style="z-index: 9999"
+	>
 		<svg
 			class="vital-spinner"
 			xmlns="http://www.w3.org/2000/svg"

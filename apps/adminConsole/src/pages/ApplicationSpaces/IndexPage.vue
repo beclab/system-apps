@@ -78,7 +78,7 @@ const fetchData = () => {
 			const users = data.map((item) => item.title);
 
 			const target = users.find((item) =>
-				route.params.namespace.includes(item)
+				get(route, 'params.namespace', '').includes(item)
 			);
 			nextTick(() => {
 				if (target) {

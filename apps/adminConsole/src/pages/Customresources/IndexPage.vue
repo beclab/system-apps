@@ -70,7 +70,7 @@ const fetchData = () => {
 					id: key,
 					title: key,
 					children: groupedData[key].map((item) => {
-						path = `/customresources/detail/${item.group}/${item.latestVersion}/${item.module}`;
+						path = `/customresources/detail/${item.group}/${item.latestVersion}/${item.module}/${item.uid}`;
 						id = `${item.uid}`;
 
 						if (!firstPath) {
@@ -104,8 +104,14 @@ const fetchData = () => {
 
 const toDefaultRoute = (firstPath: string, firstActive: string) => {
 	if (shouldExecuteResponseHandler.value) {
-		!route.params.module && firstPath && router.push(firstPath);
-		defaultActive.value = firstActive;
+		const { uid, group } = route.params;
+		if (uid) {
+			defaultActive.value = uid;
+			defaultOpened.value = [group];
+		} else {
+			!route.params.module && firstPath && router.push(firstPath);
+			defaultActive.value = firstActive;
+		}
 	}
 };
 

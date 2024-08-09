@@ -11,12 +11,13 @@
 		>
 			<template v-slot:body-cell-status="props">
 				<q-td :props="props">
-					<q-badge
-						rounded
-						:color="props.row.status ? 'primary' : 'red'"
-						class="q-mr-sm"
-					/>
-					<span>{{ props.row.status ? t('SUCCESSFUL') : t('FAILED') }}</span>
+					<div class="row items-center no-wrap">
+						<MyBadge
+							class="q-mr-xs"
+							:type="props.row.type ? 'success' : 'failed'"
+						/>
+						<span class="event-type">{{ props.row.type }}</span>
+					</div>
 				</q-td>
 			</template>
 			<template v-slot:no-data>
@@ -38,7 +39,7 @@ import { ObjectMapper } from 'src/utils/object.mapper';
 import { onMounted, ref, watch } from 'vue';
 import MyLoading from 'src/components/MyLoading.vue';
 import Empty from '@packages/ui/src/components/Empty.vue';
-
+import MyBadge from '@packages/ui/src/components/MyBadge.vue';
 import QTableStyle from '@packages/ui/src/components/QTableStyle.vue';
 
 const loading = ref(false);

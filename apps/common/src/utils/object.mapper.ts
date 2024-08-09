@@ -42,6 +42,17 @@ const getOriginData = (item: any) =>
 		'metadata.managedFields'
 	]);
 
+const getOriginData2 = (item: any) =>
+	omit(item, [
+		'metadata.uid',
+		'metadata.selfLink',
+		'metadata.generation',
+		'metadata.ownerReferences',
+		'metadata.resourceVersion',
+		'metadata.creationTimestamp',
+		'metadata.managedFields'
+	]);
+
 const getBaseInfo = (item: any) => ({
 	uid: get(item, 'metadata.uid'),
 	name: get(item, 'metadata.name'),
@@ -58,6 +69,13 @@ export const DefaultMapper = (item: any) => ({
 	namespace: get(item, 'metadata.namespace'),
 	spec: get(item, 'spec'),
 	_originData: getOriginData(item)
+});
+
+export const DefaultMapper2 = (item: any) => ({
+	...getBaseInfo(item),
+	namespace: get(item, 'metadata.namespace'),
+	spec: get(item, 'spec'),
+	_originData: getOriginData2(item)
 });
 
 export const PodsMapper = (item: any) => ({
@@ -164,7 +182,7 @@ export const CRDMapper = (item: any) => {
 		kind: get(item, 'spec.names.kind'),
 		latestVersion: getServedVersion(item),
 		module: get(item, 'status.acceptedNames.plural'),
-		_originData: getOriginData(item)
+		_originData: getOriginData2(item)
 	};
 };
 

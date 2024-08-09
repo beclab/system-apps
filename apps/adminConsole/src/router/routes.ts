@@ -202,7 +202,7 @@ const routes: RouteRecordRaw[] = [
 				component: () => import('src/pages/Customresources/IndexPage.vue'),
 				children: [
 					{
-						path: 'detail/:group/:version/:module',
+						path: 'detail/:group/:version/:module/:uid',
 						component: () => import('src/pages/Customresources/Detail.vue')
 					}
 				]
