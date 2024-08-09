@@ -63,4 +63,7 @@ body.desktop .q-focus-helper ～ .q-btn--rounded {
 body.body--dark .q-dialog__backdrop {
 	background: rgba(0, 0, 0, 0.7);
 }
+.ace_editor {
+	border-radius: 4px;
+}
 </style>
