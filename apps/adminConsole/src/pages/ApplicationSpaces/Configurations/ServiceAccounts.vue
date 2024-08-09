@@ -105,7 +105,7 @@ const fetchList = () => {
 };
 
 watch(
-	() => route.params.name,
+	() => route.params.pods_uid,
 	async () => {
 		fetchList();
 	},

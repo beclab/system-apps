@@ -97,7 +97,7 @@ const fetchDetail = () => {
 };
 
 watch(
-	() => route.params.name,
+	() => route.params.pods_uid,
 	async () => {
 		fetchDetail();
 	},

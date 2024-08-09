@@ -370,8 +370,8 @@ const routePushHandler = (data) => {
 };
 
 watch(
-	() => route.params.name,
-	async (newId) => {
+	() => route.params.pods_uid,
+	async () => {
 		init();
 	}
 );
