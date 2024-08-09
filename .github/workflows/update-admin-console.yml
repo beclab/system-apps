@@ -8,7 +8,7 @@ on:
       - opened
     branches:
       - 'main'
-      - 'chore/lerna-monorepo'
+      - 'bug/fix-0729_beta'
     paths:
       - 'apps/adminConsole/package.json'
   push:
