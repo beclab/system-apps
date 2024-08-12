@@ -38,9 +38,7 @@ const defaultActive = computed(() => {
 	return route.params.namespace;
 });
 
-const userType = 'User Projects';
-const systmeType = 'System Projects';
-const defaultOpeneds = ref([userType, systmeType, route.params.namespace]);
+const defaultOpeneds = ref();
 
 const fetchData = () => {
 	const params = {
@@ -74,14 +72,16 @@ const fetchData = () => {
 				(item: any) => item.children && item.children.length > 0
 			);
 
-			defaultOpeneds.value = [data[0].title];
 			const users = data.map((item) => item.title);
 
 			const target = users.find((item) =>
 				get(route, 'params.namespace', '').includes(item)
 			);
+			const kind = get(route, 'params.kind', '');
 			nextTick(() => {
-				if (target) {
+				if (!kind) {
+					myTreeRef.value.setExpanded(users[0], true);
+				} else if (target) {
 					myTreeRef.value.setExpanded(target, true);
 				} else {
 					myTreeRef.value.setExpanded(users[users.length - 1], true);
