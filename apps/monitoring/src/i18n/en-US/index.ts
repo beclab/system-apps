@@ -10,7 +10,7 @@ const options = {
 	USAGE_RANKING: 'Usage Ranking',
 	MORE: 'More',
 	MORE_DETAILS: 'More Details',
-	PHYSICAL_RESOURCE_MONTORING: 'Physical Resource Montoring',
+	PHYSICAL_RESOURCE_MONTORING: 'Physical Resource Monitoring',
 	TOP_COUNT_CPU_USAGE_APPS: 'Top {count} CPU Usage Apps',
 	TOP_COUNT_MEMORY_USAGE_APPS: 'Top {count} Memory Usage Apps',
 	VIEWS_COUNT_VIEW: 'Views in {count} hours',
