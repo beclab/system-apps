@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
-import { ref, watch, watchEffect } from 'vue';
+import { ref, watch, watchEffect, onBeforeUnmount } from 'vue';
 import { getMetrics, patchWorkloadsControler } from 'src/network';
 import { get, isArray, isEmpty, throttle } from 'lodash';
 import { ObjectMapper } from '../../utils/object.mapper';
@@ -146,7 +146,12 @@ function podWsHandler(MessageEvent: any) {
 	const message = JSON.parse(MessageEvent.data);
 	const selectCluster = '';
 	const fetchPods2 = throttle(fetchPods, 350);
+	const targetUrl = get(MessageEvent, 'currentTarget.url', '');
+	targetUrl.split('app=')[1];
 
+	if (targetUrl.split('app=')[1] !== route.params.pods_name) {
+		return;
+	}
 	if (message.object.kind === 'Pod') {
 		if (message.type === 'MODIFIED') {
 			const data = {
@@ -366,6 +371,15 @@ watch(
 );
 
 onBeforeRouteUpdate(() => {
+	closeWs();
+	closeWs2();
+	CancelTokenHandler();
+	shouldExecuteResponseHandler.value = false;
+	PodListData.updateData([]);
+	resetConfig();
+});
+
+onBeforeUnmount(() => {
 	closeWs();
 	closeWs2();
 	CancelTokenHandler();
