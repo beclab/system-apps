@@ -54,7 +54,22 @@ const namespaceList = [
 		pathname: '/kapis/resources.kubesphere.io/v1alpha3/networkpolicies',
 		modify: true,
 		resFormat: namespaceListFormat
-	}
+	},
+	{
+		pathname: '/kapis/resources.kubesphere.io/v1alpha3/persistentvolumeclaims',
+		modify: true,
+		resFormat: namespaceListFormat
+	},
+	{
+		pathname: '/kapis/resources.kubesphere.io/v1alpha3/cronjobs',
+		modify: true,
+		resFormat: namespaceListFormat
+	},
+	{
+		pathname: '/kapis/resources.kubesphere.io/v1alpha3/jobs',
+		modify: true,
+		resFormat: namespaceListFormat
+	},
 ];
 
 function podListFormat(ctx, data) {
