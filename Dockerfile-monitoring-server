@@ -8,7 +8,7 @@ RUN yarn
 
 ADD apps/server/ ./
 
-RUN yarn add rimraf -D && yarn build
+RUN yarn add rimraf@5.0.7 -D && yarn build
 
 
 FROM node:18.15.0-buster-slim
