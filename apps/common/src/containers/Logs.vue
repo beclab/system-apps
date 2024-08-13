@@ -1,6 +1,6 @@
 <template>
 	<div class="my-scroll-container" ref="logContainerRef">
-		<div class="log-container">
+		<div class="log-container" style="border-radius: 4px">
 			<bt-scroll-area class="log-scroll-wrapper" ref="scrollAreaRef">
 				<div class="log-content">
 					<div
