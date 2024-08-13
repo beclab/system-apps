@@ -212,9 +212,12 @@ const fetchData = () => {
 		});
 };
 
-watch([() => route.params.namespace, () => route.params.namespace], () => {
-	fetchData();
-});
+watch(
+	() => route.params.uid,
+	() => {
+		fetchData();
+	}
+);
 
 onMounted(() => {
 	fetchData();

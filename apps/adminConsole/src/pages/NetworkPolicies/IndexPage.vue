@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import { onBeforeUnmount, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { getNetworkpolicies } from 'src/network';
 import MyRouterLinkList from '@packages/ui/src/components/MyRouterLinkList.vue';
 import MenuHeader from 'src/layouts/MenuHeader.vue';
@@ -25,6 +25,8 @@ const menuOptions = {
 	subTitle: 'subTitle',
 	router: true
 };
+const route = useRoute();
+
 const NetworkPolicies = 'NetworkPolicies';
 const router = useRouter();
 let list = ref<any[]>([]);
@@ -47,8 +49,9 @@ const fetchData = () => {
 			let id = '';
 
 			const data = res.data.items.map((item: any) => {
-				path = `/network-policies/detail/${item.metadata.namespace}/${item.metadata.name}`;
-				id = `${item.metadata.name}-${item.metadata.namespace}`;
+				console.log('item', item);
+				path = `/network-policies/detail/${item.metadata.namespace}/${item.metadata.name}/${item.metadata.uid}`;
+				id = item.metadata.uid;
 
 				if (!firstPath) {
 					firstPath = path;
@@ -83,8 +86,13 @@ const fetchData = () => {
 
 const toDefaultRoute = (firstPath: string, firstActive: string) => {
 	if (shouldExecuteResponseHandler.value) {
-		firstPath && router.push(firstPath);
-		defaultActive.value = firstActive;
+		const { uid } = route.params;
+		if (uid) {
+			defaultActive.value = uid;
+		} else {
+			firstPath && router.push(firstPath);
+			defaultActive.value = firstActive;
+		}
 	}
 };
 

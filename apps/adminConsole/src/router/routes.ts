@@ -191,7 +191,7 @@ const routes: RouteRecordRaw[] = [
 				component: () => import('src/pages/NetworkPolicies/IndexPage.vue'),
 				children: [
 					{
-						path: 'detail/:namespace/:name',
+						path: 'detail/:namespace/:name/:uid',
 						component: () =>
 							import('src/pages/NetworkPolicies/PoliciesDetail.vue')
 					}
