@@ -10,7 +10,9 @@
 			v-model:pagination="pagination"
 		>
 			<template v-slot:no-data>
-				<Empty></Empty>
+				<div class="row justify-center full-width q-mt-lg">
+					<Empty></Empty>
+				</div>
 			</template>
 		</q-table>
 	</QTableStyle>
@@ -19,7 +21,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { t } from 'src/boot/i18n';
-import Empty from '../components/Empty2.vue';
+import Empty from '../components/Empty.vue';
 import QTableStyle from '../components/QTableStyle.vue';
 
 interface Props {
