@@ -1,6 +1,24 @@
 import { ResourcesResponse } from 'types/network';
 import { get, isArray, isEmpty } from 'lodash';
 
+interface metric {
+	metric: {
+		namespace: string;
+		node: string;
+		owner_kind: string;
+		owner_name: string;
+		pod: string;
+	};
+	values: Array<[string, string]>;
+	min_value: string;
+	max_value: string;
+	avg_value: string;
+	sum_value: string;
+	fee: string;
+	resource_unit: string;
+	currency_unit: string;
+}
+
 export const MetricTypes = {
 	cpu_usage: 'pod_cpu_usage',
 	memory_usage: 'pod_memory_usage_wo_cache',
@@ -14,7 +32,14 @@ export const MONITOR_MODULES = {
 	daemonsets: 'daemonset'
 };
 
-export function chartConfig(data: ResourcesResponse, legend) {
+export function chartConfig(data: ResourcesResponse) {
+	const result_one: metric[] = get(
+		data,
+		`${MetricTypes.cpu_usage}.data.result`,
+		[]
+	);
+	const legend = result_one.map((item) => item.metric.pod);
+
 	return [
 		{
 			type: 'cpu',

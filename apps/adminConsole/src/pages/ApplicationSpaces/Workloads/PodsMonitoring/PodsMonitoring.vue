@@ -116,7 +116,8 @@ const fetchData = async (autofresh = false) => {
 		metrics: Object.values(MetricTypes),
 		...selectValue.value,
 		cluster,
-		resources_filter: _pods.join('|')
+		resources_filter: _pods.join('|'),
+		sortBy: 'createTime'
 	};
 
 	if (autofresh) {
@@ -136,7 +137,7 @@ const fetchData = async (autofresh = false) => {
 			}
 
 			clusterData.value = fillEmptyMetrics(params, result);
-			list.value = getMonitoringCfgs(clusterData.value, _pods).map((item) =>
+			list.value = getMonitoringCfgs(clusterData.value).map((item) =>
 				getAreaChartOps(item)
 			);
 			autofresh && setLocker();
