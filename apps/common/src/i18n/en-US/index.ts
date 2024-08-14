@@ -19,7 +19,8 @@ const options_update = {
 	OPERATOR: 'Operator',
 	CREATION_TIME_TCAP: 'Creation Time',
 	DETAILS: 'Details',
-	NO_DATA_AVAILABLE: 'No data available'
+	NO_DATA_AVAILABLE: 'No data available',
+	ALL_STATUS: 'All status'
 };
 
 const options = {

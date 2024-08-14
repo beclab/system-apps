@@ -5,6 +5,17 @@
 				<Refresh @click="fetchData"></Refresh>
 				<NodeSelect v-model="selectValue" @update:model-value="fetchData">
 				</NodeSelect>
+				<QSectionStyle>
+					<q-select
+						style="min-width: 120px"
+						v-model="statusValue"
+						@update:model-value="fetchData"
+						:options="statusOptions"
+						dense
+						outlined
+					>
+					</q-select>
+				</QSectionStyle>
 				<QInputStyle>
 					<q-input
 						v-model="name"
@@ -139,6 +150,8 @@ import DeleteDialog from '@packages/ui/src/components/DeleteDialog.vue';
 import { useQuasar } from 'quasar';
 import MyLoading2 from '@packages/ui/src/components/MyLoading2.vue';
 import { useI18n } from 'vue-i18n';
+import QSectionStyle from '@packages/ui/src/components/QSectionStyle.vue';
+
 const $q = useQuasar();
 const { t } = useI18n();
 const options = [
@@ -170,7 +183,7 @@ const columns: any = [
 	},
 	{
 		name: 'status',
-		label: t('STATES'),
+		label: t('STATUS'),
 		align: 'left',
 		field: 'status'
 	},
@@ -199,6 +212,29 @@ const columns: any = [
 		label: t('OPERATIONS'),
 		align: 'center',
 		field: 'status'
+	}
+];
+
+const initOptions = [
+	{
+		label: t('ALL_STATUS'),
+		value: undefined
+	},
+	{
+		label: t('WARNING'),
+		value: 'Waiting'
+	},
+	{
+		label: t('RUNNING'),
+		value: 'Running'
+	},
+	{
+		label: t('COMPLETED'),
+		value: 'Completed'
+	},
+	{
+		label: t('ERROR'),
+		value: 'Error'
 	}
 ];
 
@@ -232,6 +268,8 @@ const deleteLoading = ref(false);
 const defaultOpeneds = ref([
 	idFormat(route.params.namespace, route.params.name)
 ]);
+const statusOptions = ref(initOptions);
+const statusValue = ref(statusOptions.value[2]);
 
 const containerId = (namespace: any, container: any) =>
 	container ? `${namespace}-${container}` : undefined;
@@ -286,6 +324,7 @@ const fetchData = () => {
 		sortBy: pagination.value.sortBy,
 		page: pagination.value.page,
 		limit: -1,
+		status: statusValue.value.value,
 		ascending: !pagination.value.descending,
 		name: name.value,
 		nodeName: selectValue.value.value ? selectValue.value.value : undefined,
