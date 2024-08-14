@@ -40,7 +40,7 @@ const emits = defineEmits(['cancel', 'confirm', 'update:modelValue']);
 
 const showDialog = ref(false);
 const countdown = ref(0);
-
+let countdownInterval: NodeJS.Timeout | undefined = undefined;
 const { title, content } = toRefs(props);
 
 watch(
@@ -59,20 +59,26 @@ const cancelHandler = () => {
 	closeDialog();
 };
 const closeDialog = () => {
+	clearLocker();
 	emits('update:modelValue', false);
 };
 
 const init = () => {
+	countdown.value = 0;
 	if (countdown.value === 0) {
 		countdown.value = props.count;
-		const countdownInterval = setInterval(() => {
+		countdownInterval = setInterval(() => {
 			countdown.value--;
 			if (countdown.value === 0) {
-				clearInterval(countdownInterval);
 				confirm();
 			}
 		}, 1000);
 	}
+};
+
+const clearLocker = () => {
+	countdownInterval && clearInterval(countdownInterval);
+	countdownInterval = undefined;
 };
 
 const confirm = () => {
