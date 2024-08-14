@@ -56,8 +56,7 @@ const etchVariables = async (container: any) => {
 	const result = await Promise.all(requests);
 
 	const data = items.map((item: any, index: number) => {
-		const value = result[index];
-
+		const value = result[index].data ? result[index].data : result[index];
 		if (value.kind === 'Secret' && item.key) {
 			return {
 				name: item.name,
