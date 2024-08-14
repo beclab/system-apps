@@ -1,5 +1,10 @@
 <template>
 	<MyContentPage>
+		<template #extra>
+			<div class="col-auto">
+				<MoreSelection :options="options" size="md"></MoreSelection>
+			</div>
+		</template>
 		<MyPage2>
 			<template v-for="(item, index) in tabs" :key="index">
 				<MyCar4 square flat :title="item.name">
@@ -91,6 +96,14 @@
 			</template>
 		</MyPage2>
 	</MyContentPage>
+	<Yaml3
+		ref="yamlRef"
+		:title="t('EDIT_YAML')"
+		:name="detail.name"
+		:namespace="detail.namespace"
+		module="networkpolicies"
+	>
+	</Yaml3>
 </template>
 
 <script setup lang="ts">
@@ -98,7 +111,7 @@ import { get, isEmpty, toPairs } from 'lodash-es';
 import { t } from 'src/boot/i18n';
 import { getNetworkpoliciesDetail } from 'src/network';
 import { NetworkPoliciesMapper } from 'src/utils/object.mapper';
-import { onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import Labels from '@packages/ui/src/containers/Labels.vue';
 import MyPage2 from '@packages/ui/src/containers/MyPage2.vue';
@@ -107,17 +120,32 @@ import MyContentPage from 'src/components/MyContentPage.vue';
 import MyCar4 from '@packages/ui/src/components/MyCard2.vue';
 import QTableStyle2 from '@packages/ui/src/components/QTableStyle2.vue';
 import MyLoading2 from '@packages/ui/src/components/MyLoading2.vue';
+import MoreSelection from '@packages/ui/src/components/MoreSelection.vue';
+import Yaml3 from '../NamespacePods/Yaml3.vue';
+
 const tabs = [
 	{ name: t('INGRESS_RULES'), value: 'ingress' },
 	{ name: t('EGRESS_RULES'), value: 'egress' }
 ];
 
-const detail = ref();
+const options = computed(() => [
+	{
+		label: t('EDIT_YAML'),
+		value: 'edit',
+		icon: 'sym_r_edit',
+		onClick: () => {
+			yamlRef.value.show();
+		}
+	}
+]);
+
+const detail = ref<any>({});
 const loading = ref(false);
 const route = useRoute();
 const pagination = ref({
 	rowsNumber: 0
 });
+const yamlRef = ref();
 const tableData = (detail: any, direction: string) => {
 	const originData = get(detail, '_originData');
 	const namespace = get(originData, 'metadata.namespace');
