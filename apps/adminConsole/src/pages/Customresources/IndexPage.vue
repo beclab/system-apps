@@ -4,6 +4,7 @@
 		:defaultOpened="defaultOpened"
 		:data="data"
 		:loading="loading"
+		:clickable="false"
 	>
 		<MenuHeader></MenuHeader>
 	</MyRouterLinkList>
