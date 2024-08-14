@@ -28,6 +28,7 @@
 								{{ container.name }}
 							</div>
 							<q-icon
+								v-permission="route.params.namespace"
 								v-if="!hideLog"
 								color="blue-default"
 								name="sym_r_article"
@@ -41,14 +42,19 @@
 									t('CONTAINER_LOGS')
 								}}</q-tooltip>
 							</q-icon>
-							<Terminal
-								v-if="status === 'running' && !hideTerminal"
-								:data="containerPath(container)"
+							<div
+								v-permission="route.params.namespace"
+								style="margin-top: -1px"
 							>
-								<q-tooltip anchor="top middle" self="bottom middle">{{
-									t('TERMINAL')
-								}}</q-tooltip>
-							</Terminal>
+								<Terminal
+									v-if="status === 'running' && !hideTerminal"
+									:data="containerPath(container)"
+								>
+									<q-tooltip anchor="top middle" self="bottom middle">{{
+										t('TERMINAL')
+									}}</q-tooltip>
+								</Terminal>
+							</div>
 						</div>
 					</template>
 					<template #subTitle>

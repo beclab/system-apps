@@ -32,7 +32,7 @@ module.exports = configure(function (ctx) {
 		// app boot file (/src/boot)
 		// --> boot files are part of "main.js"
 		// https://v2.quasar.dev/quasar-cli-webpack/boot-files
-		boot: ['i18n', 'axios', 'bytetrade-ui'],
+		boot: ['i18n', 'axios', 'bytetrade-ui', 'permission'],
 
 		// https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-css
 		css: ['app.scss', ctx.dev ? 'font.pro.scss' : 'font.pro.scss'],

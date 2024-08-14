@@ -39,6 +39,9 @@ export const useAppDetailStore = defineStore('appDetail', {
 
 		async setData(data: any) {
 			this.data = data;
+		},
+		hasPermission(value: string) {
+			return value.includes(this.data.user.username);
 		}
 	}
 });
