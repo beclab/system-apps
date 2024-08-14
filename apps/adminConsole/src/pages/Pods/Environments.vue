@@ -10,7 +10,7 @@
 					:label="labelFormat(item)"
 					:default-opened="!loading && !item.variables.length"
 				>
-					<MyChipList :data="item.variables"> </MyChipList>
+					<MyChipList :data="variablesFilter(item.variables)"> </MyChipList>
 					<div v-if="!item.variables.length">
 						<Empty></Empty>
 					</div>
