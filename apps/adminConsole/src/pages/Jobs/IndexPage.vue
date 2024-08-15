@@ -4,7 +4,7 @@
 		active-text-color="#1976D2"
 		:menu-options="menuOptions"
 		:default-openeds="defaultOpeneds"
-		:default-active="defaultActive"
+		:default-active="$route.params.jobUid"
 		:loading="loading"
 		:accordion="false"
 		@lazy-load="onLazyLoad"

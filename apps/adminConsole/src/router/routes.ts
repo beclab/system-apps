@@ -65,6 +65,7 @@ const routes: RouteRecordRaw[] = [
 					{
 						path: '/jobs/job/:namespace/:jobName/:jobUid',
 						component: () => import('src/pages/Jobs/JobsDetails.vue'),
+						name: componentName.JOB_DETAILS,
 						children: [
 							{
 								path: '/job-inner/:jobName/:jobUid/pods/overview/:node/:namespace/:name/:createTime?',

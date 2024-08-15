@@ -23,14 +23,23 @@
 						:loading="tableLoading"
 						row-key="name"
 					>
+						<template v-slot:body-cell-name="props">
+							<q-td :props="props">
+								<div class="cronjob-list-name" @click="routeTo(props.row)">
+									{{ props.value }}
+								</div>
+							</q-td>
+						</template>
 						<template v-slot:body-cell-status="props">
-							<q-td :props="props" class="row items-center">
-								<Status :type="lowerCase(props.value)"></Status>
-								{{ $t(props.value) }}
+							<q-td :props="props">
+								<div class="row items-center">
+									<Status :type="lowerCase(props.value)"></Status>
+									{{ $t(props.value) }}
+								</div>
 							</q-td>
 						</template>
 						<template v-slot:body-cell-uid="props">
-							<q-td :props="props" class="row items-center justify-center">
+							<q-td :props="props">
 								<QButtonStyle>
 									<q-btn
 										flat
@@ -61,6 +70,7 @@
 		</MyPage2>
 		<q-inner-loading :showing="loading"> </q-inner-loading>
 	</MyContentPage>
+	<RouterViewTransition></RouterViewTransition>
 
 	<Yaml2
 		ref="yamlRef"
@@ -120,6 +130,8 @@ import { getJobStatus } from 'src/utils/status';
 import MyLoading2 from '@packages/ui/src/components/MyLoading2.vue';
 import Empty from '@packages/ui/src/components/Empty.vue';
 import QButtonStyle from '@packages/ui/src/components/QButtonStyle.vue';
+import { componentName } from 'src/router/const';
+import RouterViewTransition from '@packages/ui/src/components/RouterViewTransition.vue';
 
 const $q = useQuasar();
 const { t } = useI18n();
@@ -194,14 +206,14 @@ const columns = [
 	},
 	{
 		label: t('START_TIME'),
-		name: 'status.startTime',
+		name: 'startTime',
 		field: (row, value) =>
 			getLocalTime(row.status.startTime).format('YYYY-MM-DD HH:mm:ss'),
 		align: 'left'
 	},
 	{
 		label: t('END_TIME'),
-		name: 'status.completionTime',
+		name: 'completionTime',
 		field: (row) =>
 			getLocalTime(row.status.completionTime).format('YYYY-MM-DD HH:mm:ss'),
 		align: 'left'
@@ -419,8 +431,21 @@ const returnHandler = async (row) => {
 	}
 };
 
+const routeTo = (row) => {
+	console.log('row', row);
+
+	router.push({
+		name: componentName.JOB_DETAILS,
+		params: {
+			namespace: row.namespace,
+			jobName: row.name,
+			jobUid: row.uid
+		}
+	});
+};
+
 watch(
-	() => route.params.name,
+	() => route.params.jobUid,
 	() => {
 		fetchData();
 	},
@@ -429,3 +454,12 @@ watch(
 	}
 );
 </script>
+<style lang="scss" scoped>
+.cronjob-list-name {
+	font-weight: 500;
+	&:hover {
+		color: $blue-6;
+		cursor: pointer;
+	}
+}
+</style>
