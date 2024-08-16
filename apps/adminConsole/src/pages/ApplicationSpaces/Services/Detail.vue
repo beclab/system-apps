@@ -3,7 +3,24 @@
 		<MyContentPage>
 			<template #extra>
 				<div class="col-auto">
-					<MoreSelection :options="options" size="md"></MoreSelection>
+					<QButtonStyle>
+						<q-btn dense flat icon="sym_r_edit_square" @click="clickHandler">
+							<q-tooltip>
+								<div style="white-space: nowrap">
+									{{ $t('EDIT_YAML') }}
+								</div>
+							</q-tooltip>
+						</q-btn>
+					</QButtonStyle>
+					<QButtonStyle>
+						<q-btn dense flat icon="sym_r_edit_square" @click="clickHandler2">
+							<q-tooltip>
+								<div style="white-space: nowrap">
+									{{ $t('EDIT_EXTERNAL_ACCESS') }}
+								</div>
+							</q-tooltip>
+						</q-btn>
+					</QButtonStyle>
 				</div>
 			</template>
 			<MyPage>
@@ -99,78 +116,6 @@ const workloads = ref([]);
 const pods = ref([]);
 const yamlRef = ref();
 
-const options = [
-	// {
-	//   key: 'edit',
-	//   icon: 'pen',
-	//   text: t('EDIT_INFORMATION'),
-	//   action: 'edit',
-	//   onClick: () => {
-	//     console.log('edit');
-	//   },
-	// },
-	// {
-	//   key: 'editService',
-	//   icon: 'network-router',
-	//   text: t('EDIT_SERVICE'),
-	//   action: 'edit',
-	//   onClick: () => {
-	//     console.log('editService');
-	//   },
-	// },
-	{
-		key: 'editGateway',
-		icon: 'sym_r_edit',
-		label: t('EDIT_EXTERNAL_ACCESS'),
-		value: 'editGateway',
-		// show: this.store.detail.type === SERVICE_TYPES.VirtualIP,
-		onClick: () => {
-			console.log('editGateway');
-			// editExternalAccess();
-			$q.dialog({
-				component: ExternalAccess,
-				componentProps: {
-					detail: detail.value
-				}
-			})
-				.onOk((data) => {
-					const { namespace, name }: any = route.params;
-					putServicesData(namespace, name, data).then(() => {
-						init();
-					});
-				})
-				.onCancel(() => {
-					console.log('Cancel');
-				});
-		}
-	},
-	// {
-	//   key: 'serviceMonitor',
-	//   icon: 'linechart',
-	//   text: t('EDIT_MONITORING_EXPORTER'),
-	//   action: 'edit',
-	//   onClick: () => {
-	//     console.log('serviceMonitor');
-	//   },
-	// },
-	{
-		label: t('EDIT_YAML'),
-		value: 'edit',
-		icon: 'sym_r_edit',
-		onClick: () => {
-			yamlRef.value.show();
-		}
-	}
-	// {
-	//   key: 'delete',
-	//   icon: 'trash',
-	//   text: t('DELETE'),
-	//   action: 'delete',
-	//   onClick: () => {
-	//     console.log('delete');
-	//   },
-	// },
-];
 interface Props {
 	node: string;
 }
@@ -367,6 +312,28 @@ const routePushHandler = (data) => {
 			createTime: data.createTime
 		}
 	});
+};
+
+const clickHandler = () => {
+	yamlRef.value.show();
+};
+
+const clickHandler2 = () => {
+	$q.dialog({
+		component: ExternalAccess,
+		componentProps: {
+			detail: detail.value
+		}
+	})
+		.onOk((data) => {
+			const { namespace, name }: any = route.params;
+			putServicesData(namespace, name, data).then(() => {
+				init();
+			});
+		})
+		.onCancel(() => {
+			console.log('Cancel');
+		});
 };
 
 watch(

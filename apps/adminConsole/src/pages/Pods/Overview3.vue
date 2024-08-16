@@ -2,23 +2,13 @@
 	<FullPageWithBack :title="namespace">
 		<template #extra>
 			<Yaml name="" ref="yamlRef"></Yaml>
-			<QButtonStyle size="sm">
-				<q-btn dense color="grey-8" flat icon="more_vert">
-					<q-menu cover auto-close>
-						<q-list dense>
-							<q-item
-								clickable
-								v-close-popup
-								v-for="item in options"
-								:key="item.key"
-								@click="item.onClick"
-							>
-								<q-item-section class="text-no-wrap">
-									{{ item.text }}
-								</q-item-section>
-							</q-item>
-						</q-list>
-					</q-menu>
+			<QButtonStyle>
+				<q-btn dense flat icon="sym_r_preview" @click="clickHandler">
+					<q-tooltip>
+						<div style="white-space: nowrap">
+							{{ $t('VIEW_YAML') }}
+						</div>
+					</q-tooltip>
 				</q-btn>
 			</QButtonStyle>
 		</template>
@@ -52,18 +42,7 @@ import MyPage from '@packages/ui/src/containers/MyPage.vue';
 import Yaml from './Yaml.vue';
 import { t } from 'src/boot/i18n';
 import FullPageWithBack from '@packages/ui/src/components/FullPageWithBack.vue';
-
-const options = [
-	{
-		key: 'viewYAML',
-		icon: 'sym_r_preview',
-		text: t('VIEW_YAML'),
-		action: 'edit',
-		onClick: () => {
-			yamlRef.value.show();
-		}
-	}
-];
+import QButtonStyle from '@packages/ui/src/components/QButtonStyle.vue';
 
 const usePod = UsePod();
 const route = useRoute();
@@ -87,6 +66,10 @@ const fetchData = () => {
 		.finally(() => {
 			loading.value = false;
 		});
+};
+
+const clickHandler = () => {
+	yamlRef.value.show();
 };
 
 watch(() => route.params, fetchData, { immediate: true });

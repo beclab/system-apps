@@ -2,7 +2,15 @@
 	<MyContentPage>
 		<template #extra>
 			<div class="col-auto">
-				<MoreSelection :options="options" size="md"></MoreSelection>
+				<QButtonStyle>
+					<q-btn dense flat icon="sym_r_edit_square" @click="clickHandler">
+						<q-tooltip>
+							<div style="white-space: nowrap">
+								{{ $t('EDIT_YAML') }}
+							</div>
+						</q-tooltip>
+					</q-btn>
+				</QButtonStyle>
 			</div>
 		</template>
 		<MyPage>
@@ -37,6 +45,7 @@ import MyPage from '@packages/ui/src/containers/MyPage.vue';
 import MyContentPage from 'src/components/MyContentPage.vue';
 import MoreSelection from '@packages/ui/src/components/MoreSelection.vue';
 import Yaml from 'src/pages/NamespacePods/Yaml3.vue';
+import QButtonStyle from '@packages/ui/src/components/QButtonStyle.vue';
 
 const loading = ref(false);
 const secrets = ref();
@@ -46,16 +55,6 @@ const route = useRoute();
 const serviceAccountName = ref();
 const yamlRef = ref();
 
-const options = [
-	{
-		label: t('EDIT_YAML'),
-		value: 'edit',
-		icon: 'sym_r_edit',
-		onClick: () => {
-			yamlRef.value.show();
-		}
-	}
-];
 const getAttrs = (detail: any) => {
 	const { cluster, namespace } = route.params;
 
@@ -102,6 +101,10 @@ const fetchList = () => {
 		.finally(() => {
 			loading.value = false;
 		});
+};
+
+const clickHandler = () => {
+	yamlRef.value.show();
 };
 
 watch(

@@ -2,7 +2,15 @@
 	<MyContentPage>
 		<template #extra>
 			<div class="col-auto">
-				<MoreSelection :options="options" size="md"></MoreSelection>
+				<QButtonStyle>
+					<q-btn dense flat icon="sym_r_edit_square" @click="clickHandler">
+						<q-tooltip>
+							<div style="white-space: nowrap">
+								{{ $t('EDIT_YAML') }}
+							</div>
+						</q-tooltip>
+					</q-btn>
+				</QButtonStyle>
 			</div>
 		</template>
 		<MyPage>
@@ -55,6 +63,7 @@ import { safeBtoa } from '@packages/ui/src/utils/base64';
 import DataDetail from '@packages/ui/src/containers/DataDetail.vue';
 import MoreSelection from '@packages/ui/src/components/MoreSelection.vue';
 import Yaml from 'src/pages/NamespacePods/Yaml3.vue';
+import QButtonStyle from '@packages/ui/src/components/QButtonStyle.vue';
 
 let loading = ref(false);
 const secretValueVisible = ref(false);
@@ -62,17 +71,6 @@ const detail = ref();
 const route = useRoute();
 const secretsData = ref<{ [key: string]: string }>({});
 const yamlRef = ref();
-
-const options = [
-	{
-		label: t('EDIT_YAML'),
-		value: 'edit',
-		icon: 'sym_r_edit',
-		onClick: () => {
-			yamlRef.value.show();
-		}
-	}
-];
 
 const getAttrs = (detail: any) => {
 	const { cluster, namespace } = route.params;
@@ -129,6 +127,10 @@ const fetchDetail = () => {
 		.finally(() => {
 			loading.value = false;
 		});
+};
+
+const clickHandler = () => {
+	yamlRef.value.show();
 };
 
 const secretValueVisibleHandler = () => {

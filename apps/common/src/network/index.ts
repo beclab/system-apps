@@ -544,13 +544,19 @@ export const getDeploymentsDetail = (
 };
 
 export const getCRDItemList = (
-	group: string,
-	version: string,
-	kind: string,
-	params?: Pagination
+	params: Pagination & {
+		namespace?: string;
+		group: string;
+		version: string;
+		kind: string;
+	}
 ): Promise<AxiosResponse<CustomresourcesResponse>> => {
-	return api.get(`/apis/${group}/${version}/${kind}`, {
-		params
+	const { namespace, group, version, kind, ...rest } = params;
+	const path = namespace
+		? `/apis/${group}/${version}/namespaces/${namespace}/${kind}`
+		: `/apis/${group}/${version}/${kind}`;
+	return api.get(path, {
+		params: rest
 	});
 };
 

@@ -2,7 +2,15 @@
 	<MyContentPage :title="$route.params.name">
 		<template #extra>
 			<div class="col-auto">
-				<MoreSelection :options="options" size="md"></MoreSelection>
+				<QButtonStyle>
+					<q-btn dense flat icon="sym_r_preview" @click="clickHandler">
+						<q-tooltip>
+							<div style="white-space: nowrap">
+								{{ $t('VIEW_YAML') }}
+							</div>
+						</q-tooltip>
+					</q-btn>
+				</QButtonStyle>
 			</div>
 		</template>
 		<MyPage>
@@ -34,18 +42,7 @@ import MyPage from '@packages/ui/src/containers/MyPage.vue';
 import Yaml from './Yaml.vue';
 import MoreSelection from '@packages/ui/src/components/MoreSelection.vue';
 import { t } from 'src/boot/i18n';
-
-const options = [
-	{
-		key: 'edit',
-		icon: 'sym_r_preview',
-		label: t('VIEW_YAML'),
-		action: 'edit',
-		onClick: () => {
-			yamlRef.value.show();
-		}
-	}
-];
+import QButtonStyle from '@packages/ui/src/components/QButtonStyle.vue';
 
 const usePod = UsePod();
 const route = useRoute();
@@ -67,6 +64,10 @@ const fetchData = () => {
 		.finally(() => {
 			loading.value = false;
 		});
+};
+
+const clickHandler = () => {
+	yamlRef.value.show();
 };
 
 watch(() => route.params, fetchData, { immediate: true });

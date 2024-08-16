@@ -32,10 +32,8 @@
 						:columns="columns"
 						flat
 						row-key="name"
-						v-model:pagination="pagination"
-						@request="requestHandler"
+						:pagination="pagination"
 						:loading="loading"
-						@refresh="fetchData"
 						class="my-sticky-column-table"
 					>
 						<template>
@@ -114,7 +112,7 @@ import {
 import MyPage2 from '@packages/ui/src/containers/MyPage2.vue';
 import MyContentPage from 'src/components/MyContentPage.vue';
 import { date } from 'quasar';
-import { get, isEmpty } from 'lodash';
+import { get, isEmpty, includes } from 'lodash';
 import DetailPage from '@packages/ui/src/containers/DetailPage.vue';
 import MyCar4 from '@packages/ui/src/components/MyCard2.vue';
 import Refresh from '@packages/ui/src/components/Refresh.vue';
@@ -127,6 +125,8 @@ import QTableStyle2 from '@packages/ui/src/components/QTableStyle2.vue';
 import DeleteDialog from '@packages/ui/src/components/DeleteDialog.vue';
 import MyLoading2 from '@packages/ui/src/components/MyLoading2.vue';
 import { useI18n } from 'vue-i18n';
+import { useAppDetailStore } from 'stores/AppDetail';
+const appDetailStore = useAppDetailStore();
 const $q = useQuasar();
 const { t } = useI18n();
 const options = [
@@ -212,8 +212,7 @@ const pagination = ref({
 	sortBy: 'createTime',
 	descending: true,
 	page: 1,
-	rowsPerPage: 10,
-	rowsNumber: 0
+	rowsPerPage: 10
 });
 const continues = ref<any>({});
 
@@ -309,7 +308,7 @@ const fetchData = () => {
 	const { page, rowsPerPage } = pagination.value;
 
 	let params: Record<string, any> = {
-		limit: rowsPerPage,
+		limit: -1,
 		fieldSelector: search
 	};
 
@@ -318,9 +317,27 @@ const fetchData = () => {
 	}
 
 	loading.value = true;
-	getCRDItemList(group, version, module, params)
+	const params_all = {
+		group,
+		version,
+		kind: module,
+		...params
+	};
+	getCRDItemList(params_all)
 		.then((res) => {
-			list.value = res.data.items.map((item: any) => DefaultMapper(item));
+			// const data = appDetailStore.isAdmin ?
+			const username = appDetailStore.user.username;
+
+			const data = res.data.items.map((item: any) => DefaultMapper(item));
+
+			list.value = appDetailStore.isAdmin
+				? data
+				: data.filter(
+						(item) =>
+							item.namespace?.includes(username) ||
+							item.name?.includes(username)
+				  );
+
 			continues.value[Number(page) + 1] = res.data.metadata.continue;
 
 			if (pagination.value.page === 1) {
