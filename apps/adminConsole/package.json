@@ -1,6 +1,6 @@
 {
   "name": "@apps/admin_console",
-  "version": "0.3.8",
+  "version": "0.3.9",
   "description": "Control Hub",
   "productName": "Control Hub",
   "private": true,
