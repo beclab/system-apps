@@ -60,12 +60,6 @@ const { stickyFirst, stickyLast } = toRefs(props);
 		) {
 		border-bottom-width: 1px;
 	}
-	::v-deep(td:last-child) {
-		position: sticky;
-		right: 0;
-		z-index: 1;
-	}
-
 	::v-deep(.q-table th) {
 		border-color: $separator;
 	}
@@ -117,6 +111,11 @@ const { stickyFirst, stickyLast } = toRefs(props);
 	}
 
 	::v-deep(th:last-child) {
+		position: sticky;
+		right: 0;
+		z-index: 1;
+	}
+	::v-deep(td:last-child) {
 		position: sticky;
 		right: 0;
 		z-index: 1;

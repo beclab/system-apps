@@ -43,7 +43,6 @@ import { getLocalTime } from 'src/utils';
 import MyCard from '@packages/ui/src/components/MyCard2.vue';
 import MyPage from '@packages/ui/src/containers/MyPage.vue';
 import MyContentPage from 'src/components/MyContentPage.vue';
-import MoreSelection from '@packages/ui/src/components/MoreSelection.vue';
 import Yaml from 'src/pages/NamespacePods/Yaml3.vue';
 import QButtonStyle from '@packages/ui/src/components/QButtonStyle.vue';
 

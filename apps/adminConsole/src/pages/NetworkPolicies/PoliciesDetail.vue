@@ -2,7 +2,15 @@
 	<MyContentPage>
 		<template #extra>
 			<div class="col-auto">
-				<MoreSelection :options="options" size="md"></MoreSelection>
+				<QButtonStyle>
+					<q-btn dense flat icon="sym_r_edit_square" @click="clickHandler">
+						<q-tooltip>
+							<div style="white-space: nowrap">
+								{{ $t('EDIT_YAML') }}
+							</div>
+						</q-tooltip>
+					</q-btn>
+				</QButtonStyle>
 			</div>
 		</template>
 		<MyPage2>
@@ -120,8 +128,8 @@ import MyContentPage from 'src/components/MyContentPage.vue';
 import MyCar4 from '@packages/ui/src/components/MyCard2.vue';
 import QTableStyle2 from '@packages/ui/src/components/QTableStyle2.vue';
 import MyLoading2 from '@packages/ui/src/components/MyLoading2.vue';
-import MoreSelection from '@packages/ui/src/components/MoreSelection.vue';
 import Yaml3 from '../NamespacePods/Yaml3.vue';
+import QButtonStyle from '@packages/ui/src/components/QButtonStyle.vue';
 
 const tabs = [
 	{ name: t('INGRESS_RULES'), value: 'ingress' },
@@ -238,6 +246,10 @@ const fetchData = () => {
 		.finally(() => {
 			loading.value = false;
 		});
+};
+
+const clickHandler = () => {
+	yamlRef.value.show();
 };
 
 watch(

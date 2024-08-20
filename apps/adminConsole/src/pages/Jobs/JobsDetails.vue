@@ -3,7 +3,15 @@
 		<MyContentPage>
 			<template #extra>
 				<div class="col-auto">
-					<MoreSelection :options="options" size="md"></MoreSelection>
+					<QButtonStyle v-for="item in options" :key="item.value">
+						<q-btn dense flat :icon="item.icon" @click="item.onClick">
+							<q-tooltip>
+								<div style="white-space: nowrap">
+									{{ item.label }}
+								</div>
+							</q-tooltip>
+						</q-btn>
+					</QButtonStyle>
 				</div>
 			</template>
 			<MyPage2>
@@ -133,7 +141,7 @@ import PodContainer from '@packages/ui/src/containers/PodsList/PodContainer.vue'
 import RouterViewTransition from '@packages/ui/src/components/RouterViewTransition.vue';
 import { getCronJobStatus, getJobStatus } from 'src/utils/status';
 import EnvironmentsLayout from '@packages/ui/src/containers/EnvironmentsLayout.vue';
-
+import QButtonStyle from '@packages/ui/src/components/QButtonStyle.vue';
 import MyLoading2 from '@packages/ui/src/components/MyLoading2.vue';
 import Empty from '@packages/ui/src/components/Empty.vue';
 

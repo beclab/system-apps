@@ -2,7 +2,15 @@
 	<MyContentPage>
 		<template #extra>
 			<div class="col-auto">
-				<MoreSelection :options="options" size="md"></MoreSelection>
+				<QButtonStyle v-for="item in options" :key="item.value">
+					<q-btn dense flat :icon="item.icon" @click="item.onClick">
+						<q-tooltip>
+							<div style="white-space: nowrap">
+								{{ item.label }}
+							</div>
+						</q-tooltip>
+					</q-btn>
+				</QButtonStyle>
 			</div>
 		</template>
 		<MyPage2>
@@ -161,7 +169,7 @@ const options = computed(() => [
 	{
 		label: t('EDIT_YAML'),
 		value: 'edit',
-		icon: 'sym_r_edit',
+		icon: 'sym_r_edit_square',
 		onClick: () => {
 			yamlRef.value.show();
 		}
