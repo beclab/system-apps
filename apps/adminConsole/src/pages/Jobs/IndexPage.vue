@@ -72,11 +72,11 @@ const fetchData = async (showLoading = true) => {
 	}
 	try {
 		const {
-			data: { items: jobsItem1 }
+			data: { items: jobsItem1 = [] }
 		} = await getJobs(jobType[0], params);
 
 		const {
-			data: { items: jobsItem2 }
+			data: { items: jobsItem2 = [] }
 		} = await getJobs(jobType[1], params);
 
 		const data1: any = jobsItem1.map((item) => ObjectMapper[jobType[1]](item));
