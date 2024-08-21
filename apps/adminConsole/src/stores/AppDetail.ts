@@ -41,7 +41,9 @@ export const useAppDetailStore = defineStore('appDetail', {
 			this.data = data;
 		},
 		hasPermission(value: string) {
-			return value.includes(this.data.user.username);
+			return this.isAdmin
+				? value.includes(this.data.user.username) || value.includes('system')
+				: value.includes(this.data.user.username);
 		}
 	}
 });
