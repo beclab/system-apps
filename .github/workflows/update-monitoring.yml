@@ -19,6 +19,7 @@ on:
     paths:
       - 'apps/monitoring/**'
       - 'packages/ui/**'
+      - 'apps/common/**'
       - .github/workflows/update-monitoring.yml
       - .github/workflows/common-config.yml
       - nginx.conf

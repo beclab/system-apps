@@ -17,7 +17,7 @@ on:
       - 'chore/apps'
     paths:
       - 'apps/adminConsole/**'
-      - 'packages/ui/**'
+      - 'apps/common/**'
       - .github/workflows/update-admin-console.yml
       - .github/workflows/common-config.yml
       - nginx.conf
