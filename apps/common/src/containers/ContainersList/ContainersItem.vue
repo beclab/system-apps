@@ -139,7 +139,6 @@
 </template>
 
 <script setup lang="ts">
-import { t } from '../../boot/i18n';
 import { computed, ref } from 'vue';
 import MyBadge from '../../components/MyBadge.vue';
 import dockerIcon from '../../assets/docker.svg';
@@ -154,6 +153,7 @@ import ContainerOverview from './Overview.vue';
 import MylineChartMini from '../../components/Charts/MylineChartMini2.vue';
 import ListItem from '../../components/MyListItem/ListItem.vue';
 import { getAreaChartOps } from 'src/utils/monitoring';
+import { useI18n } from 'vue-i18n';
 
 interface Props {
 	metrics: any;
@@ -169,7 +169,7 @@ const props = withDefaults(defineProps<Props>(), {
 	hideTerminal: false,
 	hideLog: false
 });
-
+const { t } = useI18n();
 const route = useRoute();
 const visible = ref(false);
 const visible2 = ref(false);
@@ -217,7 +217,7 @@ const getMonitoringCfgs = computed(() => {
 	const data = [
 		{
 			type: 'cpu',
-			title: 'CPU',
+			title: t('CPU'),
 			unitType: 'cpu',
 			legend: ['USED'],
 			data: [props.metrics.cpu],
@@ -225,7 +225,7 @@ const getMonitoringCfgs = computed(() => {
 		},
 		{
 			type: 'memory',
-			title: 'MEMORY',
+			title: t('MEMORY'),
 			unitType: 'memory',
 			legend: ['USED'],
 			data: [props.metrics.memory],

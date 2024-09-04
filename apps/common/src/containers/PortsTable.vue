@@ -19,11 +19,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { t } from 'src/boot/i18n';
+import { ref, computed } from 'vue';
 import Empty from '../components/Empty.vue';
 import QTableStyle from '../components/QTableStyle.vue';
-
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 interface Props {
 	ports: any[];
 }
@@ -32,7 +32,7 @@ withDefaults(defineProps<Props>(), {});
 const pagination = ref({
 	rowsNumber: 0
 });
-const columns: any = [
+const columns: any = computed(() => [
 	{
 		label: t('NAME'),
 		name: 'name',
@@ -51,7 +51,7 @@ const columns: any = [
 		field: 'containerPort',
 		align: 'center'
 	}
-];
+]);
 </script>
 
 <style scoped lang="scss"></style>

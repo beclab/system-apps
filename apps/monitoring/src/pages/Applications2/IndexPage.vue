@@ -29,12 +29,8 @@
 			<SortButtom @change="sortHandler" :default-value="sort"></SortButtom>
 		</div>
 	</QSectionStyle>
-	<MyGridLayout col-width="510px" gap="xl">
-		<MyCard
-			:class="[sortApps && sortApps.length < 2 ? 'single-card' : '']"
-			v-for="(item, itemIndex) in sortApps"
-			:key="item.id"
-		>
+	<MyGridLayout col-width="510px" gap="xl" :contentLength="sortApps.length">
+		<MyCard v-for="(item, itemIndex) in sortApps" :key="item.id">
 			<div class="row items-center q-pb-xl">
 				<q-skeleton v-if="loading" type="rect" width="32px" height="32px" />
 				<div v-else class="row relative-position">
@@ -222,8 +218,5 @@ onMounted(() => {
 }
 .avatar-image {
 	margin-left: -20px;
-}
-.single-card {
-	width: 510px;
 }
 </style>

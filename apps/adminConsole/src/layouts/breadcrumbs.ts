@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { t } from 'src/boot/i18n';
 export interface Breadcrumb {
 	title: string;
@@ -14,7 +14,7 @@ export const updateBreadcrumbs = (data: Breadcrumb, init = false) => {
 	breadcrumbs.value.push(data);
 };
 
-export const options = [
+export const options = computed(() => [
 	{
 		key: 'application-spaces',
 		label: t('BROWSE'),
@@ -33,9 +33,9 @@ export const options = [
 		icon: 'sym_r_deployed_code',
 		link: '/root'
 	}
-];
+]);
 
-export const options2 = [
+export const options2 = computed(() => [
 	{
 		key: 'storages',
 		label: t('STORAGES'),
@@ -60,9 +60,9 @@ export const options2 = [
 		icon: 'sym_r_package_2',
 		link: '/customresources'
 	}
-];
+]);
 
-export const options3 = [
+export const options3 = computed(() => [
 	{
 		key: 'Postgres',
 		label: t('POSTGRES'),
@@ -81,10 +81,17 @@ export const options3 = [
 		icon: 'sym_r_monitor_heart',
 		link: '/site-middleware/db/redis'
 	}
-];
+]);
 
-export const active = ref(options[0].key);
-export const currentItem = ref(options[0]);
+const optionAll = computed(() => [
+	...options.value,
+	...options2.value,
+	...options3.value
+]);
+export const active = ref(optionAll.value[0].key);
+export const currentItem = computed(() =>
+	optionAll.value.find((item) => item.key === active.value)
+);
 
 export const breadcrumbMap = {
 	...options

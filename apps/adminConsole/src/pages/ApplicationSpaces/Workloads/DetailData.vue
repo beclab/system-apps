@@ -11,12 +11,12 @@ import {
 	getWorkloadsControler,
 	patchWorkloadsControler
 } from 'src/network';
-import { t } from 'src/boot/i18n';
 import { getLocalTime } from 'src/utils';
 import DetailPage from '@packages/ui/src/containers/DetailPage.vue';
 import { ObjectMapper } from 'src/utils/object.mapper';
 import { isEmpty } from 'lodash';
-
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 let loading = ref(false);
 const detail = ref();
 const statusList = ref();

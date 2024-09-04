@@ -9,11 +9,11 @@
 
 <script setup lang="ts">
 import { MetadataInNodes } from '../types/network';
-import { t } from 'src/boot/i18n';
 import MyCard from '../components/MyCard2.vue';
 import Labels from './Labels.vue';
 import DataDetail from './DataDetail.vue';
-
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 interface Props {
 	data: MetadataInNodes;
 }

@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from 'vue';
+import { onMounted, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useSplitMenu } from '@packages/ui/src/stores/menu';
 import { useI18n } from 'vue-i18n';
@@ -37,31 +37,30 @@ const { t } = useI18n();
 
 const splitMenu = useSplitMenu();
 
-const items = [
+const items = computed(() => [
 	{
 		key: 'terminus',
 		label: t('TERMINUS'),
-		children: options
+		children: options.value
 	},
 	{
 		key: 'resource',
 		label: t('RESOURCE'),
-		children: options2
+		children: options2.value
 	},
 	{
 		key: 'middleware',
 		label: t('MIDDLEWARE'),
-		children: options3
+		children: options3.value
 	}
-];
+]);
 
-const optionsAll = [...options, ...options2, ...options3];
+const optionsAll = [...options.value, ...options2.value, ...options3.value];
 
 const router = useRouter();
 const route = useRoute();
 
 const selectHandler = (data: any) => {
-	currentItem.value = data.item;
 	splitMenu.type = data.item.key;
 	const breadcrumbsData = {
 		title: data.item.label,
@@ -81,7 +80,6 @@ onMounted(() => {
 	console.log('target:', target, link);
 	if (target) {
 		active.value = target.key;
-		currentItem.value = target;
 
 		const breadcrumbsData = {
 			title: target.label,

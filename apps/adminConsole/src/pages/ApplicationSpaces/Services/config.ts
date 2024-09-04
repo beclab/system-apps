@@ -1,11 +1,11 @@
 import { getNameSpaceServicesList } from '@packages/ui/src/network';
 import { PodsParam } from '@packages/ui/src/network/network';
-import { t } from '@packages/ui/src/boot/i18n';
 import Services from 'src/assets/Services.svg';
+import { t } from 'src/boot/i18n';
 import { componentName } from 'src/router/const';
 
 const group = {
-	label: t('SERVICES'),
+	label: 'SERVICES',
 	value: 'services',
 	componentName: componentName.SERVICES
 };

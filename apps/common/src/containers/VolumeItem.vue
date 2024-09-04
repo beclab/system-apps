@@ -79,7 +79,6 @@
 
 <script lang="ts" setup>
 import { get, isEmpty } from 'lodash';
-import { t } from 'src/boot/i18n';
 import { computed, h, ref, toRef, toRefs, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import MyCard from '../components/MyCard.vue';
@@ -87,7 +86,8 @@ import dockerIcon from '../assets/docker.svg';
 import volumesDataIcon from '../assets/volumes-data.svg';
 import padlocIcon from '../assets/padloc.svg';
 import ListItem from '../components/MyListItem/ListItem.vue';
-
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 interface Props {
 	volume: any;
 	isMultiProject?: boolean;

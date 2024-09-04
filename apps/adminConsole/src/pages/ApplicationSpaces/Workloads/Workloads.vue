@@ -66,21 +66,21 @@ const PodListData = usePodList();
 const router = useRouter();
 const data = [
 	{
-		label: t('DEPLOYMENT_PL'),
+		label: 'DEPLOYMENT_PL',
 		kind: 'Deployment',
 		value: 'deployments',
 		icon: hddRack,
 		activeIcon: hddRackLight
 	},
 	{
-		label: t('STATEFULSETS_PL'),
+		label: 'STATEFULSETS_PL',
 		kind: 'StatefulSet',
 		value: 'statefulsets',
 		icon: collectionPlay,
 		activeIcon: collectionPlayLight
 	},
 	{
-		label: t('DAEMONSET_PL'),
+		label: 'DAEMONSET_PL',
 		kind: 'DaemonSet',
 		value: 'daemonsets',
 		icon: menuButtonWide,
@@ -108,9 +108,13 @@ const searchText = ref('');
 const defaultOpeneds = ref([route.params.kind]);
 
 const active = computed(() => route.params.uid || route.params.pods_uid);
+
+const listWithLanguages = computed(() =>
+	list.value.map((item) => ({ ...item, title: t(item.title) }))
+);
 const listComputed = computed(() => {
-	if (!searchText.value) return list.value;
-	const newList = list.value.map((item) => ({
+	if (!searchText.value) return listWithLanguages.value;
+	const newList = listWithLanguages.value.map((item) => ({
 		...item,
 		children: item.children.filter((child: any) =>
 			child.title.includes(searchText.value)
@@ -273,8 +277,9 @@ watch(
 	(newData) => {
 		if (route.query.type) return;
 		if (firstListIndexs) {
-			list.value[firstListIndexs[0]].children[firstListIndexs[1]].children =
-				podDataformate(newData);
+			listWithLanguages.value[firstListIndexs[0]].children[
+				firstListIndexs[1]
+			].children = podDataformate(newData);
 			firstListIndexs = undefined;
 		}
 		if (newData.length > 0) {

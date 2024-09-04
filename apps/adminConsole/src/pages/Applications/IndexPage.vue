@@ -191,7 +191,7 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 const appDetail = useAppDetailStore();
 
-const columns: any = [
+const columns: any = computed(() => [
 	{
 		name: 'namespace',
 		label: t('NAMESPACE'),
@@ -239,7 +239,7 @@ const columns: any = [
 		sortable: true,
 		sortOrder: 'da'
 	}
-];
+]);
 
 const DEFAULT_OPTION = t('ALL');
 const options2 = ref([DEFAULT_OPTION]);

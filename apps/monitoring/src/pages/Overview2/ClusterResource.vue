@@ -29,8 +29,9 @@ import { getContentOptions, getTabOptions, MetricTypesFormat } from './config';
 import { getAreaChartOps } from 'src/utils/monitoring';
 import MyCard from 'components/MyCard.vue';
 import { useQuasar } from 'quasar';
+import { useI18n } from 'vue-i18n';
 const $q = useQuasar();
-
+const { locale } = useI18n();
 interface Props {
 	data: any;
 	type: string;
@@ -47,7 +48,7 @@ const listchange = (data: InfoCardItemProps, index: number) => {
 };
 
 watch(
-	[() => props.data, () => $q.dark.isActive],
+	[() => props.data, () => $q.dark.isActive, () => locale.value],
 	() => {
 		const MetricTypes = MetricTypesFormat(props.type);
 		clusterOptions.value = getTabOptions(

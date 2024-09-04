@@ -53,7 +53,6 @@
 import { defineProps, computed, ref } from 'vue';
 import { get } from 'lodash';
 import { MODULE_KIND_MAP } from 'src/utils/constants';
-import { t } from 'src/boot/i18n';
 import { useRoute } from 'vue-router';
 import { getRevisions } from 'src/network';
 import { ObjectMapper } from 'src/utils/object.mapper';
@@ -64,7 +63,8 @@ import { getCurrentRevision } from '../utils/workload';
 import SimpleLoading from '../components/SimpleLoading.vue';
 import deploymentsIcon from 'src/assets/Deployments.svg';
 import ListItem from '../components/MyListItem/ListItem.vue';
-
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 interface Props {
 	prefix: string;
 	detail: any;

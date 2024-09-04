@@ -1,52 +1,53 @@
 import { computed, reactive, ref, watch } from 'vue';
 import { parseDateRange } from './date';
 import { get } from 'lodash';
+import { t } from 'src/boot/i18n';
 
 export const dateFilterOption = [
 	{
-		label: 'Today',
+		label: t('ANALYTICS_DATE_OPTION.TODAY'),
 		value: '1day',
 		unit: 'hour'
 	},
 	{
-		label: 'Last 24 hours',
+		label: t('ANALYTICS_DATE_OPTION.LAST_24_HOURS'),
 		value: '24hour',
 		unit: 'hour'
 	},
 	{
-		label: 'Yesterday',
+		label: t('ANALYTICS_DATE_OPTION.YESTERDAY'),
 		value: '-1day',
 		unit: 'hour'
 	},
 	{
-		label: 'This week',
+		label: t('ANALYTICS_DATE_OPTION.THIS_WEEK'),
 		value: '1week',
 		unit: 'day',
 		divider: true
 	},
 	{
-		label: 'Last 7 days',
+		label: t('ANALYTICS_DATE_OPTION.LAST_7_DAYS'),
 		value: '7day',
 		unit: 'day'
 	},
 	{
-		label: 'This month',
+		label: t('ANALYTICS_DATE_OPTION.THIS_MONTH'),
 		value: '1month',
 		unit: 'day',
 		divider: true
 	},
 	{
-		label: 'Last 30 days',
+		label: t('ANALYTICS_DATE_OPTION.LAST_30_DAYS'),
 		value: '30day',
 		unit: 'day'
 	},
 	{
-		label: 'Last 90 days',
+		label: t('ANALYTICS_DATE_OPTION.LAST_90_DAYS'),
 		value: '90day',
 		unit: 'day'
 	},
 	{
-		label: 'This year',
+		label: t('ANALYTICS_DATE_OPTION.THIS_YEAR'),
 		value: '1year',
 		unit: 'month'
 	}

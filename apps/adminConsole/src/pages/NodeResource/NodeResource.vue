@@ -6,7 +6,7 @@
 				size="sm"
 				color="primary"
 				no-caps
-				:label="t('DETAILS')"
+				:label="$t('DETAILS')"
 				@click="detailHanlder"
 			/>
 		</template>
@@ -33,7 +33,6 @@ import MyLoading from '@packages/ui/src/components/MyLoading.vue';
 import InfoCardRadio from '@apps/monitoring/src/components/InfoCard/InfoCardRadio.vue';
 import { getContentOptions, getTabOptions, MetricTypesFormat } from './config';
 import { InfoCardItemProps } from '@apps/monitoring/src/components/InfoCard/InfoCardItem.vue';
-import { t } from '@packages/ui/src/boot/i18n';
 import { useRouter } from 'vue-router';
 import {
 	getAreaChartOps,

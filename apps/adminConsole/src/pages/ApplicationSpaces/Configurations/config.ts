@@ -1,4 +1,3 @@
-import { t } from '@packages/ui/src/boot/i18n';
 import {
 	getConfigmaps,
 	getSecrets,
@@ -10,22 +9,23 @@ import Secrets from 'src/assets/Secrets.svg';
 import Configmaps from 'src/assets/Configmaps.svg';
 import ServiceAccounts from 'src/assets/ServiceAccounts.svg';
 import { componentName } from 'src/router/const';
+import { t } from 'src/boot/i18n';
 
 const data = [
 	{
-		label: t('SECRET_PL'),
+		label: 'SECRET_PL',
 		value: 'secret',
 		icon: Secrets,
 		componentName: componentName.SECRETS
 	},
 	{
-		label: t('CONFIGMAP_PL'),
+		label: 'CONFIGMAP_PL',
 		value: 'configmap',
 		icon: Configmaps,
 		componentName: componentName.CONFIGMAPS
 	},
 	{
-		label: t('SERVICE_ACCOUNT_PL'),
+		label: 'SERVICE_ACCOUNT_PL',
 		value: 'service-account',
 		icon: ServiceAccounts,
 		componentName: componentName.SERVICE_ACCOUNTS

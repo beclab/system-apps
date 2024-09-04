@@ -95,9 +95,9 @@ import Empty from '../components/Empty.vue';
 import { PATTERN_UTC_TIME } from '../utils/constants';
 import { saveAs } from 'file-saver';
 import AnsiUp from 'ansi_up';
-import { t } from 'src/boot/i18n';
 import { useQuasar } from 'quasar';
-
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 interface Props {
 	theme: 'dark' | 'light';
 	fullscreen?: boolean;

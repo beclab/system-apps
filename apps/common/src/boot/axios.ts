@@ -31,7 +31,7 @@ api.interceptors.response.use(
 	},
 	(error) => {
 		const errorResponse = error.response;
-		if (errorResponse.config.method === 'put') {
+		if (errorResponse?.config.method === 'put') {
 			Notify.create({
 				type: 'negative',
 				caption: `${errorResponse.data.reason} ${errorResponse.data.message} `,

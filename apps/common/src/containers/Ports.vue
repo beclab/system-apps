@@ -60,12 +60,12 @@
 <script lang="ts" setup>
 import { defineProps, PropType } from 'vue';
 import { isEmpty } from 'lodash';
-import { t } from 'src/boot/i18n';
 import servicesIcon from '../assets/server-blue.svg';
 import indication2Icon from '../assets/menu-button-wide.svg';
 import ringIcon from '../assets/topo-node-nslice.svg';
 import ListItem from '../components/MyListItem/ListItem.vue';
-
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 interface Props {
 	ports: any;
 }

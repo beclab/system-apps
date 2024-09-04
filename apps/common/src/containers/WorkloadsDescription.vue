@@ -22,11 +22,11 @@
 
 <script setup lang="ts">
 import { defineProps } from 'vue';
-import { t } from 'src/boot/i18n';
 import { getLocalTime } from 'src/utils';
 import { getWorkloadStatus } from 'src/utils/status';
 import StatusReason from '../components/StatusReason.vue';
-
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 interface DescriptionProps {
 	detail: any;
 }

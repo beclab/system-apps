@@ -8,7 +8,7 @@
 						class="text-h6 text-light-blue-default cursor-pointer"
 						@click="routeToApplication"
 					>
-						More
+						{{ $t('MORE') }}
 					</div>
 				</div>
 			</template>
@@ -32,7 +32,9 @@
 							<template #header>
 								<div class="my-spliter q-mb-md">
 									<div class="row item-center justify-between q-py-lg">
-										<div class="text-h6 text-ink-1">{{ list.title }}</div>
+										<div class="text-h6 text-ink-1">
+											{{ t(list.title, { count: 5 }) }}
+										</div>
 									</div>
 								</div>
 							</template>
@@ -87,11 +89,11 @@ const userNamespace = `user-space-${appDetail.user.username}`;
 const loadingApps = new Array(19).fill({});
 const loadingData = [
 	{
-		title: 'CPU',
+		title: 'TOP_COUNT_CPU_USAGE_APPS',
 		data: loadingApps
 	},
 	{
-		title: 'Memory',
+		title: 'TOP_COUNT_MEMORY_USAGE_APPS',
 		data: loadingApps
 	}
 ];
@@ -109,11 +111,11 @@ const fetchData = () => {
 				.then((data) => {
 					monitoringData.value = [
 						{
-							title: t('TOP_COUNT_CPU_USAGE_APPS', { count: 5 }),
+							title: 'TOP_COUNT_CPU_USAGE_APPS',
 							data: data.cpu_usage
 						},
 						{
-							title: t('TOP_COUNT_MEMORY_USAGE_APPS', { count: 5 }),
+							title: 'TOP_COUNT_MEMORY_USAGE_APPS',
 							data: data.memory_usage
 						}
 					];

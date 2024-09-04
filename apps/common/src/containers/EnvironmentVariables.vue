@@ -22,11 +22,11 @@ import DetailPage from 'src/containers/DetailPage.vue';
 import { safeAtob } from 'app/../../packages/ui/src/utils/base64';
 import axios from 'axios';
 import MyCard from 'src/components/MyCard.vue';
-import { t } from 'src/boot/i18n';
 import Empty from '../components/Empty.vue';
 import MyChipList from './MyChipList.vue';
 import { ObjectMapper } from '../utils/object.mapper';
-
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 interface Props {
 	module?: string;
 }

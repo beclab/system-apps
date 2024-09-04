@@ -109,7 +109,6 @@
 
 <script setup lang="ts">
 import { get, isEmpty } from 'lodash-es';
-import { t } from 'src/boot/i18n';
 import { getLocalTime } from 'src/utils';
 import { computed, ref } from 'vue';
 import StatusReason from '../../components/StatusReason.vue';
@@ -119,7 +118,8 @@ import { useRoute, useRouter } from 'vue-router';
 import podStatus from '../../assets/pod.svg';
 import MyBadge from '../../components/MyBadge.vue';
 import ListItem from '../../components/MyListItem/ListItem.vue';
-
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 interface Props {
 	data: any;
 	metrics: any;

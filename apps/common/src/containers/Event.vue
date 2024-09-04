@@ -44,17 +44,17 @@
 
 <script setup lang="ts">
 import { orderBy } from 'lodash';
-import { t } from 'src/boot/i18n';
 import { getEvent } from 'src/network';
 import { joinSelector } from 'src/utils';
 import { ObjectMapper } from 'src/utils/object.mapper';
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import Empty from '../components/Empty.vue';
 import QTableStyle from '../components/QTableStyle.vue';
 import MyBadge from '../components/MyBadge.vue';
 import { MODULE_KIND_MAP } from '@packages/ui/src/utils/constants';
-
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 const route = useRoute();
 const loading = ref(false);
 const rows = ref();
@@ -64,7 +64,7 @@ const pagination = ref({
 	rowsNumber: 0
 });
 
-const columns: any = [
+const columns: any = computed(() => [
 	{
 		label: t('TYPE'),
 		align: 'center',
@@ -99,7 +99,7 @@ const columns: any = [
 		name: 'message',
 		field: 'message'
 	}
-];
+]);
 
 interface Props {
 	detail: any;

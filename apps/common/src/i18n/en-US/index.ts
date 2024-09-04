@@ -2,25 +2,25 @@
 // so you can safely delete all default props below
 
 const options_update = {
-	PROGRESS_WAIT: 'Some important process is in progress. Please wait...',
+	PROGRESS_WAIT: 'Important processes are running. Please wait...',
 	SORT_BY_INBOUND_TRAFFIC: 'Sort by inbound traffic',
 	SORT_BY_OUTBOUND_TRAFFIC: 'Sort by outbound traffic',
 	MINUTE_TIME: '1 minute | {count} minutes',
 	HOUR_TIME: '1 hour | {count} hours',
 	DAY_TIME: '1 day | {count} days',
 	WEEK_TIME: '1 week | {count} weeks',
-	LAST_TIME: 'last {count}',
-	LAST_TIME_M: 'last 1 minute | last {count} minutes',
-	LAST_TIME_H: 'last 1 hour | last {count} hours',
-	LAST_TIME_D: 'last 1 day | last {count} days',
+	LAST_TIME: 'Last {count}',
+	LAST_TIME_M: 'Last 1 minute | Last {count} minutes',
+	LAST_TIME_H: 'Last hour | Last {count} hours',
+	LAST_TIME_D: 'Last day | Last {count} days',
 	SEARCH_BY_NAME: 'Search by name',
 	MESSAGE: 'Message',
 	TYPE: 'Type',
 	OPERATOR: 'Operator',
-	CREATION_TIME_TCAP: 'Creation Time',
+	CREATION_TIME_TCAP: 'Creation time',
 	DETAILS: 'Details',
 	NO_DATA_AVAILABLE: 'No data available',
-	ALL_STATUS: 'All status'
+	ALL_STATUS: 'All statuses'
 };
 
 const options = {

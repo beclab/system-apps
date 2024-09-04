@@ -37,11 +37,11 @@
 
 <script setup lang="ts">
 import { isEmpty } from 'lodash-es';
-import { t } from 'src/boot/i18n';
 import { INGRESS_ANNOTATIONS } from 'src/utils/constants';
 import { computed, ref, watch } from 'vue';
 import InputSelection from './InputSelection.vue';
-
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 interface Props {
 	modelValue: any;
 	options: string[];

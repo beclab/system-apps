@@ -44,7 +44,6 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref, watch } from 'vue';
 import MyCard from '../../components/MyCard2.vue';
-import { t } from '../../boot/i18n';
 import DetailPage from '../DetailPage.vue';
 // import Terminal from './TerminalDialog.vue';
 import MyPage from '../MyPage.vue';
@@ -62,7 +61,8 @@ import { getWorkloadVolumes } from '../../utils/workload.js';
 import ContainerMonitoring from '../Monitoring/ContainerMonitoring.vue';
 import { fetcEnvList } from '../env';
 import EnvironmentsLayout from '../../containers/EnvironmentsLayout.vue';
-
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 interface Props {
 	container?: string;
 	createTime?: string;

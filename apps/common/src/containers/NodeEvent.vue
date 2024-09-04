@@ -33,7 +33,6 @@
 
 <script setup lang="ts">
 import { orderBy } from 'lodash';
-import { t } from 'src/boot/i18n';
 import { getEvent, getNodeEvent } from 'src/network';
 import { joinSelector } from 'src/utils';
 import { MODULE_KIND_MAP } from 'src/utils/constants';
@@ -42,6 +41,8 @@ import { onBeforeUnmount, ref, watch } from 'vue';
 import MyLoading from 'src/components/MyLoading.vue';
 import { useRoute } from 'vue-router';
 import Empty from '../components/Empty2.vue';
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 const route = useRoute();
 const loading = ref(false);
 const rows = ref();

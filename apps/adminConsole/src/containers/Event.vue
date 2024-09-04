@@ -31,23 +31,24 @@
 
 <script setup lang="ts">
 import { orderBy } from 'lodash';
-import { t } from 'src/boot/i18n';
 import { getEvent } from 'src/network';
 import { joinSelector } from 'src/utils';
 import { MODULE_KIND_MAP } from 'src/utils/constants';
 import { ObjectMapper } from 'src/utils/object.mapper';
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch, computed } from 'vue';
 import MyLoading from 'src/components/MyLoading.vue';
 import Empty from '@packages/ui/src/components/Empty.vue';
 import MyBadge from '@packages/ui/src/components/MyBadge.vue';
 import QTableStyle from '@packages/ui/src/components/QTableStyle.vue';
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const loading = ref(false);
 const rows = ref();
 const pagination = ref({
 	rowsNumber: 0
 });
-const columns: any = [
+const columns: any = computed(() => [
 	{
 		label: t('TYPE'),
 		align: 'center',
@@ -82,7 +83,7 @@ const columns: any = [
 		name: 'message',
 		field: 'message'
 	}
-];
+]);
 
 interface Props {
 	detail: any;

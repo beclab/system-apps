@@ -17,11 +17,11 @@
 
 <script setup lang="ts">
 import { get, isEmpty } from 'lodash';
-import { t } from 'src/boot/i18n';
 import { getWorkloadStatus } from 'src/utils/status';
 import { defineProps } from 'vue';
 import Status from '../components/Status.vue';
-
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 interface WorkloadStatusProps {
 	data: any;
 	module: string;
