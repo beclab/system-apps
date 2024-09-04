@@ -1,3 +1,5 @@
+export const supportLanguages = ['en-US', 'zh-CN'];
+
 export function getLangWithMeta() {
 	let terminusLanguage: string | null = null;
 	let locale = navigator.language;
@@ -9,7 +11,9 @@ export function getLangWithMeta() {
 	}
 
 	if (terminusLanguage) {
-		locale = terminusLanguage;
+		if (supportLanguages.find((e) => e == terminusLanguage)) {
+			locale = terminusLanguage;
+		}
 	}
 
 	return locale;
