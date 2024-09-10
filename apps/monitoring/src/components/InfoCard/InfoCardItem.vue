@@ -79,8 +79,10 @@ const _unit = computed(
 		getSuitableUnit(total.value || used.value, unitType.value as any) ||
 		unit?.value
 );
-const _used = computed(() => getValueByUnit(used.value, _unit.value));
-const _total = computed(() => getValueByUnit(total.value, _unit.value));
+const _used = computed(() => getValueByUnit(used.value, _unit.value, 2, true));
+const _total = computed(() =>
+	getValueByUnit(total.value, _unit.value, 2, true)
+);
 
 const percent = computed(() => {
 	return round((_used.value / _total.value) * 100, 0) || '-';

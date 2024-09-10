@@ -12,6 +12,7 @@ import {
 	getValueByUnit
 } from 'src/utils/monitoring';
 import { t } from 'boot/i18n';
+const SYSTEM_FRONTEND_DEPLOYMENT = 'system-frontend-deployment';
 
 const MetricTypes = {
 	cpu_usage: 'pod_cpu_usage',
@@ -124,7 +125,7 @@ function chartConfigTraffic(data: any) {
 	};
 }
 
-const getTabOptions = (data: any) => {
+const getTabOptions = (data: any, apps: any[]) => {
 	const result = {
 		cpu_usage: get(data, `${MetricTypes.cpu_usage}.data.result`, []).map(
 			(item: any) => ({
@@ -166,6 +167,16 @@ const getTabOptions = (data: any) => {
 			})
 		)
 	};
+	for (const key in result) {
+		const systemFrontend = result[key].find(
+			(item) => item.name === SYSTEM_FRONTEND_DEPLOYMENT
+		);
+		const systemFrontendApps = apps
+			.filter((app) => app.deployment === SYSTEM_FRONTEND_DEPLOYMENT)
+			.map((app) => ({ ...systemFrontend, name: app.name }));
+
+		result[key] = result[key].concat(systemFrontendApps);
+	}
 
 	return result;
 };
@@ -214,14 +225,16 @@ const getTabOptions2 = (data: any) => {
 };
 
 const formatResult = (res: any, namespaceRes: any, apps, sort) => {
-	const data1 = getTabOptions(res);
+	const data1 = getTabOptions(res, apps);
+	console.log('data1', data1);
 	const data2 = getTabOptions2(namespaceRes);
 	const cpu_usage_total = data1.cpu_usage
 		.concat(data2.cpu_usage)
 		.map((item: any) => {
 			const app = apps.find((app) =>
 				app.isSystem
-					? item.isSystem && app.deployment === item.name
+					? item.isSystem &&
+					  (app.deployment === item.name || app.name === item.name)
 					: app.namespace === item.name
 			);
 			if (app) {
@@ -247,7 +260,8 @@ const formatResult = (res: any, namespaceRes: any, apps, sort) => {
 		.map((item: any) => {
 			const app = apps.find((app) =>
 				app.isSystem
-					? item.isSystem && app.deployment === item.name
+					? item.isSystem &&
+					  (app.deployment === item.name || app.name === item.name)
 					: app.namespace === item.name
 			);
 
@@ -274,7 +288,8 @@ const formatResult = (res: any, namespaceRes: any, apps, sort) => {
 		.map((item: any) => {
 			const app = apps.find((app) =>
 				app.isSystem
-					? item.isSystem && app.deployment === item.name
+					? item.isSystem &&
+					  (app.deployment === item.name || app.name === item.name)
 					: app.namespace === item.name
 			);
 			if (app) {
@@ -300,7 +315,8 @@ const formatResult = (res: any, namespaceRes: any, apps, sort) => {
 		.map((item: any) => {
 			const app = apps.find((app) =>
 				app.isSystem
-					? item.isSystem && app.deployment === item.name
+					? item.isSystem &&
+					  (app.deployment === item.name || app.name === item.name)
 					: app.namespace === item.name
 			);
 			if (app) {

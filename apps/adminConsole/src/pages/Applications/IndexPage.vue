@@ -55,7 +55,7 @@
 								<router-link
 									class="pod-item-link td-title q-ml-md text-subtitle2"
 									:to="{
-										path: `/applications/${props.row.namespace}/pods`,
+										path: `/namespace/${props.row.namespace}/pods`,
 										query: {
 											node:
 												nodeSelected === DEFAULT_OPTION

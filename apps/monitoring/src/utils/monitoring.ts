@@ -19,7 +19,8 @@ export const getFormatTime = (ms: string, showDay: boolean) =>
 export const getValueByUnit = (
 	num: string,
 	unit: string | undefined,
-	precision = 2
+	precision = 2,
+	limit = false
 ) => {
 	let value = num === 'NAN' ? 0 : parseFloat(num);
 
@@ -86,6 +87,9 @@ export const getValueByUnit = (
 		case 'ms':
 			value *= 1000;
 			break;
+	}
+	if (limit && value > 1000) {
+		precision = 0;
 	}
 
 	return Number(value) === 0 ? 0 : Number(value.toFixed(precision));

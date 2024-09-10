@@ -61,7 +61,7 @@ const router = useRouter();
 const route = useRoute();
 
 const selectHandler = (data: any) => {
-	splitMenu.type = data.item.key;
+	splitMenu.changeStatus(data.item.key);
 	const breadcrumbsData = {
 		title: data.item.label,
 		icon: data.item.icon
@@ -80,7 +80,7 @@ onMounted(() => {
 	console.log('target:', target, link);
 	if (target) {
 		active.value = target.key;
-
+		splitMenu.changeStatus(target.key);
 		const breadcrumbsData = {
 			title: target.label,
 			icon: target.icon

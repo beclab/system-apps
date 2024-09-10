@@ -267,7 +267,7 @@ const itemClick = (data: any) => {
 	usePod.setDetail(data);
 	const podTemplateHash = data.labels['pod-template-hash'];
 	const name = data.name.split(`-${podTemplateHash}`)[0];
-	const path = `/applications/pods/overview/${data.node}/${data.namespace}/${data.name}/${data.createTime}`;
+	const path = `/namespace/pods/overview/${data.node}/${data.namespace}/${data.name}/${data.createTime}`;
 	router.push({
 		path,
 		query: {

@@ -33,12 +33,12 @@ const namespaceRoute = {
 	component: () => import('src/pages/Namespace/IndexPage.vue'),
 	children: [
 		{
-			path: '/applications/:namespace/pods',
+			path: '/namespace/:namespace/pods',
 			name: 'podsList',
 			component: () => import('src/pages/Applications/PodList.vue'),
 			children: [
 				{
-					path: '/applications/pods/overview/:node/:namespace/:name/:createTime',
+					path: '/namespace/pods/overview/:node/:namespace/:name/:createTime',
 					component: () => import('src/pages/Applications/ContainerList.vue')
 				}
 			]
