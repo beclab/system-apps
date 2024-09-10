@@ -40,7 +40,11 @@ const options = {
 	STORAGE_SIZE: 'Storage size',
 	STORAGE_TYPE: 'Storage type',
 	ACTIONS: 'Actions',
-	CONFIRM: 'Confirm'
+	CONFIRM: 'Confirm',
+	STOP_POD: 'Stop',
+	START_POD: 'Start',
+	RESTART_POD: 'Restart',
+	BASIC_INFOMATION: 'Basic Infomation'
 };
 
 export default options;

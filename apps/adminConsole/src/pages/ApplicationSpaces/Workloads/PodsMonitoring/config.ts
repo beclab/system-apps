@@ -1,5 +1,6 @@
 import { ResourcesResponse } from 'types/network';
 import { get, isArray, isEmpty } from 'lodash';
+import { t } from 'src/boot/i18n';
 
 interface metric {
 	metric: {
@@ -43,28 +44,28 @@ export function chartConfig(data: ResourcesResponse) {
 	return [
 		{
 			type: 'cpu',
-			title: 'CPU_USAGE',
+			title: t('CPU_USAGE'),
 			unitType: 'cpu',
 			legend,
 			data: get(data, `${MetricTypes.cpu_usage}.data.result`)
 		},
 		{
 			type: 'memory',
-			title: 'MEMORY_USAGE',
+			title: t('MEMORY_USAGE'),
 			unitType: 'memory',
 			legend,
 			data: get(data, `${MetricTypes.memory_usage}.data.result`)
 		},
 		{
 			type: 'bandwidth',
-			title: 'OUTBOUND_TRAFFIC',
+			title: t('OUTBOUND_TRAFFIC'),
 			unitType: 'bandwidth',
 			legend,
 			data: get(data, `${MetricTypes.net_transmitted}.data.result`)
 		},
 		{
 			type: 'bandwidth',
-			title: 'INBOUND_TRAFFIC',
+			title: t('INBOUND_TRAFFIC'),
 			unitType: 'bandwidth',
 			legend,
 			data: get(data, `${MetricTypes.net_received}.data.result`)

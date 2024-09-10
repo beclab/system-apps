@@ -8,6 +8,7 @@
 					v-close-popup
 					v-for="item in options"
 					:key="item.value"
+					:disable="item.disable"
 					@click="clickHandler(item)"
 				>
 					<q-item-section>
@@ -35,6 +36,7 @@ interface optionsItem {
 	label: string;
 	value: string | number;
 	icon?: string;
+	disable?: boolean;
 	onClick: (data?: optionsItem) => void;
 }
 interface Props {

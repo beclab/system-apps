@@ -40,7 +40,11 @@ const options = {
 	STORAGE_SIZE: '存储大小',
 	STORAGE_TYPE: '存储类型',
 	ACTIONS: '操作',
-	CONFIRM: '确认'
+	CONFIRM: '确认',
+	STOP_POD: '停止',
+	START_POD: '开始',
+	RESTART_POD: '重启',
+	BASIC_INFOMATION: '基本信息'
 };
 
 export default options;

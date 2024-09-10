@@ -1,5 +1,11 @@
 <template>
 	<div class="q-gutter-y-lg">
+		<div class="">
+			<div class="text-h6 text-ink-1">{{ $t('BASIC_INFOMATION') }}</div>
+			<q-card flat bordered class="q-pa-lg q-mt-lg">
+				<DetailData ref="detaiDatalRef"></DetailData>
+			</q-card>
+		</div>
 		<div class="row items-center justify-between">
 			<div class="text-h6 text-ink-1">{{ $t('MONITORING') }}</div>
 			<div class="row items-center q-col-gutter-x-xs">
@@ -58,6 +64,7 @@ import { useRoute } from 'vue-router';
 import { getLastTimeStr } from '@packages/ui/src/containers/Monitoring/utils';
 import { get, isEmpty } from 'lodash';
 import { getRefreshResult } from '@packages/ui/src/containers/PodsList/config';
+import DetailData from 'src/pages/ApplicationSpaces/Workloads/DetailData.vue';
 
 const route = useRoute();
 export type DateRangeItem = string;

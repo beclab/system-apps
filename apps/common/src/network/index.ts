@@ -913,3 +913,10 @@ export const toggleJob = (
 		{ headers: { 'Content-Type': 'application/merge-patch+json' } }
 	);
 };
+
+export const restartPods = (
+	namespace: string,
+	name: string
+): Promise<AxiosResponse<any>> => {
+	return api.delete(`/api/v1/namespaces/${namespace}/pods/${name}`);
+};

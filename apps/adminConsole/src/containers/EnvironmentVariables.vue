@@ -1,20 +1,12 @@
 <template>
 	<MyPage>
-		<MyCard square flat :title="t('DETAILS')">
-			<div class="row">
-				<div class="q-mr-xl">
-					<ReplicaCard
-						:detail="detail"
-						enableScale
-						:module="$route.params.kind"
-						@change="replicaChange"
-					/>
-				</div>
-				<div style="flex: 1">
-					<slot></slot>
-				</div>
-			</div>
-		</MyCard>
+		<ReplicaCard
+			:detail="detail"
+			enableScale
+			:module="$route.params.kind"
+			@change="replicaChange"
+			style="display: none"
+		/>
 		<MyCard no-content-gap square flat :title="t('PODS')">
 			<template #extra>
 				<div class="row items-center">
@@ -88,13 +80,10 @@ import MyPage from '@packages/ui/src/containers/MyPage.vue';
 import QButtonStyle from '@packages/ui/src/components/QButtonStyle.vue';
 import Refresh from '@packages/ui/src/components/Refresh.vue';
 import EnvironmentsLayout from '@packages/ui/src/containers/EnvironmentsLayout.vue';
-import { usePodList } from '@packages/ui/src/stores/podList';
 import { componentName } from 'src/router/const';
-
 interface Props {
 	module?: string;
 }
-const PodListData = usePodList();
 
 const loading = ref(false);
 const route = useRoute();
@@ -106,7 +95,6 @@ const variables = ref();
 const childComponentRef = ref();
 const visible = ref(false);
 const PodContainerRef = ref();
-
 const props = withDefaults(defineProps<Props>(), {});
 
 const getPath = ({ cluster, namespace }: { [key: string]: string } = {}) => {
@@ -325,6 +313,8 @@ watch(
 onMounted(() => {
 	fetchEnv();
 });
+
+defineExpose({ replicaChange });
 </script>
 <style lang="scss" scoped>
 .environments-wrapper {
