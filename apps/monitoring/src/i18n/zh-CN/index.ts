@@ -37,7 +37,8 @@ const options = {
 		LAST_30_DAYS: '前 30 天',
 		LAST_90_DAYS: '前 90 天',
 		THIS_YEAR: '今年'
-	}
+	},
+	core: '核心'
 };
 
 export default options;

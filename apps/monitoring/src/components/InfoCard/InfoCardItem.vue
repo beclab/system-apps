@@ -22,7 +22,7 @@
 						<q-skeleton v-if="loading" type="text" width="64px" />
 						<template v-else>
 							<span>{{ _capitalize(name) }}&nbsp;</span>
-							<span>{{ _unit }}</span>
+							<span>{{ $t(_unit) }}</span>
 						</template>
 					</div>
 				</div>
