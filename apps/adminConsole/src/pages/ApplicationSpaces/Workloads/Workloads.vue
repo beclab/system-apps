@@ -242,10 +242,14 @@ let doneFn = (key: string) => doneFnList[key] ?? (() => undefined);
 const onLazyLoad = async ({ node, key, done, fail }: any) => {
 	doneFnList[key] = done;
 
-	const detail = ObjectMapper.workLoadMapper(node._originData);
-	const result = await getPosdList({ ...detail, kind: node.kind });
-	const newData = getPosdListFormatter(result);
-	done(podDataformate(newData));
+	try {
+		const detail = ObjectMapper.workLoadMapper(node._originData);
+		const result = await getPosdList({ ...detail, kind: node.kind });
+		const newData = getPosdListFormatter(result);
+		done(podDataformate(newData));
+	} catch (error) {
+		done(podDataformate([]));
+	}
 };
 
 watch(
