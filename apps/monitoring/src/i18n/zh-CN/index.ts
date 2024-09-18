@@ -9,7 +9,7 @@ const options = {
 	USER_RESOURCES: '{name} 的资源',
 	USAGE_RANKING: '使用排名',
 	MORE: '更多',
-	MORE_DETAILS: '更多详情',
+	MORE_DETAILS: '详情',
 	PHYSICAL_RESOURCE_MONTORING: '物理资源监控',
 	TOP_COUNT_CPU_USAGE_APPS: 'CPU 占用前 {count}',
 	TOP_COUNT_MEMORY_USAGE_APPS: '内存占用前 {count}',
