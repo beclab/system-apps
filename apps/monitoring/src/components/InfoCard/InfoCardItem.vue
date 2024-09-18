@@ -13,16 +13,16 @@
 					>
 						<q-skeleton v-if="loading" type="text" width="88px" />
 						<template v-else>
-							<span>{{ _used }}</span>
+							<span>{{ worthValue(_used) }}</span>
 							<span>/</span>
-							<span class="ratio-foolter">{{ _total || '-' }}</span>
+							<span class="ratio-foolter">{{ worthValue(_total) || '-' }}</span>
 						</template>
 					</div>
 					<div class="text-subtitle1 text-ink-3">
 						<q-skeleton v-if="loading" type="text" width="64px" />
 						<template v-else>
 							<span>{{ _capitalize(name) }}&nbsp;</span>
-							<span>{{ $t(_unit) }}</span>
+							<span>{{ _unit === 'core' ? $t('core') : _unit }}</span>
 						</template>
 					</div>
 				</div>
@@ -55,6 +55,7 @@ import { computed, ref, StyleValue, toRefs } from 'vue';
 import { _capitalize } from 'src/utils/index';
 import { isNaN, round } from 'lodash';
 import { useQuasar } from 'quasar';
+import { worthValue } from 'src/utils/number';
 const $q = useQuasar();
 export interface InfoCardItemProps {
 	used: string;
@@ -79,10 +80,8 @@ const _unit = computed(
 		getSuitableUnit(total.value || used.value, unitType.value as any) ||
 		unit?.value
 );
-const _used = computed(() => getValueByUnit(used.value, _unit.value, 2, true));
-const _total = computed(() =>
-	getValueByUnit(total.value, _unit.value, 2, true)
-);
+const _used = computed(() => getValueByUnit(used.value, _unit.value, 2));
+const _total = computed(() => getValueByUnit(total.value, _unit.value, 2));
 
 const percent = computed(() => {
 	return round((_used.value / _total.value) * 100, 0) || '-';

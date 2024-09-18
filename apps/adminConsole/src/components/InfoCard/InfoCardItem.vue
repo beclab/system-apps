@@ -22,7 +22,8 @@
 					class="info-item"
 					:class="[props.active ? 'info-item-active' : '']"
 				>
-					{{ _capitalize(name) }}&nbsp;{{ _unit }}
+					{{ _capitalize(name) }}&nbsp;
+					<span>{{ _unit === 'core' ? $t('core') : _unit }}</span>
 				</div>
 				<div
 					class="info-ratio"

@@ -17,7 +17,8 @@ const options_update = {
 	CREATION_TIME_TCAP: '创建时间',
 	DETAILS: '信息',
 	NO_DATA_AVAILABLE: '没有数据',
-	ALL_STATUS: '所有状态'
+	ALL_STATUS: '所有状态',
+	core: '核心'
 };
 
 const options = {
