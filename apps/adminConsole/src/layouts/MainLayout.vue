@@ -47,11 +47,6 @@ const items = computed(() => [
 		key: 'resource',
 		label: t('RESOURCE'),
 		children: options2.value
-	},
-	{
-		key: 'middleware',
-		label: t('MIDDLEWARE'),
-		children: options3.value
 	}
 ]);
 
