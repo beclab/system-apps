@@ -27,7 +27,7 @@ const NamespaceMetricTypes = {
 	net_received: 'namespace_net_bytes_received'
 };
 
-export const loadingApps = new Array(19).fill({});
+export const loadingApps = new Array(9).fill({});
 
 export const loadingData: any = {
 	cpu_usage: loadingApps,

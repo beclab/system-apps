@@ -39,8 +39,8 @@
 							:src="child.icon"
 							:class="[index !== 0 ? 'avatar-image' : '']"
 							:style="{ zIndex: 1 / (index + 1) }"
-							class="avatar-common"
 							:loading="loading"
+							:outlined="item.entrances.length > 1"
 							@click="EntranceClickHandler(child, itemIndex)"
 						></MyAvatarImgVue>
 					</template>
@@ -62,7 +62,7 @@
 						</div>
 					</div>
 					<div class="row items-center" v-if="item.state">
-						<MyBadge :type="$t('RUNNING')"></MyBadge>
+						<MyBadge :type="item.state"></MyBadge>
 						<span class="text-subtitle3 text-ink-2 q-ml-sm">{{
 							$t(item.state.toUpperCase())
 						}}</span>
@@ -212,9 +212,6 @@ onMounted(() => {
 	position: absolute;
 	right: 0;
 	top: 60px;
-}
-.avatar-common {
-	border: 2px solid white;
 }
 .avatar-image {
 	margin-left: -20px;

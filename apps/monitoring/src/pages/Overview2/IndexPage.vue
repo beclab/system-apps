@@ -38,36 +38,40 @@
 			<UsageRanking vertical></UsageRanking>
 		</div>
 	</div>
-	<div class="row q-col-gutter-x-xl">
-		<MyCard2
-			style="flex: 1"
-			:title="$t('USER_RESOURCES', { name: appDetail.user.username })"
-		>
-			<template #avatar>
-				<TerminusAvatar
-					:info="{ terminusName: `${appDetail.user.username}@myterminus.com` }"
-					:size="32"
-					class="terminu-avatar-wrapper"
-				/>
-			</template>
-			<UserResource
-				:data="userResourcesData"
-				:loading="loading"
-				:cluster_cpu_total="cluster_cpu_total"
-				:cluster_memory_total="cluster_memory_total"
-			></UserResource>
-		</MyCard2>
-		<div style="height: 476px" class="col-12" v-show="!rightSideVisible">
-			<UsageRanking></UsageRanking>
+	<div style="overflow: auto" class="q-mt-xl">
+		<div class="row q-col-gutter-xl">
+			<MyCard2
+				style="flex: 1"
+				:title="$t('USER_RESOURCES', { name: appDetail.user.username })"
+			>
+				<template #avatar>
+					<TerminusAvatar
+						:info="{
+							terminusName: `${appDetail.user.username}@myterminus.com`
+						}"
+						:size="32"
+						class="terminu-avatar-wrapper"
+					/>
+				</template>
+				<UserResource
+					:data="userResourcesData"
+					:loading="loading"
+					:cluster_cpu_total="cluster_cpu_total"
+					:cluster_memory_total="cluster_memory_total"
+				></UserResource>
+			</MyCard2>
+			<div style="height: 507px" class="col-12" v-show="!rightSideVisible">
+				<UsageRanking></UsageRanking>
+			</div>
+			<MyCard2
+				:class="[!rightSideVisible ? 'col-6' : 'side-wrapper']"
+				:title="$t('ANALYTICS')"
+				:link="$t('MORE')"
+				@link-handler="routeToAnalytics"
+			>
+				<Analytics></Analytics>
+			</MyCard2>
 		</div>
-		<MyCard2
-			:class="[!rightSideVisible ? 'col-6' : 'side-wrapper']"
-			:title="$t('ANALYTICS')"
-			:link="$t('MORE')"
-			@link-handler="routeToAnalytics"
-		>
-			<Analytics></Analytics>
-		</MyCard2>
 	</div>
 
 	<RouterViewTransition></RouterViewTransition>

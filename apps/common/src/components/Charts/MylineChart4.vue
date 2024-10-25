@@ -206,6 +206,7 @@ const option = computed(() => {
 					color: lightBlueDefault.value
 				}
 			},
+			padding: 12,
 			backgroundColor: background2.value,
 			textStyle: {
 				color: ink1.value
@@ -277,7 +278,7 @@ const option = computed(() => {
 			symbol: 'none',
 			clip: false,
 			lineStyle: {
-				width: 2
+				width: 3
 			},
 			yAxisIndex: index,
 			data: item.map((item) => item[1]),
@@ -324,5 +325,11 @@ const onResize = (size: { width: number; height: number }) => {
 		height: 8px;
 		border-radius: 50%;
 	}
+}
+</style>
+<style lang="scss">
+.echart-tooltip-container {
+	border-radius: 12px !important;
+	box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.2) !important;
 }
 </style>

@@ -7,7 +7,7 @@
 			<div class="text-h4 q-ml-lg text-ink-1">{{ value }}</div>
 		</div>
 		<div class="q-px-lg q-py-sm rounded-borders-lg" :class="trendClass">
-			<q-icon :name="trendIcon" />
+			<q-icon :name="trendIcon" size="24px" />
 			<!-- <q-icon name="sym_r_trending_down" /> -->
 			<span class="text-subtitle1 q-ml-sm">{{ trend }}{{ change || '' }}</span>
 		</div>
@@ -68,9 +68,9 @@ const trendClass = computed(() =>
 );
 
 const iconCard = computed(() =>
-	props.change > 0
+	props.type === 'view'
 		? 'bg-light-green-disabled'
-		: props.change < 0
+		: props.type === 'visit'
 		? 'bg-light-blue-disabled'
 		: ''
 );

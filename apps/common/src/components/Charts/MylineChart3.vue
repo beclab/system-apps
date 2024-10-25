@@ -158,7 +158,7 @@ const option = computed(() => {
 		tooltip: {
 			trigger: 'axis',
 			valueFormatter: (value: any) =>
-				`${isNaN(value) ? '-' : value} ${unit.value}`,
+				`${isNaN(value) ? '-' : value}${unit.value}`,
 			axisPointer: {
 				type: 'line',
 				lineStyle: {
@@ -166,6 +166,7 @@ const option = computed(() => {
 				}
 			},
 			backgroundColor: background2.value,
+			padding: 12,
 			textStyle: {
 				color: ink1.value
 			},
@@ -214,7 +215,7 @@ const option = computed(() => {
 			symbol: 'none',
 			clip: false,
 			lineStyle: {
-				width: 2
+				width: 3
 			},
 			data: item.map((item) => item[1]),
 			areaStyle: {
@@ -247,10 +248,9 @@ const onResize = (size: { width: number; height: number }) => {
 	}
 }
 </style>
-<style>
+<style lang="scss">
 .echart-tooltip-container {
-	box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.2);
-	border-radius: 12px;
-	overflow: hidden;
+	border-radius: 12px !important;
+	box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.2) !important;
 }
 </style>
