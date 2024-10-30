@@ -59,7 +59,7 @@
 
 <script setup lang="ts">
 import { getResult } from '@packages/ui/src/containers/Monitoring/config';
-import { get, orderBy, sortBy, unionBy } from 'lodash';
+import { get, orderBy, sortBy, unionBy, isEmpty } from 'lodash';
 import MyCard from 'src/components/MyCard.vue';
 import { getAppsList, getMetrics, getNamespaces } from 'src/network';
 import {
@@ -67,7 +67,7 @@ import {
 	getSuitableUnit,
 	getValueByUnit
 } from 'src/utils/monitoring';
-import { computed, nextTick, onMounted, ref } from 'vue';
+import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import ApplicationItem from './ApplicationItem.vue';
 import ColumnFlex from './components/ColumnFlex.vue';
 import { getValue } from './config';
@@ -75,7 +75,11 @@ import { useAppDetailStore } from 'src/stores/AppDetail';
 import { useRouter } from 'vue-router';
 import { fetchWorkloadsMetrics } from '../Applications2/config';
 import { useI18n } from 'vue-i18n';
+import { useAppList } from 'src/stores/AppList';
+
 const { t } = useI18n();
+const appList = useAppList();
+
 interface Props {
 	vertical?: boolean;
 }
@@ -100,31 +104,29 @@ const loadingData = [
 const apps = ref(loadingApps);
 const loading = ref(true);
 const monitoringData = ref(loadingData);
-const fetchData = () => {
-	getAppsList()
-		.then((res) => {
-			apps.value = res.data.data.items.map((item) => ({
-				...item,
-				isSystem: item.namespace === userNamespace
-			}));
-			fetchWorkloadsMetrics(apps.value, userNamespace)
-				.then((data) => {
-					monitoringData.value = [
-						{
-							title: 'TOP_COUNT_CPU_USAGE_APPS',
-							data: data.cpu_usage
-						},
-						{
-							title: 'TOP_COUNT_MEMORY_USAGE_APPS',
-							data: data.memory_usage
-						}
-					];
-				})
-				.finally(() => {
-					loading.value = false;
-				});
+const fetchData = (showLoading = true) => {
+	const data = appList.apps;
+	if (showLoading) {
+		loading.value = true;
+	}
+	apps.value = data.map((item) => ({
+		...item,
+		isSystem: item.namespace === userNamespace
+	}));
+	fetchWorkloadsMetrics(apps.value, userNamespace)
+		.then((data) => {
+			monitoringData.value = [
+				{
+					title: 'TOP_COUNT_CPU_USAGE_APPS',
+					data: data.cpu_usage
+				},
+				{
+					title: 'TOP_COUNT_MEMORY_USAGE_APPS',
+					data: data.memory_usage
+				}
+			];
 		})
-		.catch(() => {
+		.finally(() => {
 			loading.value = false;
 		});
 };
@@ -255,9 +257,20 @@ const routeToApplication = () => {
 	});
 };
 
-onMounted(() => {
-	fetchData();
-});
+watch(
+	() => appList.apps,
+	(newData) => {
+		if (isEmpty(newData)) {
+			loading.value = true;
+		} else {
+			fetchData();
+		}
+	},
+	{
+		immediate: true,
+		deep: true
+	}
+);
 </script>
 
 <style lang="scss" scoped>

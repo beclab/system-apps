@@ -1,19 +1,14 @@
 import { defineStore } from 'pinia';
 import { uid } from 'quasar';
 
-import {
-	WebSocketStatusEnum,
-	WebSocketBean,
-	MessageTopic
-} from '@bytetrade/core';
-import { bus } from '../utils/bus';
-import { useTokenStore } from './token';
+import { WebSocketStatusEnum, WebSocketBean } from '@bytetrade/core';
+import { bus } from 'src/utils/bus';
 export interface WebSocketState {
 	websocket: WebSocketBean | null;
 }
 
 function generateSocketId() {
-	const shaResult = uid().replaceAll('-', '');
+	const shaResult = uid().replace(/-/g, '');
 	let result = 0;
 	for (let i = 0; i < 8; i++) {
 		const number = parseInt('0' + shaResult[i]);
@@ -33,15 +28,12 @@ export const useSocketStore = defineStore('counter', {
 
 	actions: {
 		start() {
-			let ws_url = process.env.WS_URL || window.location.origin + '/ws';
+			const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
 
-			if (ws_url.startsWith('http://')) {
-				ws_url = ws_url.substring(7);
-				ws_url = 'ws://' + ws_url;
-			} else if (ws_url.startsWith('https://')) {
-				ws_url = ws_url.substring(8);
-				ws_url = 'wss://' + ws_url;
-			}
+			let ws_url = `${protocol}//${
+				process.env.proxyTarget || window.location.host
+			}/ws`;
+			ws_url = 'wss://desktop.yangyongheng.myterminus.com/ws';
 
 			this.websocket = new WebSocketBean({
 				url: ws_url,
@@ -62,25 +54,8 @@ export const useSocketStore = defineStore('counter', {
 					try {
 						const message = JSON.parse(ev.data);
 
-						if (message.topic == MessageTopic.Data) {
-							if (message.event == 'updateConfig') {
-								const tokenStore = useTokenStore();
-								tokenStore.config = message.message.data;
-							}
-						} else {
-							if (message.event == 'app_installation_event') {
-								bus.emit('app_installation_event', message);
-							} else if (message.event == 'system_upgrade_event') {
-								bus.emit('system_upgrade_event', message.data);
-							} else if (message.event == 'ai') {
-								bus.emit('ai', message);
-							} else if (message.event == 'ai_message') {
-								bus.emit('ai_message', message);
-							} else if (message.event == 'intent') {
-								bus.emit('intent', message.data);
-							} else if (message.event == 'n') {
-								bus.emit('notification', message.data);
-							}
+						if (message.event == 'app_installation_event') {
+							bus.emit('app_installation_event', message);
 						}
 					} catch (e) {
 						console.log('message error');

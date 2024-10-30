@@ -11,7 +11,7 @@ import {
 	getSuitableUnit,
 	getValueByUnit
 } from 'src/utils/monitoring';
-import { t } from 'boot/i18n';
+import { t } from 'src/boot/i18n';
 const SYSTEM_FRONTEND_DEPLOYMENT = 'system-frontend-deployment';
 
 const MetricTypes = {
@@ -60,9 +60,7 @@ export const fetchWorkloadsMetrics = async (apps, namespace, sort = 'desc') => {
 		})
 		.join('');
 
-	const resources_filter_custom = customApps
-		.map((item) => item.namespace)
-		.join('|');
+	const resources_filter_custom = customApps.map((item) => item.namespace);
 	const param = {
 		cluster: 'default',
 		metrics_filter: `${metricsPods.join('|')}$`,
@@ -74,7 +72,7 @@ export const fetchWorkloadsMetrics = async (apps, namespace, sort = 'desc') => {
 
 	const namespaceParams = {
 		metrics_filter: `${metricsNamespace.join('|')}$`,
-		resources_filter: `${resources_filter_custom}`,
+		resources_filter: `${resources_filter_custom.join('|')}`,
 		sort_type: 'desc',
 		...timeRange,
 		...timeParams
@@ -84,8 +82,42 @@ export const fetchWorkloadsMetrics = async (apps, namespace, sort = 'desc') => {
 
 	const podResult = getResult(res.data.results);
 	const podData = fillEmptyMetrics(param, podResult);
+	console.log('apps', namespaceRes.data.results);
 
-	const namespaceResult = getResult(namespaceRes.data.results);
+	const tempData = getResult(namespaceRes.data.results);
+	const tempObj = {};
+
+	for (const key in tempData) {
+		const target = tempData[key];
+		console.log('target', target);
+		const namespaces = target.data.result.map((item) => item.metric.namespace);
+		const rest = resources_filter_custom.filter(
+			(item) => !namespaces.includes(item)
+		);
+		const restObj = rest.map((item) => ({
+			metric: {
+				namespace: item,
+				workspace: 'system-workspace'
+			},
+			values: [],
+			min_value: '',
+			max_value: '',
+			avg_value: '',
+			sum_value: '',
+			fee: '',
+			resource_unit: '',
+			currency_unit: ''
+		}));
+
+		console.log('target', namespaces, resources_filter_custom, rest);
+
+		tempObj[key] = {
+			...target,
+			data: { ...target.data, result: target.data.result.concat(restObj) }
+		};
+	}
+
+	const namespaceResult = tempObj;
 	const namespaceData = fillEmptyMetrics(namespaceParams, namespaceResult);
 
 	return Promise.resolve(formatResult(podData, namespaceData, apps, sort));

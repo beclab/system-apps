@@ -296,6 +296,25 @@ export interface AppListItem {
 	isClusterScoped: false;
 }
 
+interface Entrance {
+	icon: string;
+	id: string;
+	name: string;
+	title: string;
+}
+
+export interface AppWS {
+	app: string;
+	appid: string;
+	entrances: Entrance[];
+	icon: string;
+	id: string;
+	op: string;
+	status: string;
+	title: string;
+	uid: string;
+}
+
 export interface AppListResponse {
 	code: number;
 	message: string | null;

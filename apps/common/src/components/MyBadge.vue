@@ -104,6 +104,8 @@ const typeFormat = computed(() => lowerCase(props.type));
 		}
 	}
 
+	&.resuming,
+	&.installing,
 	&.updating,
 	&.upgrading,
 	&.syncing,
@@ -127,6 +129,7 @@ const typeFormat = computed(() => lowerCase(props.type));
 		}
 	}
 
+	&.uninstalling,
 	&.deleting,
 	&.deleted,
 	&.error,
@@ -143,6 +146,7 @@ const typeFormat = computed(() => lowerCase(props.type));
 	&.stopped,
 	&.disabled,
 	&.pending,
+	&.downloading,
 	&.unknown,
 	&.draining,
 	&.terminated,
@@ -150,6 +154,7 @@ const typeFormat = computed(() => lowerCase(props.type));
 	&.minor,
 	&.paused,
 	&.inactive,
+	&.suspend,
 	&.suspended {
 		&::before {
 			background-color: $status-pending;

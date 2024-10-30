@@ -26,12 +26,11 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import MyLayoutContainer from '@packages/ui/src/components/MyLayoutContainer.vue';
-import { getAppDetail } from '@packages/ui/src/network';
 import { useAppDetailStore } from 'src/stores/AppDetail';
 import { useI18n } from 'vue-i18n';
+
 const AppDetailStore = useAppDetailStore();
 const { t } = useI18n();
 const options = [

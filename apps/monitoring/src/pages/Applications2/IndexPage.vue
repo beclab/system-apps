@@ -91,7 +91,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { getAppsList } from 'src/network/index';
 import MyAvatarImgVue from '@packages/ui/src/components/MyAvatarImg.vue';
 import MyCard from 'src/components/MyCard.vue';
@@ -100,14 +100,16 @@ import Metrics from './Metrics.vue';
 import MyBadge from '@packages/ui/src/components/MyBadge.vue';
 import { useRouter } from 'vue-router';
 import { useAppDetailStore } from 'src/stores/AppDetail';
-import { get, toLower, capitalize } from 'lodash';
+import { get, toLower, capitalize, isEmpty } from 'lodash';
 import SortButtom from '@packages/ui/src/components/SortButton.vue';
 import QSectionStyle from '@packages/ui/src/components/QSectionStyle.vue';
 import QInputStyle from '@packages/ui/src/components/QInputStyle.vue';
 import { t } from 'src/boot/i18n';
 import Empty from '@packages/ui/src/components/Empty.vue';
 import { fetchWorkloadsMetrics, loadingApps, loadingData } from './config';
+import { useAppList } from 'src/stores/AppList';
 
+const appList = useAppList();
 enum EntranceState {
 	Public = 'public',
 	Private = 'private'
@@ -148,23 +150,20 @@ const apps = ref(loadingApps);
 const loading = ref(true);
 const monitoringData = ref(loadingData);
 
-const fetchData = () => {
-	loading.value = true;
-	getAppsList()
-		.then((res) => {
-			apps.value = res.data.data.items.map((item) => ({
-				...item,
-				isSystem: item.namespace === userNamespace
-			}));
-			fetchWorkloadsMetrics(apps.value, userNamespace, sort.value)
-				.then((data) => {
-					monitoringData.value = data;
-				})
-				.finally(() => {
-					loading.value = false;
-				});
+const fetchData = (showLoading = true) => {
+	const data = appList.apps;
+	if (showLoading) {
+		loading.value = true;
+	}
+	apps.value = data.map((item) => ({
+		...item,
+		isSystem: item.namespace === userNamespace
+	}));
+	fetchWorkloadsMetrics(apps.value, userNamespace, sort.value)
+		.then((data) => {
+			monitoringData.value = data;
 		})
-		.catch(() => {
+		.finally(() => {
 			loading.value = false;
 		});
 };
@@ -203,9 +202,20 @@ const authLevelFilter = (state: EntranceState) => {
 	return state === EntranceState.Public ? capitalize(state) : '';
 };
 
-onMounted(() => {
-	fetchData();
-});
+watch(
+	() => appList.apps,
+	(newData) => {
+		if (isEmpty(newData)) {
+			loading.value = true;
+		} else {
+			fetchData();
+		}
+	},
+	{
+		immediate: true,
+		deep: true
+	}
+);
 </script>
 <style lang="scss" scoped>
 .action-container {

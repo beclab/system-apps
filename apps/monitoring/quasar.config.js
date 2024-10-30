@@ -56,7 +56,8 @@ module.exports = configure(function (ctx) {
 				URL: process.env.URL,
 				LOGIN_USERNAME: process.env.LOGIN_USERNAME,
 				LOGIN_PASSWORD: process.env.LOGIN_PASSWORD,
-				AUTH_TOKEN: process.env.AUTH_TOKEN
+				AUTH_TOKEN: process.env.AUTH_TOKEN,
+				proxyTarget: process.env.NODE_ENV === 'production' ? undefined : proxyTarget
 			},
 
 			// Add dependencies for transpiling with Babel (Array of string/regex)

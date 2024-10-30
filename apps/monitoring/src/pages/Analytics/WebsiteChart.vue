@@ -10,7 +10,7 @@
 		<template #extra>
 			<QButtonStyle>
 				<q-btn
-					icon="sym_r_open_in_browser"
+					icon="sym_r_assignment"
 					class="rounded-borders-sm"
 					dense
 					outline

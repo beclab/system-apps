@@ -37,7 +37,15 @@ const options = {
 		LAST_30_DAYS: '前 30 天',
 		LAST_90_DAYS: '前 90 天',
 		THIS_YEAR: '今年'
-	}
+	},
+	PENDING: '等待中',
+	DOWNLOADING: '下载中',
+	INSTALLING: '正在安装',
+	UPGRADING: 'upgrading',
+	RUNNING: '运行中',
+	SUSPEND: '暂停',
+	RESUMING: '恢复',
+	UNINSTALLING: '正在卸载'
 };
 
 export default options;

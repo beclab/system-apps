@@ -37,7 +37,15 @@ const options = {
 		LAST_30_DAYS: 'Last 30 days',
 		LAST_90_DAYS: 'Last 90 days',
 		THIS_YEAR: 'This year'
-	}
+	},
+	PENDING: 'Pending',
+	DOWNLOADING: 'Downloading',
+	INSTALLING: 'Installing',
+	UPGRADING: 'upgrading',
+	RUNNING: 'Running',
+	SUSPEND: 'Suspend',
+	RESUMING: 'Resuming',
+	UNINSTALLING: 'Uninstalling'
 };
 
 export default options;

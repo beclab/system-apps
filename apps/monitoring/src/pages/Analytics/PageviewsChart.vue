@@ -9,7 +9,6 @@
 					unelevated
 					text-color="ink-2"
 					toggle-color="light-blue-soft"
-					toggle-text-color="orange-default"
 					:options="[
 						{ value: 'line', slot: 'line' },
 						{ value: 'bar', slot: 'bar' }
@@ -18,6 +17,7 @@
 					<template #line>
 						<q-icon
 							name="sym_r_planner_review"
+							:color="type === 'line' ? 'light-blue' : ''"
 							style="padding: 3px"
 							size="18px"
 						/>
@@ -25,6 +25,7 @@
 					<template #bar>
 						<q-icon
 							name="sym_r_insert_chart"
+							:color="type === 'bar' ? 'light-blue' : ''"
 							style="padding: 3px"
 							size="18px"
 						/>

@@ -6,15 +6,29 @@
 import { defineComponent } from 'vue';
 import { useAppDetailStore } from './stores/AppDetail';
 import './css/custom.scss';
+import { useSocketStore } from './stores/AppStore';
+import { useAppList } from 'src/stores/AppList';
+import { bus } from 'src/utils/bus';
 
 export default defineComponent({
 	name: 'App',
-	preFetch({ store }) {
+	preFetch() {
 		const appDetail = useAppDetailStore();
+		const appList = useAppList();
+
+		appList.getAppList();
 
 		return appDetail.init();
 	},
 	setup() {
+		const appList = useAppList();
+		const appStore = useSocketStore();
+		appList.getAppList();
+		appStore.start();
+
+		bus.on('app_installation_event', (data) => {
+			appList.getAppList();
+		});
 		return {};
 	}
 });
@@ -55,3 +69,4 @@ body.body--dark .q-dialog__backdrop {
 	background: $background-6;
 }
 </style>
+./stores/AppStore
