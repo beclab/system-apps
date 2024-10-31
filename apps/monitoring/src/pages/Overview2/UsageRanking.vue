@@ -263,7 +263,7 @@ watch(
 		if (isEmpty(newData)) {
 			loading.value = true;
 		} else {
-			fetchData();
+			fetchData(false);
 		}
 	},
 	{

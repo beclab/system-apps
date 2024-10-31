@@ -23,7 +23,6 @@ export default defineComponent({
 	setup() {
 		const appList = useAppList();
 		const appStore = useSocketStore();
-		appList.getAppList();
 		appStore.start();
 
 		bus.on('app_installation_event', (data) => {
