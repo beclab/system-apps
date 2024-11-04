@@ -12,6 +12,7 @@ import {
 	getValueByUnit
 } from 'src/utils/monitoring';
 import { t } from 'src/boot/i18n';
+import { useAppList } from 'src/stores/AppList';
 const SYSTEM_FRONTEND_DEPLOYMENT = 'system-frontend-deployment';
 
 const MetricTypes = {
@@ -26,8 +27,9 @@ const NamespaceMetricTypes = {
 	net_transmitted: 'namespace_net_bytes_transmitted',
 	net_received: 'namespace_net_bytes_received'
 };
+const appList = useAppList();
 
-export const loadingApps = new Array(9).fill({});
+export const loadingApps = new Array(appList.apps.length || 9).fill({});
 
 export const loadingData: any = {
 	cpu_usage: loadingApps,
@@ -90,9 +92,11 @@ export const fetchWorkloadsMetrics = async (apps, namespace, sort = 'desc') => {
 	for (const key in tempData) {
 		const target = tempData[key];
 		console.log('target', target);
-		const namespaces = target.data.result.map((item) => item.metric.namespace);
+		const namespaces = target?.data?.result?.map(
+			(item) => item.metric.namespace
+		);
 		const rest = resources_filter_custom.filter(
-			(item) => !namespaces.includes(item)
+			(item) => !namespaces?.includes(item)
 		);
 		const restObj = rest.map((item) => ({
 			metric: {

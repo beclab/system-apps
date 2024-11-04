@@ -15,6 +15,7 @@
 				style="height: 100%"
 				:data="clusterResource[activeIndex]"
 				:loading="loading"
+				theme="theme2"
 			/>
 		</MyCard>
 	</div>

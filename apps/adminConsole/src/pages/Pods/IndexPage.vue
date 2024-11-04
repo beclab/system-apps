@@ -25,7 +25,7 @@
 			:content-style="contentStyle"
 			:content-active-style="contentStyle"
 		>
-			<div class="relative-position q-mx-xxl q-my-lg">
+			<div class="relative-position q-mx-xxl q-mb-lg">
 				<PodList v-if="tab === 1"></PodList>
 				<ClusterResource v-if="tab === 2"></ClusterResource>
 			</div>

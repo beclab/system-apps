@@ -8,7 +8,7 @@
 			<q-icon
 				name="arrow_back_ios_new"
 				:size="size === 'md' ? '16px' : '20px'"
-				class="my-icon"
+				class="my-icon text-ink-1"
 				v-if="!isContent"
 			/>
 			<div v-if="$slots.avatar" class="q-mr-sm">

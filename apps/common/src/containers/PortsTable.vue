@@ -8,6 +8,7 @@
 			hide-pagination
 			v-ripple="false"
 			v-model:pagination="pagination"
+			table-class="port-table-wrapper"
 		>
 			<template v-slot:no-data>
 				<div class="row justify-center full-width q-mt-lg">
@@ -37,21 +38,25 @@ const columns: any = computed(() => [
 		label: t('NAME'),
 		name: 'name',
 		field: 'name',
-		align: 'center'
+		align: 'left'
 	},
 	{
 		label: t('PROTOCOL'),
 		name: 'protocol',
 		field: 'protocol',
-		align: 'center'
+		align: 'left'
 	},
 	{
 		label: t('PORT'),
 		name: 'containerPort',
 		field: 'containerPort',
-		align: 'center'
+		align: 'left'
 	}
 ]);
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+::v-deep(.port-table-wrapper table) {
+	table-layout: fixed;
+}
+</style>

@@ -12,11 +12,12 @@
 				</div>
 				<div v-else class="text-subtitle1 text-ink-1">{{ title }}</div>
 			</div>
-			<div class="row items-center q-gutter-md">
-				<div><slot name="extra"></slot></div>
+			<div class="card3-extra">
+				<slot name="extra"></slot>
 				<div
 					class="text-h6 text-primary cursor-pointer"
 					@click.stop="linkHandler"
+					v-if="link"
 				>
 					{{ link }}
 				</div>
@@ -53,4 +54,9 @@ const linkHandler = () => {
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.card3-extra {
+	display: flex;
+	gap: 12px;
+}
+</style>

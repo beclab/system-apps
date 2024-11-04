@@ -23,9 +23,11 @@
 							row-key="name"
 							hide-pagination
 							flat
-							:loading="loading"
+							:loading="
+								item.value === 'ingress' ? ingress_loading : egress_loading
+							"
 							:pagination="pagination"
-							@refresh="fetchData"
+							@refresh="fetchData(true, false)"
 						>
 							<template v-slot:header="props">
 								<q-tr :props="props">
@@ -95,7 +97,14 @@
 							</template>
 							<template #no-data>
 								<div class="full-width relative-position" style="height: 280px">
-									<Empty3 v-show="!loading" @click="fetchData"></Empty3>
+									<Empty3
+										v-show="
+											!(item.value === 'ingress'
+												? ingress_loading
+												: egress_loading)
+										"
+										@click="fetchData(false, true)"
+									></Empty3>
 								</div>
 							</template>
 						</q-table>
@@ -148,7 +157,8 @@ const options = computed(() => [
 ]);
 
 const detail = ref<any>({});
-const loading = ref(false);
+const ingress_loading = ref(false);
+const egress_loading = ref(false);
 const route = useRoute();
 const pagination = ref({
 	rowsNumber: 0
@@ -232,19 +242,25 @@ const renderIpBlock = (data: any) =>
 		.map((kv) => (kv[0] === 'cidr' ? `${kv[1]}` : kv.join(': ')))
 		.reduce((acc: any, x: any) => (acc === null ? x : `${acc} ${x}`), null);
 
-const fetchData = () => {
+const fetchData = (ingress_loading_show = true, egress_loading_show = true) => {
 	const { namespace, name }: { [key: string]: any } = route.params;
 	const params = {
 		namespace,
 		name
 	};
-	loading.value = true;
+	if (ingress_loading_show) {
+		ingress_loading.value = true;
+	}
+	if (egress_loading_show) {
+		egress_loading.value = true;
+	}
 	getNetworkpoliciesDetail(params)
 		.then((res) => {
 			detail.value = NetworkPoliciesMapper(res.data);
 		})
 		.finally(() => {
-			loading.value = false;
+			ingress_loading.value = false;
+			egress_loading.value = false;
 		});
 };
 

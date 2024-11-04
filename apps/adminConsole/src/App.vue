@@ -40,19 +40,25 @@ export default defineComponent({
 }
 
 .q-menu {
-	padding: 12px;
+	padding: 8px;
+	border-radius: 8px;
+	background: $background-2;
+
+	box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.2);
 }
 body.desktop .q-focus-helper ～ .q-btn--rounded {
 	border-radius: 4px;
 }
 .q-menu .q-item {
 	padding: 8px;
+	padding-left: 12px;
 	font-size: 12px;
 	font-style: normal;
 	font-weight: 500;
 	line-height: 16px;
 	color: $ink-2;
 	min-height: 32px;
+	border-radius: 4px;
 }
 .q-card--dark {
 	border-color: $separator;

@@ -35,6 +35,9 @@ const { stickyFirst, stickyLast } = toRefs(props);
 		line-height: 16px;
 		background: $background-1;
 	}
+	::v-deep(.q-table__container thead tr) {
+		height: auto;
+	}
 	::v-deep(td) {
 		padding: 20px 20px 20px 0;
 		font-size: 14px;
@@ -44,7 +47,7 @@ const { stickyFirst, stickyLast } = toRefs(props);
 		color: $ink-1;
 	}
 	::v-deep(th) {
-		padding: 20px 20px 20px 0;
+		padding: 8px 0 8px 0;
 	}
 	::v-deep(.q-table th.sorted .q-table__sort-icon) {
 		color: $ink-3;

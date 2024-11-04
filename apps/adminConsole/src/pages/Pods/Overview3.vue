@@ -12,14 +12,20 @@
 				</q-btn>
 			</QButtonStyle>
 		</template>
-		<div style="margin: 0 -44px; margin-bottom: -44px">
-			<div class="q-px-md q-pb-md">
+		<div
+			style="margin: 0 -44px; margin-bottom: -44px; width: calc(100% + 88px)"
+		>
+			<div class="q-gutter-y-lg q-pa-lg bg-background-6">
 				<Overview></Overview>
-				<ContainerWrapper></ContainerWrapper>
+				<div class="full-width" style="overflow: hidden">
+					<ContainerWrapper></ContainerWrapper>
+				</div>
 				<Volumes></Volumes>
 				<Metadata></Metadata>
 				<Environments></Environments>
-				<Events></Events>
+				<div style="position: relative">
+					<Events></Events>
+				</div>
 				<q-inner-loading :showing="loading"></q-inner-loading>
 			</div>
 		</div>
@@ -38,11 +44,12 @@ import { useRoute } from 'vue-router';
 import { UsePod } from '@packages/ui/src/stores/PodData';
 import { computed, ref, watch } from 'vue';
 import MyContentPage from '../../components/MyContentPage.vue';
-import MyPage from '@packages/ui/src/containers/MyPage.vue';
 import Yaml from './Yaml.vue';
 import { t } from 'src/boot/i18n';
 import FullPageWithBack from '@packages/ui/src/components/FullPageWithBack.vue';
 import QButtonStyle from '@packages/ui/src/components/QButtonStyle.vue';
+import MyCard from '@packages/ui/src/components/MyCard2.vue';
+import MyPage from '@packages/ui/src/containers/MyPage.vue';
 
 const usePod = UsePod();
 const route = useRoute();

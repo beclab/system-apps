@@ -25,7 +25,7 @@
 			:content-style="contentStyle"
 			:content-active-style="contentStyle"
 		>
-			<div class="relative-position q-px-xxl q-py-lg">
+			<div class="relative-position q-px-xxl q-pb-lg">
 				<Namespace v-if="tab === 1"></Namespace>
 				<ClusterResource v-if="tab === 2"></ClusterResource>
 			</div>

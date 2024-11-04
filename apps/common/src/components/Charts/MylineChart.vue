@@ -6,7 +6,7 @@
 			class="chart"
 			:option="option"
 			:updateOptions="updateOptions"
-			:theme="theme"
+			:theme="theme_config"
 			autoresize
 		/>
 	</div>
@@ -26,6 +26,7 @@ export interface LineProps {
 	 */
 	splitNumberY?: number;
 	loading?: boolean;
+	theme: 'theme1' | 'theme2';
 }
 </script>
 <script lang="ts" setup>
@@ -43,7 +44,7 @@ import { CanvasRenderer } from 'echarts/renderers';
 import VChart, { THEME_KEY } from 'vue-echarts';
 import { provide, computed } from 'vue';
 import tinycolor from 'tinycolor2';
-import { theme } from './theme';
+import { theme as theme1, theme2 } from './theme';
 import { capitalize, indexOf, isArray, get } from 'lodash';
 import { date } from 'quasar';
 import { firstToUpper, firstToUpperWith_ } from 'src/constant';
@@ -69,8 +70,6 @@ use([
 	TooltipComponent
 ]);
 
-provide(THEME_KEY, theme);
-
 /**
  const chartData = {
   title: 'CPU_USAGE',
@@ -92,8 +91,22 @@ provide(THEME_KEY, theme);
 const props = withDefaults(defineProps<LineProps>(), {
 	xAxisLabel: true,
 	unit: '',
-	legend: []
+	legend: [],
+	theme: 'theme1'
 });
+console.log('teataaa', props.theme);
+const theme_config = computed(() => {
+	switch (props.theme) {
+		case 'theme1':
+			return theme1;
+		case 'theme2':
+			return theme2;
+
+		default:
+			return theme1;
+	}
+});
+provide(THEME_KEY, theme_config.value);
 
 const unit = computed(() => props.data?.unit ?? '');
 
@@ -216,11 +229,11 @@ const option = computed(() => {
 				color: new graphic.LinearGradient(0, 0, 0, 1, [
 					{
 						offset: 0,
-						color: changeAlpha(theme.color[index], 0.2)
+						color: changeAlpha(theme_config.value.color[index], 0.2)
 					},
 					{
 						offset: 1,
-						color: changeAlpha(theme.color[index], 0)
+						color: changeAlpha(theme_config.value.color[index], 0)
 					}
 				])
 			}

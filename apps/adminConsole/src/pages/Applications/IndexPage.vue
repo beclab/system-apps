@@ -1,29 +1,27 @@
 <template>
 	<MyCard3 :title="$t('USAGE_RANKING')" flat>
 		<template #extra>
-			<div class="row items-center q-gutter-x-md">
-				<Refresh @click="fetchData"></Refresh>
-				<UserSelect v-model="selectValue" @update:model-value="selectHandler">
-				</UserSelect>
+			<Refresh @click="fetchData"></Refresh>
+			<UserSelect v-model="selectValue" @update:model-value="selectHandler">
+			</UserSelect>
 
-				<QInputStyle>
-					<q-input
-						v-model="name"
-						type="search"
-						outlined
-						debounce="500"
-						:placeholder="t('SEARCH')"
-						clearable
-						style="width: 240px"
-						@update:model-value="fetchData"
-					>
-						<template v-slot:prepend>
-							<q-icon name="search" size="xs" />
-						</template>
-					</q-input>
-				</QInputStyle>
-
-				<!-- <QSectionStyle class="q-ml-sm">
+			<QInputStyle>
+				<q-input
+					v-model="name"
+					type="search"
+					outlined
+					debounce="500"
+					:placeholder="t('SEARCH')"
+					clearable
+					style="width: 240px"
+					@update:model-value="fetchData"
+				>
+					<template v-slot:prepend>
+						<q-icon name="search" size="xs" />
+					</template>
+				</q-input>
+			</QInputStyle>
+			<!-- <QSectionStyle class="q-ml-sm">
       <q-select
         v-model="nodeSelected"
         :options="options2"
@@ -32,7 +30,6 @@
         v-if="nodes.length > 1"
       />
     </QSectionStyle> -->
-			</div>
 		</template>
 		<QTableStyle2>
 			<q-table
@@ -123,7 +120,7 @@
 								</div>
 							</div>
 						</q-td>
-						<q-td key="namespace_net_bytes_transmitted">
+						<q-td key="namespace_net_bytes_transmitted" class="text-right">
 							{{
 								getSuitableValue(
 									props.row.namespace_net_bytes_transmitted,
@@ -132,7 +129,7 @@
 								)
 							}}
 						</q-td>
-						<q-td key="namespace_net_bytes_received">
+						<q-td key="namespace_net_bytes_received" class="text-right">
 							{{
 								getSuitableValue(
 									props.row.namespace_net_bytes_received,
@@ -226,7 +223,7 @@ const columns: any = computed(() => [
 	{
 		name: 'namespace_net_bytes_transmitted',
 		label: t('OUTBOUND_TRAFFIC'),
-		align: 'left',
+		align: 'right',
 		field: 'namespace_net_bytes_transmitted',
 		sortable: true,
 		sortOrder: 'da'
@@ -234,7 +231,7 @@ const columns: any = computed(() => [
 	{
 		name: 'namespace_net_bytes_received',
 		label: t('INBOUND_TRAFFIC'),
-		align: 'left',
+		align: 'right',
 		field: 'namespace_net_bytes_received',
 		sortable: true,
 		sortOrder: 'da'

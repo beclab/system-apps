@@ -12,7 +12,7 @@
 .my-content-page-header-extra {
 	position: absolute;
 	top: 0;
-	right: 8px;
+	right: 20px;
 	height: $content-header-height;
 	z-index: 2;
 	display: flex;

@@ -53,6 +53,9 @@ defineProps<Props>();
 .my-menu-link {
 	color: $ink-1;
 	min-height: 40px;
+	::v-deep(.q-item__label + .q-item__label) {
+		margin-top: 0;
+	}
 }
 .my-menu-link-active {
 	background-color: $blue-soft;

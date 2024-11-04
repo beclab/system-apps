@@ -43,8 +43,16 @@ export default defineComponent({
 	color: $ink-2;
 }
 
-.q-menu {
-	padding: 12px;
+.q-menu .q-item {
+	padding: 8px;
+	padding-left: 12px;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: 500;
+	line-height: 16px;
+	color: $ink-2;
+	min-height: 32px;
+	border-radius: 4px;
 }
 body.desktop .q-focus-helper ～ .q-btn--rounded {
 	border-radius: 4px;
@@ -68,4 +76,3 @@ body.body--dark .q-dialog__backdrop {
 	background: $background-6;
 }
 </style>
-./stores/AppStore
