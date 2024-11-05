@@ -1,6 +1,6 @@
 {
   "name": "@apps/monitoring",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Dashboard",
   "productName": "Dashboard",
   "private": true,
@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@apps/nodes": "../nodes",
-    "@bytetrade/core": "0.3.66",
+    "@bytetrade/core": "0.3.67",
     "@bytetrade/ui": "^0.1.12",
     "@packages/ui": "../common",
     "@quasar/extras": "^1.16.9",
