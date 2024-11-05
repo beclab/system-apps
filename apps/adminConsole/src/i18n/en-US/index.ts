@@ -2,7 +2,7 @@
 // so you can safely delete all default props below
 
 const options = {
-	TERMINUS: 'Terminus',
+	TERMINUS: 'Olares',
 	MIDDLEWARE: 'Middleware',
 	BROWSE: 'Browse',
 	NAMESPACE: 'Namespace',

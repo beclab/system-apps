@@ -55,7 +55,7 @@ const options = [
 ];
 const initOption = {
 	key: 'sub1',
-	label: `${AppDetailStore.user.username}’s Terminus`,
+	label: `${AppDetailStore.user.username}’s Olares`,
 	children: options
 };
 const items = ref([initOption]);

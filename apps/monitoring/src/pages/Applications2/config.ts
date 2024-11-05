@@ -1,6 +1,6 @@
 import { getTimeRange } from '@packages/ui/src/containers/PodsList/config';
 import { getMetrics, getNamespaces } from '@packages/ui/src/network';
-import { get, unionBy, orderBy, last, toLower } from 'lodash';
+import { get, unionBy, orderBy, last, toLower, isEmpty } from 'lodash';
 import {
 	fillEmptyMetrics,
 	getResult
@@ -80,13 +80,17 @@ export const fetchWorkloadsMetrics = async (apps, namespace, sort = 'desc') => {
 		...timeParams
 	};
 	const res = await getMetrics(namespace, param);
-	const namespaceRes = await getNamespaces(namespaceParams);
+	const namespaceRes =
+		resources_filter_custom.length > 0
+			? await getNamespaces(namespaceParams)
+			: { data: { results: [] } };
 
 	const podResult = getResult(res.data.results);
 	const podData = fillEmptyMetrics(param, podResult);
-	console.log('apps', namespaceRes.data.results);
 
 	const tempData = getResult(namespaceRes.data.results);
+
+	console.log('tempData', tempData);
 	const tempObj = {};
 
 	for (const key in tempData) {
@@ -103,7 +107,7 @@ export const fetchWorkloadsMetrics = async (apps, namespace, sort = 'desc') => {
 				namespace: item,
 				workspace: 'system-workspace'
 			},
-			values: [],
+			values: [[]],
 			min_value: '',
 			max_value: '',
 			avg_value: '',
@@ -114,15 +118,27 @@ export const fetchWorkloadsMetrics = async (apps, namespace, sort = 'desc') => {
 		}));
 
 		console.log('target', namespaces, resources_filter_custom, rest);
-
-		tempObj[key] = {
-			...target,
-			data: { ...target.data, result: target.data.result.concat(restObj) }
-		};
+		if (
+			resources_filter_custom.length <= 1 &&
+			isEmpty(get(target, 'data.result'))
+		) {
+			tempObj[key] = {
+				...target,
+				data: { ...target.data, result: restObj }
+			};
+		} else {
+			tempObj[key] = {
+				...target,
+				data: { ...target.data, result: target.data.result.concat(restObj) }
+			};
+		}
 	}
+	console.log('tempData2', tempObj);
 
 	const namespaceResult = tempObj;
-	const namespaceData = fillEmptyMetrics(namespaceParams, namespaceResult);
+	const namespaceData = isEmpty(namespaceResult)
+		? {}
+		: fillEmptyMetrics(namespaceParams, namespaceResult);
 
 	return Promise.resolve(formatResult(podData, namespaceData, apps, sort));
 };
