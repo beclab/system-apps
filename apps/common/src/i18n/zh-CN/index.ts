@@ -18,7 +18,8 @@ const options_update = {
 	DETAILS: '信息',
 	NO_DATA_AVAILABLE: '没有数据',
 	ALL_STATUS: '所有状态',
-	core: '核心'
+	core: '核心',
+	CPU: 'CPU'
 };
 
 const options = {

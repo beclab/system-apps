@@ -20,7 +20,8 @@ const options_update = {
 	CREATION_TIME_TCAP: 'Creation time',
 	DETAILS: 'Details',
 	NO_DATA_AVAILABLE: 'No data available',
-	ALL_STATUS: 'All statuses'
+	ALL_STATUS: 'All statuses',
+	CPU: 'CPU'
 };
 
 const options = {

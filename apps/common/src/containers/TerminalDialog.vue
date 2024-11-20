@@ -27,7 +27,7 @@ import { ref } from 'vue';
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
 import 'xterm/css/xterm.css';
-import SocketClient from '../utils/socket.client';
+import ReconnectingWebSocket from 'reconnecting-websocket';
 import { debounce } from 'lodash';
 import Dialog from '../components/Dialog/Dialog.vue';
 
@@ -42,6 +42,7 @@ const props = withDefaults(defineProps<Props>(), {});
 
 const visible2 = ref(false);
 const aceVisileb = ref(false);
+let messageQueue: string[] = [];
 
 const yamlShow = () => {
 	visible2.value = true;
@@ -53,9 +54,9 @@ const first = ref(true);
 
 const terminalRef = ref<any>();
 const socket = ref<WebSocket>();
-
+let locker: NodeJS.Timeout | undefined = undefined;
 const isWsOpen = () => {
-	return ws.value && ws.value.getSocketState() === 'open';
+	return ws.value && ws.value.readyState === ws.value.OPEN;
 };
 
 const packResize = (col: any, row: any) =>
@@ -79,8 +80,12 @@ const disableTermStdin = (disabled = true) => {
 
 const unpackStdout = (data: any) => data.Data;
 
-const onWSReceive = (data: any) => {
+const onWSReceive = (MessageEvent: any) => {
+	const data = JSON.parse(MessageEvent.data);
 	initTimer.value && clearInterval(initTimer.value);
+
+	setHeartBeat();
+
 	if (first.value) {
 		first.value = false;
 		disableTermStdin(false);
@@ -116,7 +121,7 @@ const fatal = (message: any) => {
 	termA.value.write(`\x1b[31m${message}\x1b[m\r\n`);
 };
 
-const onWSError = (ex: any) => {
+const onWSError = (ex: any, reson?: any) => {
 	initTimer.value && clearInterval(initTimer.value);
 	fatal(ex.message);
 };
@@ -124,10 +129,7 @@ const onWSError = (ex: any) => {
 const createWS = () => {
 	const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
 	const websocketUrl = `${protocol}//${window.location.host}/kapis/terminal.kubesphere.io/v1alpha2/namespaces/${props.data.namespace}/pods/${props.data.podName}/exec?container=${props.data.container}&shell=sh`;
-	return new SocketClient(websocketUrl, {
-		onmessage: onWSReceive,
-		onerror: onWSError
-	});
+	return new ReconnectingWebSocket(websocketUrl);
 };
 
 const fitTerm = () => termA.value.fit();
@@ -148,6 +150,8 @@ const packStdin = (data: any) =>
 const sendTerminalInput = (data: any) => {
 	if (isWsOpen()) {
 		ws.value.send(packStdin(data));
+	} else {
+		messageQueue.push(packStdin(data));
 	}
 };
 
@@ -160,6 +164,14 @@ const show = (evt: Event) => {
 
 	termA.value = initTerm();
 	ws.value = createWS();
+	ws.value.addEventListener('open', (listener: EventListener) => {
+		messageQueue.forEach((msg) => ws.value.send(msg));
+		messageQueue = [];
+	});
+
+	ws.value.addEventListener('message', onWSReceive);
+	ws.value.addEventListener('error', onWSError);
+
 	onTerminalResize();
 	onTerminalKeyPress();
 
@@ -167,8 +179,9 @@ const show = (evt: Event) => {
 };
 
 const hide = (evt: Event) => {
+	clearHeartBeat();
 	termA.value && termA.value.destroy && termA.value.destroy();
-	ws.value && ws.value.close(1001);
+	ws.value && ws.value.close(1000);
 	first.value = true;
 	disconnect();
 	removeResizeListener();
@@ -208,6 +221,15 @@ const removeResizeListener = () => {
 	window.removeEventListener('resize', onResize);
 };
 
+const clearHeartBeat = () => {
+	locker && clearInterval(locker);
+};
+const setHeartBeat = () => {
+	clearHeartBeat();
+	locker = setInterval(() => {
+		ws.value.send(JSON.stringify({ op: 'stdin' }));
+	}, 40 * 1000);
+};
 const initTerm = () => {
 	const initText = 'connecting';
 	const terminalOpts = getTerminalOpts();
