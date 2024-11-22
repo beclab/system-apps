@@ -74,7 +74,8 @@ jobs:
         id: docker-tag
         run: |
           echo "::set-output name=time::$(TZ='Asia/Shanghai' date +'%Y-%m-%d %H:%M:%S')"
-          echo "::set-output name=version::v${{ steps.check.outputs.version }}"
+          VERSION=$(jq -r '.version' package.json)
+          echo "::set-output name=version::v$VERSION"
           echo "::set-output name=changed::true"
 
       - name: Build and push Docker image
