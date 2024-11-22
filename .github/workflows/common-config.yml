@@ -75,6 +75,7 @@ jobs:
         run: |
           echo "::set-output name=time::$(TZ='Asia/Shanghai' date +'%Y-%m-%d %H:%M:%S')"
           VERSION=$(jq -r '.version' "${{ inputs.PACKAGE_PATH }}")
+          echo "::set-output name=version::v$VERSION"
           echo "::set-output name=changed::true"
 
       - name: Build and push Docker image
