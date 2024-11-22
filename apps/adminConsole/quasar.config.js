@@ -12,6 +12,7 @@
 
 const { configure } = require('quasar/wrappers');
 require('dotenv').config({ path: '../../.env' });
+const PreloadWebpackPlugin = require('preload-webpack-plugin');
 const path = require('path');
 const proxyTarget = process.env.PROXY_DOMAIN;
 module.exports = configure(function (ctx) {
@@ -108,7 +109,18 @@ module.exports = configure(function (ctx) {
 
 			// https://v2.quasar.dev/quasar-cli-webpack/handling-webpack
 			// "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
-			// chainWebpack (/* chain */) {}
+			// chainWebpack (/* chain */) {},
+			extendWebpack(cfg) {
+				!ctx.dev &&
+					cfg.plugins.push(
+						new PreloadWebpackPlugin({
+							rel: 'preload',
+							include: 'allAssets',
+							fileWhitelist: [/.+MaterialSymbolsRounded3.+/],
+							as: 'font'
+						})
+					);
+			}
 		},
 
 		// Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-devServer

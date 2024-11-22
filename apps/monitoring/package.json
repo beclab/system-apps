@@ -1,6 +1,6 @@
 {
   "name": "@apps/monitoring",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "Dashboard",
   "productName": "Dashboard",
   "private": true,
@@ -36,6 +36,7 @@
     "pinia": "^2.0.11",
     "qs": "^6.5.2",
     "quasar": "^2.6.0",
+    "reconnecting-websocket": "^4.4.0",
     "thenby": "^1.3.4",
     "tinycolor2": "^1.6.0",
     "vue": "^3.0.0",

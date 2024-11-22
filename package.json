@@ -38,6 +38,7 @@
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-vue": "^9.0.0",
     "lerna": "^5.1.8",
+    "preload-webpack-plugin": "^3.0.0-beta.4",
     "prettier": "^2.5.1"
   },
   "browserslist": [
@@ -60,5 +61,6 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  }
+  },
+  "dependencies": {}
 }
