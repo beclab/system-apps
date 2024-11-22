@@ -74,7 +74,6 @@ jobs:
         id: docker-tag
         run: |
           echo "::set-output name=time::$(TZ='Asia/Shanghai' date +'%Y-%m-%d %H:%M:%S')"
-          VERSION=$(jq -r '.version' package.json)
           VERSION=$(jq -r '.version' "${{ inputs.PACKAGE_PATH }}")
           echo "::set-output name=changed::true"
 
