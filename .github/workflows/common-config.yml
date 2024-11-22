@@ -74,13 +74,8 @@ jobs:
         id: docker-tag
         run: |
           echo "::set-output name=time::$(TZ='Asia/Shanghai' date +'%Y-%m-%d %H:%M:%S')"
-          if [ ${{ steps.check.outputs.changed }} == 'true' ]; then
-            echo "::set-output name=version::v${{ steps.check.outputs.version }}"
-            echo "::set-output name=changed::true"
-          else
-            echo "::set-output name=version::${{ inputs.DEFAULT_VERSION }}"
-            echo "::set-output name=changed::false"
-          fi
+          echo "::set-output name=version::v${{ steps.check.outputs.version }}"
+          echo "::set-output name=changed::true"
 
       - name: Build and push Docker image
         id: docker_build_push
