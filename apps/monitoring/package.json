@@ -1,6 +1,6 @@
 {
   "name": "@apps/monitoring",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "Dashboard",
   "productName": "Dashboard",
   "private": true,
