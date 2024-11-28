@@ -30,10 +30,9 @@ export const useSocketStore = defineStore('counter', {
 		start() {
 			const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
 
-			let ws_url = `${protocol}//${
+			const ws_url = `${protocol}//${
 				process.env.proxyTarget || window.location.host
 			}/ws`;
-			ws_url = 'wss://desktop.yangyongheng.myterminus.com/ws';
 
 			this.websocket = new WebSocketBean({
 				url: ws_url,
