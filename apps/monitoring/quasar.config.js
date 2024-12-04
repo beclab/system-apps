@@ -40,7 +40,7 @@ module.exports = configure(function (ctx) {
 		css: ['app.scss', ctx.dev ? 'font.pro.scss' : 'font.pro.scss'],
 
 		// https://github.com/quasarframework/quasar/tree/dev/extras
-		extras: ['material-icons', 'roboto-font'],
+		extras: ['material-icons', 'material-symbols-rounded', 'roboto-font'],
 
 		// Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-build
 		build: {
@@ -139,7 +139,6 @@ module.exports = configure(function (ctx) {
 				},
 				'/analytics_service': {
 					target: `https://${proxyTarget}`,
-					// target: 'https://dc7161be.yyhy65754.myterminus.com',
 					changeOrigin: true
 				},
 				'/capi/app/detail': {
