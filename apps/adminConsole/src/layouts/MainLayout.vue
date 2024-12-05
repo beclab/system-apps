@@ -47,6 +47,11 @@ const items = computed(() => [
 		key: 'resource',
 		label: t('RESOURCE'),
 		children: options2.value
+	},
+	{
+		key: 'middleware',
+		label: t('MIDDLEWARE'),
+		children: options3.value
 	}
 ]);
 
@@ -69,10 +74,8 @@ const selectHandler = (data: any) => {
 };
 
 onMounted(() => {
-	console.log('test');
 	const link = route.path.split('/')[1];
 	const target = optionsAll.find((item) => item.link === `/${link}`);
-	console.log('target:', target, link);
 	if (target) {
 		active.value = target.key;
 		splitMenu.changeStatus(target.key);

@@ -19,9 +19,11 @@
 				<div v-else-if="item.name === 'Endpoint'">
 					{{ EndpointList(item.value) }}
 				</div>
-				<div v-else-if="item.name === 'Password'" class="row items-end">
+				<div v-else-if="item.name === $t('PASSWORD')" class="row items-end">
 					<slot v-if="$slots.Password" name="Password" :data="item"></slot>
-					<div v-else>{{ item.value }}</div>
+					<div v-else>
+						<PasswordToggle :value="item.value"></PasswordToggle>
+					</div>
 				</div>
 				<div v-else>
 					{{ isNil(item.value) || item.value === '' ? '-' : item.value }}
@@ -37,6 +39,7 @@ import Status from '../components/Status.vue';
 import passwordEditIcon from '../assets/password-edit.svg';
 import MyGridLayout from '../components/MyGridLayout.vue';
 import MyBadge from '../components/MyBadge.vue';
+import PasswordToggle from '../components/PasswordToggle.vue';
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 

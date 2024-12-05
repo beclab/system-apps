@@ -27,8 +27,18 @@
 					v-model:pagination="pagination"
 					:rows-per-page-label="$t('RECORDS_PER_PAGE')"
 				>
+					<template v-slot:body-cell-password="props">
+						<q-td :props="props">
+							<PasswordToggle
+								style="min-width: 164px"
+								:value="props.value"
+							></PasswordToggle>
+						</q-td>
+					</template>
 					<template v-slot:no-data>
-						<Empty2></Empty2>
+						<div class="row justify-center full-width q-mt-lg">
+							<Empty></Empty>
+						</div>
 					</template>
 				</q-table>
 			</QTableStyle>
@@ -112,6 +122,8 @@ import { useRoute } from 'vue-router';
 import QTableStyle from '@packages/ui/src/components/QTableStyle.vue';
 import MyPage2 from '@packages/ui/src/containers/MyPage2.vue';
 import { useI18n } from 'vue-i18n';
+import PasswordToggle from '@packages/ui/src/components/PasswordToggle.vue';
+
 const { t } = useI18n();
 const route = useRoute();
 const $q = useQuasar();
@@ -128,17 +140,17 @@ const columns: any = [
 		name: 'app',
 		required: true,
 		label: t('App'),
-		align: 'center',
+		align: 'left',
 		field: 'app'
 	},
 	{
 		name: 'username',
-		align: 'center',
+		align: 'left',
 		label: t('DB_USER'),
 		field: 'username'
 	},
-	{ name: 'name', label: t('DATABASE'), field: 'name', align: 'center' },
-	{ name: 'password', label: t('PASSWORD'), field: 'password', align: 'center' }
+	{ name: 'name', label: t('DATABASE'), field: 'name', align: 'left' },
+	{ name: 'password', label: t('PASSWORD'), field: 'password', align: 'left' }
 ];
 const pagination = ref({
 	rowsNumber: 0

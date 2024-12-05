@@ -207,6 +207,17 @@ const routes: RouteRecordRaw[] = [
 						component: () => import('src/pages/Customresources/Detail.vue')
 					}
 				]
+			},
+
+			{
+				path: 'site-middleware',
+				component: () => import('src/pages/Middleware/IndexPage.vue'),
+				children: [
+					{
+						path: '/site-middleware/db/:type',
+						component: () => import('src/pages/Middleware/Overview.vue')
+					}
+				]
 			}
 		]
 	},
