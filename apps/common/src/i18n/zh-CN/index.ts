@@ -19,7 +19,9 @@ const options_update = {
 	NO_DATA_AVAILABLE: '没有数据',
 	ALL_STATUS: '所有状态',
 	core: '核心',
-	CPU: 'CPU'
+	CPU: 'CPU',
+	REMOVE_CONFIRM_DSC:
+		'请输入{ name }名称 <strong>{ resource }</strong> 确保您已了解操作所带来的风险。'
 };
 
 const options = {

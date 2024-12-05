@@ -24,6 +24,20 @@
 		<Dialog2 :title="$t('DETAILS')" ref="dialog2Ref" full-width full-height>
 			<PodsMonitoring></PodsMonitoring>
 		</Dialog2>
+		<DeleteDialog
+			:title="`${$t('STOP_POD')} ${$route.params.pods_name}`"
+			:desc="$t('POD')"
+			:name="$route.params.pods_name"
+			ref="deleteDialogRef"
+			@submit="confirmHandler"
+		></DeleteDialog>
+		<DeleteDialog
+			:title="`${$t('RESTART_POD')} ${$route.params.pods_name}`"
+			:desc="$t('POD')"
+			:name="$route.params.pods_name"
+			ref="deleteDialogRef2"
+			@submit="confirmHandler2"
+		></DeleteDialog>
 	</component>
 </template>
 
@@ -42,10 +56,14 @@ import { replicaStatus } from 'src/containers/Replica';
 import { restartPods } from 'src/network';
 import { useRoute } from 'vue-router';
 import { usePodList } from '@packages/ui/src/stores/podList';
+import DeleteDialog from '@packages/ui/src/components/DeleteDialog.vue';
+
 const podList = usePodList();
 interface Props {
 	drawer: boolean;
 }
+const deleteDialogRef = ref();
+const deleteDialogRef2 = ref();
 const route = useRoute();
 const options = computed(() => [
 	{
@@ -63,7 +81,12 @@ const options = computed(() => [
 			? 'sym_r_stop_circle'
 			: 'sym_r_play_circle',
 		onClick: () => {
-			envRef.value.replicaChange(replicaStatus.value.desire ? 0 : 1);
+			console.log('STOP_POD');
+			if (replicaStatus.value.desire) {
+				deleteDialogRef.value && deleteDialogRef.value.show();
+			} else {
+				envRef.value.replicaChange(1);
+			}
 		}
 	},
 	{
@@ -72,12 +95,23 @@ const options = computed(() => [
 		icon: 'sym_r_restart_alt',
 		disable: !replicaStatus.value.desire,
 		onClick: () => {
-			Promise.all(
-				podList.data.map((item) => restartPods(item.namespace, item.name))
-			);
+			deleteDialogRef2.value && deleteDialogRef2.value.show();
 		}
 	}
 ]);
+
+const confirmHandler = () => {
+	envRef.value.replicaChange(0);
+	deleteDialogRef.value && deleteDialogRef.value.hide();
+};
+
+const confirmHandler2 = () => {
+	Promise.all(
+		podList.data.map((item) => restartPods(item.namespace, item.name))
+	).then(() => {
+		deleteDialogRef2.value && deleteDialogRef2.value.hide();
+	});
+};
 
 withDefaults(defineProps<Props>(), {
 	drawer: false

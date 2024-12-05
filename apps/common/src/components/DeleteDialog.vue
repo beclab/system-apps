@@ -2,9 +2,11 @@
 	<MyQDialog2 v-bind="$attrs" v-model="visible" @before-hide="beforeHide">
 		<div style="width: 400px" class="q-gutter-y-md">
 			<div class="text-ink-2">
-				Enter the <span>{{ lowerCase(desc) }}</span> name
-				<span class="text-weight-bold">{{ name }}</span> to confirm that you
-				understand the risks of this operation.
+				<div
+					v-html="
+						$t('REMOVE_CONFIRM_DSC', { name: lowerCase(desc), resource: name })
+					"
+				></div>
 			</div>
 			<q-input
 				v-model="deleteId"
@@ -23,7 +25,7 @@
 				v-close-popup
 				class="btn-border"
 			>
-				<span class="text-body3 text-ink-2">Cancel</span>
+				<span class="text-body3 text-ink-2">{{ $t('CANCEL') }}</span>
 			</q-btn>
 			<q-btn
 				unelevated
@@ -33,7 +35,7 @@
 				:loading="loading"
 				@click="confirmHandler"
 			>
-				<span>Confirm</span>
+				<span>{{ $t('CONFIRM') }}</span>
 			</q-btn>
 		</div>
 	</MyQDialog2>
