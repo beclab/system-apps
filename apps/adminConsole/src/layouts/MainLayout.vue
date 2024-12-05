@@ -75,7 +75,12 @@ const selectHandler = (data: any) => {
 
 onMounted(() => {
 	const link = route.path.split('/')[1];
-	const target = optionsAll.find((item) => item.link === `/${link}`);
+	let target: any = optionsAll[0];
+	if (link === 'site-middleware') {
+		target = optionsAll.find((item) => item.link === route.path);
+	} else {
+		target = optionsAll.find((item) => item.link === `/${link}`);
+	}
 	if (target) {
 		active.value = target.key;
 		splitMenu.changeStatus(target.key);
