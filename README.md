@@ -78,7 +78,7 @@ yarn build:server
 yarn build:dashboard
 ```
 
-- System
+- Control Hub
 
 ```bash
 yarn build:system
