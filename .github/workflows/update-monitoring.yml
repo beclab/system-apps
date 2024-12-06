@@ -3,12 +3,10 @@ name: Update Monitoring Frontend
 on:
   workflow_dispatch:
 
-  pull_request:
+  pull_request_target:
     types:
       - opened
-    branches:
-      - 'main'
-      - 'feat/language'
+    branches: ['main', '*']
     paths:
       - 'apps/monitoring/package.json'
   push:
