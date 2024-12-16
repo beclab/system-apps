@@ -962,8 +962,6 @@ export const API_VERSIONS = {
 	workspaces: 'apis/tenant.kubesphere.io/v1alpha2',
 	users: 'apis/iam.kubesphere.io/v1alpha2',
 	globalroles: 'apis/iam.kubesphere.io/v1alpha2',
-	devops: 'kapis/devops.kubesphere.io/v1alpha3',
-	pipelines: 'kapis/devops.kubesphere.io/v1alpha3',
 	workspaceroles: 'apis/iam.kubesphere.io/v1alpha2',
 	dashboards: 'apis/monitoring.kubesphere.io/v1alpha2',
 	clusterdashboards: 'apis/monitoring.kubesphere.io/v1alpha2',
@@ -972,9 +970,6 @@ export const API_VERSIONS = {
 	ippools: 'apis/network.kubesphere.io/v1alpha1',
 	storageclasscapabilities: 'apis/storage.kubesphere.io/v1alpha1',
 	meter: 'kapis/metering.kubesphere.io/v1alpha1',
-	gateways: 'kapis/gateway.kubesphere.io/v1alpha1',
-	cds: 'kapis/gitops.kubesphere.io/v1alpha1',
-	codeRepos: 'kapis/devops.kubesphere.io/v1alpha3'
 };
 
 export const MONITOR_GRAPH_COLORS = [
