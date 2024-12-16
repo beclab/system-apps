@@ -64,7 +64,6 @@ const userDetail = async (ctx) => {
 		user,
 		runtime,
 		clusterRole,
-		config: { ...clientConfig, supportGpuType, gitopsEngine }
 	};
 
 	ctx.body = data;
