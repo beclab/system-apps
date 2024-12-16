@@ -18,11 +18,8 @@
 
 const {
 	getCurrentUser,
-	getKSConfig,
 	getK8sRuntime,
-	getOAuthInfo,
 	getClusterRole,
-	getSupportGpuList,
 	getGitOpsEngine,
 	getMyApps,
 	getAllMetric,
@@ -52,20 +49,18 @@ const { client: clientConfig } = getServerConfig();
 
 const userDetail = async (ctx) => {
 	const clusterRole = await getClusterRole(ctx);
-	const ksConfig = await getKSConfig(ctx);
 
-	const [user, runtime, supportGpuType, gitopsEngine] = await Promise.all([
-		getCurrentUser(ctx, clusterRole, ksConfig.multicluster),
+	const [user, runtime, gitopsEngine] = await Promise.all([
+		getCurrentUser(ctx, clusterRole, false),
 		getK8sRuntime(ctx),
-		getSupportGpuList(ctx),
 		getGitOpsEngine(ctx)
+
 	]);
 
 	const localeManifest = getLocaleManifest();
 
 	const data = {
 		localeManifest,
-		ksConfig,
 		user,
 		runtime,
 		clusterRole,
@@ -259,16 +254,10 @@ const cacheUser = async (ctx, next) => {
 	console.log('header', ctx.headers['x-bfl-user']);
 	if (!user) {
 		const clusterRole = await getClusterRole(ctx);
-		const ksConfig = await getKSConfig(ctx);
 		const [user] = await Promise.all([
-			getCurrentUser(ctx, clusterRole, ksConfig.multicluster)
+			getCurrentUser(ctx, clusterRole)
 		]);
 
-		const data = {
-			ksConfig,
-			user,
-			clusterRole
-		};
 		setUserInfo(ctx, user);
 	}
 	await next();

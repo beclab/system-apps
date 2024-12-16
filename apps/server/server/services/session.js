@@ -229,39 +229,6 @@ const getUserDetail = async (token, clusterRole, isMulticluster) => {
 	return user;
 };
 
-const getWorkspaces = async (token, clusterRole) => {
-	let workspaces = [];
-	let version = 3.2;
-
-	const backendVersion = await send_gateway_request({
-		method: 'GET',
-		url: '/kapis/version',
-		token
-	});
-	if (backendVersion) {
-		const _version = backendVersion.gitVersion.replace(/[^\d.]/g, '');
-		version = Number(_version.split('.').slice(0, 2).join('.'));
-	}
-	const url =
-		version > 3.2
-			? clusterRole === 'host'
-				? '/kapis/tenant.kubesphere.io/v1alpha3/workspacetemplates'
-				: '/kapis/tenant.kubesphere.io/v1alpha3/workspaces'
-			: '/kapis/tenant.kubesphere.io/v1alpha2/workspaces';
-
-	const resp = await send_gateway_request({
-		method: 'GET',
-		url,
-		params: { limit: 10 },
-		token
-	});
-
-	if (resp && resp.items) {
-		workspaces = resp.items.map((item) => item.metadata.name);
-	}
-
-	return workspaces;
-};
 
 const getKSConfig = async (ctx) => {
 	const token = ctx.cookies.get('auth_token');
@@ -381,33 +348,6 @@ const getUserMetric = async (ctx, params) => {
 	return data;
 };
 
-const getSupportGpuList = async (ctx) => {
-	const token = ctx.cookies.get('auth_token');
-	let gpuKinds = [];
-	if (!token) {
-		return [];
-	}
-	try {
-		const list = await send_gateway_request({
-			method: 'GET',
-			url: '/kapis/config.kubesphere.io/v1alpha2/configs/gpu/kinds',
-			token
-		});
-		if (Array.isArray(list)) {
-			const defaultGpu = list
-				.filter((item) => item.default)
-				.map((item) => item.resourceName);
-
-			const otherGpus = list
-				.filter((item) => !item.default)
-				.map((item) => item.resourceName);
-
-			gpuKinds = [...defaultGpu, ...otherGpus];
-		}
-	} catch (error) { }
-
-	return gpuKinds;
-};
 
 // TODO: need to get the data from kubesphere
 const getGitOpsEngine = async (ctx) => {
@@ -445,7 +385,7 @@ const getUsers = async (ctx, clusterRole, isMulticluster) => {
 	return resp;
 };
 
-const getCurrentUser = async (ctx, clusterRole, isMulticluster) => {
+const getCurrentUser = async (ctx, clusterRole, isMulticluster = false) => {
 	const token = ctx.cookies.get('auth_token');
 
 	if (!token) {
@@ -457,74 +397,11 @@ const getCurrentUser = async (ctx, clusterRole, isMulticluster) => {
 
 	const [userDetail, workspaces] = await Promise.all([
 		getUserDetail(token, clusterRole, isMulticluster),
-		getWorkspaces(token, clusterRole)
 	]);
 
 	return { ...userDetail, workspaces };
 };
 
-const getOAuthInfo = async () => {
-	let resp = [];
-	try {
-		resp = await send_gateway_request({
-			method: 'GET',
-			url: '/kapis/config.kubesphere.io/v1alpha2/configs/oauth'
-		});
-	} catch (error) {
-		console.error(error);
-	}
-
-	const servers = [];
-	if (resp && !isEmpty(resp.identityProviders)) {
-		resp.identityProviders.forEach((item) => {
-			if (item && item.provider) {
-				let url;
-				let params = {};
-				let type;
-				let endSessionURL;
-
-				const authURL = get(item, 'provider.endpoint.authURL');
-
-				if (authURL) {
-					url = authURL;
-					params = {
-						state: item.name,
-						client_id: item.provider.clientID,
-						response_type: 'code'
-					};
-
-					if (item.provider.redirectURL) {
-						params.redirect_uri = item.provider.redirectURL;
-					}
-
-					if (item.provider.scopes && item.provider.scopes.length > 0) {
-						params.scope = item.provider.scopes.join(' ');
-					}
-
-					if (item.type) {
-						endSessionURL = get(item, 'provider.endpoint.endSessionURL');
-						type = item.type;
-					}
-				} else if (item.provider.casServerURL) {
-					params = { service: item.provider.redirectURL };
-					url = item.provider.casServerURL;
-				}
-
-				if (url) {
-					url = `${url}?${Object.keys(params)
-						.map(
-							(key) =>
-								`${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`
-						)
-						.join('&')}`;
-					servers.push({ title: item.name, url, type, endSessionURL });
-				}
-			}
-		});
-	}
-
-	return servers;
-};
 
 const createUser = (params, token) => {
 	return send_gateway_request({
@@ -548,13 +425,11 @@ module.exports = {
 	login,
 	oAuthLogin,
 	getCurrentUser,
-	getOAuthInfo,
 	getNewToken,
 	getKSConfig,
 	getK8sRuntime,
 	createUser,
 	getClusterRole,
-	getSupportGpuList,
 	getGitOpsEngine,
 	getMyApps,
 	getAllMetric,

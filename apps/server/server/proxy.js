@@ -61,15 +61,6 @@ const k8sResourceProxy = {
 	}
 };
 
-const devopsWebhookProxy = {
-	target: `${serverConfig.apiServer.url}/kapis/devops.kubesphere.io/v1alpha2`,
-	changeOrigin: true,
-	ignorePath: true,
-	optionsHandle(options, req) {
-		options.target += `/${req.url.slice(8)}`;
-	}
-};
-
 const b2iFileProxy = {
 	target: serverConfig.apiServer.url,
 	changeOrigin: true,
@@ -174,6 +165,5 @@ function k8sResourceproxyRes(proxyRes, req, res) {
 
 module.exports = {
 	k8sResourceProxy,
-	devopsWebhookProxy,
 	b2iFileProxy
 };
