@@ -7,7 +7,7 @@
 		<div class="row items-center" @click="routeBack">
 			<q-icon
 				name="arrow_back_ios_new"
-				:size="size === 'md' ? '16px' : '20px'"
+				:size="size === 'md' ? '16px' : '24px'"
 				class="my-icon text-ink-1"
 				v-if="!isContent"
 			/>

@@ -22,7 +22,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import Empty from '../components/Empty.vue';
-import QTableStyle from '../components/QTableStyle.vue';
+import QTableStyle from '../components/QTableStyle2.vue';
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 interface Props {

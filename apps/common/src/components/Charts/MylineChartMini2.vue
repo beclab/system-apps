@@ -40,6 +40,8 @@ import { _capitalize } from 'src/utils/index';
 import MySubTitle from '../MyListItem/MySubTitle.vue';
 import ListItem from '../MyListItem/ListItem.vue';
 import { useColor } from '@bytetrade/ui';
+import { formatter } from './utils';
+import './tooltip.scss';
 
 const { color: ink1 } = useColor('ink-1');
 const { color: ink2 } = useColor('ink-2');
@@ -116,16 +118,14 @@ const option = computed(() => ({
 	tooltip: {
 		trigger: 'axis',
 		formatter: (params: any, ticket: string) => {
-			console.log('params', params);
-
-			let dom = '';
-			let domItem = '';
-			params.forEach((item: any) => {
-				console.log('item', item);
-				domItem = `<div>${item.marker}${item.seriesName} <span style="margin-left: 8px;">${item.value} ${unit.value}</span></div>`;
-				dom += domItem;
-			});
-			return `<div>${params[0].name}</div>${dom}`;
+			const data = params.map((item: any) => ({
+				marker: item.marker,
+				seriesName: item.seriesName,
+				data: item.value,
+				unit: unit.value,
+				axisValueLabel: params[0].name
+			}));
+			return formatter(data, unit.value);
 		},
 		axisPointer: {
 			type: 'line',

@@ -49,7 +49,8 @@ import { capitalize, indexOf, isArray, get } from 'lodash';
 import { date } from 'quasar';
 import { firstToUpper, firstToUpperWith_ } from 'src/constant';
 import { colors } from 'quasar';
-import { chartEntervalOfWidth } from './utils';
+import { chartEntervalOfWidth, formatter } from './utils';
+import './tooltip.scss';
 import { useColor } from '@bytetrade/ui';
 
 const { color: ink1 } = useColor('ink-1');
@@ -159,6 +160,7 @@ const option = computed(() => {
 			trigger: 'axis',
 			valueFormatter: (value: any) =>
 				`${isNaN(value) ? '-' : value}${unit.value}`,
+			formatter: (params: any, ticket: string) => formatter(params, unit.value),
 			axisPointer: {
 				type: 'line',
 				lineStyle: {

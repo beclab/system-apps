@@ -50,6 +50,8 @@ import { date } from 'quasar';
 import { firstToUpper, firstToUpperWith_ } from 'src/constant';
 import { colors } from 'quasar';
 import { useColor } from '@bytetrade/ui';
+import { formatter } from './utils';
+import './tooltip.scss';
 
 const { color: ink1 } = useColor('ink-1');
 const { color: ink2 } = useColor('ink-2');
@@ -168,6 +170,7 @@ const option = computed(() => {
 			trigger: 'axis',
 			valueFormatter: (value: any) =>
 				`${isNaN(value) ? '-' : value} ${unit.value}`,
+			formatter: (params: any, ticket: string) => formatter(params, unit.value),
 			axisPointer: {
 				type: 'line',
 				lineStyle: {
@@ -248,11 +251,5 @@ const option = computed(() => {
 	.chart {
 		height: 100%;
 	}
-}
-</style>
-<style lang="scss">
-.echart-tooltip-container {
-	border-radius: 12px !important;
-	box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.2) !important;
 }
 </style>

@@ -49,8 +49,11 @@ const contentStyle = {
 };
 </script>
 
-<style>
+<style lang="scss">
 .tabs-content-wrapper {
 	font-size: 16px;
+	.q-tab {
+		min-height: 56px;
+	}
 }
 </style>

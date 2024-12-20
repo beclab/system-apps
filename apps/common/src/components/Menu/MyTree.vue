@@ -75,6 +75,7 @@
 										class="my-tree-badge-wrapper"
 										v-if="prop.node.status"
 										:type="prop.node.status"
+										outlined
 										size="sm"
 									></MyBadge>
 								</div>
@@ -320,6 +321,7 @@ defineExpose({ resetSelected, setExpanded, getExpandedNodes });
 	top: 0;
 	left: 0;
 	right: 0;
+	padding-right: 64px;
 	height: $content-header-height;
 }
 </style>
