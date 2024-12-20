@@ -4,6 +4,7 @@
 		class="my-badge-icon"
 		:class="[
 			typeFormat === 'failed' ? 'quasar-badge' : '',
+			outlined ? 'outlined' : '',
 			typeFormat,
 			`${size}-icon`,
 			flicker ? 'flicker' : ''
@@ -19,10 +20,12 @@ interface StatusProps {
 	type: string;
 	size?: 'sm' | 'md' | 'lg';
 	flicker?: boolean;
+	outlined?: boolean;
 }
 
 const props = withDefaults(defineProps<StatusProps>(), {
-	size: 'md'
+	size: 'md',
+	outlined: false
 });
 
 const typeFormat = computed(() => lowerCase(props.type));
@@ -39,7 +42,9 @@ const typeFormat = computed(() => lowerCase(props.type));
 		bottom: 0;
 		right: 0;
 		border-radius: 50%;
-		border: 1px solid #fff;
+	}
+	&.outlined::before {
+		border: 1px solid $ink-on-brand;
 	}
 
 	&.sm-icon {

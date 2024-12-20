@@ -73,7 +73,8 @@ import { date } from 'quasar';
 import { firstToUpper, firstToUpperWith_ } from 'src/constant';
 import { colors } from 'quasar';
 import { getValue } from '@packages/ui/src/utils/yaml';
-import { chartEntervalOfWidth } from './utils';
+import { chartEntervalOfWidth, formatter } from './utils';
+import './tooltip.scss';
 import { useColor } from '@bytetrade/ui';
 
 const { color: ink1 } = useColor('ink-1');
@@ -188,17 +189,14 @@ const option = computed(() => {
 		tooltip: {
 			trigger: 'axis',
 			formatter: (params: any, ticket: string) => {
-				let dom = '';
-				let domItem = '';
-				params.forEach((item: any) => {
-					domItem = `<div>${item.marker}${
-						item.seriesName
-					} <span style="margin-left: 8px;">${
-						seriesData.value[item.seriesIndex][item.dataIndex][1]
-					} ${unit.value[item.seriesIndex]}</span></div>`;
-					dom += domItem;
-				});
-				return `<div>${params[0].axisValueLabel}</div>${dom}`;
+				const data = params.map((item: any) => ({
+					marker: item.marker,
+					seriesName: item.seriesName,
+					data: seriesData.value[item.seriesIndex][item.dataIndex][1],
+					unit: unit.value[item.seriesIndex],
+					axisValueLabel: params[0].axisValueLabel
+				}));
+				return formatter(data, unit.value);
 			},
 			axisPointer: {
 				type: 'line',

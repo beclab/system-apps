@@ -14,6 +14,7 @@
 				flat
 				dense
 				:icon="expanded ? 'arrow_drop_up' : 'arrow_drop_down'"
+				class="expansion-btn-wrapper"
 			/>
 		</QButtonStyle>
 	</div>
@@ -40,3 +41,10 @@ const props = withDefaults(defineProps<Props>(), {});
 
 const expanded = ref(false);
 </script>
+<style lang="scss" scoped>
+.expansion-btn-wrapper {
+	&::before {
+		border-color: transparent !important;
+	}
+}
+</style>

@@ -50,7 +50,7 @@ import { ObjectMapper } from 'src/utils/object.mapper';
 import { ref, watch, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import Empty from '../components/Empty.vue';
-import QTableStyle from '../components/QTableStyle.vue';
+import QTableStyle from '../components/QTableStyle2.vue';
 import MyBadge from '../components/MyBadge.vue';
 import { MODULE_KIND_MAP } from '@packages/ui/src/utils/constants';
 import { useI18n } from 'vue-i18n';
@@ -67,35 +67,35 @@ const pagination = ref({
 const columns: any = computed(() => [
 	{
 		label: t('TYPE'),
-		align: 'center',
+		align: 'left',
 		name: 'type',
 		field: 'type',
 		width: '10%'
 	},
 	{
 		label: t('REASON'),
-		align: 'center',
+		align: 'left',
 		name: 'reason',
 		field: 'reason',
 		width: '16%'
 	},
 	{
 		label: t('EVENT_AGE'),
-		align: 'center',
+		align: 'left',
 		name: 'age',
 		field: 'age',
 		width: '16%'
 	},
 	{
 		label: t('SOURCE'),
-		align: 'center',
+		align: 'left',
 		name: 'from',
 		field: 'from',
 		width: '18%'
 	},
 	{
 		label: t('MESSAGE'),
-		align: 'center',
+		align: 'left',
 		name: 'message',
 		field: 'message'
 	}

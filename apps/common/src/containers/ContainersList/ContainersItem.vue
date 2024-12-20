@@ -11,6 +11,7 @@
 							class="my-containers-badge"
 							:type="status"
 							flicker
+							outlined
 						></MyBadge>
 					</template>
 					<template #title>
