@@ -17,8 +17,10 @@
 			<MyAvatarImg
 				v-else-if="avatar"
 				:src="avatar"
-				:width="!isContent ? '32px' : '48px'"
-				:height="!isContent ? '32px' : '48px'"
+				:style="{
+					width: !isContent ? '32px' : '48px',
+					height: !isContent ? '32px' : '48px'
+				}"
 				:class="!isContent ? 'q-mr-sm' : 'q-mr-lg'"
 			></MyAvatarImg>
 			<span

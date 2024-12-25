@@ -5,17 +5,15 @@
 				<Refresh @click="fetchData"></Refresh>
 				<NodeSelect v-model="selectValue" @update:model-value="fetchData">
 				</NodeSelect>
-				<QSectionStyle>
-					<q-select
-						style="min-width: 120px"
-						v-model="statusValue"
-						@update:model-value="fetchData"
-						:options="statusOptions"
-						dense
-						outlined
-					>
-					</q-select>
-				</QSectionStyle>
+				<BtSelect
+					style="min-width: 120px"
+					v-model="statusValue"
+					@update:model-value="fetchData"
+					:options="statusOptions"
+					dense
+					outlined
+				>
+				</BtSelect>
 				<QInputStyle>
 					<q-input
 						v-model="name"
@@ -151,6 +149,7 @@ import { useQuasar } from 'quasar';
 import MyLoading2 from '@packages/ui/src/components/MyLoading2.vue';
 import { useI18n } from 'vue-i18n';
 import QSectionStyle from '@packages/ui/src/components/QSectionStyle.vue';
+import BtSelect from '@packages/ui/src/components/Select.vue';
 
 const $q = useQuasar();
 const { t } = useI18n();

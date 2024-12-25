@@ -1,20 +1,18 @@
 <template>
-	<QSectionStyle>
-		<q-select
-			dense
-			v-model="selected"
-			:options="options"
-			outlined
-			@update:model-value="change"
-		/>
-	</QSectionStyle>
+	<BtSelect
+		dense
+		v-model="selected"
+		:options="options"
+		outlined
+		@update:model-value="change"
+	/>
 </template>
 
 <script setup lang="ts">
 import { getNamespacesList } from 'src/network';
 import { ref, onMounted, withDefaults } from 'vue';
-import QSectionStyle from '@packages/ui/src/components/QSectionStyle.vue';
 import { useI18n } from 'vue-i18n';
+import BtSelect from '@packages/ui/src/components/Select.vue';
 const { t } = useI18n();
 
 interface Props {

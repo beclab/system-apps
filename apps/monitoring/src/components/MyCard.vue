@@ -8,7 +8,7 @@
 				<div v-else>{{ icon }}</div>
 
 				<div v-if="$slots.title"><slot name="title"></slot></div>
-				<div v-else class="text-h4 text-grey-10">{{ title }}</div>
+				<div v-else class="text-h4 text-ink-1">{{ title }}</div>
 			</div>
 			<div><slot name="extra"></slot></div>
 		</div>
