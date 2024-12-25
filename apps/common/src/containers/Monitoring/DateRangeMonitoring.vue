@@ -1,27 +1,22 @@
 <template>
-	<QSectionStyle>
-		<q-select
-			v-model="selectValue"
-			:options="options"
-			dense
-			outlined
-			@update:model-value="change"
-		>
-			<template v-slot:selected-item="scope">
-				<div>{{ selectItemformat(scope.opt) }}</div>
-			</template>
-			<template v-slot:option="scope">
-				<q-item v-bind="scope.itemProps">
-					<q-item-section>
-						<q-item-label> {{ selectItemformat(scope.opt) }}</q-item-label>
-					</q-item-section>
-				</q-item>
-			</template>
-		</q-select>
-	</QSectionStyle>
+	<BtSelect
+		v-model="selectValue"
+		:options="options"
+		dense
+		outlined
+		@update:model-value="change"
+	>
+		<template v-slot:selected-item="scope">
+			<div>{{ selectItemformat(scope.opt) }}</div>
+		</template>
+		<template v-slot:option-label="scope">
+			{{ selectItemformat(scope.opt) }}
+		</template>
+	</BtSelect>
 </template>
 
 <script lang="ts">
+import BtSelect from '../../components/Select.vue';
 export type DateRangeItem = string;
 
 export const options: DateRangeItem[] = [

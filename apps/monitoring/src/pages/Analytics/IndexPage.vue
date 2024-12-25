@@ -63,7 +63,10 @@ const fetchData = () => {
 				} else if (item.name === 'desktop') {
 					icon = desktopIcon;
 					title = 'Desktop';
-					const url = `//desktop.${appDetail.user.username}.myterminus.com`;
+
+					const url = `//desktop.${appDetail.user.username}${
+						location.hostname.split(appDetail.user.username)[1]
+					}`;
 					return { ...app, ...item, title, icon, url };
 				}
 				return { ...app, ...item, url: `//${app.url}` };

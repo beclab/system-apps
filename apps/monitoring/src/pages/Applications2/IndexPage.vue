@@ -16,16 +16,13 @@
 					</template>
 				</q-input>
 			</QInputStyle>
-			<QSectionStyle>
-				<q-select
-					v-model="selected"
-					:options="options"
-					dense
-					outlined
-					@update:model-value="fetchData"
-				/>
-			</QSectionStyle>
-
+			<BtSelect
+				v-model="selected"
+				:options="options"
+				dense
+				outlined
+				@update:model-value="fetchData"
+			/>
 			<SortButtom @change="sortHandler" :default-value="sort"></SortButtom>
 		</div>
 	</QSectionStyle>
@@ -108,6 +105,7 @@ import { t } from 'src/boot/i18n';
 import Empty from '@packages/ui/src/components/Empty.vue';
 import { fetchWorkloadsMetrics, loadingApps, loadingData } from './config';
 import { useAppList } from 'src/stores/AppList';
+import BtSelect from '@packages/ui/src/components/Select.vue';
 
 const appList = useAppList();
 enum EntranceState {

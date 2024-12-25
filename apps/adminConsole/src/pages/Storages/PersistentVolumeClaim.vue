@@ -8,27 +8,22 @@
 					v-model="selectValue"
 					@update:model-value="fetchData"
 				></NamespacesSelection>
-				<QSectionStyle>
-					<q-select
-						dense
-						v-model="status"
-						:options="VOLUME_STATUS"
-						outlined
-						option-label="text"
-						option-value="value"
-						@update:model-value="fetchData"
-					>
-						<template v-slot:option="scope">
-							<q-item v-bind="scope.itemProps">
-								{{ $t(scope.opt.text) }}
-							</q-item>
-						</template>
-						<template #selected>
-							{{ $t(status.text) }}
-						</template>
-					</q-select>
-				</QSectionStyle>
-
+				<BtSelect
+					dense
+					v-model="status"
+					:options="VOLUME_STATUS"
+					outlined
+					option-label="text"
+					option-value="value"
+					@update:model-value="fetchData"
+				>
+					<template v-slot:option-label="scope">
+						{{ $t(scope.opt.text) }}
+					</template>
+					<template #selected>
+						{{ $t(status.text) }}
+					</template>
+				</BtSelect>
 				<QInputStyle>
 					<q-input
 						v-model="storageName"
@@ -205,6 +200,7 @@ import EditDialog from 'components/dialog/src/IndexDialog.vue';
 import { useI18n } from 'vue-i18n';
 import { set } from 'lodash';
 import { useColor } from '@bytetrade/ui';
+import BtSelect from '@packages/ui/src/components/Select.vue';
 const { color: blueDefault } = useColor('blue-default');
 const { color: inkOnBrand } = useColor('ink-on-brand');
 

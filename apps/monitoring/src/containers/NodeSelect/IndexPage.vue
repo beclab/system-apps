@@ -1,23 +1,16 @@
 <template>
-	<QSectionStyle>
-		<q-select
-			style="min-width: 200px"
-			v-model="selectValue"
-			@update:model-value="selectHandler"
-			:options="options"
-			dense
-			outlined
-		>
-			<template v-slot:option="scope">
-				<q-separator v-if="scope.opt.user" />
-				<q-item v-bind="scope.itemProps">
-					<q-item-section>
-						<q-item-label>{{ scope.opt.label }}</q-item-label>
-					</q-item-section>
-				</q-item>
-			</template>
-		</q-select>
-	</QSectionStyle>
+	<BtSelect
+		style="min-width: 200px"
+		v-model="selectValue"
+		@update:model-value="selectHandler"
+		:options="options"
+		dense
+		outlined
+	>
+		<template v-slot:option-label="scope">
+			{{ scope.opt.label }}
+		</template>
+	</BtSelect>
 </template>
 
 <script setup lang="ts">
@@ -30,6 +23,7 @@ import {
 import QSectionStyle from '@packages/ui/src/components/QSectionStyle.vue';
 import { GLOBAL_ROLE } from '@packages/ui/src/constant/user';
 import { initOptions, options, selectValue } from './config';
+import BtSelect from '@packages/ui/src/components/Select.vue';
 
 const emits = defineEmits(['update:model-value']);
 

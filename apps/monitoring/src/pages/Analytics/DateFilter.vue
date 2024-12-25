@@ -1,20 +1,19 @@
 <template>
-	<QSectionStyle>
-		<q-select
-			v-model="dateValue[websiteId]"
-			:options="dateFilterOption"
-			outlined
-			dense
-			option-label="label"
-			option-value="value"
-			@update:model-value="change"
-		/>
-	</QSectionStyle>
+	<BtSelect
+		v-model="dateValue[websiteId]"
+		:options="dateFilterOption"
+		outlined
+		dense
+		option-label="label"
+		option-value="value"
+		@update:model-value="change"
+	>
+	</BtSelect>
 </template>
 
 <script setup lang="ts">
 import { dateValue, dateFilterOption } from './DatefilterState';
-import QSectionStyle from '@packages/ui/src/components/QSectionStyle.vue';
+import BtSelect from '@packages/ui/src/components/Select.vue';
 
 interface Props {
 	websiteId: string;
