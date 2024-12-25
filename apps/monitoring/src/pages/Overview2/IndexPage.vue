@@ -45,13 +45,7 @@
 				:title="$t('USER_RESOURCES', { name: appDetail.user.username })"
 			>
 				<template #avatar>
-					<TerminusAvatar
-						:info="{
-							terminusName: `${appDetail.user.username}@myterminus.com`
-						}"
-						:size="32"
-						class="terminu-avatar-wrapper"
-					/>
+					<OlaresAvatar class="terminu-avatar-wrapper" />
 				</template>
 				<UserResource
 					:data="userResourcesData"
@@ -113,6 +107,7 @@ import Analytics from './Analytics.vue';
 import { get, last } from 'lodash';
 import { useColor } from '@bytetrade/ui';
 import PageBackground from 'components/PageBackground.vue';
+import OlaresAvatar from 'src/containers/OlaresAvatar.vue';
 
 const appDetail = useAppDetailStore();
 
