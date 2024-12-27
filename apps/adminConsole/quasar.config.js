@@ -58,7 +58,8 @@ module.exports = configure(function (ctx) {
 				LOGIN_USERNAME: process.env.LOGIN_USERNAME,
 				LOGIN_PASSWORD: process.env.LOGIN_PASSWORD,
 				AUTH_TOKEN: process.env.AUTH_TOKEN,
-				ACCOUNT: process.env.ACCOUNT
+				ACCOUNT: process.env.ACCOUNT,
+				DEMO: process.env.DEMO
 			},
 
 			// Add dependencies for transpiling with Babel (Array of string/regex)

@@ -3,13 +3,6 @@ name: Update Server
 on:
   workflow_dispatch:
 
-  pull_request:
-    types:
-      - opened
-    branches:
-      - 'main'
-    paths:
-      - 'apps/server/package.json'
   push:
     branches:
       - 'main'

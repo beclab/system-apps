@@ -150,28 +150,36 @@ import MyLoading2 from '@packages/ui/src/components/MyLoading2.vue';
 import { useI18n } from 'vue-i18n';
 import QSectionStyle from '@packages/ui/src/components/QSectionStyle.vue';
 import BtSelect from '@packages/ui/src/components/Select.vue';
+import { useAppDetailStore } from 'stores/AppDetail';
 
+const appDetailStore = useAppDetailStore();
 const $q = useQuasar();
 const { t } = useI18n();
-const options = [
-	{
-		label: t('VIEW_YAML'),
-		value: 'yaml',
-		icon: 'sym_r_preview',
-		onClick: () => {
-			yamlRef.value.show();
+const options = computed(() => {
+	const option1 = [
+		{
+			label: t('VIEW_YAML'),
+			value: 'yaml',
+			icon: 'sym_r_preview',
+			onClick: () => {
+				yamlRef.value.show();
+			}
 		}
-	},
-	{
-		label: t('DELETE'),
-		value: 'delete',
-		icon: 'sym_r_delete',
-		onClick: () => {
-			console.log('delete');
-			deleteDialogRef.value?.show();
+	];
+	const option2 = [
+		{
+			label: t('DELETE'),
+			value: 'delete',
+			icon: 'sym_r_delete',
+			onClick: () => {
+				console.log('delete');
+				deleteDialogRef.value?.show();
+			}
 		}
-	}
-];
+	];
+
+	return appDetailStore.isDemo ? option1 : option1.concat(option2);
+});
 
 const columns: any = [
 	{

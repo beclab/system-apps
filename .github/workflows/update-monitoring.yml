@@ -25,6 +25,6 @@ jobs:
       PACKAGE_PATH: apps/monitoring/package.json
       DIR_PATH: apps/monitoring
       DOCKERFILE_PATH: Dockerfile-monitoring-client
-      PACKAGE_BUILD_SCRIPT: build:monitoring
+      PACKAGE_BUILD_SCRIPT: yarn build:monitoring
       DEFAULT_VERSION: latest
     secrets: inherit

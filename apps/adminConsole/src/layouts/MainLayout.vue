@@ -25,6 +25,7 @@ import { onMounted, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useSplitMenu } from '@packages/ui/src/stores/menu';
 import { useI18n } from 'vue-i18n';
+import { useAppDetailStore } from 'src/stores/AppDetail';
 import {
 	updateBreadcrumbs,
 	options,
@@ -34,26 +35,32 @@ import {
 	options3
 } from './breadcrumbs';
 const { t } = useI18n();
-
+const appDetailStore = useAppDetailStore();
 const splitMenu = useSplitMenu();
 
-const items = computed(() => [
-	{
-		key: 'terminus',
-		label: t('TERMINUS'),
-		children: options.value
-	},
-	{
-		key: 'resource',
-		label: t('RESOURCE'),
-		children: options2.value
-	},
-	{
-		key: 'middleware',
-		label: t('MIDDLEWARE'),
-		children: options3.value
-	}
-]);
+const items = computed(() => {
+	const item1 = [
+		{
+			key: 'terminus',
+			label: t('TERMINUS'),
+			children: options.value
+		},
+		{
+			key: 'resource',
+			label: t('RESOURCE'),
+			children: options2.value
+		}
+	];
+	const item2 = [
+		{
+			key: 'middleware',
+			label: t('MIDDLEWARE'),
+			children: options3.value
+		}
+	];
+
+	return appDetailStore.isDemo ? item1 : item1.concat(item2);
+});
 
 const optionsAll = [...options.value, ...options2.value, ...options3.value];
 
