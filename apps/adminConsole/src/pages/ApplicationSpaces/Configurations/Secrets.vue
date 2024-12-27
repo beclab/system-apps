@@ -2,7 +2,7 @@
 	<MyContentPage>
 		<template #extra>
 			<div class="col-auto">
-				<QButtonStyle>
+				<QButtonStyle v-permission>
 					<q-btn dense flat icon="sym_r_edit_square" @click="clickHandler">
 						<q-tooltip>
 							<div style="white-space: nowrap">

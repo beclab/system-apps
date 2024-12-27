@@ -1,5 +1,6 @@
 import { ref, computed } from 'vue';
 import { t } from 'src/boot/i18n';
+import { useAppDetailStore } from 'src/stores/AppDetail';
 export interface Breadcrumb {
 	title: string;
 	icon?: string;
@@ -83,11 +84,13 @@ export const options3 = computed(() => [
 	}
 ]);
 
-const optionAll = computed(() => [
-	...options.value,
-	...options2.value,
-	...options3.value
-]);
+const optionAll = computed(() => {
+	const appDetailsStore = useAppDetailStore();
+
+	return appDetailsStore.isDemo
+		? [...options.value, ...options2.value]
+		: [...options.value, ...options2.value, ...options3.value];
+});
 export const active = ref(optionAll.value[0].key);
 export const currentItem = computed(() =>
 	optionAll.value.find((item) => item.key === active.value)

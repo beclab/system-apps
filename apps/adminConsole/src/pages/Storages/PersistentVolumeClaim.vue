@@ -184,7 +184,7 @@ import {
 	patchPersistentvolumeclaims
 } from 'src/network';
 import volumesDataIcon from '@packages/ui/src/assets/volumes-data.svg';
-import { onMounted, ref, h } from 'vue';
+import { onMounted, ref, h, computed } from 'vue';
 import { ObjectMapper } from '@packages/ui/src/utils/object.mapper';
 import Status from '@packages/ui/src/components/Status.vue';
 import { getLocalTime, map_accessModes } from 'src/utils';
@@ -201,6 +201,9 @@ import { useI18n } from 'vue-i18n';
 import { set } from 'lodash';
 import { useColor } from '@bytetrade/ui';
 import BtSelect from '@packages/ui/src/components/Select.vue';
+import { useAppDetailStore } from 'stores/AppDetail';
+
+const appDetailStore = useAppDetailStore();
 const { color: blueDefault } = useColor('blue-default');
 const { color: inkOnBrand } = useColor('ink-on-brand');
 
@@ -214,48 +217,55 @@ const VOLUME_STATUS = [
 	{ text: 'VOLUME_STATUS_PENDING', value: 'pending' }
 ];
 
-const columns = [
-	{
-		name: 'name',
-		required: true,
-		label: t('NAME'),
-		align: 'left',
-		field: 'name',
-		sortable: true
-	},
-	{
-		name: 'status',
-		align: 'left',
-		label: t('STATUS'),
-		field: 'status'
-	},
-	{
-		name: 'accessModes',
-		align: 'left',
-		label: t('ACCESS_MODE_TCAP'),
-		field: 'accessModes'
-	},
-	{
-		name: 'inUse',
-		label: t('MOUNT_STATUS'),
-		align: 'left',
-		field: 'inUse'
-	},
-	{
-		name: 'createTime',
-		label: t('CREATION_TIME_TCAP'),
-		align: 'left',
-		field: 'createTime',
-		sortable: true
-	},
-	{
-		name: 'operations',
-		label: t('OPERATIONS'),
-		align: 'center',
-		field: 'name',
-		sortable: true
-	}
-];
+const columns = computed(() => {
+	const list = [
+		{
+			name: 'name',
+			required: true,
+			label: t('NAME'),
+			align: 'left',
+			field: 'name',
+			sortable: true
+		},
+		{
+			name: 'status',
+			align: 'left',
+			label: t('STATUS'),
+			field: 'status'
+		},
+		{
+			name: 'accessModes',
+			align: 'left',
+			label: t('ACCESS_MODE_TCAP'),
+			field: 'accessModes'
+		},
+		{
+			name: 'inUse',
+			label: t('MOUNT_STATUS'),
+			align: 'left',
+			field: 'inUse'
+		},
+		{
+			name: 'createTime',
+			label: t('CREATION_TIME_TCAP'),
+			align: 'left',
+			field: 'createTime',
+			sortable: true
+		}
+	];
+
+	const list2 = [
+		{
+			name: 'operations',
+			label: t('OPERATIONS'),
+			align: 'center',
+			field: 'name',
+			sortable: true
+		}
+	];
+
+	return appDetailStore.isDemo ? list : list.concat(list2);
+});
 
 const options = [
 	{

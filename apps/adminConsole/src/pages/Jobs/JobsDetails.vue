@@ -2,7 +2,7 @@
 	<div class="absolute-position">
 		<MyContentPage>
 			<template #extra>
-				<div class="col-auto">
+				<div class="col-auto" v-permission>
 					<QButtonStyle v-for="item in options" :key="item.value">
 						<q-btn dense flat :icon="item.icon" @click="item.onClick">
 							<q-tooltip>

@@ -170,7 +170,10 @@ const columns: any = computed(() => {
 			label: t('CREATED_TIME'),
 			align: 'left',
 			field: 'createTime'
-		},
+		}
+	];
+
+	const data2 = [
 		{
 			name: 'Operations',
 			label: t('OPERATIONS'),
@@ -181,7 +184,7 @@ const columns: any = computed(() => {
 	if (module === 'applications') {
 		data.splice(1, 1);
 	}
-	return data;
+	return appDetailStore.isDemo ? data : data.concat(data2);
 });
 
 const currentYamlData = ref<any>({});

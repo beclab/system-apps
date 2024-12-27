@@ -3,7 +3,7 @@
 		<MyContentPage>
 			<template #extra>
 				<div class="col-auto">
-					<QButtonStyle>
+					<QButtonStyle v-permission>
 						<q-btn dense flat icon="sym_r_edit_square" @click="clickHandler">
 							<q-tooltip>
 								<div style="white-space: nowrap">
@@ -12,7 +12,7 @@
 							</q-tooltip>
 						</q-btn>
 					</QButtonStyle>
-					<QButtonStyle>
+					<QButtonStyle v-permission>
 						<q-btn dense flat icon="sym_r_edit_square" @click="clickHandler2">
 							<q-tooltip>
 								<div style="white-space: nowrap">

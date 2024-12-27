@@ -29,7 +29,7 @@
 								{{ container.name }}
 							</div>
 							<q-icon
-								v-permission="route.params.namespace"
+								v-permission="[route.params.namespace, true]"
 								v-if="!hideLog"
 								color="blue-default"
 								name="sym_r_article"

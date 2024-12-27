@@ -11,7 +11,11 @@
 						</q-tooltip>
 					</q-btn>
 				</QButtonStyle>
-				<MoreSelection :options="options" size="md"></MoreSelection>
+				<MoreSelection
+					:options="options"
+					size="md"
+					v-permission
+				></MoreSelection>
 			</div>
 		</template>
 		<EnvironmentVariables ref="envRef"> </EnvironmentVariables>
