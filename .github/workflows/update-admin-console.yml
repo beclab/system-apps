@@ -3,14 +3,6 @@ name: Update AdminConsole Frontend
 on:
   workflow_dispatch:
 
-  pull_request:
-    types:
-      - opened
-    branches:
-      - 'main'
-      - 'bug/fix-0729_beta'
-    paths:
-      - 'apps/adminConsole/package.json'
   push:
     branches:
       - 'main'
