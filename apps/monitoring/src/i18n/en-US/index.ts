@@ -45,7 +45,9 @@ const options = {
 	RUNNING: 'Running',
 	SUSPEND: 'Suspend',
 	RESUMING: 'Resuming',
-	UNINSTALLING: 'Uninstalling'
+	UNINSTALLING: 'Uninstalling',
+	OPEN_APP: 'Open App',
+	VIEW_DETAIL: 'View Detail'
 };
 
 export default options;
