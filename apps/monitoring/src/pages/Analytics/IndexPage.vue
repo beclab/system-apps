@@ -64,7 +64,10 @@ const fetchData = () => {
 							...item,
 							title: entrance.title,
 							icon: entrance.icon,
-							url: `//${entrance.url}`
+							url:
+								entrance.name === 'profile'
+									? `//${app.url.split('profile.')[1]}`
+									: `//${entrance.url}`
 						};
 					} else if (item.name === 'desktop') {
 						icon = desktopIcon;
