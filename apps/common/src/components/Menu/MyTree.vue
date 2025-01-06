@@ -135,7 +135,8 @@ import {
 	onUnmounted,
 	PropType,
 	ref,
-	watch
+	watch,
+	onUpdated
 } from 'vue';
 import { defaultMenuOptions, MenuItem, MenuOptions } from '../../types/menu';
 import { useRouter } from 'vue-router';
@@ -177,6 +178,9 @@ const props = withDefaults(defineProps<Props>(), {
 const options = ref({});
 const selected = ref(props.defaultActive);
 const expanded = ref(props.defaultOpeneds);
+const extraWidth = ref(32);
+
+const extraWidthPx = computed(() => extraWidth.value + 'px');
 
 watch(
 	() => props.defaultActive,
@@ -197,6 +201,11 @@ onMounted(() => {
 		...defaultMenuOptions,
 		...props.menuOptions
 	};
+});
+
+onUpdated(() => {
+	extraWidth.value =
+		document.querySelector('.my-content-page-header-extra')?.clientWidth ?? 0;
 });
 
 const resetSelected = () => {
@@ -321,12 +330,23 @@ defineExpose({ resetSelected, setExpanded, getExpandedNodes });
 	top: 0;
 	left: 0;
 	right: 0;
-	padding-right: 64px;
+	padding-right: v-bind(extraWidthPx);
 	height: $content-header-height;
 }
 </style>
-
 <style lang="scss" scoped>
+.my-tree-wrapper {
+	::v-deep(.q-tree__arrow) {
+		font-size: 14px;
+		border: 1px solid rbga(255, 255, 255, 0);
+		color: $ink-1;
+	}
+	::v-deep(.q-tree__spinner) {
+		font-size: 14px;
+		border: 1px solid rbga(255, 255, 255, 0);
+		color: $ink-1;
+	}
+}
 ::v-deep(.selected-node) {
 	position: relative;
 	&::after {

@@ -10,13 +10,35 @@
 		<template #extra>
 			<QButtonStyle>
 				<q-btn
+					icon="sym_r_open_in_new"
+					class="rounded-borders-sm q-mr-sm"
+					dense
+					outline
+					color="ink-2"
+					@click.stop="openUrl(url)"
+				>
+					<q-tooltip
+						><span class="text-body3 text-ink-tooltip">{{
+							$t('OPEN_APP')
+						}}</span></q-tooltip
+					>
+				</q-btn>
+			</QButtonStyle>
+			<QButtonStyle>
+				<q-btn
 					icon="sym_r_assignment"
 					class="rounded-borders-sm"
 					dense
 					outline
 					color="ink-2"
-					@click.stop="openUrl(url)"
-				></q-btn>
+					@click.stop="onClick"
+				>
+					<q-tooltip
+						><span class="text-body3 text-ink-tooltip">{{
+							$t('VIEW_DETAIL')
+						}}</span></q-tooltip
+					>
+				</q-btn>
 			</QButtonStyle>
 		</template>
 		<div class="q-gutter-y-xl">

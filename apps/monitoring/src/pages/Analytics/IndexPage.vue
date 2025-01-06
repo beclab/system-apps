@@ -47,30 +47,39 @@ const fetchData = () => {
 			let icon = '';
 			let title = '';
 			apps.value = resApps.data.data.items;
-			websites.value = res.data.map((item) => {
-				const app = apps.value.find((app: any) => app.name === item.name);
-				if (app) {
-					return {
-						...app,
-						...item,
-						title: app.title,
-						icon: app.icon,
-						url:
-							app.name === 'profile'
-								? `//${app.url.split('profile.')[1]}`
-								: `//${app.url}`
-					};
-				} else if (item.name === 'desktop') {
-					icon = desktopIcon;
-					title = 'Desktop';
+			const appNames = apps.value
+				.map((item: any) => item.name)
+				.concat(['desktop']);
 
-					const url = `//desktop.${appDetail.user.username}${
-						location.hostname.split(appDetail.user.username)[1]
-					}`;
-					return { ...app, ...item, title, icon, url };
-				}
-				return { ...app, ...item, url: `//${app.url}` };
-			});
+			websites.value = res.data
+				.filter((item) => appNames.includes(item.name))
+				.map((item) => {
+					const app = apps.value.find((app: any) => app.name === item.name);
+					if (app) {
+						const entrance = app.entrances.find(
+							(entrance) => !entrance.invisible
+						);
+						return {
+							...app,
+							...item,
+							title: entrance.title,
+							icon: entrance.icon,
+							url:
+								entrance.name === 'profile'
+									? `//${app.url.split('profile.')[1]}`
+									: `//${entrance.url}`
+						};
+					} else if (item.name === 'desktop') {
+						icon = desktopIcon;
+						title = 'Desktop';
+
+						const url = `//desktop.${appDetail.user.username}${
+							location.hostname.split(appDetail.user.username)[1]
+						}`;
+						return { ...app, ...item, title, icon, url };
+					}
+					return { ...app, ...item, url: `//${app.url}` };
+				});
 			setWebsiteDateDefault(websites.value);
 		})
 		.finally(() => {

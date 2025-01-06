@@ -45,7 +45,9 @@ const options = {
 	RUNNING: '运行中',
 	SUSPEND: '暂停',
 	RESUMING: '恢复',
-	UNINSTALLING: '正在卸载'
+	UNINSTALLING: '正在卸载',
+	OPEN_APP: '打开应用',
+	VIEW_DETAIL: '查看详情'
 };
 
 export default options;
