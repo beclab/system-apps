@@ -17,7 +17,7 @@
 				</MyExpansion>
 			</div>
 		</div>
-
+		<Empty v-if="!loading && !envlist?.length"></Empty>
 		<q-inner-loading :showing="loading"></q-inner-loading>
 	</MyCard>
 </template>
@@ -80,12 +80,16 @@ const initContainers = computed(() => {
 
 const fetchData = async () => {
 	const { namespace, cluster }: { [key: string]: any } = route.params;
-	envlist.value = await fetcEnvList({
-		namespace: namespace,
-		cluster: cluster,
-		containers: containers.value,
-		initContainers: initContainers.value
-	});
+	try {
+		envlist.value = await fetcEnvList({
+			namespace: namespace,
+			cluster: cluster,
+			containers: containers.value,
+			initContainers: initContainers.value
+		});
+	} catch (error) {
+		envlist.value = [];
+	}
 };
 
 const variablesFilter = (data) => data.filter((item) => !!item.value);
@@ -101,6 +105,10 @@ const fetchEnv = () => {
 		})
 		.finally(() => {
 			loading.value = false;
+		})
+		.catch(() => {
+			envDetail.value = {};
+			fetchData();
 		});
 };
 

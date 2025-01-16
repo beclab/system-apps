@@ -63,6 +63,9 @@ const fetchData = () => {
 		})
 		.finally(() => {
 			loading.value = false;
+		})
+		.catch(() => {
+			usePod.setDetail({});
 		});
 };
 

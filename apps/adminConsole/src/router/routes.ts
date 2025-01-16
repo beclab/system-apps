@@ -129,7 +129,7 @@ const routes: RouteRecordRaw[] = [
 								path: '/application-spaces/workloads/:kind/:namespace/:pods_name/:pods_uid/:createTime?',
 								component: () =>
 									import('src/pages/ApplicationSpaces/Workloads/Detail.vue'),
-								name: 'workload-detail',
+								name: componentName.WORKLOAD_POD_TOP,
 								meta: {
 									index: 1
 								}

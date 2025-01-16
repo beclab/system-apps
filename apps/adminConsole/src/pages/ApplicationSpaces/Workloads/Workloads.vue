@@ -212,6 +212,7 @@ const workloadsDataFormatter = (
 					selectable: true,
 					_originData: item,
 					kind: child.kind,
+					kindType: child.value,
 					img: get(
 						item,
 						'metadata.annotations["applications.app.bytetrade.io/icon"]',
@@ -220,9 +221,14 @@ const workloadsDataFormatter = (
 					lazy: true,
 					selectToExpend: true,
 					route: {
-						path,
-						key: item.metadata.uid,
-						id: item.metadata.uid
+						name: componentName.WORKLOAD_POD_TOP,
+						params: {
+							kind: child.value,
+							namespace: namespace,
+							pods_name: item.metadata.name,
+							pods_uid: item.metadata.uid,
+							createTime: item.metadata.creationTimestamp
+						}
 					}
 				};
 				return data;
@@ -241,12 +247,11 @@ let doneFn = (key: string) => doneFnList[key] ?? (() => undefined);
 
 const onLazyLoad = async ({ node, key, done, fail }: any) => {
 	doneFnList[key] = done;
-
 	try {
 		const detail = ObjectMapper.workLoadMapper(node._originData);
 		const result = await getPosdList({ ...detail, kind: node.kind });
 		const newData = getPosdListFormatter(result);
-		done(podDataformate(newData));
+		done(podDataformate(newData, node));
 	} catch (error) {
 		done(podDataformate([]));
 	}
@@ -277,8 +282,8 @@ watch(
 );
 
 watch(
-	() => PodListData.data,
-	(newData) => {
+	[() => PodListData.data, () => PodListData.websocketUpdatedRandom],
+	([newData, newRandomKey], [preData, preRandomKey]) => {
 		if (route.query.type) return;
 		if (firstListIndexs) {
 			listWithLanguages.value[firstListIndexs[0]].children[
@@ -286,7 +291,11 @@ watch(
 			].children = podDataformate(newData);
 			firstListIndexs = undefined;
 		}
-		if (newData.length > 0) {
+		console.log('aaaaaa', newRandomKey !== preRandomKey, newData.length);
+		if (
+			newData.length > 0 ||
+			(newRandomKey !== preRandomKey && newData.length === 0)
+		) {
 			layzLoadData(route.params.pods_uid as string, newData);
 		}
 	},
@@ -300,8 +309,9 @@ const layzLoadData = (key: string, data: any) => {
 	doneFn(key)(newData);
 };
 
-const podDataformate = (data: any) => {
-	const { namespace, kind, name }: { [key: string]: any } = route.params;
+const podDataformate = (data: any, node?: any) => {
+	const routeParams = node ? node.route.params : route.params;
+
 	return data.map((item: any) => ({
 		title: `${item.name}`,
 		id: item.uid,
@@ -313,7 +323,7 @@ const podDataformate = (data: any) => {
 		route: {
 			name: componentName.WORKLOAD_PODS,
 			params: {
-				...route.params,
+				...routeParams,
 				name: item.name,
 				node: item.spec.nodeName,
 				uid: item.uid,
