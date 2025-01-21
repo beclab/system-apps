@@ -89,7 +89,7 @@ async function fetchPods(showLoading = true) {
 	try {
 		const res = await getPosdList(props.detail, { cancelToken: source.token });
 		podList.value = getPosdListFormatter(res);
-		PodListData.updateData(podList.value);
+		PodListData.updateData(podList.value, Math.random());
 		fetchMetrics();
 		loading2.value = false;
 		PodListData.updateLoading(false);

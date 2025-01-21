@@ -1,4 +1,5 @@
 export const componentName = {
+	WORKLOAD_POD_TOP: 'workload-detail',
 	WORKLOAD_PODS: 'WORKLOAD_PODS',
 	SERVICES: 'SERVICES',
 	SECRETS: 'SECRETS',
