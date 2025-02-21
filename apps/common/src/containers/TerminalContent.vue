@@ -1,15 +1,5 @@
 <template>
-	<q-icon
-		color="blue-default"
-		name="sym_r_terminal"
-		flat
-		dense
-		size="16px"
-		@click="yamlShow"
-	>
-		<slot></slot>
-	</q-icon>
-	<Dialog :title="data.container" v-model="visible2" @show="show" @hide="hide">
+	<div class="relative-position full-width" style="height: 800px">
 		<div class="absolute-full">
 			<div class="absolute-full" style="border-radius: 4px; overflow: hidden">
 				<div class="relative-position terminal-content">
@@ -19,7 +9,7 @@
 				</div>
 			</div>
 		</div>
-	</Dialog>
+	</div>
 </template>
 
 <script setup lang="ts">
@@ -32,6 +22,8 @@ import 'xterm/css/xterm.css';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { debounce } from 'lodash';
 import Dialog from '../components/Dialog/Dialog.vue';
+import { onMounted } from 'vue';
+import { onBeforeUnmount } from 'vue';
 
 interface Props {
 	data: {
@@ -106,7 +98,7 @@ const disconnect = () => {
 	}
 
 	if (ws.value) {
-		ws.value.close(true);
+		ws.value.close(1000);
 	}
 };
 
@@ -161,7 +153,7 @@ const onTerminalKeyPress = () => {
 	termA.value.onData(sendTerminalInput);
 };
 
-const show = (evt: Event) => {
+const show = () => {
 	aceVisileb.value = true;
 
 	termA.value = initTerm();
@@ -180,7 +172,7 @@ const show = (evt: Event) => {
 	disableTermStdin();
 };
 
-const hide = (evt: Event) => {
+const hide = () => {
 	clearHeartBeat();
 	termA.value && termA.value.destroy && termA.value.destroy();
 	ws.value && ws.value.close(1000);
@@ -249,15 +241,23 @@ const initTerm = () => {
 
 	return termTemp;
 };
+
+onMounted(() => {
+	console.log('show');
+	show();
+});
+
+onBeforeUnmount(() => {
+	console.log('hide');
+	hide();
+});
 </script>
 
 <style lang="scss" scoped>
 .terminal-content {
 	background: rgb(24, 29, 40);
-	border-radius: 4px;
 	overflow: hidden;
 	height: 100%;
-	border: 1px solid red;
 	.terminal-content-wrapper {
 		position: absolute;
 		top: 8px;

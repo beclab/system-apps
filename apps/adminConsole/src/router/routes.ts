@@ -230,6 +230,11 @@ const routes: RouteRecordRaw[] = [
 	{
 		path: '/:catchAll(.*)*',
 		component: () => import('pages/ErrorNotFound.vue')
+	},
+	{
+		path: '/terminal/:namespace?/:pods_name?/:name?',
+		name: componentName.TERMINAL_APP,
+		component: () => import('src/pages/Terminal/IndexPage.vue')
 	}
 ];
 
