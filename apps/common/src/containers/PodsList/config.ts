@@ -120,7 +120,6 @@ function getFilterParam(params: any) {
 }
 
 export const getParams = (detail: any) => {
-	console.log('detail', detail);
 	const { name, namespace, kind: _kind, selector, _originData } = detail || {};
 	const kind = _kind || get(_originData, 'kind', '');
 

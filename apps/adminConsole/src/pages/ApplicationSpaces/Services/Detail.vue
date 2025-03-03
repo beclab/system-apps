@@ -81,7 +81,7 @@ import {
 	watch,
 	computed
 } from 'vue';
-import { getEndpoints, getNamespacesDetail } from 'src/network';
+import { getEndpoints } from 'src/network';
 import { get, isEmpty } from 'lodash';
 import { t } from 'src/boot/i18n';
 import { getLocalTime, joinSelector } from 'src/utils';
@@ -106,7 +106,6 @@ import { componentName } from 'src/router/const';
 
 const $q = useQuasar();
 let loading = ref(false);
-const statusList = ref();
 const route = useRoute();
 const router = useRouter();
 const endpoints = ref([]);
@@ -125,34 +124,28 @@ const selector = computed(() => {
 	return detail.value ? joinSelector(detail.value.selector) : '';
 });
 
-const fetchList = () => {
-	const { namespace, name }: any = route.params;
+const statusList = computed(() => getAttrs(detail.value));
 
+const fetchDetail = () => {
+	const { namespace, pods_name: name }: any = route.params;
 	const params1 = {
 		namespace,
 		name
 	};
+
 	loading.value = true;
-	Promise.all([
-		getEndpoints(params1),
-		getNamespacesDetail(namespace)
-		// getWorkloads(),
-	])
-		.then(([res1, res2]) => {
-			endpoints.value = res1.data.subsets.map(ObjectMapper.endpoints);
+	Promise.all([getServicesData(namespace, name), getEndpoints(params1)])
+		.then(([res, res2]) => {
+			detail.value = ObjectMapper.services(res.data);
+			endpoints.value = res2.data.subsets.map(ObjectMapper.endpoints);
 		})
 		.finally(() => {
 			loading.value = false;
+		})
+		.catch(() => {
+			endpoints.value = [];
+			loading.value = false;
 		});
-};
-
-const fetchDetail = () => {
-	const { namespace, name }: any = route.params;
-
-	getServicesData(namespace, name).then((res) => {
-		detail.value = ObjectMapper.services(res.data);
-		statusList.value = getAttrs(detail.value);
-	});
 };
 
 const renderDNS = (service: any) => {
@@ -178,7 +171,6 @@ const renderEndpoints = (detail) => {
 	if (data.length === 0) {
 		return '-';
 	}
-
 	const endpointsData: string[] = [];
 	data.forEach((subset) => {
 		subset.addresses.forEach((addr) => {
@@ -196,7 +188,8 @@ const getAttrs = (detail: any) => {
 	if (isEmpty(detail)) {
 		return;
 	}
-	const { namespace, name }: any = route.params;
+
+	const { namespace, pods_name: name }: any = route.params;
 
 	let externalIP;
 	if (detail.type === 'ExternalName') {
@@ -212,7 +205,6 @@ const getAttrs = (detail: any) => {
 		'annotations["kubesphere.io/serviceType"]',
 		''
 	);
-
 	return [
 		{
 			name: t('CLUSTER'),
@@ -267,27 +259,6 @@ const getAttrs = (detail: any) => {
 	];
 };
 
-const editExternalAccess = () => {
-	$q.dialog({
-		component: ExternalAccess,
-
-		// props forwarded to your custom component
-		componentProps: {
-			text: 'test'
-			// ...more..props...
-		}
-	})
-		.onOk(() => {
-			console.log('OK');
-		})
-		.onCancel(() => {
-			console.log('Cancel');
-		})
-		.onDismiss(() => {
-			console.log('Called on OK or Cancel');
-		});
-};
-
 const workloadUpdateHandler = (data) => {
 	workloads.value = data;
 };
@@ -296,7 +267,7 @@ const podUpdateHandler = (data) => {
 	pods.value = data || [];
 };
 const init = () => {
-	fetchList();
+	podUpdateHandler([]);
 	fetchDetail();
 };
 
@@ -305,7 +276,7 @@ const routePushHandler = (data) => {
 		name: componentName.SERVICES_PODS,
 		params: {
 			...route.params,
-			pods_name: route.params.name,
+			pods_name: route.params.pods_name,
 			name: data.name,
 			uid: data.uid,
 			node: data.node,
@@ -326,7 +297,7 @@ const clickHandler2 = () => {
 		}
 	})
 		.onOk((data) => {
-			const { namespace, name }: any = route.params;
+			const { namespace, pods_name: name }: any = route.params;
 			putServicesData(namespace, name, data).then(() => {
 				init();
 			});

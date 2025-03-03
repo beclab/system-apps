@@ -26,7 +26,7 @@ export const servicesDataFormatter = (res: any, namespace: string) => {
 				params: {
 					kind: group.value,
 					namespace,
-					name: item.metadata.name,
+					pods_name: item.metadata.name,
 					pods_uid: item.metadata.uid
 				}
 			}

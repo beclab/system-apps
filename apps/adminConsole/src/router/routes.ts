@@ -139,7 +139,7 @@ const routes: RouteRecordRaw[] = [
 								component: () => import('src/pages/Containers/Overview.vue')
 							},
 							{
-								path: '/application-spaces/:kind/:namespace/:name/:pods_uid/services_overview',
+								path: '/application-spaces/:kind/:namespace/:pods_name/:pods_uid/services_overview',
 								name: componentName.SERVICES,
 								component: () =>
 									import('src/pages/ApplicationSpaces/Services/Detail.vue'),
