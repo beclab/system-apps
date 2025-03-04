@@ -14,6 +14,7 @@
 			<div class="layout-content-wrapper">
 				<div>
 					<router-view />
+					<TerminalBox></TerminalBox>
 				</div>
 			</div>
 		</q-page-container>
@@ -21,7 +22,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, computed } from 'vue';
+import { onMounted, computed, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useSplitMenu } from '@packages/ui/src/stores/menu';
 import { useI18n } from 'vue-i18n';
@@ -32,8 +33,13 @@ import {
 	currentItem,
 	active,
 	options2,
-	options3
+	options3,
+	options4
 } from './breadcrumbs';
+import TerminalBox from 'src/pages/Terminal/TerminalBox.vue';
+import { useTerminalStore } from '../stores/TerminalStore';
+import { watch } from 'vue';
+const terminalStore = useTerminalStore();
 const { t } = useI18n();
 const appDetailStore = useAppDetailStore();
 const splitMenu = useSplitMenu();
@@ -56,13 +62,23 @@ const items = computed(() => {
 			key: 'middleware',
 			label: t('MIDDLEWARE'),
 			children: options3.value
+		},
+		{
+			key: 'terminal',
+			label: t('TERMINAL'),
+			children: options4.value
 		}
 	];
 
 	return appDetailStore.isDemo ? item1 : item1.concat(item2);
 });
 
-const optionsAll = [...options.value, ...options2.value, ...options3.value];
+const optionsAll = [
+	...options.value,
+	...options2.value,
+	...options3.value,
+	...options4.value
+];
 
 const router = useRouter();
 const route = useRoute();
@@ -80,10 +96,28 @@ const selectHandler = (data: any) => {
 	});
 };
 
+watch(
+	() => route.fullPath,
+	(newValue) => {
+		if (newValue.includes('terminal')) {
+			terminalStore.terminalPanelInit();
+			terminalStore.terminalPanelStatus(true);
+		} else {
+			terminalStore.terminalPanelStatus(false);
+		}
+	},
+	{
+		immediate: true
+	}
+);
+
 onMounted(() => {
 	const link = route.path.split('/')[1];
+	console.log('link', link);
 	let target: any = optionsAll[0];
 	if (link === 'site-middleware') {
+		target = optionsAll.find((item) => item.link === route.path);
+	} else if (link === 'terminal') {
 		target = optionsAll.find((item) => item.link === route.path);
 	} else {
 		target = optionsAll.find((item) => item.link === `/${link}`);
@@ -125,3 +159,4 @@ onMounted(() => {
 }
 </style>
 <style></style>
+useTerminalStoreuseTerminalStore ../stores/TerminalStore

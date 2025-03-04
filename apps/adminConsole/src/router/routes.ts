@@ -218,6 +218,11 @@ const routes: RouteRecordRaw[] = [
 						component: () => import('src/pages/Middleware/Overview.vue')
 					}
 				]
+			},
+			{
+				path: '/terminal/:node',
+				name: componentName.TERMINAL_APP,
+				component: () => import('src/pages/Terminal/IndexPage.vue')
 			}
 		]
 	},

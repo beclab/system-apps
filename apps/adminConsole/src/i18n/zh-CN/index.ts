@@ -44,7 +44,8 @@ const options = {
 	STOP_POD: '停止',
 	START_POD: '开始',
 	RESTART_POD: '重启',
-	BASIC_INFOMATION: '基本信息'
+	BASIC_INFOMATION: '基本信息',
+	OLARIS_TERMINAL: 'Olares'
 };
 
 export default options;
