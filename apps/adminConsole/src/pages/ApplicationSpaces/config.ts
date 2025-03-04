@@ -42,7 +42,7 @@ export const getNamespaceIcon = (namespace: string, user?: string) => {
 	username = appDetail.data?.user.username;
 	const app = namespace.substring(0, namespace.lastIndexOf('-'));
 	icons = { ...customNamesapceIcon(username), ...namespaceIcon(username) };
-	const apps = get(appList, `data[${user}]`, []);
+	const apps = get(appList, `data.${user}`, []);
 	const appTarget = apps.find((item) => item.namespace === namespace);
 	return namespace.includes(USERSPACE)
 		? userSpace

@@ -1,6 +1,8 @@
 import { ref, computed } from 'vue';
 import { t } from 'src/boot/i18n';
 import { useAppDetailStore } from 'src/stores/AppDetail';
+import { useTerminalStore } from 'src/stores/TerminalStore';
+
 export interface Breadcrumb {
 	title: string;
 	icon?: string;
@@ -84,12 +86,28 @@ export const options3 = computed(() => [
 	}
 ]);
 
+export const options4 = computed(() => {
+	const terminalStore = useTerminalStore();
+	const data = terminalStore.data.map((item) => ({
+		key: item.metadata.name,
+		label: t('OLARIS_TERMINAL'),
+		icon: 'sym_r_terminal',
+		link: `/terminal/${item.metadata.name}`
+	}));
+	return data;
+});
+
 const optionAll = computed(() => {
 	const appDetailsStore = useAppDetailStore();
 
 	return appDetailsStore.isDemo
 		? [...options.value, ...options2.value]
-		: [...options.value, ...options2.value, ...options3.value];
+		: [
+				...options.value,
+				...options2.value,
+				...options3.value,
+				...options4.value
+		  ];
 });
 export const active = ref(optionAll.value[0].key);
 export const currentItem = computed(() =>

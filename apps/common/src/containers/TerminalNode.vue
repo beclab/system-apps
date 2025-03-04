@@ -1,13 +1,7 @@
 <template>
-	<div class="relative-position full-width" style="height: 800px">
-		<div class="absolute-full">
-			<div class="absolute-full" style="border-radius: 4px; overflow: hidden">
-				<div class="relative-position terminal-content">
-					<div class="terminal-content-wrapper">
-						<div style="height: calc(100%)" ref="terminalRef"></div>
-					</div>
-				</div>
-			</div>
+	<div class="relative-position terminal-content">
+		<div class="terminal-content-wrapper">
+			<div style="height: calc(100%)" ref="terminalRef"></div>
 		</div>
 	</div>
 </template>
@@ -16,44 +10,39 @@
 import { ref } from 'vue';
 import { Terminal } from '@xterm/xterm';
 import { FitAddon } from '@xterm/addon-fit';
-import { AttachAddon } from '@xterm/addon-attach';
 import { WebLinksAddon } from '@xterm/addon-web-links';
-import 'xterm/css/xterm.css';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { debounce } from 'lodash';
-import Dialog from '../components/Dialog/Dialog.vue';
 import { onMounted } from 'vue';
 import { onBeforeUnmount } from 'vue';
+import { watch } from 'vue';
+import { nextTick } from 'vue';
+import 'xterm/css/xterm.css';
 
 interface Props {
-	data: {
-		namespace: string;
-		podName: string;
-		container: string;
-	};
+	node: string;
+	visible: boolean;
 }
 const props = withDefaults(defineProps<Props>(), {});
 
-const visible2 = ref(false);
 const aceVisileb = ref(false);
 let messageQueue: string[] = [];
+let fitAddon: FitAddon | undefined = undefined;
+let termTemp: Terminal | undefined = undefined;
+let inited = false;
 
-const yamlShow = () => {
-	visible2.value = true;
-};
 const termA = ref<any>(null);
 const ws = ref();
 const initTimer = ref();
 const first = ref(true);
 
 const terminalRef = ref<any>();
-const socket = ref<WebSocket>();
 let locker: NodeJS.Timeout | undefined = undefined;
 const isWsOpen = () => {
 	return ws.value && ws.value.readyState === ws.value.OPEN;
 };
 
-const packResize = (col: any, row: any) =>
+const packResize = (col: number, row: number) =>
 	JSON.stringify({
 		Op: 'resize',
 		Cols: col,
@@ -103,7 +92,6 @@ const disconnect = () => {
 };
 
 const fatal = (message: any) => {
-	// const { isEdgeNode } = this.props;
 	const isEdgeNode = false;
 	if (!message && first)
 		message = `Could not connect to the ${
@@ -112,6 +100,7 @@ const fatal = (message: any) => {
 	if (!message) message = 'disconnected';
 	if (!first.value) message = `\r\n${message}`;
 	if (first.value) termA.value.reset();
+
 	termA.value.write(`\x1b[31m${message}\x1b[m\r\n`);
 };
 
@@ -122,17 +111,21 @@ const onWSError = (ex: any, reson?: any) => {
 
 const createWS = () => {
 	const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-	const websocketUrl = `${protocol}//${window.location.host}/kapis/terminal.kubesphere.io/v1alpha2/namespaces/${props.data.namespace}/pods/${props.data.podName}/exec?container=${props.data.container}&shell=sh`;
+	const websocketUrl = `${protocol}//${window.location.host}/kapis/terminal.kubesphere.io/v1alpha2/nodes/${props.node}/exec`;
 	return new ReconnectingWebSocket(websocketUrl);
 };
 
-const fitTerm = () => termA.value.fit();
+const fitTerm = () => {
+	if (props.visible) {
+		fitAddon && fitAddon.fit();
+		resizeRemoteTerminal();
+	}
+};
 
-const onResize = debounce(fitTerm, 800);
+const onResize = debounce(fitTerm, 300);
 
 const onTerminalResize = () => {
 	window.addEventListener('resize', onResize);
-	termA.value.onResize(resizeRemoteTerminal);
 };
 
 const packStdin = (data: any) =>
@@ -153,18 +146,31 @@ const onTerminalKeyPress = () => {
 	termA.value.onData(sendTerminalInput);
 };
 
+const focus = () => {
+	if (isWsOpen()) {
+		termA.value.focus();
+	}
+};
+
 const show = () => {
 	aceVisileb.value = true;
 
 	termA.value = initTerm();
 	ws.value = createWS();
 	ws.value.addEventListener('open', (listener: EventListener) => {
+		if (inited) {
+			termTemp && termTemp.write('\r\n');
+		} else {
+			inited = true;
+		}
 		messageQueue.forEach((msg) => ws.value.send(msg));
 		messageQueue = [];
 	});
 
 	ws.value.addEventListener('message', onWSReceive);
+
 	ws.value.addEventListener('error', onWSError);
+	ws.value.addEventListener('close', (err: any) => console.log(err));
 
 	onTerminalResize();
 	onTerminalKeyPress();
@@ -185,11 +191,12 @@ const hide = () => {
 };
 
 const DEFAULT_TERMINAL_OPTS = {
-	lineHeight: 1.2,
+	backgroundOpacity: 0.9,
 	cursorBlink: true,
-	// cursorStyle: 'underline',
-	fontSize: 12,
-	fontFamily: "Monaco, Menlo, Consolas, 'Courier New', monospace",
+	fontFamily: '"Fira Code", "DejaVu Sans Mono", monospace',
+	fontSize: 14,
+	letterSpacing: 0.8,
+	lineHeight: 1.2,
 	theme: {
 		background: '#181d28'
 	}
@@ -228,8 +235,8 @@ const initTerm = () => {
 	const initText = 'connecting';
 	const terminalOpts = getTerminalOpts();
 
-	const termTemp: any = new Terminal(terminalOpts);
-	const fitAddon = new FitAddon();
+	termTemp = new Terminal(terminalOpts);
+	fitAddon = new FitAddon();
 	termTemp.loadAddon(fitAddon);
 	termTemp.loadAddon(new WebLinksAddon());
 	if (terminalRef.value) {
@@ -242,28 +249,40 @@ const initTerm = () => {
 	return termTemp;
 };
 
+watch(
+	() => props.visible,
+	(status) => {
+		if (status) {
+			nextTick(() => {
+				fitTerm();
+				focus();
+			});
+		}
+	}
+);
+
 onMounted(() => {
-	console.log('show');
 	show();
 });
 
 onBeforeUnmount(() => {
-	console.log('hide');
 	hide();
 });
+
+defineExpose({ focus: focus });
 </script>
 
 <style lang="scss" scoped>
 .terminal-content {
-	background: rgb(24, 29, 40);
 	overflow: hidden;
 	height: 100%;
+	background: #181d28;
 	.terminal-content-wrapper {
 		position: absolute;
-		top: 8px;
-		left: 8px;
-		right: 8px;
-		bottom: 8px;
+		top: 20px;
+		left: 20px;
+		right: 20px;
+		bottom: 20px;
 	}
 }
 </style>

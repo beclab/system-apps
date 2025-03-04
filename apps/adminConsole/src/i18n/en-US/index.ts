@@ -44,7 +44,8 @@ const options = {
 	STOP_POD: 'Stop',
 	START_POD: 'Start',
 	RESTART_POD: 'Restart',
-	BASIC_INFOMATION: 'Basic Infomation'
+	BASIC_INFOMATION: 'Basic Infomation',
+	OLARIS_TERMINAL: 'Olares'
 };
 
 export default options;

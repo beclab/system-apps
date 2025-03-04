@@ -6,6 +6,7 @@
 import { defineComponent } from 'vue';
 import { useAppDetailStore } from './stores/AppDetail';
 import { useAppList } from './stores/AppList';
+import { useTerminalStore } from './stores/TerminalStore';
 import './css/custom.scss';
 
 export default defineComponent({
@@ -13,8 +14,9 @@ export default defineComponent({
 	preFetch({ store }) {
 		const appDetail = useAppDetailStore();
 		const appList = useAppList();
-
+		const terminalStore = useTerminalStore();
 		appDetail.init();
+		terminalStore.init();
 
 		return appList.init();
 	},
@@ -73,3 +75,4 @@ body.body--dark .q-dialog__backdrop {
 	border-radius: 4px;
 }
 </style>
+useTerminalStoreuseTerminalStore ./stores/TerminalStore

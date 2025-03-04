@@ -257,7 +257,6 @@ const initTerm = () => {
 	border-radius: 4px;
 	overflow: hidden;
 	height: 100%;
-	border: 1px solid red;
 	.terminal-content-wrapper {
 		position: absolute;
 		top: 8px;
