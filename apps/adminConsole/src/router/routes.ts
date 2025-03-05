@@ -220,7 +220,7 @@ const routes: RouteRecordRaw[] = [
 				]
 			},
 			{
-				path: '/terminal/:node',
+				path: '/terminal/:node?',
 				name: componentName.TERMINAL_APP,
 				component: () => import('src/pages/Terminal/IndexPage.vue')
 			}

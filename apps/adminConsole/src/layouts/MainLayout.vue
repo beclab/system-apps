@@ -39,6 +39,7 @@ import {
 import TerminalBox from 'src/pages/Terminal/TerminalBox.vue';
 import { useTerminalStore } from '../stores/TerminalStore';
 import { watch } from 'vue';
+import { onBeforeMount } from 'vue';
 const terminalStore = useTerminalStore();
 const { t } = useI18n();
 const appDetailStore = useAppDetailStore();
@@ -96,6 +97,30 @@ const selectHandler = (data: any) => {
 	});
 };
 
+const init = () => {
+	const link = route.path.split('/')[1];
+	let target: any = optionsAll[0];
+	if (link === 'site-middleware') {
+		target = optionsAll.find((item) => item.link === route.path);
+	} else if (link === 'terminal') {
+		target = optionsAll.find((item) => item.key === link);
+		if (route.params.node) {
+			terminalStore.setCurrentNode(route.params.node);
+		}
+	} else {
+		target = optionsAll.find((item) => item.link === `/${link}`);
+	}
+	if (target) {
+		active.value = target.key;
+		splitMenu.changeStatus(target.key);
+		const breadcrumbsData = {
+			title: target.label,
+			icon: target.icon
+		};
+		updateBreadcrumbs(breadcrumbsData, true);
+	}
+};
+
 watch(
 	() => route.fullPath,
 	(newValue) => {
@@ -111,26 +136,8 @@ watch(
 	}
 );
 
-onMounted(() => {
-	const link = route.path.split('/')[1];
-	console.log('link', link);
-	let target: any = optionsAll[0];
-	if (link === 'site-middleware') {
-		target = optionsAll.find((item) => item.link === route.path);
-	} else if (link === 'terminal') {
-		target = optionsAll.find((item) => item.link === route.path);
-	} else {
-		target = optionsAll.find((item) => item.link === `/${link}`);
-	}
-	if (target) {
-		active.value = target.key;
-		splitMenu.changeStatus(target.key);
-		const breadcrumbsData = {
-			title: target.label,
-			icon: target.icon
-		};
-		updateBreadcrumbs(breadcrumbsData, true);
-	}
+onBeforeMount(() => {
+	init();
 });
 </script>
 

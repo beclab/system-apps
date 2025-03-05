@@ -114,8 +114,8 @@
 		:name="currentItem.name"
 	></Yaml>
 	<DeleteDialog
-		title="Delete Pod"
-		desc="pod"
+		:title="$t('DELETE_POD')"
+		:desc="$t('POD')"
 		:name="currentItem.name"
 		:loading="deleteLoading"
 		ref="deleteDialogRef"
@@ -172,7 +172,6 @@ const options = computed(() => {
 			value: 'delete',
 			icon: 'sym_r_delete',
 			onClick: () => {
-				console.log('delete');
 				deleteDialogRef.value?.show();
 			}
 		}

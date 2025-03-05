@@ -279,10 +279,9 @@ defineExpose({ focus: focus });
 	background: #181d28;
 	.terminal-content-wrapper {
 		position: absolute;
-		top: 20px;
-		left: 20px;
-		right: 20px;
-		bottom: 20px;
+		inset: 20px;
+		top: 12px;
+		bottom: 12px;
 	}
 }
 </style>

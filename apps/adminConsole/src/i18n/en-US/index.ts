@@ -45,7 +45,9 @@ const options = {
 	START_POD: 'Start',
 	RESTART_POD: 'Restart',
 	BASIC_INFOMATION: 'Basic Infomation',
-	OLARIS_TERMINAL: 'Olares'
+	OLARIS_TERMINAL: 'Olares',
+	DELETE_POD: 'Delete Pod',
+	SELECT_NODE: 'Select Node'
 };
 
 export default options;

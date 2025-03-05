@@ -45,7 +45,9 @@ const options = {
 	START_POD: '开始',
 	RESTART_POD: '重启',
 	BASIC_INFOMATION: '基本信息',
-	OLARIS_TERMINAL: 'Olares'
+	OLARIS_TERMINAL: 'Olares',
+	DELETE_POD: '删除 Pod',
+	SELECT_NODE: '选择节点'
 };
 
 export default options;
