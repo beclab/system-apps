@@ -1,10 +1,10 @@
 <template>
 	<div
-		class="relative-position bg-background-6"
+		class="relative-position terminal-box-container"
 		:style="{
-			height: terminalStore.terminal_show ? '100vh' : '0px'
+			height: terminalStore.terminal_show ? 'calc(100vh - 96px)' : '0px'
 		}"
-		v-if="terminalStore.terminal_init"
+		v-if="terminalStore.terminal_init && terminalStore.current_node"
 	>
 		<div class="node-terminal-content">
 			<Terminal
@@ -13,6 +13,7 @@
 				flat
 				:node="node"
 				:visible="terminalStore.terminal_show"
+				:key="terminalStore.current_node"
 			></Terminal>
 		</div>
 	</div>
@@ -20,23 +21,29 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { useRoute } from 'vue-router';
 import Terminal from '@packages/ui/src/containers/TerminalNode.vue';
 import { useTerminalStore } from 'src/stores/TerminalStore';
 const terminalStore = useTerminalStore();
 const terminalRef = ref();
-const route = useRoute();
-const node = computed(() => route.params.node as string);
+const node = computed(() => terminalStore.current_node);
 </script>
 
 <style lang="scss" scoped>
+.terminal-box-container {
+	position: absolute;
+	inset: 20px;
+	top: 76px;
+	background: #fff;
+	border-radius: 12px;
+}
 .node-terminal-content {
 	position: absolute;
 	inset: 0;
 }
 .node-terminal-wrapper {
-	height: 100%;
 	width: 100%;
+	height: 100%;
+	border-radius: 12px;
 	overflow: hidden;
 }
 </style>

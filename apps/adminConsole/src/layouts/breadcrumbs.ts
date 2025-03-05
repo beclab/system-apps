@@ -88,12 +88,14 @@ export const options3 = computed(() => [
 
 export const options4 = computed(() => {
 	const terminalStore = useTerminalStore();
-	const data = terminalStore.data.map((item) => ({
-		key: item.metadata.name,
-		label: t('OLARIS_TERMINAL'),
-		icon: 'sym_r_terminal',
-		link: `/terminal/${item.metadata.name}`
-	}));
+	const data = [
+		{
+			key: 'terminal',
+			label: t('OLARIS_TERMINAL'),
+			icon: 'sym_r_terminal',
+			link: `/terminal/${terminalStore.current_node || ''}`
+		}
+	];
 	return data;
 });
 
