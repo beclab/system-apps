@@ -1,66 +1,65 @@
 {
-  "name": "quasar-project",
-  "version": "0.1.0",
-  "description": "A Quasar Project",
-  "productName": "Quasar App",
-  "private": true,
-  "scripts": {
-    "postinstall": "lerna bootstrap --npm-client yarn && lerna exec yarn",
-    "bootstrap": "lerna bootstrap",
-    "commit": "cz",
-    "changeset": "changeset",
-    "vp": "changeset && changeset version",
-    "lint": "eslint --ext .js,.ts,.vue ./",
-    "format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore",
-    "test": "echo \"No test specified\" && exit 0",
-    "dev:system": "lerna run dev --scope @apps/admin_console --npm-client yarn --stream",
-    "dev:dashboard": "lerna run dev --scope @apps/monitoring --stream",
-    "dev:server": "lerna run dev --scope @apps/server --npm-client yarn --stream",
-    "dev:analytics-server": "lerna run dev --scope @apps/analytics-server --npm-client yarn --stream",
-    "build:system": "lerna run build --scope @apps/admin_console --stream",
-    "build:dashboard": "lerna run build --scope @apps/monitoring --stream",
-    "build:server": "lerna run build --scope @apps/server --npm-client yarn --stream",
-    "build:analytics-server": "lerna run build --scope @apps/analytics-server --npm-client yarn --stream",
-    "dev:console": "yarn dev:system",
-    "dev:monitoring": "yarn dev:dashboard",
-    "build:console": "yarn build:system",
-    "build:monitoring": "yarn build:dashboard",
-    "preinstall": "npx only-allow yarn"
-  },
-  "devDependencies": {
-    "@changesets/cli": "^2.26.1",
-    "@typescript-eslint/eslint-plugin": "^5.10.0",
-    "@typescript-eslint/parser": "^5.10.0",
-    "commitizen": "^4.3.0",
-    "cz-conventional-changelog": "^3.3.0",
-    "dotenv": "^16.3.1",
-    "eslint": "^8.10.0",
-    "eslint-config-prettier": "^8.1.0",
-    "eslint-plugin-vue": "^9.0.0",
-    "lerna": "^5.1.8",
-    "preload-webpack-plugin": "^3.0.0-beta.4",
-    "prettier": "^2.5.1"
-  },
-  "browserslist": [
-    "last 10 Chrome versions",
-    "last 10 Firefox versions",
-    "last 4 Edge versions",
-    "last 7 Safari versions",
-    "last 8 Android versions",
-    "last 8 ChromeAndroid versions",
-    "last 8 FirefoxAndroid versions",
-    "last 10 iOS versions",
-    "last 5 Opera versions"
-  ],
-  "engines": {
-    "node": ">= 12.22.1",
-    "npm": ">= 6.13.4",
-    "yarn": ">= 1.21.1"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
-  },
-  "dependencies": {}
+	"name": "quasar-project",
+	"version": "0.1.0",
+	"description": "A Quasar Project",
+	"productName": "Quasar App",
+	"private": true,
+	"scripts": {
+		"postinstall": "lerna bootstrap --npm-client yarn && lerna exec yarn",
+		"bootstrap": "lerna bootstrap",
+		"commit": "cz",
+		"changeset": "changeset",
+		"vp": "changeset && changeset version",
+		"lint": "eslint --ext .js,.ts,.vue ./",
+		"format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore",
+		"test": "echo \"No test specified\" && exit 0",
+		"dev:system": "lerna run dev --scope @apps/admin_console --npm-client yarn --stream",
+		"dev:dashboard": "lerna run dev --scope @apps/monitoring --stream",
+		"dev:server": "lerna run dev --scope @apps/server --npm-client yarn --stream",
+		"dev:analytics-server": "lerna run dev --scope @apps/analytics-server --npm-client yarn --stream",
+		"build:system": "lerna run build --scope @apps/admin_console --stream",
+		"build:dashboard": "lerna run build --scope @apps/monitoring --stream",
+		"build:server": "lerna run build --scope @apps/server --npm-client yarn --stream",
+		"build:analytics-server": "lerna run build --scope @apps/analytics-server --npm-client yarn --stream",
+		"dev:console": "yarn dev:system",
+		"dev:monitoring": "yarn dev:dashboard",
+		"build:console": "yarn build:system",
+		"build:monitoring": "yarn build:dashboard",
+		"preinstall": "npx only-allow yarn"
+	},
+	"devDependencies": {
+		"@changesets/cli": "^2.26.1",
+		"@typescript-eslint/eslint-plugin": "^5.10.0",
+		"@typescript-eslint/parser": "^5.10.0",
+		"commitizen": "^4.3.0",
+		"cz-conventional-changelog": "^3.3.0",
+		"dotenv": "^16.3.1",
+		"eslint": "^8.10.0",
+		"eslint-config-prettier": "^8.1.0",
+		"eslint-plugin-vue": "^9.0.0",
+		"lerna": "5.6.2",
+		"preload-webpack-plugin": "^3.0.0-beta.4",
+		"prettier": "^2.5.1"
+	},
+	"browserslist": [
+		"last 10 Chrome versions",
+		"last 10 Firefox versions",
+		"last 4 Edge versions",
+		"last 7 Safari versions",
+		"last 8 Android versions",
+		"last 8 ChromeAndroid versions",
+		"last 8 FirefoxAndroid versions",
+		"last 10 iOS versions",
+		"last 5 Opera versions"
+	],
+	"engines": {
+		"node": ">= 12.22.1",
+		"npm": ">= 6.13.4",
+		"yarn": ">= 1.21.1"
+	},
+	"config": {
+		"commitizen": {
+			"path": "./node_modules/cz-conventional-changelog"
+		}
+	}
 }
