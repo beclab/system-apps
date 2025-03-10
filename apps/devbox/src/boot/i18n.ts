@@ -5,7 +5,8 @@ import messages, { defaultLanguage } from 'src/i18n';
 import enUS from '../i18n/en-US';
 
 // Type-define 'en-US' as the master schema for the resource
-type MessageSchema = typeof enUS;
+export type MessageLanguages = keyof typeof messages;
+export type MessageSchema = typeof messages;
 
 // See https://vue-i18n.intlify.dev/guide/advanced/typescript.html#global-resource-schema-type-definition
 /* eslint-disable @typescript-eslint/no-empty-interface */
@@ -21,7 +22,7 @@ declare module 'vue-i18n' {
 }
 /* eslint-enable @typescript-eslint/no-empty-interface */
 
-export const i18n = createI18n({
+export const i18n = createI18n<{ message: MessageLanguages }, MessageLanguages>({
 	locale: defaultLanguage,
 	legacy: false,
 	messages

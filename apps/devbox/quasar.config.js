@@ -11,7 +11,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 const { configure } = require('quasar/wrappers');
+require('dotenv').config({ path: '../../.env' });
 const path = require('path');
+const PreloadWebpackPlugin = require('preload-webpack-plugin');
 const proxyTarget = process.env.PROXY_DOMAIN;
 module.exports = configure(function (ctx) {
 	return {
@@ -31,10 +33,10 @@ module.exports = configure(function (ctx) {
 		// app boot file (/src/boot)
 		// --> boot files are part of "main.js"
 		// https://v2.quasar.dev/quasar-cli-webpack/boot-files
-		boot: ["monacoplugin", "markdown", "axios", "bytetrade-ui", "i18n"],
+		boot: ['monacoplugin', 'markdown', 'axios', 'bytetrade-ui', 'i18n'],
 
 		// https://v2.quasar.dev/quasar-cli-webpack/quasar-config-file#css
-		css: ["app.scss", ctx.dev ? "font.dev.scss" : "font.pro.scss"],
+		css: ['app.scss', ctx.dev ? 'font.dev.scss' : 'font.pro.scss'],
 
 		// https://github.com/quasarframework/quasar/tree/dev/extras
 		extras: ['material-icons', 'material-symbols-rounded', 'roboto-font'],
@@ -109,6 +111,17 @@ module.exports = configure(function (ctx) {
 			// https://v2.quasar.dev/quasar-cli-webpack/handling-webpack
 			// "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
 			// chainWebpack (/* chain */) {},
+			extendWebpack(cfg) {
+				!ctx.dev &&
+					cfg.plugins.push(
+						new PreloadWebpackPlugin({
+							rel: 'preload',
+							include: 'allAssets',
+							fileWhitelist: [/.+MaterialSymbolsRounded.+/],
+							as: 'font'
+						})
+					);
+			}
 		},
 
 		// Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-devServer
@@ -116,52 +129,22 @@ module.exports = configure(function (ctx) {
 			https: true,
 			open: true, // opens browser window automatically,
 			proxy: {
-				'/kapis/terminal': {
-					target: `wss://${proxyTarget}`,
-					changeOrigin: true,
-					ws: true,
-					http: false
-				},
-				'/apis/apps/v1/watch': {
-					target: `wss://${proxyTarget}`,
-					changeOrigin: true,
-					ws: true,
-					http: false
-				},
-				'/api/v1/watch': {
-					target: `wss://${proxyTarget}`,
-					changeOrigin: true,
-					ws: true,
-					http: false
-				},
-				'/kapis': {
-					target: `https://${proxyTarget}`,
-					changeOrigin: true,
-					secure: false,
-					ws: false
-				},
 				'/api': {
+					// target: "http://127.0.0.1:3010/",
 					target: `https://${proxyTarget}`,
 					changeOrigin: true,
-					secure: false
 				},
-				'/bfl': {
+				'/upload': {
+					// target: "http://127.0.0.1:3010/",
 					target: `https://${proxyTarget}`,
 					changeOrigin: true,
-					secure: false
 				},
-				'/capi': {
-					target: `https://${proxyTarget}`,
-					changeOrigin: true,
-					secure: false
-				},
-				'/middleware': {
-					target: `https://${proxyTarget}`,
-					changeOrigin: true,
-					secure: false
+				'/socket.io': {
+					target: 'ws://localhost:9000',
+					ws: true,
 				},
 			},
-			port: 8080
+			port: 9000
 		},
 
 		// https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-framework

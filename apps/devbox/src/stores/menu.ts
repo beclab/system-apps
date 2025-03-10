@@ -1,9 +1,7 @@
 import { defineStore } from 'pinia';
-import { MenuLabelType, DocumenuType } from '@devbox/core';
+import { MenuLabelType, DocumenuType } from '@devbox/core/src';
 import { useDevelopingApps } from './app';
 import { i18n } from '../boot/i18n';
-
-const store = useDevelopingApps();
 
 export enum MenuLabel {
 	DEVBOX = 'DevBox',
@@ -97,6 +95,7 @@ export const useMenuStore = defineStore('menu', {
 	},
 	actions: {
 		updateApplications() {
+			const store = useDevelopingApps();
 			this.applicationMenu[0].children = [];
 			for (const app of store.apps) {
 				this.applicationMenu[0].children.push({

@@ -10,7 +10,7 @@ import {
 	AppCfg,
 	AppContainer,
 	MenuTab
-} from '@devbox/core';
+} from '@devbox/core/src';
 
 export type DevelopingApps = {
 	url: string;
@@ -107,7 +107,7 @@ export const useDevelopingApps = defineStore('app', {
 			}
 		},
 
-		async getAppCfg(app_name: string): Promise<AppCfg> {
+		async getAppCfg(app_name: string): Promise<AppCfg | undefined> {
 			try {
 				const data: AppCfg = await axios.get(
 					this.url + '/api/app-cfg?app=' + app_name
@@ -214,7 +214,7 @@ export const useDevelopingApps = defineStore('app', {
 		},
 
 		async putAppCfg(app_name: string, cfg: AppCfg): Promise<AppCfg> {
-			await axios.post(this.url + '/api/app-cfg?app=' + app_name, cfg);
+			return await axios.post(this.url + '/api/app-cfg?app=' + app_name, cfg);
 		},
 
 		async getAppState(app_name: string): Promise<AppCfg> {

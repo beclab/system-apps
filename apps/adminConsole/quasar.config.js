@@ -46,6 +46,9 @@ module.exports = configure(function (ctx) {
 			uglifyOptions: {
 				compress: { drop_console: true }
 			},
+			transpileSass: {
+				warn: false
+			},
 			vueRouterMode: 'history', // available values: 'hash', 'history'
 			// target: {
 			//   browser: [ 'es2019', 'edge88', 'firefox78', 'chrome87', 'safari13.1' ],

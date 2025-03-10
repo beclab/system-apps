@@ -10,7 +10,7 @@ export type FilesSelectType = {
 };
 
 export type FilesCodeType = {
-	code: String;
-	lang: String;
-	name: String;
+	code: string;
+	lang: string;
+	name: string;
 };

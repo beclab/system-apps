@@ -148,7 +148,7 @@ function update() {
 const getUnbindContainers = async () => {
 	try {
 		unbindContainers.value = await axios.get(
-			store.url + `/api/list-my-containers?unbind=true`
+			store.url + '/api/list-my-containers?unbind=true'
 		);
 	} catch (error) {
 		unbindContainers.value = [];
