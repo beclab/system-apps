@@ -54,12 +54,7 @@ module.exports = configure(function (ctx) {
 			// transpile: false,
 			// publicPath: '/',
 			env: {
-				URL: process.env.URL,
-				LOGIN_USERNAME: process.env.LOGIN_USERNAME,
-				LOGIN_PASSWORD: process.env.LOGIN_PASSWORD,
-				AUTH_TOKEN: process.env.AUTH_TOKEN,
-				ACCOUNT: process.env.ACCOUNT,
-				DEMO: process.env.DEMO
+				UPLOAD: ctx.dev ? "" : "https://dexbox-upload.snowinning.com",
 			},
 
 			// Add dependencies for transpiling with Babel (Array of string/regex)
@@ -104,7 +99,6 @@ module.exports = configure(function (ctx) {
 			// 压缩代码
 			minify: true,
 
-
 			// Options below are automatically set depending on the env, set them if you want to override
 			// extractCSS: false,
 
@@ -132,17 +126,17 @@ module.exports = configure(function (ctx) {
 				'/api': {
 					// target: "http://127.0.0.1:3010/",
 					target: `https://${proxyTarget}`,
-					changeOrigin: true,
+					changeOrigin: true
 				},
 				'/upload': {
 					// target: "http://127.0.0.1:3010/",
 					target: `https://${proxyTarget}`,
-					changeOrigin: true,
+					changeOrigin: true
 				},
 				'/socket.io': {
 					target: 'ws://localhost:9000',
-					ws: true,
-				},
+					ws: true
+				}
 			},
 			port: 9000
 		},
@@ -162,7 +156,7 @@ module.exports = configure(function (ctx) {
 			// directives: [],
 
 			// Quasar plugins
-			plugins: ['Dialog', 'Notify', 'Loading', 'Cookies', 'AppFullscreen']
+			plugins: ["Dialog", "Notify", "Loading"],
 		},
 
 		animations: 'all', // --- includes all animations
@@ -185,7 +179,6 @@ module.exports = configure(function (ctx) {
 			// chainWebpackWebserver (/* chain */) {},
 
 			middlewares: [
-				ctx.prod ? 'compression' : '',
 				'render' // keep this as last one
 			]
 		},
@@ -250,7 +243,7 @@ module.exports = configure(function (ctx) {
 		// Full list of options: https://v2.quasar.dev/quasar-cli-webpack/developing-electron-apps/configuring-electron
 		electron: {
 			bundler: 'packager', // 'packager' or 'builder'
-
+			inspectPort: 5858,
 			packager: {
 				// https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
 				// OS X / Mac App Store
@@ -265,7 +258,7 @@ module.exports = configure(function (ctx) {
 			builder: {
 				// https://www.electron.build/configuration/configuration
 
-				appId: 'settings'
+				appId: 'devbox'
 			},
 
 			// "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
