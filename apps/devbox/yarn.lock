@@ -859,7 +859,7 @@
 
 "@bytetrade/ui@0.1.44":
   version "0.1.44"
-  resolved "https://registry.yarnpkg.com/@bytetrade/ui/-/ui-0.1.44.tgz#df2367619e235daebfba5654184bb56281b1d4fe"
+  resolved "https://registry.npmjs.org/@bytetrade/ui/-/ui-0.1.44.tgz"
   integrity sha512-djGia0B26zQwMO5GY8dFQr/Q2ILwJM1TJ6W7n93zQtErIgJ5zCgwsyOFFKPBOYbnA0k2aUQ2YEJuIzz3OIGFRQ==
   dependencies:
     "@quasar/extras" "^1.16.7"
