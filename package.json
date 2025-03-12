@@ -15,10 +15,12 @@
     "test": "echo \"No test specified\" && exit 0",
     "dev:system": "lerna run dev --scope @apps/admin_console --npm-client yarn --stream",
     "dev:dashboard": "lerna run dev --scope @apps/monitoring --stream",
+    "dev:devbox": "lerna run dev --scope @apps/devbox --stream",
     "dev:server": "lerna run dev --scope @apps/server --npm-client yarn --stream",
     "dev:analytics-server": "lerna run dev --scope @apps/analytics-server --npm-client yarn --stream",
     "build:system": "lerna run build --scope @apps/admin_console --stream",
     "build:dashboard": "lerna run build --scope @apps/monitoring --stream",
+    "build:devbox": "lerna run build --scope @apps/devbox --stream",
     "build:server": "lerna run build --scope @apps/server --npm-client yarn --stream",
     "build:analytics-server": "lerna run build --scope @apps/analytics-server --npm-client yarn --stream",
     "dev:console": "yarn dev:system",
@@ -37,7 +39,7 @@
     "eslint": "^8.10.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-vue": "^9.0.0",
-    "lerna": "^5.1.8",
+    "lerna": "5.6.2",
     "preload-webpack-plugin": "^3.0.0-beta.4",
     "prettier": "^2.5.1"
   },
@@ -61,6 +63,5 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  },
-  "dependencies": {}
+  }
 }

@@ -2,7 +2,7 @@
 
 ## Install yarn
 
-```
+```bash
 npm install -g yarn
 ```
 
@@ -14,22 +14,26 @@ yarn install
 
 ## Configuring
 
-Create an .env file with the following
+- Create an .env file with the following
 
-```
-AUTH_TOKEN=xxxx
-ACCOUNT=webos-acount
-
+```bash
+PROXY_DOMAIN= app-name.webos-acount.olares.cn
 ```
 
-Create an local_config.yaml file with the following
+- Edit hosts configuration
 
+```bash
+# The browser opens this domain in place of localhost
+127.0.0.1 test.webos-acount.olares.cn
 ```
+
+- Create an local_config.yaml file with the following
+
+```yaml
 server:
   apiServer:
-    url: https://dashboard.webos-acount.olares.com
-    wsUrl: https://dashboard.webos-acount.olares.com
-
+    url: https://app-name.webos-acount.olares.com
+    wsUrl: https://app-name.webos-acount.olares.com
 ```
 
 ### Start the app in development mode (hot-code reloading, error reporting, etc.)
@@ -46,10 +50,16 @@ yarn dev:server
 yarn dev:dashboard
 ```
 
-- System
+- ControlHub
 
 ```bash
 yarn dev:system
+```
+
+- DevBox
+
+```bash
+yarn dev:devbox
 ```
 
 ### Lint the files
@@ -82,6 +92,12 @@ yarn build:dashboard
 
 ```bash
 yarn build:system
+```
+
+- DevBox
+
+```bash
+yarn build:devbox
 ```
 
 ## CI
