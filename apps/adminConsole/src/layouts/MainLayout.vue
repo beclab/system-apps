@@ -40,6 +40,7 @@ import TerminalBox from 'src/pages/Terminal/TerminalBox.vue';
 import { useTerminalStore } from '../stores/TerminalStore';
 import { watch } from 'vue';
 import { onBeforeMount } from 'vue';
+import { componentName } from 'src/router/const';
 const terminalStore = useTerminalStore();
 const { t } = useI18n();
 const appDetailStore = useAppDetailStore();
@@ -123,8 +124,8 @@ const init = () => {
 
 watch(
 	() => route.fullPath,
-	(newValue) => {
-		if (newValue.includes('terminal')) {
+	() => {
+		if (route?.name === componentName.TERMINAL_APP) {
 			terminalStore.terminalPanelInit();
 			terminalStore.terminalPanelStatus(true);
 		} else {
