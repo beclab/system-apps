@@ -18,7 +18,7 @@ jobs:
   call-nodes-ci:
     uses: ./.github/workflows/common-config.yml
     with:
-      NODE_VERSION: '16.14'
+      NODE_VERSION: '18.14.2'
       PACKAGE_NAME: admin-console-frontend-v1
       PACKAGE_PATH: apps/adminConsole/package.json
       DIR_PATH: apps/adminConsole
