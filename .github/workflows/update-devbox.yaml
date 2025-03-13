@@ -1,4 +1,4 @@
-name: Build frontend
+name: Build DevBox
 on:
   workflow_dispatch:
 
@@ -39,8 +39,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - name: Install
-        run: npm i -g @quasar/cli
-      - run: npm install
+        run: npm i -g yarn
+      - run: yarn install --no-frozen-lockfile
       - name: Install fonttools
         run: pip3 install fonttools brotli
       - name: Download fonttools Files
@@ -56,7 +56,7 @@ jobs:
           cd ./fonttools
           ./subset_font.sh nyTnjDwKNJ_190FjzaqkNCeE.woff2 unicodes.txt MaterialSymbolsRounded.woff2 ../apps/devbox/src/assets/fonts
       - name: Build
-        run: npm run app:build
+        run: yarn build:devbox
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
