@@ -208,7 +208,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useDevelopingApps } from '../stores/app';
 import { useMenuStore } from '../stores/menu';
 import axios from 'axios';
-import { ApplicationInfo } from '@devbox/core';
+import { ApplicationInfo } from 'src/types/core';
 import { statusStyle } from '../types/constants';
 import { useI18n } from 'vue-i18n';
 import { BtNotify, NotifyDefinedType } from '@bytetrade/ui';

@@ -75,7 +75,7 @@
 import { PropType, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import axios from 'axios';
-import { ApplicationInfo } from '@devbox/core';
+import { ApplicationInfo } from 'src/types/core';
 import { BtDialog, BtNotify, NotifyDefinedType } from '@bytetrade/ui';
 import { OPERATE_ACTION } from '../../types/constants';
 import { FilesSelectType } from '../../types/types';

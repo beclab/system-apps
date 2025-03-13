@@ -22,7 +22,7 @@
 import { ref, onMounted, PropType } from 'vue';
 import { useQuasar } from 'quasar';
 import { useDevelopingApps } from '../stores/app';
-import { ApplicationInfo, Container } from '@devbox/core';
+import { ApplicationInfo, Container } from 'src/types/core';
 import { useI18n } from 'vue-i18n';
 import ChooseContainer from './dialog/ChooseContainer.vue';
 
