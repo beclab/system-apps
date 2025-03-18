@@ -1,43 +1,45 @@
 <template>
-	<div class="files-right-header row items-center justify-between">
-		<div class="row items-center justify-start">
-			<img
-				class="q-mr-sm"
-				src="../../assets/icon-txt.svg"
-				style="width: 12px"
-			/>
-			<span>{{ fileInfo.name }}</span>
-			<span
-				class="statusIcon q-ml-sm"
-				:style="{
-					background: isEditing ? '#FFC46D' : 'rgba(41, 204, 95, 1)'
-				}"
-			></span>
+	<div class="editor">
+		<div class="files-right-header row items-center justify-between">
+			<div class="row items-center justify-start">
+				<img
+					class="q-mr-sm"
+					src="../../assets/icon-txt.svg"
+					style="width: 12px"
+				/>
+				<span>{{ fileInfo.name }}</span>
+				<span
+					class="statusIcon q-ml-sm"
+					:style="{
+						background: isEditing ? '#FFC46D' : 'rgba(41, 204, 95, 1)'
+					}"
+				></span>
+			</div>
+			<div>
+				<q-icon
+					class="q-ml-md cursor-pointer"
+					name="sym_r_save"
+					size="20px"
+					@click="onSaveFile"
+				/>
+			</div>
 		</div>
-		<div>
-			<q-icon
-				class="q-ml-md cursor-pointer"
-				name="sym_r_save"
-				size="20px"
-				@click="onSaveFile"
+		<div class="files-right-content">
+			<vue-monaco-editor
+				class="files-monaco"
+				theme="vs-light"
+				:language="fileInfo.lang"
+				@change="changeCode"
+				:value="fileInfo.code"
+				@mount="editorMount"
 			/>
 		</div>
-	</div>
-	<div class="files-right-content">
-		<vue-monaco-editor
-			class="files-monaco"
-			theme="vs-light"
-			:language="fileInfo.lang"
-			@change="changeCode"
-			:value="fileInfo.code"
-			@mount="editorMount"
-		/>
 	</div>
 </template>
 
 <script lang="ts" setup>
 import { PropType } from 'vue';
-import { FilesCodeType } from '../../types/types';
+import { FilesCodeType } from '@/types/core';
 
 defineProps({
 	isEditing: {
@@ -71,11 +73,10 @@ const editorMount = (value) => {
 <style lang="scss" scoped>
 .files-right-header {
 	width: 100%;
-	height: 32px;
-	line-height: 32px;
-	padding: 0 12px;
+	height: 56px;
+	line-height: 56px;
 	border-bottom: 1px solid $separator;
-	background: $background-3;
+	background: $background-1;
 	.statusIcon {
 		width: 6px;
 		height: 6px;
@@ -84,9 +85,9 @@ const editorMount = (value) => {
 	}
 }
 .files-right-content {
-	height: calc(100% - 32px);
+	height: calc(100% - 56px);
 	padding: 12px;
-	background: $background-3;
+	background: $background-1;
 
 	.files-monaco {
 		height: 100%;
@@ -97,6 +98,11 @@ const editorMount = (value) => {
 </style>
 
 <style lang="scss" scoped>
+.editor {
+	height: 100%;
+	padding: 0 20px;
+	background: $background-1;
+}
 .my-code-link {
 	background: $background-hover;
 	color: $ink-1;

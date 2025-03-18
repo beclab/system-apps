@@ -12,6 +12,9 @@
 // to match your app's branding.
 // Tip: Use the "Theme Builder" on Quasar's documentation website.
 
+@import '@bytetrade/ui/lib/styles/quasar.variables.sass';
+@import '@bytetrade/ui/lib/styles/quasar.btn.scss';
+
 $primary: #1976d2;
 $secondary: #26a69a;
 $accent: #9c27b0;
@@ -24,4 +27,31 @@ $negative: #c10015;
 $info: #31ccec;
 $warning: #f2c037;
 
-@import '@bytetrade/ui/lib/styles/quasar.variables.sass';
+$bg-content: #f5f7fa;
+$separator-color: $grey-2;
+$button-border-radius: 8px;
+$generic-border-radius: 8px;
+$primary: $blue-6;
+
+$content-header-height: 56px;
+$status-warning: $warning;
+$status-success: $positive;
+$status-completed: #3377ff;
+$status-failed: $negative;
+$status-pending: $ink-3;
+$space-xxl: 44px;
+
+$space-xs-base: 4px;
+$space-sm-base: 8px;
+$space-md-base: 12px;
+$space-lg-base: 20px;
+$space-xl-base: 32px;
+$space-xxl-base: 44px;
+
+$separator-color: $separator !important;
+
+$tooltip-color: $ink-tooltip;
+$tooltip-background: $tooltip-bg;
+$tooltip-padding: 4px 8px;
+$tooltip-border-radius: 4px;
+$tooltip-fontsize: 12px;

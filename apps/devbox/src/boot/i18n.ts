@@ -1,7 +1,7 @@
 import { boot } from 'quasar/wrappers';
 import { createI18n } from 'vue-i18n';
 
-import messages, { defaultLanguage } from 'src/i18n';
+import messages, { defaultLanguage } from '@/i18n';
 import enUS from '../i18n/en-US';
 
 // Type-define 'en-US' as the master schema for the resource

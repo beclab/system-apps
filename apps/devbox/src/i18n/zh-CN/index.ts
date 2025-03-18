@@ -21,7 +21,7 @@ export default {
 	home_visit_2: '了解更多信息。',
 	home_appname: '应用名称',
 	home_appname_hint: 'Olares 中的应用命名空间',
-	home_appname_rules_1: '输入应用名称',
+	home_appname_rules_1: '请输入应用名称',
 	home_appname_rules_2: '必须以字母开头',
 	home_appname_rules_3: '仅允许小写字母（a-z）和数字（0-9）',
 	home_apptype: '应用类型',
@@ -286,5 +286,51 @@ export default {
 		upgrade_app: '确定更新App吗？',
 		uninstall_app: '确定卸载App吗？',
 		delete_app: '确定删除App吗？'
-	}
+	},
+
+	docker: {
+		deploy_container: '将自己的容器部署到Olares上',
+		transplant_app: '将第三方的应用移植到Olares上',
+		coding: '在Olares上写程序',
+		create_default_app: '创建Hello World应用',
+		create_app_title: '使用容器镜像创建应用',
+		image_command_title: '镜像与启动命令',
+		container_image: '容器镜像',
+		start_command: '启动命令',
+		command_parameters: '命令参数',
+		container_port: '容器端口',
+		instance_specifications: '实例规格',
+		memory: '内存',
+		manufacturer: '制造商',
+		env_variables: '环境变量',
+		key: '键',
+		value: '值',
+		storage_volume: '存储卷',
+		host_path: '主机路径',
+		container_path: '容器路径',
+		add_env_variables: '添加环境变量',
+		add_storage_volume: '添加存储卷'
+	},
+
+	appStatus: {
+		empty: '未部署',
+		deployed: '部署成功',
+		deploying: '部署中',
+		undeploy: '部署失败',
+		abnormal: '部署异常'
+	},
+
+	header_btn: {
+		apply: '应用',
+		edit: '编辑'
+	},
+
+	image_rule: '请输入使用的容器镜像，例如 nginx',
+	start_command_rule: '如：/bin/bash -c',
+	start_cmd_args_rule: '如：echo "Hello Kubernetes"',
+	enter_input: '请输入',
+	host_path_rule: '请输入主机路径',
+	host_container_rule: '请输入容器路径',
+	file_name_rule: '请输入文件名称',
+	file_name_rule_2: '文件名不能包含以下字符: \\ / : * ? " < > |'
 };

@@ -75,13 +75,15 @@
 import { PropType, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import axios from 'axios';
-import { ApplicationInfo } from 'src/types/core';
-import { BtDialog, BtNotify, NotifyDefinedType } from '@bytetrade/ui';
-import { OPERATE_ACTION } from '../../types/constants';
-import { FilesSelectType } from '../../types/types';
+import { useQuasar } from 'quasar';
+import { ApplicationInfo, FilesSelectType, OPERATE_ACTION } from '@/types/core';
+import { BtDialog } from '@bytetrade/ui';
 import { useDevelopingApps } from '../../stores/app';
+import { useDockerStore } from '../../stores/docker';
 
 import PopupMenu from '../common/PopupMenu.vue';
+import CreateFile from '../../components/dialog/CreateFile.vue';
+import DialogConfirm from '../../components/dialog/DialogConfirm.vue';
 
 const props = defineProps({
 	app: {
@@ -102,7 +104,9 @@ const props = defineProps({
 const emits = defineEmits(['onSelected', 'updatePathNode']);
 
 const { t } = useI18n();
+const $q = useQuasar();
 const store = useDevelopingApps();
+const dockerStore = useDockerStore();
 
 const expanded = ref<string[]>([props.app.appName]);
 const mouseItemKey = ref();
@@ -139,30 +143,23 @@ const onLazyLoad = async ({ node, done }) => {
 };
 
 const loadChildren = async (node: any) => {
-	try {
-		const res: any = await axios.get(store.url + '/api/files/' + node.path);
+	const res: any = await axios.get(store.url + '/api/files/' + node.path);
 
-		const setChildren = (n: any, path: any, children: any) => {
-			for (let i in n) {
-				if (n[i].path == path && n[i].isDir) {
-					n[i].children = children;
-					return;
-				}
-
-				if (n[i].isDir && n[i].children.length > 0) {
-					setChildren(n[i].children, path, children);
-				}
+	const setChildren = (n: any, path: any, children: any) => {
+		for (let i in n) {
+			if (n[i].path == path && n[i].isDir) {
+				n[i].children = children;
+				return;
 			}
-		};
 
-		const children = getChildren(res.items);
-		return children;
-	} catch (e: any) {
-		BtNotify.show({
-			type: NotifyDefinedType.FAILED,
-			message: t('message.save_loadChildren_failed') + e.message
-		});
-	}
+			if (n[i].isDir && n[i].children.length > 0) {
+				setChildren(n[i].children, path, children);
+			}
+		}
+	};
+
+	const children = getChildren(res.items);
+	return children;
 };
 
 const getChildren = (items: any) => {
@@ -223,166 +220,49 @@ const handleEvent = (action: OPERATE_ACTION, path: string, label: string) => {
 };
 
 const createDialog = (path: string, action: OPERATE_ACTION) => {
-	BtDialog.show({
-		platform: 'web',
-		cancel: true,
-		okStyle: {
-			background: '#00BE9E',
-			color: '#ffffff'
-		},
-		title:
-			action === OPERATE_ACTION.ADD_FILE
-				? t('dialog_create_file')
-				: t('dialog_create_folder'),
-		prompt: {
-			isValid: (val) => val.length > 2,
-			type: 'text',
-			name: t('dialog_create_title'),
-			placeholder: ''
+	$q.dialog({
+		component: CreateFile,
+		componentProps: {
+			path,
+			action
 		}
-	})
-		.then((val) => {
-			if (!val) return false;
-			const filepath = `${path}/${val}`;
-			if (action === OPERATE_ACTION.ADD_FOLDER) {
-				createFolder(filepath, path);
-			} else if (action === OPERATE_ACTION.ADD_FILE) {
-				createFile(filepath, path);
-			}
-		})
-		.catch((err) => {
-			console.log(err);
-		});
-};
-
-const createFile = async (path: string, parentPath: string) => {
-	try {
-		await axios.put(store.url + '/api/files/' + path);
-		BtNotify.show({
-			type: NotifyDefinedType.SUCCESS,
-			message: t('message.create_file_success')
-		});
-		await emits('updatePathNode', parentPath);
-	} catch (e) {
-		BtNotify.show({
-			type: NotifyDefinedType.FAILED,
-			message: t('message.create_file_failed') + e.message
-		});
-	}
-};
-
-const createFolder = async (path: string, parentPath: string) => {
-	try {
-		const res = await axios.post(
-			store.url + '/api/files/' + path + '?file_type=dir'
-		);
-		BtNotify.show({
-			type: NotifyDefinedType.SUCCESS,
-			message: t('message.create_folder_success')
-		});
-		await emits('updatePathNode', parentPath);
-	} catch (e) {
-		BtNotify.show({
-			type: NotifyDefinedType.FAILED,
-			message: t('message.create_folder_failed') + e.message
-		});
-	}
+	}).onOk(() => {
+		emits('updatePathNode', path);
+	});
 };
 
 const renameDialog = (path: string, label: string, action: OPERATE_ACTION) => {
-	BtDialog.show({
-		platform: 'web',
-		cancel: true,
-		okStyle: {
-			background: '#00BE9E',
-			color: '#ffffff'
-		},
-		title: t('message.rename_file'),
-		prompt: {
-			model: label,
-			isValid: (val) => val.length > 2,
-			type: 'text',
-			name: 'New Name',
-			placeholder: ''
+	$q.dialog({
+		component: CreateFile,
+		componentProps: {
+			path,
+			action,
+			label
 		}
-	})
-		.then((val) => {
-			if (val) {
-				renameFile(path, label, val);
-			}
-		})
-		.catch((err) => {
-			console.log(err);
-		});
-};
-
-const renameFile = async (path: string, label: string, newname: any) => {
-	const newPath = path.replace(label, newname);
-	const parentPath = path.split('/').slice(0, -1).join('/');
-
-	try {
-		await axios.patch(
-			store.url +
-				'/api/files/' +
-				path +
-				'?action=rename&destination=' +
-				newPath,
-			{},
-			{
-				headers: { 'content-type': 'text/plain' }
-			}
-		);
-		BtNotify.show({
-			type: NotifyDefinedType.SUCCESS,
-			message: t('message.rename_folder_success')
-		});
-		await emits('updatePathNode', parentPath);
-	} catch (e) {
-		BtNotify.show({
-			type: NotifyDefinedType.SUCCESS,
-			message: t('message.rename_folder_failed')
-		});
-	}
+	}).onOk(() => {
+		const parentPath = path.split('/').slice(0, -1).join('/');
+		emits('updatePathNode', parentPath);
+	});
 };
 
 const deleteFile = async (path: string) => {
 	const target_name = path.substring(path.lastIndexOf('/') + 1);
-	BtDialog.show({
-		platform: 'web',
-		cancel: true,
-		message: t('message.deleteTip', { name: target_name }),
-		okStyle: {
-			background: '#00BE9E',
-			color: '#ffffff'
-		},
-		title: 'Delete'
-	})
-		.then((val) => {
-			if (val) {
-				_deleteFile(path);
-			}
-		})
-		.catch((err) => {
-			console.log(err);
-		});
+
+	$q.dialog({
+		component: DialogConfirm,
+		componentProps: {
+			title: t('btn_delete'),
+			message: t('message.deleteTip', { name: target_name })
+		}
+	}).onOk(async () => {
+		_deleteFile(path);
+	});
 };
 
 const _deleteFile = async (path: string) => {
 	const parentPath = path.split('/').slice(0, -1).join('/');
-
-	try {
-		await axios.delete(store.url + '/api/files/' + path);
-		BtNotify.show({
-			type: NotifyDefinedType.SUCCESS,
-			message: t('message.delete_file_success')
-		});
-		await emits('updatePathNode', parentPath);
-	} catch (e) {
-		BtNotify.show({
-			type: NotifyDefinedType.FAILED,
-			message: t('message.delete_file_failed') + e.message
-		});
-	}
+	await dockerStore.deleteFile(path);
+	emits('updatePathNode', parentPath);
 };
 </script>
 

@@ -2,6 +2,10 @@
   "extends": "@quasar/app-webpack/tsconfig-preset",
   "compilerOptions": {
     "baseUrl": ".",
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "paths": {
+      "src/*": ["node_modules/@apps/admin_console/src/*"],
+      "@/*": ["src/*"]
+    }
   }
 }

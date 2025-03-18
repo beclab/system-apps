@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { MenuLabelType, DocumenuType } from 'src/types/core';
+import { MenuLabelType, DocumentType } from '@/types/core';
 import { useDevelopingApps } from './app';
 import { i18n } from '../boot/i18n';
 
@@ -13,9 +13,8 @@ export enum MenuLabel {
 export type DataState = {
 	homeMenu: MenuLabelType[];
 	applicationMenu: MenuLabelType[];
-	documentList: DocumenuType[];
+	documentList: DocumentType[];
 	currentItem: string;
-	appCurrentItem: string;
 };
 
 export const useMenuStore = defineStore('menu', {
@@ -39,11 +38,6 @@ export const useMenuStore = defineStore('menu', {
 							icon: 'sym_r_deployed_code',
 							muted: true
 						}
-						// {
-						//   label: MenuLabel.HELP,
-						//   key: MenuLabel.HELP,
-						//   icon: 'sym_o_inbox_customize',
-						// },
 					]
 				}
 			],
@@ -57,7 +51,6 @@ export const useMenuStore = defineStore('menu', {
 			],
 
 			currentItem: MenuLabel.HOME,
-			appCurrentItem: 'files',
 			documentList: [
 				{
 					id: 1,
@@ -100,7 +93,7 @@ export const useMenuStore = defineStore('menu', {
 			for (const app of store.apps) {
 				this.applicationMenu[0].children.push({
 					label: app.appName,
-					key: `/app/${app.id}`,
+					key: `/app/${app.appName}`,
 					icon: 'sym_r_grid_view'
 				});
 			}
@@ -120,7 +113,7 @@ export const useMenuStore = defineStore('menu', {
 					break;
 
 				case 'app':
-					this.currentItem = `/app/${splitPath[2]}`;
+					this.currentItem = `/app/${decodeURIComponent(splitPath[2])}`;
 					break;
 
 				default:

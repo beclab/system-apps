@@ -11,7 +11,7 @@
 				:container="container"
 			/>
 		</div>
-		<div class="nodata" v-else>
+		<div class="no-data" v-else>
 			<img src="../assets/nodata.svg" />
 			<span class="q-mt-xl">{{ t('no_data') }}</span>
 		</div>
@@ -45,7 +45,7 @@ onMounted(() => {
 	grid-gap: 32px;
 }
 
-.nodata {
+.no-data {
 	width: 100%;
 	height: calc(100vh - 200px);
 	display: flex;

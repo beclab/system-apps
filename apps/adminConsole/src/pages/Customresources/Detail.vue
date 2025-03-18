@@ -190,7 +190,7 @@ const columns: any = computed(() => {
 const currentYamlData = ref<any>({});
 const yamlRef = ref();
 const deleteDialogRef = ref();
-const list = ref();
+const list = ref([]);
 const loading = ref(false);
 const deleteLoading = ref(false);
 const details = ref();

@@ -1,5 +1,5 @@
 <template>
-	<q-card-actions class="row justify-end items-center q-mt-md q-mb-sm">
+	<q-card-actions class="row justify-end items-center" style="padding: 0">
 		<q-btn
 			v-if="showCancel"
 			clickable
@@ -8,6 +8,7 @@
 			flat
 			type="reset"
 			class="but-cancel row justify-center items-center"
+			@click="cancel"
 		>
 			{{ cancelText }}
 		</q-btn>
@@ -18,7 +19,8 @@
 			no-caps
 			flat
 			type="submit"
-			class="but-creat row justify-center items-center"
+			class="but-create row justify-center items-center"
+			@click="submit"
 		>
 			{{ okText }}
 		</q-btn>
@@ -29,7 +31,7 @@
 defineProps({
 	okText: {
 		type: String,
-		default: 'Sumbit',
+		default: 'Submit',
 		required: false
 	},
 	cancelText: {
@@ -43,23 +45,37 @@ defineProps({
 		required: false
 	}
 });
+
+const emits = defineEmits(['submit', 'cancel']);
+
+const submit = () => {
+	emits('submit');
+};
+
+const cancel = () => {
+	emits('cancel');
+};
 </script>
 
 <style scoped lang="scss">
-.but-creat {
+.but-create {
+	min-width: 100px !important;
+	height: 40px;
 	border-radius: 8px;
 	font-weight: 500;
-	font-size: 12px;
 	background: rgba(0, 190, 158, 1);
 	color: #ffffff;
-	padding: 4px 12px !important;
+	font-size: 16px;
+	margin-left: 12px !important;
 }
 .but-cancel {
+	min-width: 100px !important;
+	height: 40px;
 	border-radius: 8px;
 	font-weight: 500;
 	font-size: 12px;
 	border: 1px solid $separator;
-	color: $ink-1;
-	padding: 4px 12px !important;
+	color: $ink-2;
+	font-size: 16px;
 }
 </style>

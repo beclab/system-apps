@@ -19,7 +19,7 @@
 </template>
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { OPERATE_ACTION } from '../../types/constants';
+import { OPERATE_ACTION } from '@/types/core';
 
 const props = defineProps({
 	items: {

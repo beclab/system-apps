@@ -1,10 +1,11 @@
 <template>
 	<MySplitter>
 		<template v-slot:before="scope">
-			<div class="my-menu-before-wrapper">
+			<div class="my-menu-before-wrapper" v-if="headerShow">
 				<slot v-bind:value="scope.value"></slot>
 				<q-resize-observer @resize="onResize" />
 			</div>
+			<div v-else class="my-menu-before-wrapper-no-header"></div>
 			<bt-scroll-area class="my-menu-before-scroll">
 				<q-tree
 					ref="treeRef"
@@ -104,6 +105,7 @@
 		<template v-slot:after>
 			<div
 				class="my-menu-after-wrapper"
+				v-if="headerShow"
 				:style="{
 					zIndex: zIndex,
 					width: size.widths[index + 1] ? `${size.widths[index + 1]}px` : 'auto'
@@ -139,7 +141,7 @@ import {
 	onUpdated
 } from 'vue';
 import { defaultMenuOptions, MenuItem, MenuOptions } from '../../types/menu';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import _, { isArray, isNil, isFunction } from 'lodash';
 import Empty from '../Empty.vue';
 import MyBadge from '../MyBadge.vue';
@@ -181,6 +183,9 @@ const expanded = ref(props.defaultOpeneds);
 const extraWidth = ref(32);
 
 const extraWidthPx = computed(() => extraWidth.value + 'px');
+
+const route = useRoute();
+const headerShow = computed(() => !route.meta.headerHide);
 
 watch(
 	() => props.defaultActive,
@@ -321,6 +326,9 @@ defineExpose({ resetSelected, setExpanded, getExpandedNodes });
 <style lang="scss" scoped>
 .my-menu-before-wrapper {
 	height: $content-header-height;
+}
+.my-menu-before-wrapper-no-header {
+	height: 20px;
 }
 .my-menu-before-scroll {
 	height: calc(100vh - #{$content-header-height});

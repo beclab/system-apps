@@ -16,9 +16,7 @@ export default defineComponent({
 		appStore.setUrl(host);
 		return new Promise((resolve) => {
 			appStore.getApps().then(() => {
-				appStore.getMyContainers().then(() => {
-					resolve({});
-				});
+				resolve({});
 			});
 		});
 	},

@@ -313,5 +313,52 @@ export default {
 		upgrade_app: 'Are you sure you want to Upgrade the app?',
 		uninstall_app: 'Are you sure you want to uninstall the app?',
 		delete_app: 'Are you sure to delete the app?'
-	}
+	},
+
+	docker: {
+		deploy_container: 'Deploy your own container to Olares',
+		transplant_app: 'Transplant third-party applications to Olares',
+		coding: 'Coding on Olares',
+		create_default_app: 'Create a Hello World application',
+		create_app_title: 'Use container image to create an application',
+		image_command_title: 'Image and start command',
+		container_image: 'Container image',
+		start_command: 'Start command',
+		command_parameters: 'Command parameters',
+		container_port: 'Container port',
+		instance_specifications: 'Instance Specifications',
+		memory: 'Memory',
+		manufacturer: 'Manufacturer',
+		env_variables: 'Environment Variables',
+		key: 'key',
+		value: 'value',
+		storage_volume: 'Storage Volume',
+		host_path: 'Host path',
+		container_path: 'Container path',
+		add_env_variables: 'Add Environment Variables',
+		add_storage_volume: 'Add Storage Volume'
+	},
+
+	appStatus: {
+		empty: 'Empty',
+		deployed: 'Deployed',
+		deploying: 'Deploying',
+		undeploy: 'Undeploy',
+		abnormal: 'Abnormal'
+	},
+
+	header_btn: {
+		apply: '申请',
+		edit: '编辑'
+	},
+
+	image_rule: 'Please enter the container image to be used, for example, nginx',
+	start_command_rule: 'For example: /bin/bash -c',
+	start_cmd_args_rule: 'For example: echo "Hello Kubernetes"',
+	enter_input: 'Please enter',
+	host_path_rule: 'Please enter the host path',
+	host_container_rule: 'Please enter the container path',
+	file_name_rule: 'Please enter the file name',
+	file_name_rule_2:
+		'The file name cannot contain the following characters: \\ / : * ? " < > |'
 };

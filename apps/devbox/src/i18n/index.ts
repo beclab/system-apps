@@ -1,9 +1,10 @@
 import enUS from './en-US';
 import zhCN from './zh-CN';
+import ControlHubLang from '@apps/admin_console/src/i18n';
 
 export default {
-	'en-US': enUS,
-	'zh-CN': zhCN
+	'en-US': { ...ControlHubLang['en-US'], ...enUS },
+	'zh-CN': { ...ControlHubLang['zh-CN'], ...zhCN }
 };
 
 export const defaultLanguage = 'en-US';
