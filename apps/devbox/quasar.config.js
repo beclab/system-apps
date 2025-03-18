@@ -54,7 +54,7 @@ module.exports = configure(function (ctx) {
 			// transpile: false,
 			// publicPath: '/',
 			env: {
-				UPLOAD: ctx.dev ? "" : "https://dexbox-upload.snowinning.com",
+				UPLOAD: ctx.dev ? '' : 'https://dexbox-upload.snowinning.com'
 			},
 
 			// Add dependencies for transpiling with Babel (Array of string/regex)
@@ -120,17 +120,17 @@ module.exports = configure(function (ctx) {
 
 		// Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-devServer
 		devServer: {
-			https: true,
+			// https: true,
 			open: true, // opens browser window automatically,
 			proxy: {
 				'/api': {
 					// target: "http://127.0.0.1:3010/",
-					target: `https://${proxyTarget}`,
+					target: `https://fa5bd82b.${proxyTarget}`,
 					changeOrigin: true
 				},
 				'/upload': {
 					// target: "http://127.0.0.1:3010/",
-					target: `https://${proxyTarget}`,
+					target: `https://fa5bd82b.${proxyTarget}`,
 					changeOrigin: true
 				},
 				'/socket.io': {
@@ -156,7 +156,7 @@ module.exports = configure(function (ctx) {
 			// directives: [],
 
 			// Quasar plugins
-			plugins: ["Dialog", "Notify", "Loading"],
+			plugins: ['Dialog', 'Notify', 'Loading']
 		},
 
 		animations: 'all', // --- includes all animations

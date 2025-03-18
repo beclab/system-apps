@@ -264,18 +264,18 @@ const editorMount = () => {
 
 <style lang="scss" scoped>
 .files {
-	height: calc(100vh - 112px);
-	margin-top: 32px;
+	height: calc(100vh - 56px);
+
 	.files-left {
-		width: 240px;
+		width: 260px;
 		background-color: $background-1;
+		padding: 20px;
 	}
 	.files-right {
 		flex: 1;
-		border-radius: 12px;
-		border: 1px solid $separator;
 		overflow: hidden;
 		background: $background-3;
+		padding: 20px;
 	}
 }
 </style>

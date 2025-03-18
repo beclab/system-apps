@@ -16,6 +16,19 @@ export const dependencyOptions = ['system', 'application'];
 
 export const validDuration = ['ns', 'us', 'ms', 's', 'm', 'h'];
 
+export const cpuOptions = ['50m', '100m', '200m', '500m', '1', '2', '4'];
+
+export const memoryOptions = [
+	'64Mi',
+	'128Mi',
+	'256Mi',
+	'512Mi',
+	'1Gi',
+	'2Gi',
+	'4Gi',
+	'8Gi'
+];
+
 export const statusStyle = {
 	pending: {
 		color: '#ADADAD'

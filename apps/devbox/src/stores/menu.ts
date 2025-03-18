@@ -39,11 +39,6 @@ export const useMenuStore = defineStore('menu', {
 							icon: 'sym_r_deployed_code',
 							muted: true
 						}
-						// {
-						//   label: MenuLabel.HELP,
-						//   key: MenuLabel.HELP,
-						//   icon: 'sym_o_inbox_customize',
-						// },
 					]
 				}
 			],
