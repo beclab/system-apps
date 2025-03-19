@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { MenuLabelType, DocumenuType } from 'src/types/core';
+import { MenuLabelType, DocumenuType } from '@/types/core';
 import { useDevelopingApps } from './app';
 import { i18n } from '../boot/i18n';
 

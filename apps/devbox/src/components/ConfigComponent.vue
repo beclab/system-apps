@@ -101,7 +101,7 @@ import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
 import { onBeforeRouteLeave } from 'vue-router';
 import { useDevelopingApps } from '../stores/app';
-import { ApplicationInfo } from 'src/types/core';
+import { ApplicationInfo } from '@/types/core';
 import MetadataComponent from './config/MetadataComponent.vue';
 import EntrancesComponent from './config/EntrancesComponent.vue';
 import SpecComponent from './config/SpecComponent.vue';

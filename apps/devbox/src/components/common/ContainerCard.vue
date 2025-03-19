@@ -194,7 +194,7 @@
 import { defineProps, ref, onMounted } from 'vue';
 import axios from 'axios';
 import { useQuasar } from 'quasar';
-import { ApplicationInfo } from 'src/types/core';
+import { ApplicationInfo } from '@/types/core';
 import { BtDialog } from '@bytetrade/ui';
 import { useI18n } from 'vue-i18n';
 

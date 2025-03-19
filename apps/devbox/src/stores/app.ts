@@ -10,7 +10,7 @@ import {
 	AppCfg,
 	AppContainer,
 	MenuTab
-} from 'src/types/core';
+} from '@/types/core';
 
 export type DevelopingApps = {
 	url: string;

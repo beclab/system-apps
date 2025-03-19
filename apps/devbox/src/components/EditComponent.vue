@@ -27,7 +27,7 @@ import { ref, watch, onMounted, PropType, reactive } from 'vue';
 import axios from 'axios';
 import { useRouter, useRoute } from 'vue-router';
 import { useDevelopingApps } from '../stores/app';
-import { ApplicationInfo } from 'src/types/core';
+import { ApplicationInfo } from '@/types/core';
 import { FilesSelectType, FilesCodeType } from '../types/types';
 import { BtDialog, BtNotify, NotifyDefinedType } from '@bytetrade/ui';
 import { useI18n } from 'vue-i18n';

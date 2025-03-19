@@ -36,7 +36,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useDialogPluginComponent } from 'quasar';
-import { CreateApplicationConfig } from 'src/types/core';
+import { CreateApplicationConfig } from '@/types/core';
 
 import ImageDeployer from '../config/ImageDeployer.vue';
 import InstanceConfig from '../config/InstanceConfig.vue';

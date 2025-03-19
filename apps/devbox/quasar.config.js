@@ -13,6 +13,8 @@
 const { configure } = require('quasar/wrappers');
 require('dotenv').config({ path: '../../.env' });
 const path = require('path');
+const fs = require('fs');
+
 const PreloadWebpackPlugin = require('preload-webpack-plugin');
 const proxyTarget = process.env.PROXY_DOMAIN;
 const proxyTargetControlHub = process.env.PROXY_DOMAIN_CONTROL_HUB
@@ -116,6 +118,28 @@ module.exports = configure(function (ctx) {
 							as: 'font'
 						})
 					);
+
+				cfg.resolve.alias = {
+					...cfg.resolve.alias, // 保存已有的别名
+
+					// 添加自定义别名，示例：
+					src: path.resolve(__dirname, './node_modules/@apps/admin_console/src'),
+					'@': path.resolve(__dirname, './src'),
+				}
+
+				const customEntryPath = './.quasar/client-entry-alias.js';
+				const qusarEntryPath = './.quasar/client-entry.js';
+
+
+				changeQuasarFile(qusarEntryPath, customEntryPath, (content) =>
+					content
+						.replace('src/css/app.scss', '@/css/app.scss')
+						.replace('src/css/font.dev.scss', '@/css/font.dev.scss')
+				);
+
+				const clientEntry = path.resolve(__dirname, customEntryPath);
+				cfg.entry.app = clientEntry;
+
 			}
 		},
 
@@ -124,7 +148,17 @@ module.exports = configure(function (ctx) {
 			https: true,
 			open: true, // opens browser window automatically,
 			proxy: {
-				'/api': {
+				'/api/command': {
+					// target: "http://127.0.0.1:3010/",
+					target: `https://fa5bd82b.${proxyTarget}`,
+					changeOrigin: true
+				},
+				'/api/list-my-containers': {
+					// target: "http://127.0.0.1:3010/",
+					target: `https://fa5bd82b.${proxyTarget}`,
+					changeOrigin: true
+				},
+				'/api/files': {
 					// target: "http://127.0.0.1:3010/",
 					target: `https://fa5bd82b.${proxyTarget}`,
 					changeOrigin: true
@@ -162,6 +196,11 @@ module.exports = configure(function (ctx) {
 					secure: false,
 					ws: false
 				},
+				'/api': {
+					target: `https://${proxyTargetControlHub}`,
+					changeOrigin: true,
+					secure: false
+				},
 				'/bfl': {
 					target: `https://${proxyTargetControlHub}`,
 					changeOrigin: true,
@@ -177,7 +216,6 @@ module.exports = configure(function (ctx) {
 					changeOrigin: true,
 					secure: false
 				},
-
 			},
 			port: 9000
 		},
@@ -316,3 +354,22 @@ module.exports = configure(function (ctx) {
 		}
 	};
 });
+
+
+function changeQuasarFile(qusarEntryPath, customEntryPath, contentFormat) {
+	const copyClentEntryFilePath = path.resolve(__dirname, customEntryPath);
+
+	fs.access(copyClentEntryFilePath, fs.constants.F_OK, (err) => {
+		if (err) {
+			fs.copyFileSync(
+				path.resolve(__dirname, qusarEntryPath),
+				copyClentEntryFilePath
+			);
+
+			let fileContent = fs.readFileSync(copyClentEntryFilePath, 'utf8');
+			fileContent = contentFormat ? contentFormat(fileContent) : fileContent;
+
+			fs.writeFileSync(copyClentEntryFilePath, fileContent, 'utf8');
+		}
+	});
+}

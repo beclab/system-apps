@@ -244,7 +244,7 @@ import { ref } from 'vue';
 import { useQuasar } from 'quasar';
 import { useDevelopingApps } from '../stores/app';
 import { useMenuStore } from '../stores/menu';
-import { CreateApplicationConfig, ApplicationType } from 'src/types/core';
+import { CreateApplicationConfig, ApplicationType } from '@/types/core';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 
