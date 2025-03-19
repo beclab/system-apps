@@ -11,7 +11,7 @@
 <script lang="ts" setup>
 import { ref, watch, onUnmounted } from 'vue';
 import { useQuasar } from 'quasar';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useDevelopingApps } from '../stores/app';
 import { ApplicationInfo } from 'src/types/core';
 
@@ -19,8 +19,10 @@ import EditComponent from '../components/EditComponent.vue';
 import CreateApp from '../components/dialog/CreateApp.vue';
 
 import ApplicationHeader from './ApplicationHeader.vue';
+import { ROUTE_NAME } from 'src/common/router-name';
 
 const route = useRoute();
+const router = useRouter();
 const store = useDevelopingApps();
 const $q = useQuasar();
 
@@ -34,8 +36,13 @@ const app = ref<ApplicationInfo>();
 
 const onSave = () => {
 	console.log('in save');
+	router.push({
+		name: ROUTE_NAME.WORKLOAD,
+		params: {
+			namespace: 'user-system-yangyongheng'
+		}
+	});
 };
-
 const createApp = () => {
 	$q.dialog({
 		component: CreateApp

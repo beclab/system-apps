@@ -15,6 +15,7 @@ require('dotenv').config({ path: '../../.env' });
 const path = require('path');
 const PreloadWebpackPlugin = require('preload-webpack-plugin');
 const proxyTarget = process.env.PROXY_DOMAIN;
+const proxyTargetControlHub = process.env.PROXY_DOMAIN_CONTROL_HUB
 module.exports = configure(function (ctx) {
 	return {
 		// https://v2.quasar.dev/quasar-cli-webpack/supporting-ts
@@ -120,7 +121,7 @@ module.exports = configure(function (ctx) {
 
 		// Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-devServer
 		devServer: {
-			// https: true,
+			https: true,
 			open: true, // opens browser window automatically,
 			proxy: {
 				'/api': {
@@ -136,7 +137,47 @@ module.exports = configure(function (ctx) {
 				'/socket.io': {
 					target: 'ws://localhost:9000',
 					ws: true
-				}
+				},
+				'/kapis/terminal': {
+					target: `wss://${proxyTargetControlHub}`,
+					changeOrigin: true,
+					ws: true,
+					http: false
+				},
+				'/apis/apps/v1/watch': {
+					target: `wss://${proxyTargetControlHub}`,
+					changeOrigin: true,
+					ws: true,
+					http: false
+				},
+				'/api/v1/watch': {
+					target: `wss://${proxyTargetControlHub}`,
+					changeOrigin: true,
+					ws: true,
+					http: false
+				},
+				'/kapis': {
+					target: `https://${proxyTargetControlHub}`,
+					changeOrigin: true,
+					secure: false,
+					ws: false
+				},
+				'/bfl': {
+					target: `https://${proxyTargetControlHub}`,
+					changeOrigin: true,
+					secure: false
+				},
+				'/capi': {
+					target: `https://${proxyTargetControlHub}`,
+					changeOrigin: true,
+					secure: false
+				},
+				'/middleware': {
+					target: `https://${proxyTargetControlHub}`,
+					changeOrigin: true,
+					secure: false
+				},
+
 			},
 			port: 9000
 		},
