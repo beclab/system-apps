@@ -1,10 +1,10 @@
 import enUS from './en-US';
 import zhCN from './zh-CN';
-import kubeEnUS from '@packages/ui/src/i18n';
+import ControlHubLang from '@apps/admin_console/src/i18n';
 
 export default {
-	'en-US': { ...kubeEnUS['en-US'], ...enUS },
-	'zh-CN': { ...kubeEnUS['zh-CN'], ...zhCN }
+	'en-US': { ...ControlHubLang['en-US'], ...enUS },
+	'zh-CN': { ...ControlHubLang['zh-CN'], ...zhCN }
 };
 
 export const defaultLanguage = 'en-US';

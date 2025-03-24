@@ -44,7 +44,7 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
 const loading = ref(false);
-const rows = ref();
+const rows = ref([]);
 const pagination = ref({
 	rowsNumber: 0
 });

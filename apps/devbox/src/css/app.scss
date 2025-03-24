@@ -34,14 +34,6 @@ body {
 	font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
 }
 
-.q-dialog__inner--maximized > div,
-.q-dialog__inner--minimized > div {
-	max-width: none !important;
-	max-height: none !important;
-	height: auto !important;
-	overflow: hidden;
-}
-
 .menu-wrap {
 	border-radius: 8px;
 	box-shadow: none;

@@ -39,7 +39,8 @@ const onSave = () => {
 	router.push({
 		name: ROUTE_NAME.WORKLOAD,
 		params: {
-			namespace: 'user-system-yangyongheng'
+			namespace: 'user-system-yangyongheng',
+			id: route.params.id
 		}
 	});
 };

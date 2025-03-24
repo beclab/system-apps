@@ -23,21 +23,24 @@ const routes: RouteRecordRaw[] = [
 				component: () => import('pages/ContainerPage.vue')
 			},
 			{
-				path: '/app/workloads/:namespace/overview',
+				path: '/app/:id/workloads/:namespace/overview',
 				name: ROUTE_NAME.WORKLOAD,
+				meta: {
+					headerHide: true
+				},
 				component: () =>
 					import(
 						'@apps/admin_console/src/pages/ApplicationSpaces/Workloads/Workloads.vue'
 					),
 				children: [
 					{
-						path: '/app/workloads/:kind/:namespace/:pods_name/:pods_uid/:node/:name/:uid/:createTime/pods_overview',
+						path: '/app/:id/workloads/:kind/:namespace/:pods_name/:pods_uid/:node/:name/:uid/:createTime/pods_overview',
 						component: () =>
 							import('@apps/admin_console/src/pages/Pods/Overview2.vue'),
 						name: componentName.WORKLOAD_PODS
 					},
 					{
-						path: '/app/workloads/:kind/:namespace/:pods_name/:pods_uid/:createTime?',
+						path: '/app/:id/workloads/:kind/:namespace/:pods_name/:pods_uid/:createTime?',
 						component: () =>
 							import(
 								'@apps/admin_console/src/pages/ApplicationSpaces/Workloads/Detail.vue'
@@ -48,12 +51,12 @@ const routes: RouteRecordRaw[] = [
 						}
 					},
 					{
-						path: '/app/workloads/:kind/:namespace/:name/container/:container',
+						path: '/app/:id/workloads/:kind/:namespace/:name/container/:container',
 						component: () =>
 							import('@apps/admin_console/src/pages/Containers/Overview.vue')
 					},
 					{
-						path: '/app/:kind/:namespace/:name/:pods_uid/services_overview',
+						path: '/app/:id/:kind/:namespace/:name/:pods_uid/services_overview',
 						name: componentName.SERVICES,
 						component: () =>
 							import(
@@ -61,13 +64,13 @@ const routes: RouteRecordRaw[] = [
 							),
 						children: [
 							{
-								path: '/app/:kind/:namespace/:pods_name/:pods_uid/:node/:name/:uid/:createTime/services_pods_overview',
+								path: '/app/:id/:kind/:namespace/:pods_name/:pods_uid/:node/:name/:uid/:createTime/services_pods_overview',
 								component: () =>
 									import('@apps/admin_console/src/pages/Pods/Overview4.vue'),
 								name: componentName.SERVICES_PODS
 							},
 							{
-								path: '/app/:kind/:namespace/:pods_name/:pods_uid/:createTime/services_pods_overview2',
+								path: '/app/:id/:kind/:namespace/:pods_name/:pods_uid/:createTime/services_pods_overview2',
 								name: componentName.SERVICES_PODS2,
 								component: () =>
 									import(
@@ -77,7 +80,7 @@ const routes: RouteRecordRaw[] = [
 						]
 					},
 					{
-						path: '/app/configurations/:kind/:namespace/:name/:pods_uid/secrets_overview',
+						path: '/app/:id/configurations/:kind/:namespace/:name/:pods_uid/secrets_overview',
 						name: componentName.SECRETS,
 						component: () =>
 							import(
@@ -85,7 +88,7 @@ const routes: RouteRecordRaw[] = [
 							)
 					},
 					{
-						path: '/app/configurations/:kind/:namespace/:name/:pods_uid/configmaps_overview',
+						path: '/app/:id/configurations/:kind/:namespace/:name/:pods_uid/configmaps_overview',
 						name: componentName.CONFIGMAPS,
 						component: () =>
 							import(
@@ -93,7 +96,7 @@ const routes: RouteRecordRaw[] = [
 							)
 					},
 					{
-						path: '/app/configurations/:kind/:namespace/:name/:pods_uid/service-accounts_overview',
+						path: '/app/:id/configurations/:kind/:namespace/:name/:pods_uid/service-accounts_overview',
 						name: componentName.SERVICE_ACCOUNTS,
 						component: () =>
 							import(
