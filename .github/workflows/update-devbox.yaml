@@ -56,7 +56,6 @@ jobs:
           sudo chmod 755 fonttools
           cd ./fonttools
           ./subset_font.sh nyTnjDwKNJ_190FjzaqkNCeE.woff2 unicodes.txt MaterialSymbolsRounded.woff2 ../apps/devbox/src/assets/fonts
-					echo unicodes.txt
       - name: Build
         run: yarn build:devbox
       - name: Build and push Docker image
