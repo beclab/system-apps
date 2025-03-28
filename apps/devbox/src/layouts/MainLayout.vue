@@ -32,11 +32,13 @@
 <script lang="ts" setup>
 import { watch, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { useDevelopingApps } from '../stores/app';
-import { useMenuStore, MenuLabel } from '../stores/menu';
+import { useDevelopingApps } from '@/stores/app';
+import { useDockerStore } from '@/stores/docker';
+import { useMenuStore, MenuLabel } from '@/stores/menu';
 
 const store = useDevelopingApps();
 const menuStore = useMenuStore();
+const dockerStore = useDockerStore();
 const router = useRouter();
 const route = useRoute();
 
@@ -64,15 +66,13 @@ onMounted(() => {
 const changeItemMenu = (data: any): void => {
 	const key: string = data.key;
 	menuStore.currentItem = key;
+	dockerStore.appStatus = undefined;
 
 	if (key === MenuLabel.HOME) {
 		router.push({ path: '/home' });
 	} else if (key === MenuLabel.CONTAINERS) {
 		router.push({ path: '/containers' });
-	} else if (key === MenuLabel.HELP) {
-		router.push({ path: '/help' });
 	} else if (key.startsWith('/app')) {
-		menuStore.appCurrentItem = 'files';
 		router.push({ path: key });
 	}
 

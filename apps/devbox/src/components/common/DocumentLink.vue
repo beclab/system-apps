@@ -1,7 +1,7 @@
 <template>
 	<div class="item">
 		<q-icon name="sym_r_feed" size="16px" />
-		<a class="q-ml-sm text-subtitle1" :href="data.link">{{
+		<a class="q-ml-sm text-subtitle1" target="_blank" :href="data.link">{{
 			t(`home_doc_${data.id}`)
 		}}</a>
 	</div>

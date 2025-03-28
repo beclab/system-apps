@@ -1,14 +1,24 @@
 <template>
-	<q-bar class="bar q-mb-md">
-		<q-icon v-if="icon" :name="icon" size="18px" />
-		<div class="title col" :class="titAlign ? titAlign : 'text-left'">
-			{{ label }}
+	<div class="bar text-ink-1">
+		<div class="head row items-center justify-center">
+			<q-icon v-if="icon" class="icon q-mr-sm" :name="icon" />
+			<div class="title col text-ink-1 text-left">
+				{{ label }}
+			</div>
 		</div>
-		<q-space />
-		<q-btn dense flat icon="close" @click="onCancel" color="ink-3">
+
+		<q-btn
+			class="close-icon btn-size-md btn-no-text"
+			dense
+			flat
+			icon="sym_r_close"
+			color="ink-2"
+			v-close-popup
+			@click="onCancel"
+		>
 			<q-tooltip>{{ t('close') }}</q-tooltip>
 		</q-btn>
-	</q-bar>
+	</div>
 </template>
 
 <script lang="ts" setup>
@@ -41,20 +51,33 @@ const onCancel = () => {
 </script>
 
 <style scoped lang="scss">
-.mobile-title {
-	color: #322f2d;
-	font-size: 16px;
-	text-align: center;
-	font-weight: 500;
-	margin: 20px 0;
-}
 .bar {
-	background-color: $background-3;
+	height: 24px;
+	line-height: 24px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 20px;
+	.head {
+		height: 24px;
+		line-height: 24px;
+	}
+
+	.icon {
+		font-size: 24px;
+	}
+
 	.title {
-		height: 18px;
-		line-height: 18px;
-		color: $ink-1;
-		font-size: 14px;
+		font-size: 16px;
+		font-weight: 700;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.close-icon {
+		margin-top: -12px;
+		margin-right: -12px;
 	}
 }
 </style>

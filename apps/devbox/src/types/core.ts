@@ -15,44 +15,10 @@ export interface OpenApplicationConfig {
 	path: string;
 }
 
-export interface CreateApplicationConfig {
-	name: string;
-	type: string;
-
-	systemDB: boolean;
-	redis: boolean;
-	mongodb: boolean;
-	postgreSQL: boolean;
-
-	systemCall: boolean;
-
-	img: string;
-	ports: string[];
-
-	ingressRouter: boolean;
-	traefik: boolean;
-	websitePort: string;
-
-	appData: boolean;
-	appCache: boolean;
-	userData: string[];
-
-	needGpu: boolean;
-	requiredGpu: string | null;
-	requiredMemory: string;
-	osVersion: string;
-}
-
 export enum ContainerState {
 	Running,
 	Waiting,
 	Terminated
-}
-
-export interface AppContainer {
-	image: string;
-	podSelector: string;
-	containerName: string;
 }
 
 export interface Container {
@@ -70,142 +36,6 @@ export interface Container {
 	icon: string;
 }
 
-export enum authLevel {
-	private,
-	public
-}
-
-export enum OpenMethod {
-	default,
-	window,
-	iframe
-}
-
-export interface AppCfg {
-	version: string;
-	metadata: {
-		name: string;
-		icon: string;
-		description: string;
-		appid: string;
-		title: string;
-		version: string;
-		categories: string[];
-		target: string;
-	};
-	entrances: [
-		{
-			name: string;
-			host: string;
-			port: number;
-			icon: string;
-			title: string;
-			authLevel: authLevel;
-			openMethod: OpenMethod;
-		}
-	];
-	spec: {
-		versionName: string;
-		fullDescription: string;
-		upgradeDescription: string;
-		promoteImage: string[];
-		promoteVideo: string;
-		subCategory: string;
-		developer: string;
-		requiredGpu: string;
-		requiredCpu: string;
-		requiredMemory: string;
-		requiredDisk: string;
-		supportClient: {
-			edge: string;
-			android: string;
-			ios: string;
-			windows: string;
-			mac: string;
-			linux: string;
-		};
-	};
-	permission: {
-		appData: boolean;
-		sysData: [
-			{
-				group: string;
-				dataType: string;
-				version: string;
-				ops: string[];
-			}
-		];
-	};
-	middleware: {
-		postgres: {
-			username: string;
-			password: string;
-			databases: [
-				{
-					name: string;
-					distributed: boolean;
-				}
-			];
-		};
-		redis: {
-			password: string;
-			databases: [
-				{
-					name: string;
-				}
-			];
-		};
-		mongodb: {
-			username: string;
-			password: string;
-			databases: [
-				{
-					name: string;
-				}
-			];
-		};
-		zincSearch: {
-			username: string;
-			password: string;
-			indexes: [
-				{
-					name: string;
-				}
-			];
-		};
-	};
-	options: {
-		policies: [
-			{
-				entranceName: string;
-				description: string;
-				uriRegex: string;
-				level: string;
-				oneTime: boolean;
-				validDuration: string;
-			}
-		];
-		analytics: {
-			enabled: boolean;
-		};
-		dependencies: [
-			{
-				name: string;
-				version: string;
-				type: string;
-			}
-		];
-		appScope: {
-			clusterScoped: boolean;
-			appRef: string[];
-		};
-		wsConfig: {
-			port: number;
-			url: string;
-		};
-	};
-}
-
 export interface MenuLabelType {
 	label: string;
 	key: string;
@@ -214,20 +44,116 @@ export interface MenuLabelType {
 	children?: MenuLabelType[];
 }
 
-export interface DocumenuType {
+export interface DocumentType {
 	id: string | number;
 	message: string;
 	link: string;
 }
 
-export interface MenuTab {
+export type FilesSelectType = {
+	label: string;
+	icon: string;
+	path: string;
+	expandable: string;
+	selectable: boolean;
+	children: any;
+	isDir: boolean;
+	lazy?: boolean;
+};
+
+export type FilesCodeType = {
+	code: string;
+	lang: string;
 	name: string;
-	status: MenuTabStatus;
-	label?: string;
+};
+
+export enum APP_STATUS {
+	EMPTY = 'empty',
+	DEPLOYED = 'deployed',
+	DEPLOYING = 'deploying',
+	UNDEPLOY = 'undeploy',
+	ABNORMAL = 'abnormal'
 }
 
-export enum MenuTabStatus {
-	default,
-	success,
-	error
+export const app_status_style = {
+	empty: {
+		color: '#ADADAD'
+	},
+	deployed: {
+		color: '#29CC5F'
+	},
+	deploying: {
+		color: '#FEBE01'
+	},
+	undeploy: {
+		color: '#FF4D4D'
+	},
+	abnormal: {
+		color: '#FF4D4D'
+	}
+};
+
+export enum VENDOR {
+	NVIDIA = 'nvidia',
+	AMD = 'amd',
+	INTEL = 'intel'
+}
+
+export interface ContainerType {
+	image: string;
+	port: number;
+	startCmd?: string;
+	startCmdArgs?: string;
+}
+
+export interface EnvType {
+	[key: string]: string;
+}
+
+export interface CreateWithOneDockerConfig {
+	id?: number;
+	name: string;
+	container: ContainerType;
+	requiredCpu: string;
+	limitedCpu?: string;
+	requiredMemory: string;
+	limitedMemory?: string;
+	requiredGpu: boolean;
+	needPg: boolean;
+	needRedis: boolean;
+	gpuVendor: VENDOR;
+	env: EnvType;
+	mounts: EnvType;
+}
+
+export interface VariableType {
+	id?: number;
+	key: string;
+	value: string;
+}
+
+export enum OPERATE_ACTION {
+	ADD_FOLDER = 'ADD_FOLDER',
+	ADD_FILE = 'ADD_FILE',
+	RENAME = 'RENAME',
+	DELETE = 'DELETE'
+}
+
+export interface SortingType {
+	asc: boolean;
+	by: string;
+}
+export interface FileItem {
+	content: string;
+	extension: string;
+	isDir: boolean;
+	isSymlink: boolean;
+	mode: number;
+	modified: string;
+	name: string;
+	path: string;
+	size: number;
+	type: string;
+	items?: FileItem[];
+	sorting?: SortingType;
 }

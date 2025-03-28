@@ -1,44 +1,29 @@
 <template>
-	<q-dialog class="card-dialog" v-model="show" ref="dialogRef">
-		<q-card class="card-continer" flat>
-			<terminus-dialog-bar
-				:label="title"
-				icon=""
-				titAlign="text-left"
-				@close="onDialogCancel"
+	<bt-custom-dialog
+		ref="CustomRef"
+		:title="title"
+		:cancel="t('cancel')"
+		size="small"
+		@onSubmit="submit"
+	>
+		<div class="dialog-desc">{{ message }}</div>
+
+		<div class="dialog-checkbox" v-if="showAgain">
+			<q-checkbox
+				v-model="checkbox"
+				color="green"
+				label="Do not show this confirmation again."
 			/>
-
-			<div class="dialog-desc">{{ message }}</div>
-
-			<div class="dialog-checkbox" v-if="showAgain">
-				<q-checkbox
-					v-model="checkbox"
-					color="green"
-					label="Do not show this confirmation again."
-				/>
-			</div>
-
-			<terminus-dialog-footer
-				:okText="okText"
-				cancelText="Cancel"
-				showCancel
-				@close="onDialogCancel"
-				@submit="submit"
-			/>
-		</q-card>
-	</q-dialog>
+		</div>
+	</bt-custom-dialog>
 </template>
 
 <script lang="ts" setup>
 import { ref, defineProps } from 'vue';
-import { useDialogPluginComponent } from 'quasar';
+import { useI18n } from 'vue-i18n';
 
-import TerminusDialogBar from '../common/TerminusDialogBar.vue';
-import TerminusDialogFooter from '../common/TerminusDialogFooter.vue';
-
-const { dialogRef, onDialogCancel, onDialogOK } = useDialogPluginComponent();
-
-const show = ref(true);
+const { t } = useI18n();
+const CustomRef = ref();
 const checkbox = ref(false);
 
 defineProps({
@@ -65,7 +50,7 @@ defineProps({
 });
 
 const submit = () => {
-	onDialogOK(checkbox.value);
+	CustomRef.value.onDialogOK(checkbox.value);
 };
 </script>
 

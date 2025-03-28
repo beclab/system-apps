@@ -4,9 +4,13 @@
 import { boot } from 'quasar/wrappers';
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Cookies, Notify } from 'quasar';
-if (process.env.NODE_ENV === 'development') {
-	const auth_token = process.env.AUTH_TOKEN || '';
-	auth_token && Cookies.set('auth_token', auth_token);
+try {
+	if (process.env.NODE_ENV === 'development') {
+		const auth_token = process.env.AUTH_TOKEN || '';
+		auth_token && Cookies.set('auth_token', auth_token);
+	}
+} catch (error) {
+	// nothing
 }
 
 declare module '@vue/runtime-core' {

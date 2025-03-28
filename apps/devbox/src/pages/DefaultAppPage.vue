@@ -1,0 +1,89 @@
+<template>
+	<div class="empty column items-center justify-center">
+		<div class="text-h3 text-ink-1 q-mb-sm">{{ t('home_welcome') }}</div>
+		<div class="text-subtitle1 text-ink-3">
+			{{ t('home_desc') }}
+		</div>
+		<img class="empty-image" src="../assets/empty.svg" />
+		<div class="deploy column">
+			<div
+				class="text-subtitle1 text-teal-pressed deploy-text row items-center justify-start"
+				@click="createApp"
+			>
+				<q-icon class="q-mr-sm" name="sym_r_deployed_code" size="24px" />
+				<span>{{ t('docker.deploy_container') }}</span>
+			</div>
+
+			<div
+				class="text-subtitle1 text-teal-pressed deploy-text row items-center justify-start"
+			>
+				<q-icon class="q-mr-sm" name="sym_r_upload_file" size="24px" />
+				<span>{{ t('docker.transplant_app') }}</span>
+			</div>
+
+			<div
+				class="text-subtitle1 text-teal-pressed deploy-text row items-center justify-start"
+			>
+				<q-icon class="q-mr-sm" name="sym_r_box_edit" size="24px" />
+				<span>{{ t('docker.coding') }}</span>
+			</div>
+
+			<div
+				class="text-subtitle1 text-teal-pressed deploy-text row items-center justify-start"
+				@click="initApp"
+			>
+				<q-icon class="q-mr-sm" name="sym_r_developer_mode_tv" size="24px" />
+				<span>{{ t('docker.create_default_app') }}</span>
+			</div>
+		</div>
+	</div>
+</template>
+
+<script lang="ts" setup>
+import { useQuasar } from 'quasar';
+import { useRoute } from 'vue-router';
+import { useI18n } from 'vue-i18n';
+import { useDockerStore } from './../stores/docker';
+import CreateApp from '../components/dialog/CreateApp.vue';
+
+const { t } = useI18n();
+const $q = useQuasar();
+const route = useRoute();
+const dockerStore = useDockerStore();
+
+const createApp = async () => {
+	$q.dialog({
+		component: CreateApp
+	}).onOk(() => {
+		updateStatus();
+	});
+};
+
+const initApp = async () => {
+	await dockerStore.create_app(route.params.id as string);
+
+	updateStatus();
+};
+
+const updateStatus = async () => {
+	dockerStore.appStatus = await dockerStore.get_app_status(
+		route.params.id as string
+	);
+};
+</script>
+<style lang="scss" scoped>
+.empty {
+	height: 100vh;
+	.empty-image {
+		margin: 56px 0 32px;
+	}
+
+	.deploy-text {
+		margin-bottom: 24px;
+		cursor: pointer;
+		&:hover {
+			opacity: 0.8;
+		}
+	}
+}
+</style>

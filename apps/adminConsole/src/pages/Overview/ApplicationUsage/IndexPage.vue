@@ -225,7 +225,7 @@ const columns: any = [
 		field: 'namespace'
 	}
 ];
-const rows = ref();
+const rows = ref([]);
 const loading = ref(false);
 const pagination = ref({
 	sortBy: 'desc',

@@ -1,15 +1,5 @@
 <template>
-	<MyCard square flat>
-		<template #title>
-			<q-list separator>
-				<q-item style="margin-left: -16px">
-					<q-item-section>
-						<q-item-label>{{ t('DETAILS') }}</q-item-label>
-						<!-- <q-item-label caption>{{ name }}</q-item-label> -->
-					</q-item-section>
-				</q-item>
-			</q-list>
-		</template>
+	<MyCard square flat :title="t('DETAILS')">
 		<DetailPage v-if="usePod.detail" :data="usePod.detail"></DetailPage>
 	</MyCard>
 	<q-inner-loading :showing="loading"> </q-inner-loading>

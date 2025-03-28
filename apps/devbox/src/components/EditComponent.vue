@@ -23,26 +23,28 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, onMounted, PropType, reactive } from 'vue';
 import axios from 'axios';
-import { useRouter, useRoute } from 'vue-router';
-import { useDevelopingApps } from '../stores/app';
-import { ApplicationInfo } from 'src/types/core';
-import { FilesSelectType, FilesCodeType } from '../types/types';
-import { BtDialog, BtNotify, NotifyDefinedType } from '@bytetrade/ui';
 import { useI18n } from 'vue-i18n';
-import { Encoder } from '@bytetrade/core';
+import { useRouter, useRoute } from 'vue-router';
+import { ref, watch, onMounted, PropType, reactive } from 'vue';
+import { BtDialog, BtNotify, NotifyDefinedType } from '@bytetrade/ui';
+import { ApplicationInfo, FilesSelectType, FilesCodeType } from '@/types/core';
+
+import { useDevelopingApps } from '../stores/app';
+import { useDockerStore } from './../stores/docker';
 
 import AppTree from './common/AppTree.vue';
 import AppEditFile from './common/AppEditFile.vue';
 
-const store = useDevelopingApps();
 const props = defineProps({
 	app: {
 		type: Object as PropType<ApplicationInfo>,
 		required: true
 	}
 });
+
+const store = useDevelopingApps();
+const dockerStore = useDockerStore();
 
 const { t } = useI18n();
 const router = useRouter();
@@ -59,10 +61,9 @@ const fileInfo = reactive<FilesCodeType>({
 });
 
 onMounted(async () => {
-	if (route.params.path) {
-		selected.value = Encoder.bytesToString(
-			Encoder.base64UrlToBytes(route.params.path)
-		);
+	const fileParamsPath = route.path.split('/').slice(2);
+	if (fileParamsPath && fileParamsPath.length > 0) {
+		updateRoute(fileParamsPath.join('/'));
 	}
 
 	await loadChart();
@@ -92,22 +93,15 @@ const changeCode = (value) => {
 
 async function onSaveFile() {
 	if (!selected.value) return false;
-	try {
-		await axios.put(store.url + '/api/files/' + selected.value, fileInfo.code, {
-			headers: { 'content-type': 'text/plain' }
-		});
+	await axios.put(store.url + '/api/files/' + selected.value, fileInfo.code, {
+		headers: { 'content-type': 'text/plain' }
+	});
 
-		isEditing.value = false;
-		BtNotify.show({
-			type: NotifyDefinedType.SUCCESS,
-			message: t('message.save_file_success')
-		});
-	} catch (e) {
-		BtNotify.show({
-			type: NotifyDefinedType.FAILED,
-			message: t('message.save_file_failed') + e.message
-		});
-	}
+	isEditing.value = false;
+	BtNotify.show({
+		type: NotifyDefinedType.SUCCESS,
+		message: t('message.save_file_success')
+	});
 }
 
 const getChildren = (items: any) => {
@@ -132,45 +126,29 @@ const getChildren = (items: any) => {
 };
 
 async function loadChart() {
-	try {
-		const res: any = await axios.get(
-			store.url + '/api/files' + props.app.chart
-		);
+	const res: any = await axios.get(store.url + '/api/files' + props.app.chart);
 
-		const children = getChildren(res.items);
-		chartNodes.value = [
-			{
-				label: props.app.appName,
-				icon: 'folder',
-				children: children,
-				selectable: false,
-				path: props.app.appName,
-				isDir: true
-			}
-		];
-	} catch (e: any) {
-		BtNotify.show({
-			type: NotifyDefinedType.FAILED,
-			message: t('message.save_loadChart_failed') + e.message
-		});
-	}
+	const children = getChildren(res.items);
+	chartNodes.value = [
+		{
+			label: props.app.appName,
+			icon: 'folder',
+			children: children,
+			selectable: false,
+			path: props.app.appName,
+			isDir: true
+		}
+	];
 }
 
 const updatePathNode = async (path: string) => {
-	try {
-		const res: any = await axios.get(store.url + '/api/files/' + path);
+	const res: any = await axios.get(store.url + '/api/files/' + path);
 
-		const children = getChildren(res.items);
+	const children = getChildren(res.items);
 
-		const replaceNodes = replaceObjectByPath(chartNodes.value, path, children);
+	const replaceNodes = replaceObjectByPath(chartNodes.value, path, children);
 
-		chartNodes.value = replaceNodes;
-	} catch (e: any) {
-		BtNotify.show({
-			type: NotifyDefinedType.FAILED,
-			message: t('message.save_loadChart_failed') + e.message
-		});
-	}
+	chartNodes.value = replaceNodes;
 };
 
 function replaceObjectByPath(array, targetPath, newObject) {
@@ -191,34 +169,38 @@ function replaceObjectByPath(array, targetPath, newObject) {
 	});
 }
 
+const updateRoute = (value) => {
+	selected.value = value;
+	router.push({
+		path: `/app/${value}`
+	});
+};
+
 const onSelected = async (value) => {
 	if (isEditing.value) {
 		checkFileSave(value);
 	} else {
-		selected.value = value;
 		fetchData(value);
+		updateRoute(value);
 	}
 };
 
 const fetchData = async (value) => {
-	try {
-		const res: any = await axios.get(store.url + '/api/files/' + value, {});
+	await dockerStore.getFile(value);
 
-		isEditing.value = false;
-		tempFile.value = res.content ? res.content : '';
-		fileInfo.code = res.content ? res.content : '';
-		// fileInfo.lang = res.extension;
-		fileInfo.name = res.name;
+	isEditing.value = false;
+	tempFile.value = dockerStore.currentFileData.content
+		? dockerStore.currentFileData.content
+		: '';
+	fileInfo.code = dockerStore.currentFileData.content
+		? dockerStore.currentFileData.content
+		: '';
+	// fileInfo.lang = dockerStore.currentFileData.extension;
+	fileInfo.name = dockerStore.currentFileData.name;
 
-		router.push({
-			path: `/app/${props.app.id}/${Encoder.stringToBase64Url(value)}`
-		});
-	} catch (e: any) {
-		BtNotify.show({
-			type: NotifyDefinedType.FAILED,
-			message: t('message.save_loadChart_failed') + e.message
-		});
-	}
+	// router.push({
+	// 	path: `/app/${props.app.appName}/${Encoder.stringToBase64Url(value)}`
+	// });
 };
 
 const checkFileSave = (value) => {
@@ -235,8 +217,8 @@ const checkFileSave = (value) => {
 		.then(async (val) => {
 			if (val) {
 				await onSaveFile();
-				selected.value = value;
-				await fetchData(value);
+				updateRoute(value);
+				fetchData(value);
 			}
 		})
 		.catch((err) => {
@@ -252,8 +234,7 @@ const editorMount = () => {
 			);
 
 			console.log('defaultFile', defaultFile);
-
-			selected.value = defaultFile.path;
+			updateRoute(defaultFile.path);
 			fetchData(defaultFile.path);
 		}
 	} else {
@@ -264,18 +245,18 @@ const editorMount = () => {
 
 <style lang="scss" scoped>
 .files {
-	height: calc(100vh - 112px);
-	margin-top: 32px;
+	height: calc(100vh - 56px);
+
 	.files-left {
-		width: 240px;
+		width: 260px;
 		background-color: $background-1;
+		padding: 20px;
 	}
 	.files-right {
 		flex: 1;
-		border-radius: 12px;
-		border: 1px solid $separator;
 		overflow: hidden;
 		background: $background-3;
+		padding: 20px;
 	}
 }
 </style>

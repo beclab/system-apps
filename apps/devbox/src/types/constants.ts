@@ -1,20 +1,15 @@
-export const authLevelOptions = ['private', 'public'];
+export const cpuOptions = ['50m', '100m', '200m', '500m', '1', '2', '4'];
 
-export const visiblityOptions = ['True', 'False'];
-
-export const mfaLevelOptions = ['two_factor', 'one_factor', 'public', 'deny'];
-
-export const requiredCpuOptions = ['core', 'm'];
-
-export const requiredOptions = ['Ei', 'Pi', 'Ti', 'Gi', 'Mi', 'Ki'];
-
-export const middlewareOptions = ['postgres', 'redis', 'mongodb'];
-
-export const databasesOptions = ['Enable', 'Disable'];
-
-export const dependencyOptions = ['system', 'application'];
-
-export const validDuration = ['ns', 'us', 'ms', 's', 'm', 'h'];
+export const memoryOptions = [
+	'64Mi',
+	'128Mi',
+	'256Mi',
+	'512Mi',
+	'1Gi',
+	'2Gi',
+	'4Gi',
+	'8Gi'
+];
 
 export const statusStyle = {
 	pending: {
@@ -48,21 +43,6 @@ export const statusStyle = {
 		color: '#e53935'
 	}
 };
-
-export enum OPERATE_ACTION {
-	ADD_FOLDER = 'ADD_FOLDER',
-	ADD_FILE = 'ADD_FILE',
-	RENAME = 'RENAME',
-	DELETE = 'DELETE'
-}
-
-export enum CONFIG_TAB {
-	METADATA = 'METADATA',
-	DETAILS = 'DETAILS',
-	SPACE = 'SPACE',
-	PERMISSIONS = 'PERMISSIONS',
-	OPTIONS = 'OPTIONS'
-}
 
 // export const FilesOption: Record<
 //   OPERATE_ACTION,

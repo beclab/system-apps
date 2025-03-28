@@ -12,7 +12,7 @@
 					<div class="text-h5 text-ink-1">{{ t('home_start') }}</div>
 
 					<div
-						class="text-subtitle1 text-white create-btn create-applation-btn row items-center justify-start"
+						class="text-subtitle1 text-white create-btn create-application-btn row items-center justify-start"
 						@click="onCreate"
 					>
 						<span class="add_wrap">
@@ -36,36 +36,8 @@
 						</span>
 						<span> {{ t('home_update') }}</span>
 					</div>
-
-					<div class="text-h5 text-ink-1">{{ t('home_recent') }}</div>
-
-					<div class="recent-app column items-center justify-center">
-						<img src="../assets/recent-icon.png" />
-						<p class="text-ink-3 text-body1">
-							{{ t('home_recent_resc_1') }}<br />
-							{{ t('home_recent_resc_2') }}
-						</p>
-					</div>
-
-					<!-- <div
-            class="create-btn create-app-btn row items-center justify-between"
-          >
-            <div class="app-content row items-center justify-start">
-              <img src="../assets/app-1.png" />
-              <div>
-                <div class="text-subtitle2 text-ink-1">Agora</div>
-                <div class="text-body3 text-ink-2">
-                  Last opened at 2023-03-02 12:11:23
-                </div>
-              </div>
-            </div>
-
-            <div class="app-status row items-center justify-center">
-              <i></i>
-              <span class="text-ink-2">Running</span>
-            </div>
-          </div> -->
 				</div>
+
 				<div class="col-6" style="padding-left: 40px">
 					<div class="text-h5 text-ink-1">{{ t('home_documents') }}</div>
 					<document-link
@@ -96,6 +68,7 @@ import { useDevelopingApps } from '../stores/app';
 import { useMenuStore } from '../stores/menu';
 
 import DocumentLink from '../components/common/DocumentLink.vue';
+import CreateAppName from '../components/dialog/CreateAppName.vue';
 
 const { t } = useI18n();
 const $q = useQuasar();
@@ -109,7 +82,9 @@ onMounted(async () => {
 });
 
 function onCreate() {
-	router.push({ path: '/create' });
+	$q.dialog({
+		component: CreateAppName
+	});
 }
 
 const uploadChat = () => {
@@ -218,7 +193,7 @@ async function upload_dev_file(
 				}
 			}
 		}
-		.create-applation-btn {
+		.create-application-btn {
 			margin-top: 12px;
 			background-color: rgba(0, 190, 158, 1);
 			.add_wrap {
@@ -239,15 +214,6 @@ async function upload_dev_file(
 			border: 1px solid rgba(235, 235, 235, 1);
 			.add_wrap {
 				background-color: rgba(246, 246, 246, 1);
-			}
-		}
-
-		.recent-app {
-			width: 100%;
-			min-height: 300px;
-			img {
-				width: 120px;
-				height: 120px;
 			}
 		}
 
