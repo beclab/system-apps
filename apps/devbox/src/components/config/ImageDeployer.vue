@@ -10,6 +10,7 @@
 				:tip="t('docker.container_image')"
 			>
 				<q-input
+					ref="imageRef"
 					dense
 					borderless
 					no-error-icon
@@ -62,11 +63,11 @@
 				:tip="t('docker.container_port')"
 			>
 				<q-input
+					ref="portRef"
 					dense
 					borderless
 					no-error-icon
 					v-model.trim="containerConfig.port"
-					lazy-rules
 					class="form-item-input"
 					input-class="text-ink-2"
 					:rules="ruleConfig.websitePort.rules"
@@ -79,7 +80,7 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, watch } from 'vue';
+import { reactive, watch, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ruleConfig } from './../../types/config';
 import CardFormItem from './../common/CardFormItem.vue';
@@ -92,8 +93,11 @@ const containerConfig = reactive({
 	image: '',
 	startCmd: '',
 	startCmdArgs: '',
-	port: 80
+	port: '80'
 });
+
+const imageRef = ref();
+const portRef = ref();
 
 const updateContainer = () => {
 	emits('updateContainer', containerConfig);
@@ -108,6 +112,21 @@ watch(
 		deep: true
 	}
 );
+
+const validate = () => {
+	imageRef.value.validate();
+	portRef.value.validate();
+
+	if (imageRef.value.hasError || portRef.value.hasError) {
+		return false;
+	}
+
+	return true;
+};
+
+defineExpose({
+	validate
+});
 </script>
 
 <style lang="scss" scoped>

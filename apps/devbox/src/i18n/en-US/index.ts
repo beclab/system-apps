@@ -360,5 +360,7 @@ export default {
 	host_container_rule: 'Please enter the container path',
 	file_name_rule: 'Please enter the file name',
 	file_name_rule_2:
-		'The file name cannot contain the following characters: \\ / : * ? " < > |'
+		'The file name cannot contain the following characters: \\ / : * ? " < > |',
+	cpu_rule: 'Please select CPU',
+	memory_rule: 'Please select memory'
 };

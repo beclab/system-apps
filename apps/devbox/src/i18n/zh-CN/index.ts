@@ -332,5 +332,7 @@ export default {
 	host_path_rule: '请输入主机路径',
 	host_container_rule: '请输入容器路径',
 	file_name_rule: '请输入文件名称',
-	file_name_rule_2: '文件名不能包含以下字符: \\ / : * ? " < > |'
+	file_name_rule_2: '文件名不能包含以下字符: \\ / : * ? " < > |',
+	cpu_rule: '请选择CPU',
+	memory_rule: '请选择内存'
 };

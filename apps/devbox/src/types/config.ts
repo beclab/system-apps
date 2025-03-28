@@ -31,11 +31,21 @@ export const ruleConfig = {
 
 	websitePort: {
 		rules: [
-			(val) => val || i18n.global.t('home_entrance_port_rules_1'),
+			(val) =>
+				(val && val.length > 0) || i18n.global.t('home_entrance_port_rules_1'),
 			(val) =>
 				(val > 0 && val <= 65535) || i18n.global.t('home_entrance_port_rules_2')
 		],
 		placeholder: i18n.global.t('home_entrance_port_rules_1')
+	},
+
+	cpu: {
+		rules: [(val) => (val && val.length > 0) || i18n.global.t('cpu_rule')],
+		placeholder: i18n.global.t('cpu_rule')
+	},
+	memory: {
+		rules: [(val) => (val && val.length > 0) || i18n.global.t('memory_rule')],
+		placeholder: i18n.global.t('memory_rule')
 	},
 
 	envConfigKey: {
