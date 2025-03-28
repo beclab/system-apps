@@ -42,7 +42,7 @@ module.exports = configure(function (ctx) {
 		css: ['app.scss', ctx.dev ? 'font.dev.scss' : 'font.pro.scss'],
 
 		// https://github.com/quasarframework/quasar/tree/dev/extras
-		extras: ['material-icons', 'material-symbols-rounded', 'roboto-font'],
+		extras: ['material-icons'],
 
 		// Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-build
 		build: {
@@ -146,7 +146,7 @@ module.exports = configure(function (ctx) {
 
 		// Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-devServer
 		devServer: {
-			https: true,
+			// https: true,
 			open: true, // opens browser window automatically,
 			proxy: {
 				'/api/command': {
