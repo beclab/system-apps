@@ -62,6 +62,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: beclab/devbox:${{ steps.get-latest-tag.outputs.tag }}
+          tags: beclab/devbox:v0.0.2
           file: Dockerfile-devbox-client
           platforms: linux/amd64,linux/arm64
