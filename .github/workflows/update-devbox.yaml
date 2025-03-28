@@ -51,12 +51,13 @@ jobs:
           unzip fonttools.zip
       - name: Python Icon
         run: pwd; cd ./fonttools; sudo node python-icon.js
+			- name: print-text
+				run: cat unicodes.txt
       - name: subset Icon
         run: |
           sudo chmod 755 fonttools
           cd ./fonttools
           ./subset_font.sh nyTnjDwKNJ_190FjzaqkNCeE.woff2 unicodes.txt MaterialSymbolsRounded.woff2 ../apps/devbox/src/assets/fonts
-					cat unicodes.txt
       - name: Build
         run: yarn build:devbox
       - name: Build and push Docker image
