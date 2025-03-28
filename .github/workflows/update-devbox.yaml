@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - 'main'
+      - 'feat/devbox'
     tags:
       - 'v*'
 jobs:
@@ -62,6 +63,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: beclab/devbox:v0.0.2
+          tags: beclab/devbox:v_test_0.0.2
           file: Dockerfile-devbox-client
           platforms: linux/amd64,linux/arm64
