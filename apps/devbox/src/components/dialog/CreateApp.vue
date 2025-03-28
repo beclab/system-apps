@@ -25,8 +25,14 @@
 			</div>
 			<div style="height: calc(100% - 164px)">
 				<BtScrollArea style="height: 100%; width: 100%">
-					<image-deployer @update-container="updateContainer" />
-					<instance-config @update-instance="updateInstance" />
+					<image-deployer
+						ref="imageDeployerRef"
+						@update-container="updateContainer"
+					/>
+					<instance-config
+						ref="instanceRef"
+						@update-instance="updateInstance"
+					/>
 					<environment-config @update-env="updateEnv" />
 					<mounts-address @update-mounts="updateMounts" />
 				</BtScrollArea>
@@ -64,6 +70,8 @@ const route = useRoute();
 const dockerStore = useDockerStore();
 
 const show = ref(true);
+const imageDeployerRef = ref();
+const instanceRef = ref();
 
 const config = reactive<CreateWithOneDockerConfig>({
 	name: route.params.id as string,
@@ -86,7 +94,7 @@ const config = reactive<CreateWithOneDockerConfig>({
 });
 
 const updateContainer = (value) => {
-	config.container = value;
+	config.container = { ...value, port: Number(value.port) };
 };
 
 const updateInstance = (value) => {
@@ -94,19 +102,21 @@ const updateInstance = (value) => {
 };
 
 const updateEnv = (value) => {
-	console.log('updateEnv value', value);
 	config.env = value;
 };
 
 const updateMounts = (value) => {
-	console.log('updateMounts value', value);
 	config.mounts = value;
 };
 
 const submit = async () => {
-	await dockerStore.config_app(config);
+	const imageValidate = imageDeployerRef.value.validate();
+	const instanceValidate = instanceRef.value.validate();
 
-	onDialogOK();
+	if (imageValidate && instanceValidate) {
+		await dockerStore.config_app(config);
+		onDialogOK();
+	}
 };
 </script>
 

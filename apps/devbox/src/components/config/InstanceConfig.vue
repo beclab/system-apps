@@ -7,10 +7,12 @@
 		<q-card-section class="q-py-none">
 			<card-form-item name="CPU" :required="true" tip="CPU">
 				<q-select
+					ref="cpuRef"
 					dense
 					options-dense
 					map-options
 					borderless
+					no-error-icon
 					v-model="instanceConfig.requiredCpu"
 					:options="cpuOptions"
 					dropdown-icon="sym_r_keyboard_arrow_down"
@@ -18,6 +20,7 @@
 					popup-content-class="options_selected_content"
 					color="ink-3"
 					popup-content-style="padding: 10px;"
+					:rules="ruleConfig.cpu.rules"
 				>
 					<template v-slot:option="{ itemProps, opt }">
 						<q-item
@@ -39,10 +42,12 @@
 				:tip="t('docker.memory')"
 			>
 				<q-select
+					ref="memoryRef"
 					dense
 					options-dense
 					map-options
 					borderless
+					no-error-icon
 					v-model="instanceConfig.requiredMemory"
 					:options="memoryOptions"
 					dropdown-icon="sym_r_keyboard_arrow_down"
@@ -50,6 +55,7 @@
 					popup-content-class="options_selected_content"
 					color="ink-3"
 					popup-content-style="padding: 10px;"
+					:rules="ruleConfig.memory.rules"
 				>
 					<template v-slot:option="{ itemProps, opt }">
 						<q-item
@@ -115,16 +121,19 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, watch } from 'vue';
+import { reactive, watch, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { VENDOR } from '@/types/core';
-import { cpuOptions, memoryOptions } from './../../types/constants';
+import { ruleConfig } from '@/types/config';
+import { cpuOptions, memoryOptions } from '@/types/constants';
 
 import CardFormItem from './../common/CardFormItem.vue';
 
 const emits = defineEmits(['updateInstance']);
 
 const { t } = useI18n();
+const memoryRef = ref();
+const cpuRef = ref();
 
 const instanceConfig = reactive({
 	requiredCpu: '',
@@ -148,6 +157,21 @@ watch(
 		deep: true
 	}
 );
+
+const validate = () => {
+	memoryRef.value.validate();
+	cpuRef.value.validate();
+
+	if (memoryRef.value.hasError || cpuRef.value.hasError) {
+		return false;
+	}
+
+	return true;
+};
+
+defineExpose({
+	validate
+});
 </script>
 
 <style lang="scss" scoped>
