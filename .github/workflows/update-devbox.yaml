@@ -55,7 +55,7 @@ jobs:
         run: |
           sudo chmod 755 fonttools
           cd ./fonttools
-          ./subset_font.sh nyTnjDwKNJ_190FjzaqkNCeE.woff2 ../fonttools/unicodes.txt MaterialSymbolsRounded.woff2 ../apps/devbox/src/assets/fonts
+          ./subset_font.sh nyTnjDwKNJ_190FjzaqkNCeE.woff2 ../fonttools1/unicodes.txt MaterialSymbolsRounded.woff2 ../apps/devbox/src/assets/fonts
       - name: Build
         run: yarn build:devbox
       - name: Build and push Docker image
@@ -63,6 +63,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: beclab/devbox:v_test_0.0.5
+          tags: beclab/devbox:v_test_0.0.6
           file: Dockerfile-devbox-client
           platforms: linux/amd64,linux/arm64
