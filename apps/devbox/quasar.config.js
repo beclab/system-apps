@@ -39,7 +39,7 @@ module.exports = configure(function (ctx) {
 		boot: ['monacoplugin', 'markdown', 'axios', 'bytetrade-ui', 'i18n'],
 
 		// https://v2.quasar.dev/quasar-cli-webpack/quasar-config-file#css
-		css: ['app.scss', ctx.dev ? 'font.dev.scss' : 'font.pro.scss'],
+		css: ['app.scss', 'font.pro.scss'],
 
 		// https://github.com/quasarframework/quasar/tree/dev/extras
 		extras: ['material-icons'],
