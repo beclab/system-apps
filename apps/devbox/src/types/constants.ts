@@ -11,39 +11,6 @@ export const memoryOptions = [
 	'8Gi'
 ];
 
-export const statusStyle = {
-	pending: {
-		color: '#ADADAD'
-	},
-	processing: {
-		color: '#FFC46D'
-	},
-	installing: {
-		color: '#3377FF'
-	},
-	upgrading: {
-		color: '#3377FF'
-	},
-	running: {
-		color: '#29CC5F'
-	},
-	uninstalling: {
-		color: '#FF4D4D'
-	},
-	errored: {
-		color: '#FF4D4D'
-	},
-	failed: {
-		color: '#FF4D4D'
-	},
-	canceled: {
-		color: '#ADADAD'
-	},
-	suspend: {
-		color: '#e53935'
-	}
-};
-
 // export const FilesOption: Record<
 //   OPERATE_ACTION,
 //   {

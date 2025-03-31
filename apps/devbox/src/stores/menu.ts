@@ -54,7 +54,7 @@ export const useMenuStore = defineStore('menu', {
 			documentList: [
 				{
 					id: 1,
-					message: 'DevBox Tutorial',
+					message: 'Studio Tutorial',
 					link: 'https://docs.olares.xyz/developer/develop/tutorial/devbox.html'
 				},
 				{

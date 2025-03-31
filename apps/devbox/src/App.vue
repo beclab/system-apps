@@ -47,3 +47,7 @@ export default defineComponent({
 	}
 });
 </script>
+<style lang="scss">
+@import './css/app.scss';
+// border: 1px solid $input-stroke;
+</style>

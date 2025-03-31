@@ -6,7 +6,7 @@
 		:nodes="chartNodes"
 		node-key="path"
 		label-key="label"
-		selected-color="blue-default"
+		selected-color="ink-1"
 		:selected="selected"
 		v-model:expanded="expanded"
 		@update:selected="onSelected"
@@ -273,8 +273,50 @@ const _deleteFile = async (path: string) => {
 .hide-horiz {
 	opacity: 1;
 }
+
 .my-tree-wrapper {
 	width: calc(100% - 10px);
+
+	$my_tree_width_base: 8px;
+	$my_tree_left: -($my_tree_width_base + 8px);
+	&::v-deep(.q-tree) {
+		padding: 0 20px;
+	}
+	&::v-deep(.q-tree--dense .q-tree__node--child > .q-tree__node-header:before) {
+		width: 12px;
+	}
+	&::v-deep(.q-tree--dense .q-tree__node-header:before) {
+		width: 12px;
+	}
+	&::v-deep(.q-tree--dense .q-tree__node--child) {
+		padding-left: $my_tree_width_base;
+	}
+	&::v-deep(.q-tree--dense .q-tree__node--child > .q-tree__node-header:before) {
+		left: $my_tree_left;
+	}
+
+	&::v-deep(.q-tree__node-header-content) {
+		font-weight: 500;
+		color: #1f1814;
+	}
+
+	&::v-deep(.q-tree--dense .q-tree__arrow) {
+		color: $ink-1;
+	}
+
+	&::v-deep(.q-tree__children .q-tree__node-header-content) {
+		font-weight: 400;
+		color: #5c5551;
+	}
+	&::v-deep(.q-tree__children .q-tree__node-header-content .header-top) {
+		margin-right: map-get($space-sm, x);
+	}
+
+	&::v-deep(.q-tree__node-header) {
+		padding-top: 2px;
+		padding-bottom: 1px;
+	}
+
 	::v-deep(.q-tree__arrow) {
 		font-size: 14px;
 		border: 1px solid rgba(255, 255, 255, 0);
@@ -360,6 +402,11 @@ const _deleteFile = async (path: string) => {
 ::v-deep(.my-menu-before-scroll .q-tree__node-collapsible) {
 	overflow-x: hidden;
 }
+
+::v-deep(.q-tree__node--selected) {
+	background-color: $background-3;
+}
+
 ::v-deep(
 		.q-tree
 			> .q-tree__node--parent

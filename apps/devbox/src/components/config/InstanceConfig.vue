@@ -12,15 +12,18 @@
 					options-dense
 					map-options
 					borderless
+					use-input
+					input-debounce="0"
 					no-error-icon
 					v-model="instanceConfig.requiredCpu"
-					:options="cpuOptions"
+					:options="currentCpuOptions"
 					dropdown-icon="sym_r_keyboard_arrow_down"
 					class="form-item-input q-mt-xs"
 					popup-content-class="options_selected_content"
 					color="ink-3"
 					popup-content-style="padding: 10px;"
 					:rules="ruleConfig.cpu.rules"
+					@filter="filterCpuFn"
 				>
 					<template v-slot:option="{ itemProps, opt }">
 						<q-item
@@ -48,14 +51,17 @@
 					map-options
 					borderless
 					no-error-icon
+					use-input
+					input-debounce="0"
 					v-model="instanceConfig.requiredMemory"
-					:options="memoryOptions"
+					:options="currentMemoryOptions"
 					dropdown-icon="sym_r_keyboard_arrow_down"
 					class="form-item-input q-mt-xs"
 					popup-content-class="options_selected_content"
 					color="ink-3"
 					popup-content-style="padding: 10px;"
 					:rules="ruleConfig.memory.rules"
+					@filter="filterMemoryFn"
 				>
 					<template v-slot:option="{ itemProps, opt }">
 						<q-item
@@ -143,6 +149,41 @@ const instanceConfig = reactive({
 	needRedis: false,
 	gpuVendor: VENDOR.NVIDIA
 });
+
+const currentCpuOptions = ref(cpuOptions);
+const currentMemoryOptions = ref(memoryOptions);
+
+const filterCpuFn = (val, update) => {
+	if (val === '') {
+		update(() => {
+			currentCpuOptions.value = cpuOptions;
+		});
+		return;
+	}
+
+	update(() => {
+		const needle = val.toLowerCase();
+		currentCpuOptions.value = cpuOptions.filter(
+			(v) => v.toLowerCase().indexOf(needle) > -1
+		);
+	});
+};
+
+const filterMemoryFn = (val, update) => {
+	if (val === '') {
+		update(() => {
+			currentMemoryOptions.value = memoryOptions;
+		});
+		return;
+	}
+
+	update(() => {
+		const needle = val.toLowerCase();
+		currentMemoryOptions.value = memoryOptions.filter(
+			(v) => v.toLowerCase().indexOf(needle) > -1
+		);
+	});
+};
 
 const updateInstance = () => {
 	emits('updateInstance', instanceConfig);

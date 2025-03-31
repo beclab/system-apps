@@ -3,7 +3,7 @@ export default {
 	launch_no_result: 'No results',
 	page_404: 'Oops. Nothing here...',
 	no_data: 'No data.',
-	home_welcome: 'Welcome to DevBox',
+	home_welcome: 'Welcome to Studio',
 	home_desc: 'An easy way to develop in Olares',
 	home_start: 'Start',
 	home_create: 'Create a new application',
@@ -12,7 +12,7 @@ export default {
 	home_recent_resc_1: 'Your recently developed apps',
 	home_recent_resc_2: ' will appear here',
 	home_documents: 'Documents',
-	home_doc_1: 'DevBox tutorials',
+	home_doc_1: 'Studio tutorials',
 	home_doc_2: 'Basic concepts of Olares applications',
 	home_doc_3: 'Understand Olares Application Chart',
 	home_doc_4: 'OlaresManifest configuration guide',
@@ -280,7 +280,7 @@ export default {
 		SPACE: 'Specs',
 		PERMISSIONS: 'Permissions',
 		OPTIONS: 'Options',
-		DevBox: 'DevBox',
+		DevBox: 'Studio',
 		Home: 'Home',
 		Containers: 'Containers',
 		Help: 'Help',
@@ -348,8 +348,10 @@ export default {
 	},
 
 	header_btn: {
-		apply: '申请',
-		edit: '编辑'
+		apply: 'Apply',
+		edit: 'Edit',
+		open: 'Unfold',
+		fold: 'Fold'
 	},
 
 	image_rule: 'Please enter the container image to be used, for example, nginx',

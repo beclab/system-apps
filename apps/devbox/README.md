@@ -1,4 +1,4 @@
-# Devbox (devbox)
+# Studio (studio)
 
 Olares dev tools
 

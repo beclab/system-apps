@@ -1,7 +1,7 @@
 <template>
 	<bt-custom-dialog
 		ref="CustomRef"
-		title="Create a new application"
+		:title="t('home_create')"
 		:cancel="true"
 		:okLoading="loading"
 		size="medium"
