@@ -10,7 +10,12 @@
 			</div>
 		</div>
 		<div class="row items-center justify-end">
-			<div class="status" v-if="dockerStore.appStatus">
+			<div
+				class="status"
+				v-if="
+					dockerStore.appStatus && dockerStore.appStatus != APP_STATUS.EMPTY
+				"
+			>
 				<span
 					class="color"
 					:style="{ background: app_status_style[dockerStore.appStatus].color }"
@@ -50,8 +55,7 @@
 					[
 						APP_STATUS.DEPLOYED,
 						APP_STATUS.UNDEPLOY,
-						APP_STATUS.ABNORMAL,
-						APP_STATUS.DEPLOYING
+						APP_STATUS.ABNORMAL
 					].includes(dockerStore.appStatus)
 				"
 				class="operate-btn q-mr-sm q-px-sm row items-center justify-center"
@@ -65,7 +69,9 @@
 				v-if="
 					!controlFlag &&
 					dockerStore.appStatus &&
-					[APP_STATUS.EMPTY].includes(dockerStore.appStatus)
+					[APP_STATUS.EMPTY, APP_STATUS.DEPLOYING].includes(
+						dockerStore.appStatus
+					)
 				"
 				class="operate-btn operate-disabled q-mr-sm q-px-sm row items-center justify-center"
 			>
@@ -145,6 +151,13 @@
 			</div>
 		</div>
 	</div>
+
+	<Notify
+		v-if="error_message"
+		:status="APP_STATUS.ABNORMAL"
+		:message="error_message"
+		@close="close"
+	/>
 </template>
 
 <script lang="ts" setup>
@@ -153,8 +166,8 @@ import axios from 'axios';
 import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
-import { ROUTE_NAME } from '@/common/router-name';
-import { APP_STATUS, app_status_style } from '@/types/core';
+import { ROUTE_NAME } from '../common/router-name';
+import { APP_STATUS, app_status_style } from '../types/core';
 import { BtNotify, NotifyDefinedType } from '@bytetrade/ui';
 
 import { useDevelopingApps } from '../stores/app';
@@ -162,6 +175,7 @@ import { useDockerStore } from '../stores/docker';
 import { useMenuStore } from '../stores/menu';
 
 import DialogConfirm from '../components/dialog/DialogConfirm.vue';
+import Notify from './../components/common/Notify.vue';
 
 import { componentName } from 'src/router/const';
 
@@ -178,6 +192,11 @@ const downloading = ref(false);
 const controlFlag = ref(false);
 
 const timer = ref();
+const error_message = ref();
+
+const close = () => {
+	error_message.value = null;
+};
 
 async function onPreview() {
 	if (window.top == window) {
@@ -195,14 +214,17 @@ async function onInstall() {
 	try {
 		let namespace = '';
 		if (store.current_app) {
-			const res: any = await dockerStore.install_app(store.current_app.appName);
-
-			namespace = res.namespace;
+			try {
+				const res = await dockerStore.install_app(store.current_app.appName);
+				namespace = res.namespace;
+				await _getAppState();
+				await openSystem(namespace);
+			} catch (error) {
+				await _getAppState();
+				error_message.value = error || t('appStatus.abnormal');
+			}
 		}
 		$q.loading.hide();
-
-		openSystem(namespace);
-		_getAppState();
 	} catch (error) {
 		$q.loading.hide();
 	}

@@ -39,7 +39,8 @@ module.exports = configure(function (ctx) {
 		boot: ['monacoplugin', 'markdown', 'axios', 'bytetrade-ui', 'i18n'],
 
 		// https://v2.quasar.dev/quasar-cli-webpack/quasar-config-file#css
-		css: ['app.scss', ctx.dev ? 'font.dev.scss' : 'font.pro.scss'],
+		// css: ['app.scss', ctx.dev ? 'font.dev.scss' : 'font.pro.scss'],
+		css: ['app.scss'],
 
 		// https://github.com/quasarframework/quasar/tree/dev/extras
 		extras: ['material-icons', 'material-symbols-rounded', 'roboto-font'],
@@ -97,9 +98,7 @@ module.exports = configure(function (ctx) {
 					}
 				});
 			},
-			// 从 Vue 文件中提取 CSS
 			extractCSS: true,
-			// 压缩代码
 			minify: true,
 
 			// Options below are automatically set depending on the env, set them if you want to override
@@ -120,9 +119,8 @@ module.exports = configure(function (ctx) {
 					);
 
 				cfg.resolve.alias = {
-					...cfg.resolve.alias, // 保存已有的别名
+					...cfg.resolve.alias,
 
-					// 添加自定义别名，示例：
 					src: path.resolve(
 						__dirname,
 						'./node_modules/@apps/admin_console/src'
@@ -134,10 +132,9 @@ module.exports = configure(function (ctx) {
 				const qusarEntryPath = './.quasar/client-entry.js';
 
 				changeQuasarFile(qusarEntryPath, customEntryPath, (content) =>
-					content
-						.replace('src/css/app.scss', '@/css/app.scss')
-						.replace('src/css/font.dev.scss', '@/css/font.dev.scss')
+					content.replace('src/css/app.scss', '@/css/app.scss')
 				);
+				// .replace('src/css/font.dev.scss', '@/css/font.dev.scss')
 
 				const clientEntry = path.resolve(__dirname, customEntryPath);
 				cfg.entry.app = clientEntry;
@@ -146,7 +143,7 @@ module.exports = configure(function (ctx) {
 
 		// Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-devServer
 		devServer: {
-			https: true,
+			https: false,
 			open: true, // opens browser window automatically,
 			proxy: {
 				'/api/command': {

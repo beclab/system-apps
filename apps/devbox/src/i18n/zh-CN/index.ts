@@ -3,7 +3,7 @@ export default {
 	launch_no_result: '没有结果',
 	page_404: '哎呀，什么都没有...',
 	no_data: '无数据',
-	home_welcome: '欢迎使用 DevBox',
+	home_welcome: '欢迎使用 Studio',
 	home_desc: '在 Olares 中轻松开发应用',
 	home_start: '开始',
 	home_create: '创建新应用',
@@ -12,7 +12,7 @@ export default {
 	home_recent_resc_1: '您最近开发的应用',
 	home_recent_resc_2: '将显示在这里',
 	home_documents: '文档',
-	home_doc_1: 'DevBox 教程',
+	home_doc_1: 'Studio 教程',
 	home_doc_2: 'Olares 应用的基本概念',
 	home_doc_3: '理解 Olares 应用 chart',
 	home_doc_4: 'OlaresManifest 配置指南 ',
@@ -254,7 +254,7 @@ export default {
 		SPACE: '规格',
 		PERMISSIONS: '权限',
 		OPTIONS: '选项',
-		DevBox: 'DevBox',
+		DevBox: 'Studio',
 		Home: '主页',
 		Containers: '容器',
 		Help: '帮助',
@@ -313,16 +313,18 @@ export default {
 	},
 
 	appStatus: {
-		empty: '未部署',
+		empty: '空状态',
 		deployed: '部署成功',
 		deploying: '部署中',
-		undeploy: '部署失败',
+		undeploy: '未部署',
 		abnormal: '部署异常'
 	},
 
 	header_btn: {
 		apply: '应用',
-		edit: '编辑'
+		edit: '编辑',
+		open: '展开',
+		fold: '收起'
 	},
 
 	image_rule: '请输入使用的容器镜像，例如 nginx',

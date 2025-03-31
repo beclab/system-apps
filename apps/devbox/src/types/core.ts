@@ -77,19 +77,24 @@ export enum APP_STATUS {
 
 export const app_status_style = {
 	empty: {
-		color: '#ADADAD'
+		color: '#ADADAD',
+		notify_bg: '#ADADAD'
 	},
 	deployed: {
-		color: '#29CC5F'
+		color: '#29CC5F',
+		notify_bg: '#29CC5F'
 	},
 	deploying: {
-		color: '#FEBE01'
+		color: '#FEBE01',
+		notify_bg: '#FEBE01'
 	},
 	undeploy: {
-		color: '#FF4D4D'
+		color: '#ADADAD',
+		notify_bg: '#ADADAD'
 	},
 	abnormal: {
-		color: '#FF4D4D'
+		color: '#FF4D4D',
+		notify_bg: '#FFF2F2'
 	}
 };
 
