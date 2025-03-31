@@ -131,13 +131,13 @@ module.exports = configure(function (ctx) {
 				};
 
 				const customEntryPath = './.quasar/client-entry-alias.js';
-				const qusarEntryPath = './.quasar/client-entry.js';
+				// const qusarEntryPath = './.quasar/client-entry.js';
 
-				changeQuasarFile(qusarEntryPath, customEntryPath, (content) =>
-					content
-						.replace('src/css/app.scss', '@/css/app.scss')
-						.replace('src/css/font.dev.scss', '@/css/font.dev.scss')
-				);
+				// changeQuasarFile(qusarEntryPath, customEntryPath, (content) =>
+				// 	content
+				// 		.replace('src/css/app.scss', '@/css/app.scss')
+				// 		.replace('src/css/font.dev.scss', '@/css/font.dev.scss')
+				// );
 
 				const clientEntry = path.resolve(__dirname, customEntryPath);
 				cfg.entry.app = clientEntry;
