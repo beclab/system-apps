@@ -332,9 +332,14 @@ export default {
 	start_cmd_args_rule: '如：echo "Hello Kubernetes"',
 	enter_input: '请输入',
 	host_path_rule: '请输入主机路径',
+	host_path_rule_2: '主机路径必须以 / 开头',
 	host_container_rule: '请输入容器路径',
+	host_container_rule_2: '容器路径必须以 / 开头',
 	file_name_rule: '请输入文件名称',
 	file_name_rule_2: '文件名不能包含以下字符: \\ / : * ? " < > |',
 	cpu_rule: '请选择CPU',
-	memory_rule: '请选择内存'
+	memory_rule: '请选择内存',
+	host_path_repeat: '主机路径重复',
+	container_path_repeat: '容器路径重复',
+	env_repeat: '已存在环境配置'
 };

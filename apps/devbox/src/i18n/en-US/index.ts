@@ -359,10 +359,15 @@ export default {
 	start_cmd_args_rule: 'For example: echo "Hello Kubernetes"',
 	enter_input: 'Please enter',
 	host_path_rule: 'Please enter the host path',
+	host_path_rule_2: 'The host path must start with /',
 	host_container_rule: 'Please enter the container path',
+	host_container_rule_2: 'The container path must start with /',
 	file_name_rule: 'Please enter the file name',
 	file_name_rule_2:
 		'The file name cannot contain the following characters: \\ / : * ? " < > |',
 	cpu_rule: 'Please select CPU',
-	memory_rule: 'Please select memory'
+	memory_rule: 'Please select memory',
+	host_path_repeat: 'Duplicate host path',
+	container_path_repeat: 'Duplicate container path',
+	env_repeat: 'Environment configuration already exists'
 };

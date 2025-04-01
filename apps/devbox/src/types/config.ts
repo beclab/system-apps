@@ -60,14 +60,16 @@ export const ruleConfig = {
 
 	hostPath: {
 		rules: [
-			(val) => (val && val.length > 0) || i18n.global.t('host_path_rule')
+			(val) => (val && val.length > 0) || i18n.global.t('host_path_rule'),
+			(val) => /^\/.+$/.test(val) || i18n.global.t('host_path_rule_2')
 		],
 		placeholder: i18n.global.t('host_path_rule')
 	},
 
 	containerPath: {
 		rules: [
-			(val) => (val && val.length > 0) || i18n.global.t('host_container_rule')
+			(val) => (val && val.length > 0) || i18n.global.t('host_container_rule'),
+			(val) => /^\/.+$/.test(val) || i18n.global.t('host_container_rule_2')
 		],
 		placeholder: i18n.global.t('host_container_rule')
 	},
