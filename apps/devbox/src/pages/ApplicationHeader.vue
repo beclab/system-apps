@@ -372,7 +372,9 @@ const appStatePending = ref(false);
 async function _getAppState() {
 	if (
 		dockerStore.appStatus &&
-		[APP_STATUS.ABNORMAL, APP_STATUS.DEPLOYED].includes(dockerStore.appStatus)
+		[APP_STATUS.EMPTY, APP_STATUS.ABNORMAL, APP_STATUS.DEPLOYED].includes(
+			dockerStore.appStatus
+		)
 	) {
 		return false;
 	}

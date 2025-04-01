@@ -22,7 +22,7 @@ export default {
 	home_appname: '应用名称',
 	home_appname_hint: 'Olares 中的应用命名空间',
 	home_appname_rules_1: '请输入应用名称',
-	home_appname_rules_2: '必须以字母开头',
+	home_appname_rules_2: '必须以小写字母开头',
 	home_appname_rules_3: '仅允许小写字母（a-z）和数字（0-9）',
 	home_apptype: '应用类型',
 	home_apptype_hint: '选择申请类型',

@@ -148,32 +148,32 @@ module.exports = configure(function (ctx) {
 			proxy: {
 				'/api/command': {
 					// target: "http://127.0.0.1:3010/",
-					target: `https://fa5bd82b.${proxyTarget}`,
+					target: `https://studio.${proxyTarget}`,
 					changeOrigin: true
 				},
 				'/api/apps': {
 					// target: "http://127.0.0.1:3010/",
-					target: `https://fa5bd82b.${proxyTarget}`,
+					target: `https://studio.${proxyTarget}`,
 					changeOrigin: true
 				},
 				'/api/app-cfg': {
 					// target: "http://127.0.0.1:3010/",
-					target: `https://fa5bd82b.${proxyTarget}`,
+					target: `https://studio.${proxyTarget}`,
 					changeOrigin: true
 				},
 				'/api/list-my-containers': {
 					// target: "http://127.0.0.1:3010/",
-					target: `https://fa5bd82b.${proxyTarget}`,
+					target: `https://studio.${proxyTarget}`,
 					changeOrigin: true
 				},
 				'/api/files': {
 					// target: "http://127.0.0.1:3010/",
-					target: `https://fa5bd82b.${proxyTarget}`,
+					target: `https://studio.${proxyTarget}`,
 					changeOrigin: true
 				},
 				'/upload': {
 					// target: "http://127.0.0.1:3010/",
-					target: `https://fa5bd82b.${proxyTarget}`,
+					target: `https://studio.${proxyTarget}`,
 					changeOrigin: true
 				},
 				'/socket.io': {

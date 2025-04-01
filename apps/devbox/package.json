@@ -2,7 +2,7 @@
   "name": "@apps/devbox",
   "version": "0.0.1",
   "description": "Olares dev tools",
-  "productName": "Devbox",
+  "productName": "Studio",
   "author": "liuyu <>",
   "private": true,
   "scripts": {

@@ -22,7 +22,7 @@ export default {
 	home_appname: 'App name',
 	home_appname_hint: 'App namespace in Olares',
 	home_appname_rules_1: 'Enter the app name',
-	home_appname_rules_2: 'Must start with an alphabetic character',
+	home_appname_rules_2: 'Must start with a lowercase letters',
 	home_appname_rules_3: 'Only allows lowercase letters (a-z) and numbers (0-9)',
 	home_apptype: 'App type',
 	home_apptype_hint: 'Choose the application type',

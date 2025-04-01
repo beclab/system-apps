@@ -8,6 +8,14 @@
 		<div class="deploy column">
 			<div
 				class="text-subtitle1 text-teal-pressed deploy-text row items-center justify-start"
+				@click="initApp"
+			>
+				<q-icon class="q-mr-sm" name="sym_r_developer_mode_tv" size="24px" />
+				<span>{{ t('docker.create_default_app') }}</span>
+			</div>
+
+			<div
+				class="text-subtitle1 text-teal-pressed deploy-text row items-center justify-start"
 				@click="createApp"
 			>
 				<q-icon class="q-mr-sm" name="sym_r_deployed_code" size="24px" />
@@ -15,25 +23,19 @@
 			</div>
 
 			<div
-				class="text-subtitle1 text-teal-pressed deploy-text row items-center justify-start"
+				class="text-subtitle1 text-teal-pressed deploy-text row items-center justify-start deploy-disabled"
+				disabled
 			>
 				<q-icon class="q-mr-sm" name="sym_r_upload_file" size="24px" />
 				<span>{{ t('docker.transplant_app') }}</span>
 			</div>
 
 			<div
-				class="text-subtitle1 text-teal-pressed deploy-text row items-center justify-start"
+				class="text-subtitle1 text-teal-pressed deploy-text row items-center justify-start deploy-disabled"
+				disabled
 			>
 				<q-icon class="q-mr-sm" name="sym_r_box_edit" size="24px" />
 				<span>{{ t('docker.coding') }}</span>
-			</div>
-
-			<div
-				class="text-subtitle1 text-teal-pressed deploy-text row items-center justify-start"
-				@click="initApp"
-			>
-				<q-icon class="q-mr-sm" name="sym_r_developer_mode_tv" size="24px" />
-				<span>{{ t('docker.create_default_app') }}</span>
 			</div>
 		</div>
 	</div>
@@ -83,6 +85,10 @@ const updateStatus = async () => {
 		cursor: pointer;
 		&:hover {
 			opacity: 0.8;
+		}
+
+		&.deploy-disabled {
+			opacity: 0.5;
 		}
 	}
 }
