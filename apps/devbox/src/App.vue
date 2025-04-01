@@ -49,5 +49,12 @@ export default defineComponent({
 </script>
 <style lang="scss">
 @import './css/app.scss';
+@font-face {
+	font-display: block;
+	font-family: 'Material Symbols Rounded';
+	font-style: normal;
+	font-weight: 100 700;
+	src: url('@/assets/fonts/MaterialSymbolsRounded.woff2') format('woff2');
+}
 // border: 1px solid $input-stroke;
 </style>
