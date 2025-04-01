@@ -11,6 +11,7 @@ export type DockerStore = {
 	appStatus: APP_STATUS | undefined;
 	cached: Record<string, FileItem[]>;
 	currentFileData: FileItem;
+	configEditFlag: boolean;
 };
 
 export const useDockerStore = defineStore('docker', {
@@ -18,7 +19,8 @@ export const useDockerStore = defineStore('docker', {
 		return {
 			appStatus: undefined,
 			cached: {},
-			currentFileData: {}
+			currentFileData: {},
+			configEditFlag: false
 		} as DockerStore;
 	},
 	actions: {

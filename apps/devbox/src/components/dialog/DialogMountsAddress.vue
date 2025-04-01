@@ -10,11 +10,12 @@
 
 			<card-form-item
 				:name="t('docker.host_path')"
-				:required="false"
+				:required="true"
 				:tip="t('docker.host_path')"
 				:keyWidth="110"
 			>
 				<q-input
+					ref="envHostPathRef"
 					dense
 					borderless
 					no-error-icon
@@ -22,6 +23,7 @@
 					class="form-item-input"
 					input-class="text-ink-2"
 					:placeholder="ruleConfig.hostPath.placeholder"
+					:rules="ruleConfig.hostPath.rules"
 					style="padding-left: 0"
 				>
 					<template v-slot:prepend>
@@ -59,6 +61,7 @@
 				:keyWidth="110"
 			>
 				<q-input
+					ref="envContainerPathRef"
 					dense
 					borderless
 					no-error-icon
@@ -113,6 +116,9 @@ const hostOptions = ['/app/data', '/app/cache', '/Home'];
 const hostPrefix = ref('/app/data');
 const hostSuffix = ref();
 
+const envHostPathRef = ref();
+const envContainerPathRef = ref();
+
 if (props.defaultMounts) {
 	hostPrefix.value =
 		hostOptions.find((option) => props.defaultMounts?.key.startsWith(option)) ||
@@ -120,22 +126,44 @@ if (props.defaultMounts) {
 	hostSuffix.value = props.defaultMounts?.key.slice(hostPrefix.value.length);
 }
 
+const verifyDuplicate = (): boolean => {
+	if (
+		props.mountsConfig?.find(
+			(item) => item.key === config.key && item.id !== config.id
+		)
+	) {
+		BtNotify.show({
+			type: NotifyDefinedType.WARNING,
+			message: t('host_path_repeat')
+		});
+
+		return false;
+	}
+
+	if (
+		props.mountsConfig?.find(
+			(item) => item.value === config.value && item.id !== config.id
+		)
+	) {
+		BtNotify.show({
+			type: NotifyDefinedType.WARNING,
+			message: t('container_path_repeat')
+		});
+		return false;
+	}
+
+	return true;
+};
+
 const submit = () => {
-	config.key = hostPrefix.value + hostSuffix.value;
+	envHostPathRef.value.validate();
+	if (envHostPathRef.value.hasError) return;
+	envContainerPathRef.value.validate();
+	if (envContainerPathRef.value.hasError) return;
 
-	if (props.mountsConfig?.find((item) => item.key === config.key)) {
-		return BtNotify.show({
-			type: NotifyDefinedType.WARNING,
-			message: '主机路径重复'
-		});
-	}
+	config.key = hostPrefix.value + (hostSuffix.value || '');
 
-	if (props.mountsConfig?.find((item) => item.value === config.value)) {
-		return BtNotify.show({
-			type: NotifyDefinedType.WARNING,
-			message: '容器路径重复'
-		});
-	}
+	if (!verifyDuplicate()) return;
 
 	onDialogOK(config);
 };

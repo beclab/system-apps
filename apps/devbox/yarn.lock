@@ -988,10 +988,10 @@
     vue "^3.2.13"
     vue-cropper "^1.0.8"
 
-"@bytetrade/ui@^0.1.57":
-  version "0.1.57"
-  resolved "https://registry.npmjs.org/@bytetrade/ui/-/ui-0.1.57.tgz"
-  integrity sha512-oQzvEGuOAm+zElU6rNZVIkado0N6xiRn5NPk9j1Z9D6lNFvilBAAu2hSyn6mMmmH8U5nNokkLr19ZK93zH6i+g==
+"@bytetrade/ui@^0.1.58":
+  version "0.1.58"
+  resolved "https://registry.yarnpkg.com/@bytetrade/ui/-/ui-0.1.58.tgz#4ad8b0728f6349c923bc972db3203cca7b27fd41"
+  integrity sha512-zJQXTwwZhhbfFZdBrVvE6VKzAOssrrxZLrMoy14x15X380LZHfO+v/uXaz61tcvo4ctnEw5rtDVYJlF/OXdx+A==
   dependencies:
     "@quasar/extras" "^1.16.7"
     axios "^1.3.4"

@@ -210,6 +210,14 @@ async function onPreview() {
 }
 
 async function onInstall() {
+	if (
+		!dockerStore.configEditFlag &&
+		dockerStore.appStatus === APP_STATUS.DEPLOYED
+	) {
+		controlFlag.value = true;
+		return openSystem();
+	}
+
 	$q.loading.show();
 	try {
 		let namespace = '';
@@ -218,6 +226,7 @@ async function onInstall() {
 				const res = await dockerStore.install_app(store.current_app.appName);
 				namespace = res.namespace;
 				await _getAppState();
+				controlFlag.value = true;
 				await openSystem(namespace);
 			} catch (error) {
 				await _getAppState();
@@ -230,8 +239,16 @@ async function onInstall() {
 	}
 }
 
-async function openSystem(namespace: string) {
-	controlFlag.value = true;
+async function openSystem(value?: string) {
+	let namespace: string;
+	if (value) {
+		namespace = value;
+	} else {
+		const url = window.location.origin;
+		// const url = 'https://studio.olaresid.olares.cn/';
+		namespace = store.current_app.appName + '-dev-' + url.split('.')[1];
+	}
+
 	router.push({
 		name: ROUTE_NAME.WORKLOAD,
 		params: {
@@ -352,6 +369,12 @@ watch(
 		if (newVal) {
 			await refreshApplication();
 			await getAppState();
+
+			// if (dockerStore.appStatus === APP_STATUS.DEPLOYED) {
+			// 	openSystem();
+			// }
+
+			// error_message.value = null;
 		}
 	},
 	{
@@ -370,6 +393,10 @@ async function getAppState() {
 const appStatePending = ref(false);
 
 async function _getAppState() {
+	if (!route.params.id) {
+		return false;
+	}
+
 	if (
 		dockerStore.appStatus &&
 		[APP_STATUS.EMPTY, APP_STATUS.ABNORMAL, APP_STATUS.DEPLOYED].includes(

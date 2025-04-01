@@ -15,6 +15,7 @@
 				:keyWidth="100"
 			>
 				<q-input
+					ref="envKeyRef"
 					dense
 					borderless
 					no-error-icon
@@ -34,6 +35,7 @@
 				:keyWidth="100"
 			>
 				<q-input
+					ref="envValueRef"
 					dense
 					borderless
 					no-error-icon
@@ -85,14 +87,33 @@ const config = reactive({
 });
 
 const show = ref(true);
+const envKeyRef = ref();
+const envValueRef = ref();
+
+const verifyDuplicate = (): boolean => {
+	if (
+		props.envConfig?.find(
+			(item) => item.key === config.key && item.id !== config.id
+		)
+	) {
+		BtNotify.show({
+			type: NotifyDefinedType.WARNING,
+			message: t('env_repeat')
+		});
+
+		return false;
+	}
+
+	return true;
+};
 
 const submit = () => {
-	if (props.envConfig?.find((item) => item.key === config.key)) {
-		return BtNotify.show({
-			type: NotifyDefinedType.WARNING,
-			message: '已存在环境配置'
-		});
-	}
+	envKeyRef.value.validate();
+	if (envKeyRef.value.hasError) return;
+	envValueRef.value.validate();
+	if (envValueRef.value.hasError) return;
+
+	if (!verifyDuplicate()) return;
 
 	onDialogOK(config);
 };
