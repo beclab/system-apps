@@ -2,19 +2,19 @@
 	<MyContentPage>
 		<template #extra>
 			<div class="col-auto">
-				<QButtonStyle>
-					<q-btn dense flat icon="sym_r_preview" @click="clickHandler">
-						<q-tooltip>
-							<div style="white-space: nowrap">
-								{{ $t('VIEW_YAML') }}
-							</div>
-						</q-tooltip>
-					</q-btn>
-				</QButtonStyle>
+				<PreviewButton :tooltipText="$t('VIEW_YAML')" @click="clickHandler" />
 			</div>
 		</template>
 		<MyPage>
-			<Overview></Overview>
+			<Overview>
+				<template #extra>
+					<PreviewButton
+						v-if="isStudio"
+						:tooltipText="$t('VIEW_YAML')"
+						@click="clickHandler"
+					/>
+				</template>
+			</Overview>
 			<ContainerWrapper></ContainerWrapper>
 			<Volumes></Volumes>
 			<Metadata></Metadata>
@@ -36,14 +36,15 @@ import ContainerWrapper from './ContainerWrapper.vue';
 import { getPodDetail } from 'src/network';
 import { useRoute } from 'vue-router';
 import { UsePod } from '@packages/ui/src/stores/PodData';
-import { computed, ref, watch } from 'vue';
+import { computed, h, ref, watch } from 'vue';
 import MyContentPage from '../../components/MyContentPage.vue';
 import MyPage from '@packages/ui/src/containers/MyPage.vue';
 import Yaml from './Yaml.vue';
 import QButtonStyle from '@packages/ui/src/components/QButtonStyle.vue';
-import { t } from 'src/boot/i18n';
 import { get } from 'lodash';
-
+import { QBtn, QTooltip } from 'quasar'; // 确保已导入 Quasar 组件
+import { useIsStudio } from 'src/stores/hook';
+const isStudio = useIsStudio();
 const usePod = UsePod();
 const route = useRoute();
 const loading = ref(false);
@@ -67,6 +68,29 @@ const fetchData = () => {
 		.catch(() => {
 			usePod.setDetail({});
 		});
+};
+
+const PreviewButton = (props, { emit }) => {
+	return h(
+		QButtonStyle,
+		{},
+		h(
+			QBtn,
+			{
+				dense: true,
+				flat: true,
+				icon: props.icon || 'sym_r_preview',
+				onClick: () => emit('click')
+			},
+			[
+				h(
+					QTooltip,
+					{},
+					h('div', { style: 'white-space: nowrap' }, props.tooltipText)
+				)
+			]
+		)
+	);
 };
 
 watch(() => route.params, fetchData, { immediate: true });

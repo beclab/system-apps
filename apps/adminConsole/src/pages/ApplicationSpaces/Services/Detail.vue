@@ -24,7 +24,45 @@
 				</div>
 			</template>
 			<MyPage>
-				<MyCard square flat animated :title="t('ATTRIBUTES')">
+				<MyCard square flat animated>
+					<template #title>
+						<MyCardHeader
+							:title="isStudio ? $route.params.name : t('ATTRIBUTES')"
+							:img="selectedNodes?.img"
+						/>
+					</template>
+					<template #extra v-if="isStudio">
+						<div class="col-auto">
+							<QButtonStyle v-permission>
+								<q-btn
+									dense
+									flat
+									icon="sym_r_edit_square"
+									@click="clickHandler"
+								>
+									<q-tooltip>
+										<div style="white-space: nowrap">
+											{{ $t('EDIT_YAML') }}
+										</div>
+									</q-tooltip>
+								</q-btn>
+							</QButtonStyle>
+							<QButtonStyle v-permission>
+								<q-btn
+									dense
+									flat
+									icon="sym_r_edit_square"
+									@click="clickHandler2"
+								>
+									<q-tooltip>
+										<div style="white-space: nowrap">
+											{{ $t('EDIT_EXTERNAL_ACCESS') }}
+										</div>
+									</q-tooltip>
+								</q-btn>
+							</QButtonStyle>
+						</div>
+					</template>
 					<DetailPage :data="statusList"> </DetailPage>
 				</MyCard>
 				<MyCard no-content-gap square flat animated :title="t('WORKLOAD_PL')">
@@ -103,6 +141,10 @@ import MoreSelection from '@packages/ui/src/components/MoreSelection.vue';
 import Yaml from 'src/pages/NamespacePods/Yaml3.vue';
 import RouterViewTransition from '@packages/ui/src/components/RouterViewTransition.vue';
 import { componentName } from 'src/router/const';
+import { useIsStudio } from 'src/stores/hook';
+import MyCardHeader from 'src/components/MyCardHeader.vue';
+import { selectedNodes } from '../treeStore';
+const isStudio = useIsStudio();
 
 const $q = useQuasar();
 let loading = ref(false);
