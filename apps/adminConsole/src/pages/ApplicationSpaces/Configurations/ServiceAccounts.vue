@@ -14,7 +14,24 @@
 			</div>
 		</template>
 		<MyPage>
-			<my-card square flat animated :title="t('DETAILS')">
+			<my-card square flat animated>
+				<template #title>
+					<MyCardHeader
+						:title="isStudio ? $route.params.name : t('DETAILS')"
+						:img="selectedNodes?.img"
+					/>
+				</template>
+				<template #extra v-if="isStudio">
+					<QButtonStyle v-permission>
+						<q-btn dense flat icon="sym_r_edit_square" @click="clickHandler">
+							<q-tooltip>
+								<div style="white-space: nowrap">
+									{{ $t('EDIT_YAML') }}
+								</div>
+							</q-tooltip>
+						</q-btn>
+					</QButtonStyle>
+				</template>
 				<DetailPage :data="detail"></DetailPage>
 			</my-card>
 			<Detail
@@ -45,7 +62,10 @@ import MyPage from '@packages/ui/src/containers/MyPage.vue';
 import MyContentPage from 'src/components/MyContentPage.vue';
 import Yaml from 'src/pages/NamespacePods/Yaml3.vue';
 import QButtonStyle from '@packages/ui/src/components/QButtonStyle.vue';
-
+import { useIsStudio } from 'src/stores/hook';
+import MyCardHeader from 'src/components/MyCardHeader.vue';
+import { selectedNodes } from '../treeStore';
+const isStudio = useIsStudio();
 const loading = ref(false);
 const secrets = ref();
 const data = ref();

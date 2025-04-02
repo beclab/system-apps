@@ -59,6 +59,7 @@ import podIcon from '@packages/ui/src/assets/pod.svg';
 import { useI18n } from 'vue-i18n';
 import { componentName } from 'src/router/const';
 import { isEmpty } from 'lodash';
+import { myTreeRef } from '../treeStore';
 const { t } = useI18n();
 
 const PodListData = usePodList();
@@ -102,7 +103,6 @@ const loading = ref(false);
 const workloadChildren = ref([]);
 const shouldExecuteResponseHandler = ref(true);
 let firstListIndexs: [number, number] | undefined = undefined;
-const myTreeRef = ref();
 
 const searchText = ref('');
 const defaultOpeneds = ref([route.params.kind]);

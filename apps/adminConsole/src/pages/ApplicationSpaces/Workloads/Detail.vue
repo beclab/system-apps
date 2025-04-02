@@ -2,11 +2,11 @@
 	<component :is="drawer ? MyContentPage2 : MyContentPage">
 		<template #extra>
 			<div class="col-auto">
-				<QButtonStyle>
-					<q-btn dense flat icon="sym_r_insert_chart" @click="clickHandler">
+				<QButtonStyle v-for="item in options3" :key="item.value">
+					<q-btn dense flat :icon="item.icon" @click="item.onClick">
 						<q-tooltip>
 							<div style="white-space: nowrap">
-								{{ $t('DETAILS') }}
+								{{ item.label }}
 							</div>
 						</q-tooltip>
 					</q-btn>
@@ -18,6 +18,54 @@
 				></MoreSelection>
 			</div>
 		</template>
+		<MyCard
+			no-content-gap
+			square
+			flat
+			animated
+			class="q-mx-lg q-mt-lg"
+			v-if="isStudio"
+		>
+			<template #title>
+				<div class="row items-center" style="cursor: pointer">
+					<MyCardHeader
+						:title="$route.params.pods_name"
+						:img="selectedNodes?.img"
+					/>
+					<div class="q-ml-sm">
+						<q-icon
+							v-for="item in options4"
+							:key="item.value"
+							:name="item.icon"
+							size="16px"
+							color="blue-default"
+							@click="item.onClick"
+						>
+							<q-tooltip>
+								<div style="white-space: nowrap">
+									{{ item.label }}
+								</div>
+							</q-tooltip>
+						</q-icon>
+					</div>
+				</div>
+			</template>
+			<template #extra>
+				<div class="row" style="gap: 8px">
+					<MyButton
+						v-for="item in options2"
+						:key="item.value"
+						:icon="item.icon"
+						:label="item.label"
+						@click="item.onClick"
+					>
+					</MyButton>
+				</div>
+			</template>
+			<div class="q-pt-sm">
+				<DetailData ref="detaiDatalRef"></DetailData>
+			</div>
+		</MyCard>
 		<EnvironmentVariables ref="envRef"> </EnvironmentVariables>
 		<Yaml
 			ref="yamlRef"
@@ -61,7 +109,13 @@ import { restartPods } from 'src/network';
 import { useRoute } from 'vue-router';
 import { usePodList } from '@packages/ui/src/stores/podList';
 import DeleteDialog from '@packages/ui/src/components/DeleteDialog.vue';
-
+import DetailData from 'src/pages/ApplicationSpaces/Workloads/DetailData.vue';
+import MyCard from '@packages/ui/src/components/MyCard2.vue';
+import { useIsStudio } from '../../../stores/hook';
+import MyButton from 'src/components/MyButton.vue';
+import { selectedNodes } from '../treeStore';
+import MyCardHeader from 'src/components/MyCardHeader.vue';
+const isStudio = useIsStudio();
 const podList = usePodList();
 interface Props {
 	drawer: boolean;
@@ -69,15 +123,28 @@ interface Props {
 const deleteDialogRef = ref();
 const deleteDialogRef2 = ref();
 const route = useRoute();
-const options = computed(() => [
+
+const options = computed(() =>
+	optionsChildren1.value.concat(optionsChildren2.value)
+);
+const options2 = computed(() =>
+	optionsChildren3.value.concat(optionsChildren2.value)
+);
+const options3 = computed(() => optionsChildren3.value);
+const options4 = computed(() => optionsChildren1.value);
+
+const optionsChildren1 = computed(() => [
 	{
 		label: t('EDIT_YAML'),
 		value: 'edit',
-		icon: 'sym_r_edit',
+		icon: isStudio ? 'sym_r_edit_square' : 'sym_r_edit',
 		onClick: () => {
 			yamlRef.value.show();
 		}
-	},
+	}
+]);
+
+const optionsChildren2 = computed(() => [
 	{
 		label: t(replicaStatus.value.desire ? 'STOP_POD' : 'START_POD'),
 		value: 'edit',
@@ -101,6 +168,15 @@ const options = computed(() => [
 		onClick: () => {
 			deleteDialogRef2.value && deleteDialogRef2.value.show();
 		}
+	}
+]);
+
+const optionsChildren3 = computed(() => [
+	{
+		label: t('DETAILS'),
+		value: 'detail',
+		icon: 'sym_r_insert_chart',
+		onClick: clickHandler
 	}
 ]);
 

@@ -48,8 +48,9 @@
 					<div class="link-more text-body1 text-ink-2">
 						{{ t('home_visit_1') }}
 						<a
-							href="https://docs.joinolares.com/overview/introduction/what-is-olares.html"
-							>docs.joinolares.com</a
+							href="https://docs.joinolares.cn/manual/docs-home.html"
+							target="_blank"
+							>docs.joinolares.cn</a
 						>
 						{{ t('home_visit_2') }}
 					</div>

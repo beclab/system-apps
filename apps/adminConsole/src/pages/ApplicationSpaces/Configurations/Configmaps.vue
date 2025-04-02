@@ -14,7 +14,24 @@
 			</div>
 		</template>
 		<MyPage>
-			<my-card square flat animated :title="t('DETAILS')">
+			<my-card square flat animated>
+				<template #title>
+					<MyCardHeader
+						:title="isStudio ? $route.params.name : t('DETAILS')"
+						:img="selectedNodes?.img"
+					/>
+				</template>
+				<template #extra v-if="isStudio">
+					<QButtonStyle v-permission>
+						<q-btn dense flat icon="sym_r_edit_square" @click="clickHandler">
+							<q-tooltip>
+								<div style="white-space: nowrap">
+									{{ $t('EDIT_YAML') }}
+								</div>
+							</q-tooltip>
+						</q-btn>
+					</QButtonStyle>
+				</template>
 				<DetailPage :data="detail"></DetailPage>
 			</my-card>
 			<my-card no-content-gap square flat animated>
@@ -31,10 +48,9 @@
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
-import { onMounted, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { getConfigmapsData } from 'src/network';
 import { ObjectMapper } from '@packages/ui/src/utils/object.mapper';
-import Detail from './Detail.vue';
 import { isEmpty } from 'lodash-es';
 import DetailPage from '@packages/ui/src/containers/DetailPage.vue';
 import { t } from 'src/boot/i18n';
@@ -43,10 +59,12 @@ import MyCard from '@packages/ui/src/components/MyCard2.vue';
 import MyPage from '@packages/ui/src/containers/MyPage.vue';
 import MyContentPage from 'src/components/MyContentPage.vue';
 import DataDetail from '@packages/ui/src/containers/DataDetail.vue';
-import MoreSelection from '@packages/ui/src/components/MoreSelection.vue';
 import Yaml from 'src/pages/NamespacePods/Yaml3.vue';
 import QButtonStyle from '@packages/ui/src/components/QButtonStyle.vue';
-
+import { useIsStudio } from 'src/stores/hook';
+import MyCardHeader from 'src/components/MyCardHeader.vue';
+import { selectedNodes } from '../treeStore';
+const isStudio = useIsStudio();
 let loading = ref(false);
 const detail = ref();
 const route = useRoute();

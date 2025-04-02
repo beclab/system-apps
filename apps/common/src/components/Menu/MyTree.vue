@@ -321,7 +321,7 @@ onUnmounted(() => {
 
 autoScroll();
 
-defineExpose({ resetSelected, setExpanded, getExpandedNodes });
+defineExpose({ resetSelected, setExpanded, getExpandedNodes, selectedNodes });
 </script>
 <style lang="scss" scoped>
 .my-menu-before-wrapper {
