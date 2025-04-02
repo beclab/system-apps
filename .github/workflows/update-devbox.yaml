@@ -1,4 +1,4 @@
-name: Build DevBox
+name: Build Studio
 on:
   workflow_dispatch:
 
@@ -56,12 +56,12 @@ jobs:
           cd ./fonttools
           ./subset_font.sh nyTnjDwKNJ_190FjzaqkNCeE.woff2 unicodes.txt MaterialSymbolsRounded.woff2 ../apps/devbox/src/assets/fonts
       - name: Build
-        run: yarn build:devbox
+        run: yarn build:studio
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
           context: .
           push: true
-          tags: beclab/devbox:${{ steps.get-latest-tag.outputs.tag }}
-          file: Dockerfile-devbox-client
+          tags: beclab/studio:${{ steps.get-latest-tag.outputs.tag }}
+          file: Dockerfile-studio-client
           platforms: linux/amd64,linux/arm64

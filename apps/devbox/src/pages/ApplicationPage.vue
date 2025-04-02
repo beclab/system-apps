@@ -1,5 +1,4 @@
 <template>
-	<application-header />
 	<div
 		class="container"
 		v-if="
@@ -25,7 +24,6 @@ import { APP_STATUS } from '@/types/core';
 
 import EditComponent from '../components/EditComponent.vue';
 import DefaultAppPage from './DefaultAppPage.vue';
-import ApplicationHeader from './ApplicationHeader.vue';
 
 const store = useDevelopingApps();
 const dockerStore = useDockerStore();

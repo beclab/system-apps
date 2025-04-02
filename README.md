@@ -56,10 +56,10 @@ yarn dev:dashboard
 yarn dev:system
 ```
 
-- DevBox
+- Studio
 
 ```bash
-yarn dev:devbox
+yarn dev:studio
 ```
 
 ### Lint the files
@@ -94,10 +94,10 @@ yarn build:dashboard
 yarn build:system
 ```
 
-- DevBox
+- Studio
 
 ```bash
-yarn build:devbox
+yarn build:studio
 ```
 
 ## CI

@@ -4,7 +4,7 @@ import { useDevelopingApps } from './app';
 import { i18n } from '../boot/i18n';
 
 export enum MenuLabel {
-	DEVBOX = 'DevBox',
+	STUDIO = 'Studio',
 	HOME = 'Home',
 	CONTAINERS = 'Containers',
 	APPLICATIONS = 'Applications'
@@ -22,8 +22,8 @@ export const useMenuStore = defineStore('menu', {
 		return {
 			homeMenu: [
 				{
-					label: i18n.global.t(`enums.${MenuLabel.DEVBOX}`),
-					key: MenuLabel.DEVBOX,
+					label: i18n.global.t(`enums.${MenuLabel.STUDIO}`),
+					key: MenuLabel.STUDIO,
 					icon: '',
 					children: [
 						{

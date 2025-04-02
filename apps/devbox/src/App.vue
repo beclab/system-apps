@@ -55,6 +55,7 @@ export default defineComponent({
 	font-style: normal;
 	font-weight: 100 700;
 	src: url('@/assets/fonts/MaterialSymbolsRounded.woff2') format('woff2');
+	// src: url('@/assets/fonts/nyTnjDwKNJ_190FjzaqkNCeE.woff2') format('woff2');
 }
 // border: 1px solid $input-stroke;
 </style>

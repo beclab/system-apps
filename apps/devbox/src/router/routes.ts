@@ -108,13 +108,12 @@ const routes: RouteRecordRaw[] = [
 									)
 							}
 						]
+					},
+					{
+						path: '/app/:id/:path*',
+						component: () => import('../pages/ApplicationPage.vue')
 					}
 				]
-			},
-
-			{
-				path: '/app/:id/:path*',
-				component: () => import('../pages/ApplicationPage.vue')
 			}
 		]
 	},
