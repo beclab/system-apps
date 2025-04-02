@@ -26,7 +26,8 @@ const routes: RouteRecordRaw[] = [
 						path: '/app/:id/workloads/:namespace/overview',
 						name: ROUTE_NAME.WORKLOAD,
 						meta: {
-							headerHide: true
+							headerHide: true,
+							workloadActionHide: true
 						},
 						component: () =>
 							import(
