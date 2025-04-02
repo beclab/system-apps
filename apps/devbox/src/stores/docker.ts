@@ -3,7 +3,12 @@ import axios from 'axios';
 import { i18n } from '../boot/i18n';
 import { BtNotify, NotifyDefinedType } from '@bytetrade/ui';
 import { useDevelopingApps } from './app';
-import { CreateWithOneDockerConfig, APP_STATUS, FileItem } from '@/types/core';
+import {
+	CreateWithOneDockerConfig,
+	APP_STATUS,
+	FileItem,
+	AppState
+} from '@/types/core';
 
 const appStore = useDevelopingApps();
 
@@ -138,6 +143,14 @@ export const useDockerStore = defineStore('docker', {
 				type: NotifyDefinedType.SUCCESS,
 				message: i18n.global.t('message.rename_folder_success')
 			});
+		},
+
+		async get_app_install_state(name: string): Promise<AppState> {
+			const res: AppState = await axios.get(
+				appStore.url + `/api/app-state?app=${name}`
+			);
+
+			return res;
 		}
 	}
 });

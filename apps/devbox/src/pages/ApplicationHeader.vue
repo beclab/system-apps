@@ -50,6 +50,7 @@
 
 			<div
 				v-if="
+					!installFlag &&
 					!controlFlag &&
 					dockerStore.appStatus &&
 					[
@@ -60,6 +61,23 @@
 				"
 				class="operate-btn q-mr-sm q-px-sm row items-center justify-center"
 				@click="onInstall"
+			>
+				<q-icon name="sym_r_box_edit" size="16px" />
+				<span class="operate-btn-install">{{ t('header_btn.apply') }}</span>
+			</div>
+
+			<div
+				v-if="
+					installFlag &&
+					!controlFlag &&
+					dockerStore.appStatus &&
+					[
+						APP_STATUS.DEPLOYED,
+						APP_STATUS.UNDEPLOY,
+						APP_STATUS.ABNORMAL
+					].includes(dockerStore.appStatus)
+				"
+				class="operate-btn operate-disabled q-mr-sm q-px-sm row items-center justify-center"
 			>
 				<q-icon name="sym_r_box_edit" size="16px" />
 				<span class="operate-btn-install">{{ t('header_btn.apply') }}</span>
@@ -161,13 +179,13 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref, watch } from 'vue';
+import { onUnmounted, ref, watch } from 'vue';
 import axios from 'axios';
 import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import { ROUTE_NAME } from '../common/router-name';
-import { APP_STATUS, app_status_style } from '../types/core';
+import { APP_STATUS, app_status_style, APP_INSTALL_STATE } from '../types/core';
 import { BtNotify, NotifyDefinedType } from '@bytetrade/ui';
 
 import { useDevelopingApps } from '../stores/app';
@@ -193,6 +211,8 @@ const controlFlag = ref(false);
 
 const timer = ref();
 const error_message = ref();
+const appStatePending = ref(false);
+const installFlag = ref(false);
 
 const close = () => {
 	error_message.value = null;
@@ -214,28 +234,26 @@ async function onInstall() {
 		!dockerStore.configEditFlag &&
 		dockerStore.appStatus === APP_STATUS.DEPLOYED
 	) {
-		controlFlag.value = true;
 		return openSystem();
 	}
 
-	$q.loading.show();
+	installFlag.value = true;
 	try {
 		let namespace = '';
 		if (store.current_app) {
 			try {
 				const res = await dockerStore.install_app(store.current_app.appName);
 				namespace = res.namespace;
-				await _getAppState();
-				controlFlag.value = true;
+				await getAppState();
 				await openSystem(namespace);
 			} catch (error) {
-				await _getAppState();
+				await getAppState();
 				error_message.value = error || t('appStatus.abnormal');
 			}
 		}
-		$q.loading.hide();
+		installFlag.value = false;
 	} catch (error) {
-		$q.loading.hide();
+		installFlag.value = false;
 	}
 }
 
@@ -245,10 +263,13 @@ async function openSystem(value?: string) {
 		namespace = value;
 	} else {
 		const url = window.location.origin;
-		// const url = 'https://studio.olaresid.olares.cn/';
-		namespace = store.current_app.appName + '-dev-' + url.split('.')[1];
+		// const url = 'https://studio.local.zhaozhao.olares.cn/';
+		const olaresId =
+			url.split('.')[1] == 'local' ? url.split('.')[2] : url.split('.')[1];
+		namespace = store.current_app.appName + '-dev-' + olaresId;
 	}
 
+	controlFlag.value = true;
 	router.push({
 		name: ROUTE_NAME.WORKLOAD,
 		params: {
@@ -271,14 +292,12 @@ function onUninstall() {
 			message: t('message.uninstall_app')
 		}
 	}).onOk(async () => {
-		$q.loading.show();
 		try {
 			store.current_app &&
 				(await dockerStore.un_install_app(store.current_app.appName));
-			$q.loading.hide();
-			_getAppState();
+			getAppState();
 		} catch (error) {
-			$q.loading.hide();
+			console.log(error);
 		}
 	});
 }
@@ -365,16 +384,27 @@ async function refreshApplication() {
 
 watch(
 	() => route.params.id,
-	async (newVal) => {
+	async (newVal, oldVal) => {
+		console.log('params route', route);
+		const flag = Object.values({ ...componentName, ...ROUTE_NAME }).find(
+			(item) => item === route.name
+		);
+		if (flag) {
+			controlFlag.value = true;
+		} else {
+			controlFlag.value = false;
+		}
+
 		if (newVal) {
 			await refreshApplication();
-			await getAppState();
+			await updateAppState();
 
-			// if (dockerStore.appStatus === APP_STATUS.DEPLOYED) {
-			// 	openSystem();
-			// }
+			if (dockerStore.appStatus === APP_STATUS.DEPLOYED) {
+				openSystem();
+			}
 
-			// error_message.value = null;
+			error_message.value = null;
+			appInstallState.value = null;
 		}
 	},
 	{
@@ -382,17 +412,18 @@ watch(
 	}
 );
 
-async function getAppState() {
+async function updateAppState() {
 	if (timer.value) clearInterval(timer.value);
-	await _getAppState();
+	await getAppState();
+	await getAppInstallState();
+
 	timer.value = setInterval(async () => {
-		await _getAppState();
+		await getAppState();
+		await getAppInstallState();
 	}, 5000);
 }
 
-const appStatePending = ref(false);
-
-async function _getAppState() {
+async function getAppState() {
 	if (!route.params.id) {
 		return false;
 	}
@@ -421,16 +452,37 @@ async function _getAppState() {
 	}
 }
 
-onMounted(() => {
-	const flag = Object.values({ ...componentName, ...ROUTE_NAME }).find(
-		(item) => item === route.name
-	);
-	if (flag) {
-		controlFlag.value = true;
-	} else {
-		controlFlag.value = false;
+const appInstallState = ref();
+
+const getAppInstallState = async () => {
+	if (
+		dockerStore.appStatus &&
+		[APP_STATUS.EMPTY, APP_STATUS.ABNORMAL].includes(dockerStore.appStatus)
+	) {
+		return false;
 	}
-});
+
+	if (
+		appInstallState.value &&
+		[
+			APP_INSTALL_STATE.CANCELED,
+			APP_INSTALL_STATE.FAILED,
+			APP_INSTALL_STATE.COMPLETED,
+			APP_INSTALL_STATE.RESUMED
+		].includes(appInstallState.value)
+	) {
+		return false;
+	}
+	try {
+		const res = await dockerStore.get_app_install_state(route.params.id);
+		if (res.state === APP_INSTALL_STATE.FAILED) {
+			error_message.value = res.message;
+		}
+		appInstallState.value = res.state;
+	} catch (error) {
+		console.log(error);
+	}
+};
 
 onUnmounted(() => {
 	clearInterval(timer.value);
@@ -501,7 +553,9 @@ onUnmounted(() => {
 		&.operate-disabled {
 			opacity: 0.5;
 		}
-
+		.ani-loading {
+			animation: rotate 1s linear infinite;
+		}
 		.operate-btn-install {
 			width: 100%;
 			height: 100%;
@@ -512,19 +566,15 @@ onUnmounted(() => {
 			line-height: 100%;
 			text-align: center;
 			cursor: pointer;
-
-			.ani-loading {
-				animation: rotate 1s linear infinite;
-			}
 		}
 	}
 
 	@keyframes rotate {
 		from {
-			transform: rotate(360deg);
+			transform: rotate(0deg);
 		}
 		to {
-			transform: rotate(0deg);
+			transform: rotate(360deg);
 		}
 	}
 

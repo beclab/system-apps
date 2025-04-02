@@ -254,7 +254,7 @@ export default {
 		SPACE: '规格',
 		PERMISSIONS: '权限',
 		OPTIONS: '选项',
-		DevBox: 'Studio',
+		Studio: 'Studio',
 		Home: '主页',
 		Containers: '容器',
 		Help: '帮助',

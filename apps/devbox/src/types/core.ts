@@ -162,3 +162,30 @@ export interface FileItem {
 	items?: FileItem[];
 	sorting?: SortingType;
 }
+
+export enum APP_INSTALL_STATE {
+	PENDING = 'pending',
+	INSTALLING = 'installing',
+	UPGRADING = 'upgrading',
+	UNINSTALLING = 'uninstalling',
+	CANCELED = 'canceled',
+	FAILED = 'failed',
+	COMPLETED = 'completed',
+	RESUMED = 'resumed',
+	CANCELING = 'canceling',
+	STOPPING = 'stopping',
+	DOWNLOADING = 'downloading',
+	PROCESSING = 'processing'
+}
+
+export interface AppState {
+	appName: string;
+	appNamespace: string;
+	appOwner: string;
+	creationTimestamp: string;
+	message: string;
+	opType: string;
+	resourceType: string;
+	source: string;
+	state: APP_INSTALL_STATE;
+}

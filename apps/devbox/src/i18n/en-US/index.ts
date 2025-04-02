@@ -280,7 +280,7 @@ export default {
 		SPACE: 'Specs',
 		PERMISSIONS: 'Permissions',
 		OPTIONS: 'Options',
-		DevBox: 'Studio',
+		Studio: 'Studio',
 		Home: 'Home',
 		Containers: 'Containers',
 		Help: 'Help',

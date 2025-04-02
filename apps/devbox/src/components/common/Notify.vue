@@ -14,7 +14,7 @@
 				ref="messageContent"
 				class="text-ink-1 text-body3 content"
 				:style="{
-					WebkitLineClamp: isExpanded ? '1' : '2',
+					WebkitLineClamp: isExpanded ? '1' : '4',
 					display: '-webkit-box',
 					overflow: 'hidden',
 					textOverflow: 'ellipsis',

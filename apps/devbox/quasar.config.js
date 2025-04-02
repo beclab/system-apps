@@ -156,6 +156,11 @@ module.exports = configure(function (ctx) {
 					target: `https://studio.${proxyTarget}`,
 					changeOrigin: true
 				},
+				'/api/app-state': {
+					// target: "http://127.0.0.1:3010/",
+					target: `https://studio.${proxyTarget}`,
+					changeOrigin: true
+				},
 				'/api/app-cfg': {
 					// target: "http://127.0.0.1:3010/",
 					target: `https://studio.${proxyTarget}`,
@@ -345,7 +350,7 @@ module.exports = configure(function (ctx) {
 			builder: {
 				// https://www.electron.build/configuration/configuration
 
-				appId: 'devbox'
+				appId: 'studio'
 			},
 
 			// "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain

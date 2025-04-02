@@ -27,7 +27,7 @@ import axios from 'axios';
 import { useI18n } from 'vue-i18n';
 import { useQuasar } from 'quasar';
 import { useRouter, useRoute, onBeforeRouteLeave } from 'vue-router';
-import { ref, watch, onMounted, PropType, reactive } from 'vue';
+import { ref, watch, onMounted, onUnmounted, PropType, reactive } from 'vue';
 import { BtDialog, BtNotify, NotifyDefinedType } from '@bytetrade/ui';
 import { ApplicationInfo, FilesSelectType, FilesCodeType } from '@/types/core';
 
@@ -76,15 +76,6 @@ onBeforeRouteLeave((to, from, next) => {
 	} else {
 		next();
 	}
-});
-
-onMounted(async () => {
-	const fileParamsPath = route.path.split('/').slice(2);
-	if (fileParamsPath && fileParamsPath.length > 0) {
-		updateRoute(fileParamsPath.join('/'));
-	}
-
-	await loadChart();
 });
 
 watch(
@@ -224,11 +215,16 @@ const checkFileSave = (value) => {
 			title: t('message.confirmation'),
 			message: t('message.save_file')
 		}
-	}).onOk(async () => {
-		await onSaveFile();
-		updateRoute(value);
-		fetchData(value);
-	});
+	})
+		.onOk(async () => {
+			await onSaveFile();
+			updateRoute(value);
+			fetchData(value);
+		})
+		.onCancel(() => {
+			updateRoute(value);
+			fetchData(value);
+		});
 };
 
 const editorMount = () => {
@@ -245,6 +241,33 @@ const editorMount = () => {
 		fetchData(selected.value);
 	}
 };
+
+const handleKeyDown = async (event) => {
+	if (
+		(event.ctrlKey || event.metaKey) && // Ctrl (Windows/Linux) 或 Cmd (Mac)
+		event.key === 's' &&
+		!event.shiftKey &&
+		!event.altKey
+	) {
+		event.preventDefault();
+		await onSaveFile();
+	}
+};
+
+onMounted(async () => {
+	window.addEventListener('keydown', handleKeyDown);
+
+	const fileParamsPath = route.path.split('/').slice(2);
+	if (fileParamsPath && fileParamsPath.length > 0) {
+		updateRoute(fileParamsPath.join('/'));
+	}
+
+	await loadChart();
+});
+
+onUnmounted(() => {
+	window.removeEventListener('keydown', handleKeyDown);
+});
 </script>
 
 <style lang="scss" scoped>
