@@ -238,6 +238,13 @@ async function onInstall() {
 	}
 
 	installFlag.value = true;
+	BtNotify.show({
+		type: NotifyDefinedType.LOADING,
+		closeTimeout: true,
+		message: t('appStatus.deploying'),
+		notify_id: route.params.id
+	});
+
 	try {
 		let namespace = '';
 		if (store.current_app) {
@@ -251,8 +258,11 @@ async function onInstall() {
 				error_message.value = error || t('appStatus.abnormal');
 			}
 		}
+		BtNotify.hide({ notify_id: route.params.id });
+
 		installFlag.value = false;
 	} catch (error) {
+		BtNotify.hide({ notify_id: route.params.id });
 		installFlag.value = false;
 	}
 }
@@ -270,6 +280,8 @@ async function openSystem(value?: string) {
 	}
 
 	controlFlag.value = true;
+	appInstallState.value = null;
+
 	router.push({
 		name: ROUTE_NAME.WORKLOAD,
 		params: {
@@ -281,6 +293,7 @@ async function openSystem(value?: string) {
 
 async function openFiles() {
 	controlFlag.value = false;
+	appInstallState.value = null;
 	router.push({ path: menuStore.currentItem });
 }
 
@@ -384,7 +397,7 @@ async function refreshApplication() {
 
 watch(
 	() => route.params.id,
-	async (newVal, oldVal) => {
+	async (newVal) => {
 		console.log('params route', route);
 		const flag = Object.values({ ...componentName, ...ROUTE_NAME }).find(
 			(item) => item === route.name
@@ -488,7 +501,7 @@ onUnmounted(() => {
 	clearInterval(timer.value);
 });
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .app-container {
 	height: 100vh;
 }
