@@ -27,7 +27,7 @@
 		<div class="files-right-content">
 			<vue-monaco-editor
 				class="files-monaco"
-				theme="vs-light"
+				:theme="$q.dark.isActive ? 'vs-dark' : 'vs'"
 				:language="fileInfo.lang"
 				@change="changeCode"
 				:value="fileInfo.code"
@@ -39,6 +39,7 @@
 
 <script lang="ts" setup>
 import { PropType } from 'vue';
+import { useQuasar } from 'quasar';
 import { FilesCodeType } from '@/types/core';
 
 defineProps({
@@ -54,6 +55,8 @@ defineProps({
 });
 
 const emits = defineEmits(['onSaveFile', 'changeCode', 'editorMount']);
+
+const $q = useQuasar();
 
 const onSaveFile = () => {
 	emits('onSaveFile');
