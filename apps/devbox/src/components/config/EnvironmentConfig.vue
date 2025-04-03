@@ -3,9 +3,9 @@
 		<q-card-section class="text-h6 text-ink-1 row items-center justify-between">
 			<div class="row items-center justify-center">
 				<span>{{ t('docker.env_variables') }}</span>
-				<q-icon class="text-ink-3 q-ml-xs" name="sym_r_help" size="16px">
+				<!-- <q-icon class="text-ink-3 q-ml-xs" name="sym_r_help" size="16px">
 					<q-tooltip> {{ t('docker.env_variables') }} </q-tooltip>
-				</q-icon>
+				</q-icon> -->
 			</div>
 			<q-btn
 				class="text-teal-pressed btn-size-sm"

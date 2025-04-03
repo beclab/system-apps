@@ -30,6 +30,6 @@ const dockerStore = useDockerStore();
 </script>
 <style scoped lang="scss">
 .container {
-	height: calc(100vh - 56px);
+	height: 100%;
 }
 </style>

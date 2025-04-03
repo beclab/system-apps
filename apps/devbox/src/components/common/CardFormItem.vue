@@ -6,14 +6,14 @@
 		>
 			<span>{{ name }} </span>
 			<span v-if="required" class="text-red-default q-ml-xs">*</span>
-			<q-icon
+			<!-- <q-icon
 				v-if="tip"
 				class="text-ink-3 q-ml-xs"
 				name="sym_r_help"
 				size="16px"
 			>
 				<q-tooltip> {{ tip }} </q-tooltip>
-			</q-icon>
+			</q-icon> -->
 		</div>
 		<div class="form-item-value q-mb-lg">
 			<slot></slot>
