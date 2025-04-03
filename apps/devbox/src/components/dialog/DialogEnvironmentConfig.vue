@@ -48,7 +48,12 @@
 				</q-input>
 			</card-form-item>
 
-			<TerminusFormFooter @submit="submit" @cancel="onDialogCancel" />
+			<TerminusFormFooter
+				:ok-text="t('submit')"
+				:on-cancel="t('cancel')"
+				@submit="submit"
+				@cancel="onDialogCancel"
+			/>
 		</q-card>
 	</q-dialog>
 </template>

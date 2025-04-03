@@ -39,7 +39,12 @@
 			</div>
 
 			<div class="footer row items-center justify-end q-pr-lg">
-				<TerminusFormFooter @submit="submit" @cancel="onDialogCancel" />
+				<TerminusFormFooter
+					:ok-text="t('create')"
+					:on-cancel="t('cancel')"
+					@submit="submit"
+					@cancel="onDialogCancel"
+				/>
 			</div>
 		</div>
 	</q-dialog>

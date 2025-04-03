@@ -169,13 +169,6 @@
 			</div>
 		</div>
 	</div>
-
-	<Notify
-		v-if="error_message"
-		:status="APP_STATUS.ABNORMAL"
-		:message="error_message"
-		@close="close"
-	/>
 </template>
 
 <script lang="ts" setup>
@@ -193,9 +186,10 @@ import { useDockerStore } from '../stores/docker';
 import { useMenuStore } from '../stores/menu';
 
 import DialogConfirm from '../components/dialog/DialogConfirm.vue';
-import Notify from './../components/common/Notify.vue';
 
 import { componentName } from 'src/router/const';
+
+const emits = defineEmits(['updateNotify']);
 
 const { t } = useI18n();
 const route = useRoute();
@@ -210,13 +204,8 @@ const downloading = ref(false);
 const controlFlag = ref(false);
 
 const timer = ref();
-const error_message = ref();
 const appStatePending = ref(false);
 const installFlag = ref(false);
-
-const close = () => {
-	error_message.value = null;
-};
 
 async function onPreview() {
 	if (window.top == window) {
@@ -255,7 +244,7 @@ async function onInstall() {
 				await openSystem(namespace);
 			} catch (error) {
 				await getAppState();
-				error_message.value = error || t('appStatus.abnormal');
+				emits('updateNotify', error || t('appStatus.abnormal'));
 			}
 		}
 		BtNotify.hide({ notify_id: route.params.id });
@@ -416,7 +405,7 @@ watch(
 				openSystem();
 			}
 
-			error_message.value = null;
+			emits('updateNotify', null);
 			appInstallState.value = null;
 		}
 	},
@@ -470,7 +459,9 @@ const appInstallState = ref();
 const getAppInstallState = async () => {
 	if (
 		dockerStore.appStatus &&
-		[APP_STATUS.EMPTY, APP_STATUS.ABNORMAL].includes(dockerStore.appStatus)
+		[APP_STATUS.EMPTY, APP_STATUS.ABNORMAL, , APP_STATUS.UNDEPLOY].includes(
+			dockerStore.appStatus
+		)
 	) {
 		return false;
 	}
@@ -489,7 +480,7 @@ const getAppInstallState = async () => {
 	try {
 		const res = await dockerStore.get_app_install_state(route.params.id);
 		if (res.state === APP_INSTALL_STATE.FAILED) {
-			error_message.value = res.message;
+			emits('updateNotify', res.message);
 		}
 		appInstallState.value = res.state;
 	} catch (error) {

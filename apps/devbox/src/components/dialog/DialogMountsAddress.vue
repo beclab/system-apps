@@ -12,7 +12,7 @@
 				:name="t('docker.host_path')"
 				:required="true"
 				:tip="t('docker.host_path')"
-				:keyWidth="110"
+				:keyWidth="130"
 			>
 				<q-input
 					ref="envHostPathRef"
@@ -58,7 +58,7 @@
 				:name="t('docker.container_path')"
 				:required="true"
 				:tip="t('docker.container_path')"
-				:keyWidth="110"
+				:keyWidth="130"
 			>
 				<q-input
 					ref="envContainerPathRef"
@@ -74,7 +74,12 @@
 				</q-input>
 			</card-form-item>
 
-			<TerminusFormFooter @submit="submit" @cancel="onDialogCancel" />
+			<TerminusFormFooter
+				:ok-text="t('submit')"
+				:on-cancel="t('cancel')"
+				@submit="submit"
+				@cancel="onDialogCancel"
+			/>
 		</q-card>
 	</q-dialog>
 </template>
