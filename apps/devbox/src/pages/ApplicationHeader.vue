@@ -269,7 +269,7 @@ async function openSystem(value?: string) {
 	}
 
 	controlFlag.value = true;
-	appInstallState.value = null;
+	dockerStore.appInstallState = null;
 
 	router.push({
 		name: ROUTE_NAME.WORKLOAD,
@@ -282,7 +282,7 @@ async function openSystem(value?: string) {
 
 async function openFiles() {
 	controlFlag.value = false;
-	appInstallState.value = null;
+	dockerStore.appInstallState = null;
 	router.push({ path: menuStore.currentItem });
 }
 
@@ -406,7 +406,7 @@ watch(
 			}
 
 			emits('updateNotify', null);
-			appInstallState.value = null;
+			dockerStore.appInstallState = null;
 		}
 	},
 	{
@@ -454,8 +454,6 @@ async function getAppState() {
 	}
 }
 
-const appInstallState = ref();
-
 const getAppInstallState = async () => {
 	if (
 		dockerStore.appStatus &&
@@ -467,13 +465,13 @@ const getAppInstallState = async () => {
 	}
 
 	if (
-		appInstallState.value &&
+		dockerStore.appInstallState &&
 		[
 			APP_INSTALL_STATE.CANCELED,
 			APP_INSTALL_STATE.FAILED,
 			APP_INSTALL_STATE.COMPLETED,
 			APP_INSTALL_STATE.RESUMED
-		].includes(appInstallState.value)
+		].includes(dockerStore.appInstallState)
 	) {
 		return false;
 	}
@@ -482,7 +480,7 @@ const getAppInstallState = async () => {
 		if (res.state === APP_INSTALL_STATE.FAILED) {
 			emits('updateNotify', res.message);
 		}
-		appInstallState.value = res.state;
+		dockerStore.appInstallState = res.state;
 	} catch (error) {
 		console.log(error);
 	}

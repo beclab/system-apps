@@ -13,7 +13,7 @@
 					:nodes="data"
 					node-key="id"
 					label-key="title"
-					selected-color="blue-default"
+					:selected-color="selectedColor"
 					:accordion="true"
 					v-model:selected="selected"
 					v-model:expanded="expanded"
@@ -168,13 +168,17 @@ interface Props {
 	 * tree header width
 	 */
 	index: 0;
+	selectedColor: string;
+	selectedBackgroundColor?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
 	data: [],
 	defaultActive: [],
 	hiddenEmpty: false,
-	index: 0
+	index: 0,
+	selectedColor: 'blue-default',
+	selectedBackgroundColor: 'rgba(34, 111, 255, 0.12)'
 });
 
 const options = ref({});
@@ -314,6 +318,7 @@ const imgFilter = (prop: Record<string, any>) => {
 const onResize = (size: { height: number; width: number }) => {
 	updateWidths(props.index, size.width);
 };
+const selectedBG = computed(() => props.selectedBackgroundColor);
 
 onUnmounted(() => {
 	initSize();
@@ -364,10 +369,12 @@ defineExpose({ resetSelected, setExpanded, getExpandedNodes, selectedNodes });
 		right: 4px;
 		top: 0;
 		bottom: 0;
-		background-color: rgba(34, 111, 255, 0.12);
 		border-radius: 4px;
+		z-index: -1;
+		background-color: v-bind(selectedBG);
 	}
 }
+
 .my-tree-header-container {
 	width: 100%;
 	position: relative;
