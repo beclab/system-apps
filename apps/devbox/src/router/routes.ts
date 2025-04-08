@@ -1,6 +1,7 @@
 import { ROUTE_NAME } from '@/common/router-name';
 import { RouteRecordRaw } from 'vue-router';
 import { componentName } from '@apps/admin_console/src/router/const';
+import { STUDIO_ROUTE_NAME } from '@/common/router-name';
 
 const routes: RouteRecordRaw[] = [
 	{
@@ -29,10 +30,7 @@ const routes: RouteRecordRaw[] = [
 							headerHide: true,
 							workloadActionHide: true
 						},
-						component: () =>
-							import(
-								'@apps/admin_console/src/pages/ApplicationSpaces/Workloads/Workloads.vue'
-							),
+						component: () => import('@/pages/WorkloadsWrapper.vue'),
 						children: [
 							{
 								path: '/app/:id/workloads/:kind/:namespace/:pods_name/:pods_uid/:node/:name/:uid/:createTime/pods_overview',
@@ -112,6 +110,7 @@ const routes: RouteRecordRaw[] = [
 					},
 					{
 						path: '/app/:id/:path*',
+						name: STUDIO_ROUTE_NAME.APP_Edit,
 						component: () => import('../pages/ApplicationPage.vue')
 					}
 				]

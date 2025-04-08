@@ -12,23 +12,20 @@
 		:z-index="2"
 		:index="1"
 		:key="$route.params.namespace"
+		v-bind="colorObj"
 	/>
 </template>
 
 <script setup lang="ts">
+const props = withDefaults(defineProps<{ refreshList: boolean }>(), {
+	refreshList: false
+});
 import {
 	getNamespaceDaemonsets,
 	getNamespaceStatefulsets,
 	getNamespaceDeployments
 } from 'src/network';
-import {
-	computed,
-	onBeforeUnmount,
-	onMounted,
-	ref,
-	watch,
-	nextTick
-} from 'vue';
+import { computed, onBeforeUnmount, onMounted, watch, nextTick } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import MyTree from '@packages/ui/src/components/Menu/MyTree.vue';
 import collectionPlay from 'src/assets/Statefulsets.svg';
@@ -58,13 +55,34 @@ import {
 import podIcon from '@packages/ui/src/assets/pod.svg';
 import { useI18n } from 'vue-i18n';
 import { componentName } from 'src/router/const';
-import { isEmpty } from 'lodash';
+import { isBoolean, isEmpty } from 'lodash';
 import { myTreeRef } from '../treeStore';
+import { withDefaults, ref } from 'vue';
+import { useColor } from '@bytetrade/ui';
+import { useIsStudio } from 'src/stores/hook';
+
+const isStutio = useIsStudio();
+
 const { t } = useI18n();
 
 const PodListData = usePodList();
 
 const router = useRouter();
+const colorObj = computed(() => {
+	if (isStutio.value) {
+		const { color: bgColor } = useColor('background-3');
+		const { color: textColor } = useColor('ink-1');
+
+		return {
+			'selected-background-color': bgColor.value,
+			'selected-color': textColor.value
+		};
+	} else {
+		return {
+			//
+		};
+	}
+});
 const data = [
 	{
 		label: 'DEPLOYMENT_PL',
@@ -124,14 +142,16 @@ const listComputed = computed(() => {
 	return newList.filter((item) => item.children.length > 0);
 });
 
-const fetchData = async () => {
+const fetchData = async (showLoading = true) => {
 	const { namespace, name }: { [key: string]: any } = route.params;
 	const params = {
 		sortBy: 'createTime',
 		namespace
 	};
 	searchText.value = '';
-	loading.value = true;
+	if (showLoading) {
+		loading.value = true;
+	}
 	const [workloadData, configurationsData, servicesData] = await Promise.all([
 		getWorkloadsData(namespace, { sortBy: 'createTime' }),
 		getConfigurationsData(params),
@@ -344,6 +364,15 @@ watch(
 	() => route.params.namespace,
 	async (newId) => {
 		fetchData();
+	}
+);
+
+watch(
+	() => props.refreshList,
+	(newValue, oldValue) => {
+		if (newValue && !oldValue) {
+			fetchData(false);
+		}
 	}
 );
 

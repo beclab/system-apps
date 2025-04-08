@@ -12,9 +12,9 @@
             {{ getDisplayName(detail) }}
           </a> -->
 
-					<router-link class="workload-item-link" :to="pathFormat(detail)">
+					<a class="workload-item-link" @click="pathFormat(detail)">
 						{{ getDisplayName(detail) }}
-					</router-link>
+					</a>
 				</template>
 				<template #subTitle>
 					<WorkloadsDescription :detail="detail"></WorkloadsDescription>
@@ -53,7 +53,7 @@
 import { defineProps, computed, ref } from 'vue';
 import { get } from 'lodash';
 import { MODULE_KIND_MAP } from 'src/utils/constants';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { getRevisions } from 'src/network';
 import { ObjectMapper } from 'src/utils/object.mapper';
 import { getDisplayName } from 'src/utils';
@@ -64,12 +64,15 @@ import SimpleLoading from '../components/SimpleLoading.vue';
 import deploymentsIcon from 'src/assets/Deployments.svg';
 import ListItem from '../components/MyListItem/ListItem.vue';
 import { useI18n } from 'vue-i18n';
+import { componentName } from 'src/router/const';
+
 const { t } = useI18n();
 interface Props {
 	prefix: string;
 	detail: any;
 }
 const route = useRoute();
+const router = useRouter();
 const props = withDefaults(defineProps<Props>(), {});
 const loading = ref(false);
 const revisionsData = ref();
@@ -101,7 +104,18 @@ const fetchRevisions = () => {
 };
 
 const pathFormat = (data: any) => {
-	return `/application-spaces/workloads/${data.module}/${data.namespace}/${data.name}/${data.uid}/${data.createTime}?type=workload`;
+	router.push({
+		name: componentName.WORKLOAD_POD_TOP,
+		params: {
+			kind: data.module,
+			namespace: data.namespace,
+			pods_name: data.name,
+			pods_uid: data.uid
+		},
+		query: {
+			type: 'workload'
+		}
+	});
 };
 
 fetchRevisions();
@@ -115,6 +129,7 @@ fetchRevisions();
 .workload-item-link {
 	color: $ink-1;
 	text-decoration: none;
+	cursor: pointer;
 	&:hover {
 		color: $blue-default;
 	}

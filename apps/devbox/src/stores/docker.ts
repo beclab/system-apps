@@ -7,7 +7,8 @@ import {
 	CreateWithOneDockerConfig,
 	APP_STATUS,
 	FileItem,
-	AppState
+	AppState,
+	APP_INSTALL_STATE
 } from '@/types/core';
 
 const appStore = useDevelopingApps();
@@ -17,6 +18,7 @@ export type DockerStore = {
 	cached: Record<string, FileItem[]>;
 	currentFileData: FileItem;
 	configEditFlag: boolean;
+	appInstallState: APP_INSTALL_STATE | '';
 };
 
 export const useDockerStore = defineStore('docker', {
@@ -25,7 +27,8 @@ export const useDockerStore = defineStore('docker', {
 			appStatus: undefined,
 			cached: {},
 			currentFileData: {},
-			configEditFlag: false
+			configEditFlag: false,
+			appInstallState: ''
 		} as DockerStore;
 	},
 	actions: {
