@@ -1,52 +1,30 @@
 <template>
-	<q-dialog
+	<bt-custom-dialog
+		size="medium"
 		v-bind="$attrs"
 		persistent
 		class=""
+		:ok="true"
+		:cancel="true"
 		@hide="emits('hide')"
 		@show="emits('show')"
+		:title="title"
 	>
-		<q-card class="my-dialog-wrapper">
-			<div
-				class="row items-center my-dialog-title bg-background-3 q-py-sm q-px-md"
-			>
-				<div class="text-ink-1">{{ title }}</div>
-				<q-space />
-				<QButtonStyle size="sm">
-					<q-btn
-						icon="close"
-						color="text-ink-3"
-						size="sm"
-						flat
-						dense
-						v-close-popup
-					/>
-				</QButtonStyle>
-			</div>
-
-			<div class="q-pa-lg">
-				<slot></slot>
-			</div>
-		</q-card>
-	</q-dialog>
+		<slot></slot>
+	</bt-custom-dialog>
 </template>
 
 <script setup lang="ts">
-import { toRefs, ref, onMounted } from 'vue';
-import MyTitleVue from './MyListItem/MyTitle.vue';
-import QButtonStyle from './QButtonStyle.vue';
-
 interface Props {
 	title?: string;
 	offsetRatio?: number;
+	ok?: string | boolean;
+	cancel?: string | boolean;
 }
 const props = withDefaults(defineProps<Props>(), {
 	offsetRatio: 0
 });
 const base = 6;
-const margin = `${props.offsetRatio * base}px -${props.offsetRatio * base}px -${
-	props.offsetRatio * base
-}px ${props.offsetRatio * base}px`;
 
 const emits = defineEmits<{
 	(event: 'hide'): void;

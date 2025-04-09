@@ -15,7 +15,7 @@
   dependencies:
     "@apps/monitoring" "../monitoring"
     "@apps/nodes" "../nodes"
-    "@bytetrade/ui" "0.1.54"
+    "@bytetrade/ui" "0.1.61"
     "@packages/ui" "../common"
     "@quasar/extras" "^1.16.9"
     "@xterm/addon-attach" "^0.11.0"
@@ -988,10 +988,10 @@
     vue "^3.2.13"
     vue-cropper "^1.0.8"
 
-"@bytetrade/ui@^0.1.58":
-  version "0.1.58"
-  resolved "https://registry.yarnpkg.com/@bytetrade/ui/-/ui-0.1.58.tgz#4ad8b0728f6349c923bc972db3203cca7b27fd41"
-  integrity sha512-zJQXTwwZhhbfFZdBrVvE6VKzAOssrrxZLrMoy14x15X380LZHfO+v/uXaz61tcvo4ctnEw5rtDVYJlF/OXdx+A==
+"@bytetrade/ui@0.1.61":
+  version "0.1.61"
+  resolved "https://registry.yarnpkg.com/@bytetrade/ui/-/ui-0.1.61.tgz#23dc7b05ca38bff10553bd6c709b9b2f1c9af94c"
+  integrity sha512-MufUmq1mKRuOXvFpVqZ0xyy2d9IsvmwyEu6MIMOtoKtJhmh3a+FVop5rJJhmeoT/pmENV267UD0qalP22UX9ZA==
   dependencies:
     "@quasar/extras" "^1.16.7"
     axios "^1.3.4"

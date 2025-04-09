@@ -45,7 +45,7 @@ export const getConfigurationsData = (
 };
 
 export const configurationsDataFormatter = (res: any, namespace: string) => {
-	const dataTemp = data.map((child, index) => ({
+	let dataTemp = data.map((child, index) => ({
 		title: child.label,
 		id: child.value,
 		selectable: false,
@@ -67,6 +67,6 @@ export const configurationsDataFormatter = (res: any, namespace: string) => {
 			};
 		})
 	}));
-
+	dataTemp = dataTemp.filter((item) => item.children.length > 0);
 	return dataTemp;
 };

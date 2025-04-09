@@ -15,20 +15,22 @@
 			persistent
 			full-width
 			full-height
+			:ok="true"
+			:cancel="true"
 			v-model="visible2"
+			@onSubmit="submit"
 			@show="show"
 			@hide="hide"
 		>
-			<div style="height: calc(100% - 56px)">
-				<div
-					style="
-						height: calc(100%);
-						border-radius: 6px;
-						overflow: hidden;
-						position: relative;
-					"
-				>
-					<!-- <q-btn
+			<div
+				style="
+					height: calc(100%);
+					border-radius: 6px;
+					overflow: hidden;
+					position: relative;
+				"
+			>
+				<!-- <q-btn
             color="primary"
             dense
             rounded
@@ -44,48 +46,23 @@
             <q-separator spaced inset vertical dark />
             <q-icon name="download" @click="handleDownload" />
           </q-btn> -->
-					<v-ace-editor
-						v-if="aceVisileb"
-						v-model:value="data"
-						lang="yaml"
-						theme="chaos"
-						:readonly="loading2"
-						style="height: calc(100%)"
-						:options="{
-							showGutter: true,
-							showPrintMargin: false,
-							useWorker: true,
-							keyboardHandler: 'vscode',
-							wrapEnabled: true,
-							tabSize: 2,
-							wrap: true
-						}"
-					/>
-				</div>
-				<div class="row justify-end q-mt-lg">
-					<q-btn
-						no-caps
-						unelevated
-						outline
-						rounded
-						padding="6px xl"
-						@click="yamlHide"
-					>
-						<span>{{ t('CANCEL') }}</span>
-					</q-btn>
-					<q-btn
-						no-caps
-						color="primary"
-						unelevated
-						rounded
-						padding="6px xl"
-						style="margin-left: 12px"
-						:loading="loading2"
-						@click="submit"
-					>
-						{{ t('OK') }}
-					</q-btn>
-				</div>
+				<v-ace-editor
+					v-if="aceVisileb"
+					v-model:value="data"
+					lang="yaml"
+					theme="chaos"
+					:readonly="loading2"
+					style="height: calc(100%)"
+					:options="{
+						showGutter: true,
+						showPrintMargin: false,
+						useWorker: true,
+						keyboardHandler: 'vscode',
+						wrapEnabled: true,
+						tabSize: 2,
+						wrap: true
+					}"
+				/>
 			</div>
 			<q-inner-loading :showing="loading" style="z-index: 999999">
 			</q-inner-loading>
