@@ -311,7 +311,7 @@ export default {
 		cancel_installation: 'Are you sure you want to cancel the installation?',
 		successfully: 'Successfully',
 		upgrade_app: 'Are you sure you want to Upgrade the app?',
-		uninstall_app: 'Are you sure you want to uninstall the app?',
+		uninstall_app: 'Are you sure you want to uninstall {appName}?',
 		delete_app: 'Are you sure to delete the app?'
 	},
 
@@ -369,5 +369,7 @@ export default {
 	memory_rule: 'Please select memory',
 	host_path_repeat: 'Duplicate host path',
 	container_path_repeat: 'Duplicate mount path',
-	env_repeat: 'Environment configuration already exists'
+	env_repeat: 'Environment configuration already exists',
+	loading: 'Loading',
+	task_progress: 'Task in progress'
 };

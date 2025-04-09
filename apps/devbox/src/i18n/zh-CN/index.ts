@@ -284,7 +284,7 @@ export default {
 		cancel_installation: '确定取消安装吗？',
 		successfully: '成功',
 		upgrade_app: '确定更新App吗？',
-		uninstall_app: '确定卸载App吗？',
+		uninstall_app: '确定卸载 {appName} 吗？',
 		delete_app: '确定删除App吗？'
 	},
 
@@ -341,5 +341,7 @@ export default {
 	memory_rule: '请选择内存',
 	host_path_repeat: '主机路径重复',
 	container_path_repeat: '容器路径重复',
-	env_repeat: '已存在环境配置'
+	env_repeat: '已存在环境配置',
+	loading: '加载中',
+	task_progress: '任务执行中'
 };

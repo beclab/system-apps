@@ -184,6 +184,7 @@ import { BtNotify, NotifyDefinedType } from '@bytetrade/ui';
 import { useDevelopingApps } from '../stores/app';
 import { useDockerStore } from '../stores/docker';
 import { useMenuStore } from '../stores/menu';
+import { pushToSystem } from './../utils/utils';
 
 import DialogConfirm from '../components/dialog/DialogConfirm.vue';
 
@@ -244,7 +245,6 @@ async function onInstall() {
 				await openSystem(namespace);
 			} catch (error) {
 				await getAppState();
-				emits('updateNotify', error || t('appStatus.abnormal'));
 			}
 		}
 		BtNotify.hide({ notify_id: route.params.id });
@@ -257,31 +257,11 @@ async function onInstall() {
 }
 
 async function openSystem(value?: string) {
-	let namespace: string;
-	if (value) {
-		namespace = value;
-	} else {
-		const url = window.location.origin;
-		// const url = 'https://studio.local.zhaozhao.olares.cn/';
-		const olaresId =
-			url.split('.')[1] == 'local' ? url.split('.')[2] : url.split('.')[1];
-		namespace = store.current_app.appName + '-dev-' + olaresId;
-	}
-
-	controlFlag.value = true;
+	pushToSystem(route, router, value);
 	dockerStore.appInstallState = null;
-
-	router.push({
-		name: ROUTE_NAME.WORKLOAD,
-		params: {
-			namespace: namespace,
-			id: route.params.id
-		}
-	});
 }
 
 async function openFiles() {
-	controlFlag.value = false;
 	dockerStore.appInstallState = null;
 	router.push({ path: menuStore.currentItem });
 }
@@ -291,13 +271,17 @@ function onUninstall() {
 		component: DialogConfirm,
 		componentProps: {
 			title: t('btn_uninstall'),
-			message: t('message.uninstall_app')
+			message: t('message.uninstall_app', {
+				appName: store.current_app?.appName
+			})
 		}
 	}).onOk(async () => {
 		try {
 			store.current_app &&
 				(await dockerStore.un_install_app(store.current_app.appName));
-			getAppState();
+			dockerStore.appStatus = null;
+			await getAppState();
+			openFiles();
 		} catch (error) {
 			console.log(error);
 		}
@@ -385,9 +369,8 @@ async function refreshApplication() {
 }
 
 watch(
-	() => route.params.id,
-	async (newVal) => {
-		console.log('params route', route);
+	() => route.path,
+	() => {
 		const flag = Object.values({ ...componentName, ...ROUTE_NAME }).find(
 			(item) => item === route.name
 		);
@@ -396,7 +379,15 @@ watch(
 		} else {
 			controlFlag.value = false;
 		}
+	},
+	{
+		immediate: true
+	}
+);
 
+watch(
+	() => route.params.id,
+	async (newVal) => {
 		if (newVal) {
 			await refreshApplication();
 			await updateAppState();
@@ -445,9 +436,7 @@ async function getAppState() {
 
 	appStatePending.value = true;
 	try {
-		dockerStore.appStatus = await dockerStore.get_app_status(
-			route.params.id as string
-		);
+		await dockerStore.get_app_status(route.params.id as string);
 		appStatePending.value = false;
 	} catch (error) {
 		appStatePending.value = false;

@@ -14,6 +14,18 @@
 		</q-btn>
 
 		<q-btn
+			v-if="loading"
+			dense
+			no-caps
+			flat
+			type="submit"
+			class="but-create loading row justify-center items-center"
+		>
+			{{ t('loading') }}
+		</q-btn>
+
+		<q-btn
+			v-else
 			clickable
 			dense
 			no-caps
@@ -28,6 +40,8 @@
 </template>
 
 <script lang="ts" setup>
+import { useI18n } from 'vue-i18n';
+
 defineProps({
 	okText: {
 		type: String,
@@ -43,10 +57,17 @@ defineProps({
 		type: Boolean,
 		default: true,
 		required: false
+	},
+	loading: {
+		type: Boolean,
+		default: false,
+		required: false
 	}
 });
 
 const emits = defineEmits(['submit', 'cancel']);
+
+const { t } = useI18n();
 
 const submit = () => {
 	emits('submit');
@@ -67,6 +88,9 @@ const cancel = () => {
 	color: #ffffff;
 	font-size: 16px;
 	margin-left: 12px !important;
+	&.loading {
+		opacity: 0.5;
+	}
 }
 .but-cancel {
 	min-width: 100px !important;
