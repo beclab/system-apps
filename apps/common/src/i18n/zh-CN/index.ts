@@ -2660,7 +2660,9 @@ const options = {
 	PROVISIONER: '供应者',
 	AVAILABLE_CAPACITY: '剩余容量',
 	POD_IP_ADDRESS_SCAP: '容器组 IP 地址',
-	TOTAL_CAPACITY: '总容量'
+	TOTAL_CAPACITY: '总容量',
+	UPDATE_SUCCESSFUL: '更新成功。',
+	UPDATE_FAILED: '更新失败'
 };
 
 export default { ...options, ...options_update };

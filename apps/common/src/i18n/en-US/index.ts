@@ -2959,7 +2959,9 @@ const options = {
 	PROVISIONER: 'Provisioner',
 	AVAILABLE_CAPACITY: 'Available capacity',
 	POD_IP_ADDRESS_SCAP: 'Pod IP address',
-	TOTAL_CAPACITY: 'Total capacity'
+	TOTAL_CAPACITY: 'Total capacity',
+	UPDATE_SUCCESSFUL: 'Updated successfully.',
+	UPDATE_FAILED: 'Update Failed'
 };
 
 export default { ...options, ...options_update };

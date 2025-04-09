@@ -6,6 +6,7 @@
 		:title="title"
 		@onSubmit="confirmHandler"
 		:loading="loading"
+		:ok-disabled="disabled"
 	>
 		<div class="q-gutter-y-md">
 			<div class="text-ink-2">
