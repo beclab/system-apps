@@ -36,7 +36,6 @@ import { getNameSpacePodsList, getPodsList } from 'src/network';
 import { PodItem, ResourcesResponse } from 'app/types/network';
 import MyLoading from 'src/components/MyLoading.vue';
 import ContainersList from '../Containers/IndexPage.vue';
-import MyQDialog from 'src/components/MyQDialog.vue';
 import MyQTabs from 'src/components/MyQTabs.vue';
 import { get, isEmpty } from 'lodash';
 import { t } from 'src/boot/i18n';

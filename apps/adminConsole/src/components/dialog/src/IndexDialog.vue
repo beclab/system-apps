@@ -1,58 +1,42 @@
 <template>
-	<q-dialog class="card-dialog" v-model="visible" ref="dialogRef">
-		<q-card
-			class="card-continer"
-			:style="{ width: platform === 'web' ? '400px' : '320px' }"
-		>
-			<!-- <slot name="dialogBar" />   -->
-
-			<dialog-bar
-				:title="title"
-				:icon="icon"
-				:titAlign="titAlign"
-				@close="onCancel"
-			/>
-
-			<div class="q-pa-lg">
-				<div v-if="prompt">
-					<div class="prompt-name q-mb-xs" v-if="prompt.name">
-						{{ prompt.name }}
-					</div>
-					<q-input
-						class="prompt-input"
-						v-model="promptModel"
-						borderless
-						input-class="text-ink-2"
-						dense
-						:placeholder="prompt.placeholder"
-					/>
+	<MyQDialog2
+		class="card-dialog"
+		v-model="visible"
+		ref="dialogRef"
+		:title="title"
+		@onCancel="onCancel"
+		@onSubmit="onSubmit"
+	>
+		<div>
+			<div v-if="prompt">
+				<div class="prompt-name q-mb-xs" v-if="prompt.name">
+					{{ prompt.name }}
 				</div>
-				<template v-else>
-					{{ message }}
-					<q-form @submit="onSubmit" @reset="onReset">
-						<slot />
-						<dialog-footer
-							:ok="ok"
-							:cancel="cancel"
-							:okStyle="okStyle"
-							:loading="okLoading"
-							@close="onCancel"
-						/>
-					</q-form>
-				</template>
+				<q-input
+					class="prompt-input"
+					v-model="promptModel"
+					borderless
+					input-class="text-ink-2"
+					dense
+					:placeholder="prompt.placeholder"
+				/>
 			</div>
+			<template v-else>
+				{{ message }}
+				<q-form @reset="onReset">
+					<slot />
+				</q-form>
+			</template>
+		</div>
 
-			<!-- <slot name="dialogFooter" />   -->
-		</q-card>
-	</q-dialog>
+		<!-- <slot name="dialogFooter" />   -->
+	</MyQDialog2>
 </template>
 
 <script lang="ts" setup>
 import { useDialogPluginComponent } from 'quasar';
 import { ref, defineProps } from 'vue';
-
-import DialogBar from './DialogBar.vue';
-import DialogFooter from './DialogFooter.vue';
+import MyQDialog2 from '@packages/ui/src/components/MyQDialog2.vue';
 
 const props = defineProps({
 	platform: {

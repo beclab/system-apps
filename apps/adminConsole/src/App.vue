@@ -74,5 +74,8 @@ body.body--dark .q-dialog__backdrop {
 .ace_editor {
 	border-radius: 4px;
 }
+.controlhub-global-ok-button {
+	background: $primary;
+	color: #fff;
+}
 </style>
-useTerminalStoreuseTerminalStore ./stores/TerminalStore

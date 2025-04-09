@@ -54,7 +54,7 @@ import { isEmpty, get } from 'lodash';
 import Empty from '../../components/Empty.vue';
 import MyChipList from '../MyChipList.vue';
 import Log from './Logs.vue';
-import MyDialog from '../../components/MyQDialog.vue';
+import MyDialog from '../../components/MyQDialog2.vue';
 import MyExpansion from '../../components/MyExpansion.vue';
 import VolumeContainer from '../VolumeContainer.vue';
 import { getWorkloadVolumes } from '../../utils/workload.js';

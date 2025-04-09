@@ -136,7 +136,7 @@ import MyBadge from '@packages/ui/src/components/MyBadge.vue';
 import dockerIcon from '@packages/ui/src/assets/docker.svg';
 import Terminal from '@packages/ui/src/containers/TerminalDialog.vue';
 import { useRoute } from 'vue-router';
-import MyDialog from '@packages/ui/src/components/MyQDialog.vue';
+import MyDialog from '@packages/ui/src/components/MyQDialog2.vue';
 import Logs from '@packages/ui/src/containers/Logs.vue';
 import MyPage from '@packages/ui/src/containers/MyPage.vue';
 import { isArray, capitalize, isUndefined, isEmpty } from 'lodash-es';

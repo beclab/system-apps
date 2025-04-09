@@ -1,35 +1,38 @@
 <template>
-	<q-dialog
+	<bt-custom-dialog
 		v-model="visible"
 		class=""
+		:title="title"
 		persistent
-		full-width
-		full-height
 		@update:model-value="change"
 		v-bind="$attrs"
+		:full-height="fullHeight"
+		:full-width="fullWidth"
+		:ok="ok"
+		:cancel="cancel"
 	>
-		<div class="container bg-background-1">
-			<Header :title="title"></Header>
-			<bt-scroll-area style="height: calc(100% - 32px)" class="q-pa-lg">
-				<div class="absolute-full">
-					<slot></slot>
-				</div>
-			</bt-scroll-area>
-		</div>
-	</q-dialog>
+		<slot></slot>
+	</bt-custom-dialog>
 </template>
 
 <script setup lang="ts">
 import { ref, withDefaults, watch } from 'vue';
-import QButtonStyle from '@packages/ui/src/components/QButtonStyle.vue';
-import Header from './Header.vue';
 
 interface Props {
 	title?: string;
 	modelValue?: boolean;
+	fullWidth?: boolean;
+	fullHeight?: boolean;
+	ok?: string | boolean;
+	cancel?: string | boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {});
+const props = withDefaults(defineProps<Props>(), {
+	fullWidth: true,
+	fullHeight: true,
+	ok: false,
+	cancel: false
+});
 const visible = ref();
 const emits = defineEmits(['update:modelValue']);
 const show = () => {
@@ -58,12 +61,14 @@ const change = () => {
 
 defineExpose({
 	show,
-	close
+	close,
+	hide: close
 });
 </script>
 <style lang="scss" scoped>
 .container {
-	height: calc(100% - 32px);
+	height: calc(100%);
 	border-radius: 12px;
+	position: relative;
 }
 </style>
