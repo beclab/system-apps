@@ -10,7 +10,7 @@
 		<slot></slot>
 	</q-icon>
 	<Dialog :title="data.container" v-model="visible2" @show="show" @hide="hide">
-		<div class="absolute-full">
+		<div class="fit relative-position">
 			<div class="absolute-full" style="border-radius: 4px; overflow: hidden">
 				<div class="relative-position terminal-content">
 					<div class="terminal-content-wrapper">

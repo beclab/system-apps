@@ -1,5 +1,5 @@
 <template>
-	<div class="q-mt-md row items-center">
+	<div class="q-my-md row items-center">
 		<q-icon size="xs" name="terminal" />
 		<span class="q-ml-xs">{{ t('CONFIG_FILE') }}</span>
 

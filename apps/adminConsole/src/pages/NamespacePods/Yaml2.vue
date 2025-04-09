@@ -15,77 +15,38 @@
 			persistent
 			full-width
 			full-height
+			:ok="true"
+			:cancel="true"
 			v-model="visible2"
 			@show="show"
 			@hide="hide"
+			@onSubmit="submit"
 		>
-			<div :style="{ height: `calc(100% - ${footerHeight})` }">
-				<div
-					style="
-						height: calc(100%);
-						border-radius: 6px;
-						overflow: hidden;
-						position: relative;
-					"
-				>
-					<!-- <q-btn
-            color="primary"
-            dense
-            rounded
-            padding="xs md"
-            class="yaml-tool-container"
-          >
-            <q-uploader v-model="fileList" :auto-upload="false" accept=".yaml">
-              <template v-slot:header>
-                <q-icon name="upload" />
-              </template>
-            </q-uploader>
-            <q-icon dense name="upload" @click="handleDownload" />
-            <q-separator spaced inset vertical dark />
-            <q-icon name="download" @click="handleDownload" />
-          </q-btn> -->
-					<v-ace-editor
-						v-if="aceVisileb"
-						v-model:value="data"
-						lang="yaml"
-						theme="chaos"
-						:readonly="readonly || loading2"
-						style="height: calc(100%)"
-						:options="{
-							showGutter: true,
-							showPrintMargin: false,
-							useWorker: true,
-							keyboardHandler: 'vscode',
-							wrapEnabled: true,
-							tabSize: 2,
-							wrap: true
-						}"
-					/>
-				</div>
-				<div class="row justify-end q-mt-lg" v-if="!readonly">
-					<q-btn
-						no-caps
-						unelevated
-						outline
-						rounded
-						padding="6px xl"
-						@click="yamlHide"
-					>
-						<span>{{ t('CANCEL') }}</span>
-					</q-btn>
-					<q-btn
-						no-caps
-						color="primary"
-						unelevated
-						rounded
-						padding="6px xl"
-						style="margin-left: 12px"
-						:loading="loading2"
-						@click="submit"
-					>
-						{{ t('OK') }}
-					</q-btn>
-				</div>
+			<div
+				style="
+					height: calc(100%);
+					border-radius: 6px;
+					overflow: hidden;
+					position: relative;
+				"
+			>
+				<v-ace-editor
+					v-if="aceVisileb"
+					v-model:value="data"
+					lang="yaml"
+					theme="chaos"
+					:readonly="readonly || loading2"
+					style="height: calc(100%)"
+					:options="{
+						showGutter: true,
+						showPrintMargin: false,
+						useWorker: true,
+						keyboardHandler: 'vscode',
+						wrapEnabled: true,
+						tabSize: 2,
+						wrap: true
+					}"
+				/>
 				<q-inner-loading :showing="loading" style="z-index: 999999">
 				</q-inner-loading>
 			</div>

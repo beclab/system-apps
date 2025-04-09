@@ -17,7 +17,6 @@ const fs = require('fs');
 
 const PreloadWebpackPlugin = require('preload-webpack-plugin');
 const proxyTarget = process.env.PROXY_DOMAIN;
-const proxyTargetControlHub = process.env.PROXY_DOMAIN_CONTROL_HUB;
 module.exports = configure(function (ctx) {
 	return {
 		// https://v2.quasar.dev/quasar-cli-webpack/supporting-ts
@@ -143,42 +142,42 @@ module.exports = configure(function (ctx) {
 
 		// Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-devServer
 		devServer: {
-			https: false,
+			https: true,
 			open: true, // opens browser window automatically,
 			proxy: {
 				'/api/command': {
 					// target: "http://127.0.0.1:3010/",
-					target: `https://studio.${proxyTarget}`,
+					target: `https://${proxyTarget}`,
 					changeOrigin: true
 				},
 				'/api/apps': {
 					// target: "http://127.0.0.1:3010/",
-					target: `https://studio.${proxyTarget}`,
+					target: `https://${proxyTarget}`,
 					changeOrigin: true
 				},
 				'/api/app-state': {
 					// target: "http://127.0.0.1:3010/",
-					target: `https://studio.${proxyTarget}`,
+					target: `https://${proxyTarget}`,
 					changeOrigin: true
 				},
 				'/api/app-cfg': {
 					// target: "http://127.0.0.1:3010/",
-					target: `https://studio.${proxyTarget}`,
+					target: `https://${proxyTarget}`,
 					changeOrigin: true
 				},
 				'/api/list-my-containers': {
 					// target: "http://127.0.0.1:3010/",
-					target: `https://studio.${proxyTarget}`,
+					target: `https://${proxyTarget}`,
 					changeOrigin: true
 				},
 				'/api/files': {
 					// target: "http://127.0.0.1:3010/",
-					target: `https://studio.${proxyTarget}`,
+					target: `https://${proxyTarget}`,
 					changeOrigin: true
 				},
 				'/upload': {
 					// target: "http://127.0.0.1:3010/",
-					target: `https://studio.${proxyTarget}`,
+					target: `https://${proxyTarget}`,
 					changeOrigin: true
 				},
 				'/socket.io': {
@@ -186,46 +185,46 @@ module.exports = configure(function (ctx) {
 					ws: true
 				},
 				'/kapis/terminal': {
-					target: `wss://${proxyTargetControlHub}`,
+					target: `wss://${proxyTarget}`,
 					changeOrigin: true,
 					ws: true,
 					http: false
 				},
 				'/apis/apps/v1/watch': {
-					target: `wss://${proxyTargetControlHub}`,
+					target: `wss://${proxyTarget}`,
 					changeOrigin: true,
 					ws: true,
 					http: false
 				},
 				'/api/v1/watch': {
-					target: `wss://${proxyTargetControlHub}`,
+					target: `wss://${proxyTarget}`,
 					changeOrigin: true,
 					ws: true,
 					http: false
 				},
 				'/kapis': {
-					target: `https://${proxyTargetControlHub}`,
+					target: `https://${proxyTarget}`,
 					changeOrigin: true,
 					secure: false,
 					ws: false
 				},
 				'/api': {
-					target: `https://${proxyTargetControlHub}`,
+					target: `https://${proxyTarget}`,
 					changeOrigin: true,
 					secure: false
 				},
 				'/bfl': {
-					target: `https://${proxyTargetControlHub}`,
+					target: `https://${proxyTarget}`,
 					changeOrigin: true,
 					secure: false
 				},
 				'/capi': {
-					target: `https://${proxyTargetControlHub}`,
+					target: `https://${proxyTarget}`,
 					changeOrigin: true,
 					secure: false
 				},
 				'/middleware': {
-					target: `https://${proxyTargetControlHub}`,
+					target: `https://${proxyTarget}`,
 					changeOrigin: true,
 					secure: false
 				}

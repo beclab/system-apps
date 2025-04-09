@@ -1,6 +1,12 @@
 <template>
-	<MyQDialog2 v-bind="$attrs" v-model="visible" @before-hide="beforeHide">
-		<div style="width: 400px" class="q-gutter-y-md">
+	<MyQDialog2
+		v-bind="$attrs"
+		v-model="visible"
+		@before-hide="beforeHide"
+		:title="title"
+		@onSubmit="confirmHandler"
+	>
+		<div class="q-gutter-y-md">
 			<div class="text-ink-2">
 				<div
 					v-html="
@@ -16,28 +22,6 @@
 				dense
 			/>
 		</div>
-		<div class="text-right q-gutter-x-md q-mt-lg">
-			<q-btn
-				outline
-				unelevated
-				color="background-1"
-				no-caps
-				v-close-popup
-				class="btn-border"
-			>
-				<span class="text-body3 text-ink-2">{{ $t('CANCEL') }}</span>
-			</q-btn>
-			<q-btn
-				unelevated
-				color="primary"
-				no-caps
-				:disabled="disabled"
-				:loading="loading"
-				@click="confirmHandler"
-			>
-				<span>{{ $t('CONFIRM') }}</span>
-			</q-btn>
-		</div>
 	</MyQDialog2>
 </template>
 
@@ -50,6 +34,7 @@ interface Props {
 	name: string;
 	desc: string;
 	loading: boolean;
+	title: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {});

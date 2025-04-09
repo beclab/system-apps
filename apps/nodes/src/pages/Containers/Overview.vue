@@ -60,7 +60,7 @@ import { fetcEnvList } from '@packages/ui/src/containers/env';
 import Empty from '@packages/ui/src/components/Empty.vue';
 import MyChipList from '@packages/ui/src/containers/MyChipList.vue';
 import Log from './Logs.vue';
-import MyDialog from '@packages/ui/src/components/MyQDialog.vue';
+import MyDialog from '@packages/ui/src/components/MyQDialog2.vue';
 import MyExpansion from '@packages/ui/src/components/MyExpansion.vue';
 import VolumeContainer from '@packages/ui/src/containers/VolumeContainer.vue';
 import { getWorkloadVolumes } from '@packages/ui/src/utils/workload.js';

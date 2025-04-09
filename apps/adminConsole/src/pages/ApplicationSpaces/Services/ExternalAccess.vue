@@ -1,84 +1,77 @@
 <template>
-	<q-dialog ref="dialogRef" @hide="onDialogHide" full-width persistent>
-		<q-card>
-			<q-card-section class="row">
-				<span class="text-h6">{{ t('EDIT_EXTERNAL_ACCESS') }}</span>
-				<q-space />
-				<q-btn flat round dense icon="close" v-close-popup />
-			</q-card-section>
-			<q-separator />
-			<q-card-section style="max-height: 50vh" class="scroll">
-				<Title
-					:title="t('EXTERNAL_ACCESS')"
-					:desc="t('SERVICE_EXTERNAL_ACCESS_DESC')"
-				></Title>
-				<q-card flat bordered class="q-mt-xl">
-					<q-card-section>
-						<q-form class="q-gutter-md">
-							<div class="row">
-								<my-card flat :title="t('ACCESS_MODE')" class="col-6">
-									<q-select
-										v-model="type"
-										:options="accessModes"
-										outlined
-										dense
-										option-value="value"
-										@update:model-value="handleTypeChange"
-									/>
-								</my-card>
-								<my-card
-									flat
-									:title="t('LOAD_BALANCER_PROVIDER')"
-									class="col-6"
-									v-if="isLoadBalancerShow"
-								>
-									<q-select
-										v-model="provider"
-										:options="loadBalancerOption"
-										:option-disable="
-											(opt) =>
-												Object(opt) === opt ? opt.disabled === true : true
-										"
-										outlined
-										dense
-										option-value="value"
-										class="col-6"
-									/>
-								</my-card>
-							</div>
-							<my-card
-								flat
-								:title="t('ANNOTATION_PL')"
-								v-if="isLoadBalancerShow"
-							>
-								<template #extra>
-									<q-btn
-										:label="t('ADD')"
-										no-caps
-										denses
-										outline
-										color="primary"
-										@click="addAnnotation"
-									/>
-								</template>
-								<AnnotationsInput
-									v-model="formTemplate.metadata.annotations"
-									:options="providerOptions"
-									:hiddenKeys="[/^kubesphere.io\//, 'openpitrix_runtime']"
-									ref="AnnotationsInputRef"
+	<Dialog
+		ref="dialogRef"
+		@hide="onDialogHide"
+		full-width
+		persistent
+		:ok="true"
+		:cancel="true"
+		:title="''"
+		@onSubmit="onOKClick"
+		@onCancel="onDialogCancel"
+	>
+		<q-card-section style="max-height: 50vh" class="scroll">
+			<Title
+				:title="t('EXTERNAL_ACCESS')"
+				:desc="t('SERVICE_EXTERNAL_ACCESS_DESC')"
+			></Title>
+			<q-card flat bordered class="q-mt-xl">
+				<q-card-section>
+					<q-form class="q-gutter-md">
+						<div class="row">
+							<my-card flat :title="t('ACCESS_MODE')" class="col-6">
+								<q-select
+									v-model="type"
+									:options="accessModes"
+									outlined
+									dense
+									option-value="value"
+									@update:model-value="handleTypeChange"
 								/>
 							</my-card>
-						</q-form>
-					</q-card-section>
-				</q-card>
-			</q-card-section>
-			<q-separator />
-			<q-card-actions align="right">
-				<q-btn color="primary" label="OK" unelevated @click="onOKClick" />
-				<q-btn label="Cancel" type="reset" unelevated @click="onDialogCancel" />
-			</q-card-actions>
-		</q-card>
-	</q-dialog>
+							<my-card
+								flat
+								:title="t('LOAD_BALANCER_PROVIDER')"
+								class="col-6"
+								v-if="isLoadBalancerShow"
+							>
+								<q-select
+									v-model="provider"
+									:options="loadBalancerOption"
+									:option-disable="
+										(opt) =>
+											Object(opt) === opt ? opt.disabled === true : true
+									"
+									outlined
+									dense
+									option-value="value"
+									class="col-6"
+								/>
+							</my-card>
+						</div>
+						<my-card flat :title="t('ANNOTATION_PL')" v-if="isLoadBalancerShow">
+							<template #extra>
+								<q-btn
+									:label="t('ADD')"
+									no-caps
+									denses
+									outline
+									color="primary"
+									@click="addAnnotation"
+								/>
+							</template>
+							<AnnotationsInput
+								v-model="formTemplate.metadata.annotations"
+								:options="providerOptions"
+								:hiddenKeys="[/^kubesphere.io\//, 'openpitrix_runtime']"
+								ref="AnnotationsInputRef"
+							/>
+						</my-card>
+					</q-form>
+				</q-card-section>
+			</q-card>
+		</q-card-section>
+	</Dialog>
 </template>
 
 <script setup lang="ts">
@@ -94,6 +87,8 @@ import { CLUSTER_PROVIDERS_ANNOTATIONS } from './contants';
 import AnnotationsInput from '@packages/ui/src/containers/AnnotationsInput.vue';
 import { get, omit, set, unset } from 'lodash-es';
 import { useAppDetailStore } from 'src/stores/AppDetail';
+import Dialog from '@packages/ui/src/components/Dialog/Dialog.vue';
+
 interface Props {
 	detail: any;
 }

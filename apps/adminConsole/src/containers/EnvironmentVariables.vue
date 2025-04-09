@@ -45,16 +45,12 @@
 				<Event q-mx-lg :detail="detail" ref="childComponentRef"></Event>
 			</div>
 		</MyCard>
-		<MyQDialog v-model="visible" fullWidth fullHeight>
-			<q-card flat class="q-pb-none">
-				<q-card-section>
-					<RevisionControl
-						:detail="detail"
-						ref="RevisionControlRef"
-					></RevisionControl>
-				</q-card-section>
-			</q-card>
-		</MyQDialog>
+		<MyDialog v-model="visible" persistent :title="$t('REVISION_RECORDS')">
+			<RevisionControl
+				:detail="detail"
+				ref="RevisionControlRef"
+			></RevisionControl>
+		</MyDialog>
 	</MyPage>
 </template>
 
@@ -73,7 +69,7 @@ import Event from '@packages/ui/src/containers/Event.vue';
 import Metadata from '@packages/ui/src/containers/Metadata.vue';
 import ReplicaCard from './ReplicaCard.vue';
 import RevisionControl from './RevisionControl/IndexPage.vue';
-import MyQDialog from 'src/components/MyQDialog.vue';
+import MyDialog from '@packages/ui/src/components/Dialog/Dialog.vue';
 import PodContainer from '@packages/ui/src/containers/PodsList/PodContainer.vue';
 import PortsTable from '@packages/ui/src/containers/PortsTable.vue';
 import MyPage from '@packages/ui/src/containers/MyPage.vue';
