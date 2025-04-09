@@ -6,6 +6,7 @@
 		:title="title"
 		@onCancel="onCancel"
 		@onSubmit="onSubmit"
+		:okLoading="loading"
 	>
 		<div>
 			<div v-if="prompt">
@@ -78,7 +79,7 @@ const props = defineProps({
 		default: false,
 		required: false
 	},
-	okLoading: {
+	loading: {
 		type: [String, Boolean],
 		default: false,
 		required: false

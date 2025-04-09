@@ -10,8 +10,11 @@
 		:full-width="fullWidth"
 		:ok="ok"
 		:cancel="cancel"
+		:okLoading="loading"
 	>
 		<slot></slot>
+		<q-inner-loading :showing="loading" style="z-index: 999999">
+		</q-inner-loading>
 	</bt-custom-dialog>
 </template>
 
@@ -25,6 +28,7 @@ interface Props {
 	fullHeight?: boolean;
 	ok?: string | boolean;
 	cancel?: string | boolean;
+	loading?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {

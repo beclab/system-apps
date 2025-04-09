@@ -398,7 +398,6 @@ const moreHandler = (data: any, item: any) => {
 };
 
 const onSubmit = async () => {
-	console.log('onSubmit', aliasName.value, description.value);
 	const params = {
 		apiVersion,
 		module,

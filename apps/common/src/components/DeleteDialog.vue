@@ -5,6 +5,7 @@
 		@before-hide="beforeHide"
 		:title="title"
 		@onSubmit="confirmHandler"
+		:loading="loading"
 	>
 		<div class="q-gutter-y-md">
 			<div class="text-ink-2">

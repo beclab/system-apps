@@ -20,6 +20,7 @@
 			:title="name"
 			ref="dialog2Ref"
 			@onSubmit="submit"
+			:loading="loading2"
 		>
 			<div
 				style="

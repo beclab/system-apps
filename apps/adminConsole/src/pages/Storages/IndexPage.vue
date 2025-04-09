@@ -10,9 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import MyContentPage from 'src/components/MyContentPage.vue';
 import MenuHeader from 'src/layouts/MenuHeader.vue';
-import Empty from '@packages/ui/src/components/Empty.vue';
 import PersistentVolumeClaim from './PersistentVolumeClaim.vue';
 </script>
 
