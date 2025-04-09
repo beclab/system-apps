@@ -60,15 +60,9 @@ export const useDockerStore = defineStore('docker', {
 		},
 
 		async install_app(name: string): Promise<{ namespace: string }> {
-			const installRes = await this.get_app_install_state(name);
-			if (
-				![
-					APP_INSTALL_STATE.CANCELED,
-					APP_INSTALL_STATE.FAILED,
-					APP_INSTALL_STATE.COMPLETED,
-					''
-				].includes(installRes.state)
-			) {
+			const installRes = await this.get_app_install_status(name);
+
+			if (installRes.name) {
 				return BtNotify.show({
 					type: NotifyDefinedType.WARNING,
 					message: i18n.global.t('task_progress')
@@ -156,6 +150,14 @@ export const useDockerStore = defineStore('docker', {
 		async get_app_install_state(name: string): Promise<AppState> {
 			const res: AppState = await axios.get(
 				appStore.url + `/api/app-state?app=${name}`
+			);
+
+			return res;
+		},
+
+		async get_app_install_status(name: string): Promise<AppState> {
+			const res: AppState = await axios.get(
+				appStore.url + `/api/app-status?app=${name}`
 			);
 
 			return res;

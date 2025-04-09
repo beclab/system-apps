@@ -160,6 +160,11 @@ module.exports = configure(function (ctx) {
 					target: `https://${proxyTarget}`,
 					changeOrigin: true
 				},
+				'/api/app-status': {
+					// target: "http://127.0.0.1:3010/",
+					target: `https://${proxyTarget}`,
+					changeOrigin: true
+				},
 				'/api/app-cfg': {
 					// target: "http://127.0.0.1:3010/",
 					target: `https://${proxyTarget}`,
