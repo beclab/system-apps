@@ -49,32 +49,38 @@ export const useDockerStore = defineStore('docker', {
 			await axios.post(
 				appStore.url + `/api/command/apps/${name}/example/create`
 			);
-			BtNotify.show({
-				type: NotifyDefinedType.SUCCESS,
-				message: i18n.global.t('message.successfully')
-			});
 		},
 
-		async get_app_status(name: string): Promise<APP_STATUS> {
+		async get_app_status(name: string): Promise<void> {
 			const res: { state: APP_STATUS } = await axios.get(
 				appStore.url + `/api/apps/${name}/status`
 			);
 
-			return res.state;
+			this.appStatus = res.state;
 		},
 
 		async install_app(name: string): Promise<{ namespace: string }> {
+			const installRes = await this.get_app_install_state(name);
+			if (
+				![
+					APP_INSTALL_STATE.CANCELED,
+					APP_INSTALL_STATE.FAILED,
+					APP_INSTALL_STATE.COMPLETED,
+					''
+				].includes(installRes.state)
+			) {
+				return BtNotify.show({
+					type: NotifyDefinedType.WARNING,
+					message: i18n.global.t('task_progress')
+				});
+			}
+
 			const res: { namespace: string } = await axios.post(
 				appStore.url + '/api/command/install-app',
 				{
 					name
 				}
 			);
-
-			BtNotify.show({
-				type: NotifyDefinedType.SUCCESS,
-				message: i18n.global.t('message.start_installing')
-			});
 			return res;
 		},
 
@@ -107,7 +113,6 @@ export const useDockerStore = defineStore('docker', {
 				appStore.url + '/api/files/' + path
 			);
 
-			console.log('getFile res', res);
 			this.currentFileData = res;
 			this.cached[path] = res;
 		},

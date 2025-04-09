@@ -42,6 +42,7 @@
 				<TerminusFormFooter
 					:ok-text="t('create')"
 					:on-cancel="t('cancel')"
+					:loading="loading"
 					@submit="submit"
 					@cancel="onDialogCancel"
 				/>
@@ -53,10 +54,12 @@
 <script lang="ts" setup>
 import { ref, reactive } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useDialogPluginComponent } from 'quasar';
 import { useDockerStore } from '../../stores/docker';
 import { CreateWithOneDockerConfig, VENDOR } from '@/types/core';
+import { BtNotify, NotifyDefinedType } from '@bytetrade/ui';
+import { pushToSystem } from '../../utils/utils';
 
 import ImageDeployer from '../config/ImageDeployer.vue';
 import InstanceConfig from '../config/InstanceConfig.vue';
@@ -72,11 +75,13 @@ const {
 
 const { t } = useI18n();
 const route = useRoute();
+const router = useRouter();
 const dockerStore = useDockerStore();
 
 const show = ref(true);
 const imageDeployerRef = ref();
 const instanceRef = ref();
+const loading = ref(false);
 
 const config = reactive<CreateWithOneDockerConfig>({
 	name: route.params.id as string,
@@ -119,7 +124,28 @@ const submit = async () => {
 	const instanceValidate = instanceRef.value.validate();
 
 	if (imageValidate && instanceValidate) {
-		await dockerStore.config_app(config);
+		try {
+			loading.value = true;
+			await dockerStore.config_app(config);
+
+			BtNotify.show({
+				type: NotifyDefinedType.LOADING,
+				closeTimeout: true,
+				message: t('appStatus.deploying'),
+				notify_id: route.params.id
+			});
+
+			await dockerStore.install_app(config.name);
+			BtNotify.hide({ notify_id: route.params.id });
+			await dockerStore.get_app_status(route.params.id as string);
+			loading.value = false;
+
+			pushToSystem(route, router);
+		} catch (error) {
+			loading.value = false;
+			BtNotify.hide({ notify_id: route.params.id });
+		}
+
 		onDialogOK();
 	}
 };

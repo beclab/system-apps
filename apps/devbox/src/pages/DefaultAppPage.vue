@@ -43,34 +43,45 @@
 
 <script lang="ts" setup>
 import { useQuasar } from 'quasar';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import { BtNotify, NotifyDefinedType } from '@bytetrade/ui';
 import { useDockerStore } from './../stores/docker';
+import { pushToSystem } from './../utils/utils';
 import CreateApp from '../components/dialog/CreateApp.vue';
 
 const { t } = useI18n();
 const $q = useQuasar();
 const route = useRoute();
+const router = useRouter();
+
 const dockerStore = useDockerStore();
 
 const createApp = async () => {
 	$q.dialog({
 		component: CreateApp
-	}).onOk(() => {
-		updateStatus();
 	});
 };
 
 const initApp = async () => {
-	await dockerStore.create_app(route.params.id as string);
+	try {
+		await dockerStore.create_app(route.params.id as string);
 
-	updateStatus();
-};
+		BtNotify.show({
+			type: NotifyDefinedType.LOADING,
+			closeTimeout: true,
+			message: t('appStatus.deploying'),
+			notify_id: route.params.id
+		});
 
-const updateStatus = async () => {
-	dockerStore.appStatus = await dockerStore.get_app_status(
-		route.params.id as string
-	);
+		await dockerStore.install_app(route.params.id as string);
+
+		await dockerStore.get_app_status(route.params.id as string);
+		pushToSystem(route, router);
+		BtNotify.hide({ notify_id: route.params.id });
+	} catch (error) {
+		BtNotify.hide({ notify_id: route.params.id });
+	}
 };
 </script>
 <style lang="scss" scoped>
