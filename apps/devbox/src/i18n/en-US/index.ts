@@ -22,8 +22,9 @@ export default {
 	home_appname: 'App name',
 	home_appname_hint: 'App namespace in Olares',
 	home_appname_rules_1: 'Enter the app name',
-	home_appname_rules_2: 'Must start with a lowercase letters',
-	home_appname_rules_3: 'Only allows lowercase letters (a-z) and numbers (0-9)',
+	home_appname_rules_2: 'Must start with a letters',
+	home_appname_rules_3:
+		'Contains up to 30 characters. Only letters, numbers, spaces, (.), (-), or (_) allowed',
 	home_apptype: 'App type',
 	home_apptype_hint: 'Choose the application type',
 	home_entrance_port: 'Main entrance port',
@@ -312,7 +313,7 @@ export default {
 		successfully: 'Successfully',
 		upgrade_app: 'Are you sure you want to Upgrade the app?',
 		uninstall_app: 'Are you sure you want to uninstall {appName}?',
-		delete_app: 'Are you sure to delete the app?'
+		delete_app: 'Are you sure you want to delete {appName}?'
 	},
 
 	docker: {
@@ -336,7 +337,8 @@ export default {
 		host_path: 'Host path',
 		container_path: 'Mount Path',
 		add_env_variables: 'Add Environment Variables',
-		add_storage_volume: 'Add Storage Volume'
+		add_storage_volume: 'Add Storage Volume',
+		volume_size: 'Volume Size'
 	},
 
 	appStatus: {
@@ -371,5 +373,13 @@ export default {
 	container_path_repeat: 'Duplicate mount path',
 	env_repeat: 'Environment configuration already exists',
 	loading: 'Loading',
-	task_progress: 'Task in progress'
+	task_progress: 'Task in progress',
+
+	image_create: 'Create Image',
+	vscode_desktop: 'VS Code Desktop',
+	vscode_server: 'coder-server',
+	image_env: 'Please select or enter a development environment',
+	image_volume: 'Please enter the volume size',
+	image_volume_rule: 'Volume size must be a positive integer',
+	installing: 'Creating resources'
 };

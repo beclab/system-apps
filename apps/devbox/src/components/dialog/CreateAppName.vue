@@ -17,7 +17,7 @@
 					dense
 					borderless
 					no-error-icon
-					v-model="appName"
+					v-model="appTitle"
 					class="form-item-input"
 					input-class="text-ink-2"
 					:placeholder="ruleConfig.appNameRules.placeholder"
@@ -42,27 +42,40 @@ const { t } = useI18n();
 const router = useRouter();
 
 const dockerStore = useDockerStore();
-const apps = useDevelopingApps();
+const appStores = useDevelopingApps();
 const menuStore = useMenuStore();
 
 const CustomRef = ref();
 const appNameRef = ref();
 const loading = ref(false);
-const appName = ref();
+const appTitle = ref();
 
 const submit = async () => {
 	console.log('click submit');
 	appNameRef.value.validate();
 	if (appNameRef.value.hasError) return;
 
-	await dockerStore.create_name(appName.value);
-	await apps.getApps();
-	await menuStore.updateApplications();
-	dockerStore.appStatus = undefined;
-	router.push({ path: '/app/' + appName.value });
-	menuStore.currentItem = '/app/' + appName.value;
-	CustomRef.value.onDialogOK();
+	try {
+		loading.value = true;
+		await dockerStore.create_name(appTitle.value);
+		await appStores.getApps();
+		await menuStore.updateApplications();
+		dockerStore.appStatus = undefined;
+		const appName = await getAppName(appTitle.value);
+		router.push({ path: '/app/' + appName });
+		menuStore.currentItem = '/app/' + appName;
+		loading.value = false;
+		CustomRef.value.onDialogOK();
+	} catch (error) {
+		loading.value = false;
+	}
 };
+
+async function getAppName(title: string) {
+	const current_app = appStores.apps.find((item) => item.title == title);
+
+	return current_app.appName;
+}
 </script>
 
 <style lang="scss" scoped>

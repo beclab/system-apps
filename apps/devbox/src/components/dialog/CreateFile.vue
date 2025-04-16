@@ -33,7 +33,7 @@
 import { ref, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { ruleConfig } from './../../types/config';
-import { useDockerStore } from './../../stores/docker';
+import { useFileStore } from '../../stores/file';
 import { OPERATE_ACTION } from '@/types/core';
 
 const props = defineProps({
@@ -54,7 +54,7 @@ const props = defineProps({
 
 const { t } = useI18n();
 
-const dockerStore = useDockerStore();
+const fileStore = useFileStore();
 
 const CustomRef = ref();
 const fileNameRef = ref();
@@ -86,19 +86,19 @@ const submit = async () => {
 
 const createFile = async () => {
 	const currentPath = `${props.path}/${appName.value}`;
-	await dockerStore.putFile(currentPath);
+	await fileStore.putFile(currentPath);
 };
 
 const createFolder = async () => {
 	const currentPath = `${props.path}/${appName.value}`;
-	await dockerStore.createFolder(currentPath);
+	await fileStore.createFolder(currentPath);
 };
 
 const renameFile = async () => {
 	const newPath = props.path.replace(props.label!, appName.value);
 	const currentPath = `${props.path}?action=rename&destination=${newPath}`;
 
-	await dockerStore.pathFile(
+	await fileStore.pathFile(
 		currentPath,
 		{},
 		{

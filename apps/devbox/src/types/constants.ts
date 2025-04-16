@@ -11,6 +11,23 @@ export const memoryOptions = [
 	'8Gi'
 ];
 
+export const envOptions = [
+	{
+		label: 'beclab/node-ts-dev:0.1.1',
+		value: 'beclab/node-ts-dev:0.1.1'
+	},
+	{
+		label: 'beclab/go-dev:0.1.1',
+		value: 'beclab/go-dev:0.1.1'
+	},
+	{
+		label: 'beclab/python-dev:0.1.1',
+		value: 'beclab/python-dev:0.1.1'
+	}
+];
+
+export const diskOptions = ['Gi', 'Mi'];
+
 // export const FilesOption: Record<
 //   OPERATE_ACTION,
 //   {

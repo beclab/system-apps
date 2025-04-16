@@ -1,17 +1,11 @@
 import { defineStore } from 'pinia';
-import { Notify } from 'quasar';
 import axios from 'axios';
-import {
-	ApplicationInfo,
-	Container,
-	OpenApplicationConfig
-} from '@/types/core';
+import { ApplicationInfo, OpenApplicationConfig } from '@/types/core';
 
 export type DevelopingApps = {
 	url: string;
 	apps: ApplicationInfo[];
 	current_app: ApplicationInfo | undefined;
-	containers: Container[];
 };
 
 export const useDevelopingApps = defineStore('app', {
@@ -19,8 +13,7 @@ export const useDevelopingApps = defineStore('app', {
 		return {
 			url: '',
 			apps: [],
-			current_app: undefined,
-			containers: []
+			current_app: undefined
 		} as DevelopingApps;
 	},
 	actions: {
@@ -38,15 +31,6 @@ export const useDevelopingApps = defineStore('app', {
 			}
 		},
 
-		async getMyContainers() {
-			try {
-				this.containers = await axios.get(this.url + '/api/list-my-containers');
-				if (!this.containers) this.containers = [];
-			} catch (e) {
-				console.log(e);
-			}
-		},
-
 		async openApplication(config: OpenApplicationConfig) {
 			try {
 				const data: any = await axios.post(
@@ -57,132 +41,6 @@ export const useDevelopingApps = defineStore('app', {
 			} catch (e) {
 				console.log(e);
 			}
-		},
-
-		// async getAppCfg(app_name: string): Promise<AppCfg | undefined> {
-		// 	try {
-		// 		const data: AppCfg = await axios.get(
-		// 			this.url + '/api/app-cfg?app=' + app_name
-		// 		);
-		// 		return data;
-		// 	} catch (e) {
-		// 		console.log(e);
-		// 	}
-		// },
-
-		// async getAppContainer(app_name: string): Promise<Container[]> {
-		// 	this.notif = Notify.create({
-		// 		type: 'ongoing',
-		// 		color: 'grey-4',
-		// 		textColor: 'grey-9',
-		// 		message: 'Data Loading...'
-		// 	});
-
-		// 	try {
-		// 		const data: AppContainer[] = await axios.get(
-		// 			this.url + '/api/list-app-containers?app=' + app_name
-		// 		);
-		// 		const res: any = [];
-		// 		for (const d of data) {
-		// 			const f = this.containers.find(
-		// 				(c) =>
-		// 					c.podSelector === d.podSelector &&
-		// 					c.containerName == d.containerName &&
-		// 					c.appName == app_name
-		// 			);
-		// 			if (f) {
-		// 				res.push({
-		// 					image: d.image,
-		// 					...f
-		// 				});
-		// 			} else {
-		// 				res.push({
-		// 					...d
-		// 				});
-		// 			}
-		// 		}
-		// 		this.notif();
-		// 		return res;
-		// 	} catch (e) {
-		// 		console.log(e);
-		// 		this.notif();
-		// 		return [];
-		// 	}
-		// },
-
-		async bindContainer({
-			containerId,
-			appId,
-			podSelector,
-			containerName,
-			devEnv,
-			devContainerName,
-			image
-		}: {
-			containerId?: number;
-			appId: number;
-			podSelector: string;
-			containerName: string;
-			devEnv?: string;
-			devContainerName: string;
-			image: string;
-		}): Promise<void> {
-			try {
-				await axios.post(this.url + '/api/bind-container', {
-					containerId,
-					appId,
-					podSelector,
-					containerName,
-					devEnv,
-					devContainerName,
-					image
-				});
-			} catch (e) {
-				console.log(e);
-			}
-		},
-
-		async unbindContainer({
-			containerId,
-			appId,
-			podSelector,
-			containerName
-		}: {
-			containerId: number;
-			appId: number;
-			podSelector: string;
-			containerName: string;
-		}): Promise<void> {
-			try {
-				const data = await axios.post(this.url + '/api/unbind-container', {
-					containerId,
-					appId,
-					podSelector,
-					containerName
-				});
-			} catch (e) {
-				console.log(e);
-			}
 		}
-
-		// async putAppCfg(app_name: string, cfg: AppCfg): Promise<AppCfg> {
-		// 	return await axios.post(this.url + '/api/app-cfg?app=' + app_name, cfg);
-		// },
-
-		// async getAppState(app_name: string): Promise<AppCfg> {
-		// 	const data: AppCfg = await axios.get(
-		// 		this.url + '/api/app-state?app=' + app_name
-		// 	);
-
-		// 	return data;
-		// },
-
-		// async getAppStatus(app_name: string): Promise<AppCfg> {
-		// 	const data: AppCfg = await axios.get(
-		// 		this.url + '/api/app-status?app=' + app_name
-		// 	);
-
-		// 	return data;
-		// }
 	}
 });

@@ -35,6 +35,7 @@ export default defineComponent({
 			terminusLanguage = navigator.language;
 		}
 
+		// i18n.global.locale.value = 'en-US';
 		console.log(navigator.language);
 
 		if (terminusLanguage) {

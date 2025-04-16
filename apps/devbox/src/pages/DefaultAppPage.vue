@@ -21,18 +21,19 @@
 				<q-icon class="q-mr-sm" name="sym_r_deployed_code" size="24px" />
 				<span>{{ t('docker.deploy_container') }}</span>
 			</div>
-
+			<!--
 			<div
 				class="text-subtitle1 text-teal-pressed deploy-text row items-center justify-start deploy-disabled"
 				disabled
+
 			>
 				<q-icon class="q-mr-sm" name="sym_r_upload_file" size="24px" />
 				<span>{{ t('docker.transplant_app') }}</span>
-			</div>
+			</div> -->
 
 			<div
-				class="text-subtitle1 text-teal-pressed deploy-text row items-center justify-start deploy-disabled"
-				disabled
+				class="text-subtitle1 text-teal-pressed deploy-text row items-center justify-start"
+				@click="codingInOlares"
 			>
 				<q-icon class="q-mr-sm" name="sym_r_box_edit" size="24px" />
 				<span>{{ t('docker.coding') }}</span>
@@ -49,6 +50,8 @@ import { BtNotify, NotifyDefinedType } from '@bytetrade/ui';
 import { useDockerStore } from './../stores/docker';
 import { pushToSystem } from './../utils/utils';
 import CreateApp from '../components/dialog/CreateApp.vue';
+import CodingInOlares from '../components/dialog/CodingInOlares.vue';
+import { useDevelopingApps } from '@/stores/app';
 
 const { t } = useI18n();
 const $q = useQuasar();
@@ -56,6 +59,7 @@ const route = useRoute();
 const router = useRouter();
 
 const dockerStore = useDockerStore();
+const apps = useDevelopingApps();
 
 const createApp = async () => {
 	$q.dialog({
@@ -63,25 +67,32 @@ const createApp = async () => {
 	});
 };
 
+const codingInOlares = () => {
+	$q.dialog({
+		component: CodingInOlares
+	});
+};
+
 const initApp = async () => {
 	try {
 		await dockerStore.create_app(route.params.id as string);
 
-		BtNotify.show({
-			type: NotifyDefinedType.LOADING,
-			closeTimeout: true,
-			message: t('appStatus.deploying'),
-			notify_id: route.params.id
+		$q.loading.show({
+			message: t('installing')
 		});
 
 		await dockerStore.install_app(route.params.id as string);
-
-		await dockerStore.get_app_status(route.params.id as string);
-		pushToSystem(route, router);
-		BtNotify.hide({ notify_id: route.params.id });
+		await apps.getApps();
+		await updateStatus();
 	} catch (error) {
-		BtNotify.hide({ notify_id: route.params.id });
+		await updateStatus();
 	}
+};
+
+const updateStatus = async () => {
+	await pushToSystem(route.params.id, router);
+	await dockerStore.get_app_status(route.params.id as string);
+	$q.loading.hide();
 };
 </script>
 <style lang="scss" scoped>

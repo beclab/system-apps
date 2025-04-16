@@ -31,13 +31,13 @@ export const useMenuStore = defineStore('menu', {
 							key: MenuLabel.HOME,
 							icon: 'sym_r_home',
 							muted: true
-						},
-						{
-							label: i18n.global.t(`enums.${MenuLabel.CONTAINERS}`),
-							key: MenuLabel.CONTAINERS,
-							icon: 'sym_r_deployed_code',
-							muted: true
 						}
+						// {
+						// 	label: i18n.global.t(`enums.${MenuLabel.CONTAINERS}`),
+						// 	key: MenuLabel.CONTAINERS,
+						// 	icon: 'sym_r_deployed_code',
+						// 	muted: true
+						// }
 					]
 				}
 			],
@@ -92,7 +92,7 @@ export const useMenuStore = defineStore('menu', {
 			this.applicationMenu[0].children = [];
 			for (const app of store.apps) {
 				this.applicationMenu[0].children.push({
-					label: app.appName,
+					label: app.title || app.appName,
 					key: `/app/${app.appName}`,
 					icon: 'sym_r_grid_view'
 				});

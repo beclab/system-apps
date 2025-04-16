@@ -16,10 +16,6 @@ const routes: RouteRecordRaw[] = [
 		children: [
 			{ path: '/home', component: () => import('pages/HomePage.vue') },
 			{
-				path: '/containers',
-				component: () => import('pages/ContainerPage.vue')
-			},
-			{
 				path: '/controlhub-layout',
 				component: () => import('@/layouts/ControlHubLayout.vue'),
 				children: [

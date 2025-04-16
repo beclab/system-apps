@@ -3,10 +3,11 @@
 		v-if="chartNodes && chartNodes.length > 0 && chartNodes[0].children"
 		ref="treeRef"
 		dense
+		default-expand-all
 		:nodes="chartNodes"
+		icon="sym_r_keyboard_arrow_right"
 		node-key="path"
 		label-key="label"
-		selected-color="ink-1"
 		:selected="selected"
 		v-model:expanded="expanded"
 		@update:selected="onSelected"
@@ -29,31 +30,29 @@
 					class="row no-wrap items-center justify-between my-tree-header-wrapper"
 					:id="prop.node.key"
 				>
-					<div class="row items-center justify-start">
+					<div class="file-item">
 						<img
-							v-if="!prop.node.isDir"
+							v-if="prop.node.label === 'OlaresManifest.yaml'"
 							class="q-mx-xs"
-							src="../../assets/icon-txt.svg"
-							style="width: 12px"
+							src="../../assets/olares-icon.svg"
+						/>
+						<img
+							v-else-if="!prop.node.isDir"
+							class="q-mx-xs"
+							src="../../assets/icon-yaml.svg"
 						/>
 
-						<span
-							style="
-								white-space: nowrap;
-								overflow: hidden;
-								text-overflow: ellipsis;
-							"
-							>{{ prop.node.label }}</span
-						>
+						<span class="file-name">{{ prop.node.label }}</span>
 					</div>
 
 					<q-icon
-						class="horiz"
+						class="horiz q-mr-xs"
 						:class="{ 'hide-horiz': mouseItemKey === prop.node.path }"
 						rounded
 						clickable
 						name="sym_r_more_horiz"
 						size="18px"
+						:color="selected === mouseItemKey ? 'teal-pressed' : 'ink-2'"
 						@click.stop
 					>
 						<PopupMenu
@@ -77,9 +76,8 @@ import { useI18n } from 'vue-i18n';
 import axios from 'axios';
 import { useQuasar } from 'quasar';
 import { ApplicationInfo, FilesSelectType, OPERATE_ACTION } from '@/types/core';
-import { BtDialog } from '@bytetrade/ui';
 import { useDevelopingApps } from '../../stores/app';
-import { useDockerStore } from '../../stores/docker';
+import { useFileStore } from '../../stores/file';
 
 import PopupMenu from '../common/PopupMenu.vue';
 import CreateFile from '../../components/dialog/CreateFile.vue';
@@ -106,9 +104,9 @@ const emits = defineEmits(['onSelected', 'updatePathNode']);
 const { t } = useI18n();
 const $q = useQuasar();
 const store = useDevelopingApps();
-const dockerStore = useDockerStore();
+const fileStore = useFileStore();
 
-const expanded = ref<string[]>([props.app.appName]);
+const expanded = ref<string[]>();
 const mouseItemKey = ref();
 
 const fileMenu = ref([
@@ -177,6 +175,11 @@ const getChildren = (items: any) => {
 			isDir: data.isDir,
 			lazy: data.isDir ? true : false
 		};
+
+		if (data.items) {
+			selectData.children = getChildren(data.items);
+		}
+
 		children.push(selectData);
 	}
 
@@ -261,12 +264,33 @@ const deleteFile = async (path: string) => {
 
 const _deleteFile = async (path: string) => {
 	const parentPath = path.split('/').slice(0, -1).join('/');
-	await dockerStore.deleteFile(path);
+	await fileStore.deleteFile(path);
 	emits('updatePathNode', parentPath);
 };
 </script>
 
 <style lang="scss" scoped>
+.file-item {
+	width: calc(100% - 24px);
+	height: 24px;
+
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+
+	img {
+		width: 16px;
+		float: left;
+	}
+
+	.file-name {
+		width: 100%;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+}
+
 .horiz {
 	opacity: 0;
 }
@@ -275,54 +299,42 @@ const _deleteFile = async (path: string) => {
 }
 
 .my-tree-wrapper {
-	width: calc(100% - 10px);
+	width: 100%;
 
-	$my_tree_width_base: 8px;
-	$my_tree_left: -($my_tree_width_base + 8px);
+	$my_tree_width_base: 4px;
+	$my_tree_left: -($my_tree_width_base + 4px);
 	&::v-deep(.q-tree) {
 		padding: 0 20px;
 	}
-	&::v-deep(.q-tree--dense .q-tree__node--child > .q-tree__node-header:before) {
-		width: 12px;
-	}
-	&::v-deep(.q-tree--dense .q-tree__node-header:before) {
-		width: 12px;
-	}
-	&::v-deep(.q-tree--dense .q-tree__node--child) {
-		padding-left: $my_tree_width_base;
-	}
-	&::v-deep(.q-tree--dense .q-tree__node--child > .q-tree__node-header:before) {
-		left: $my_tree_left;
-	}
-
-	&::v-deep(.q-tree__node-header-content) {
-		font-weight: 500;
-		color: #1f1814;
-	}
-
-	&::v-deep(.q-tree--dense .q-tree__arrow) {
-		color: $ink-1;
-	}
-
-	&::v-deep(.q-tree__children .q-tree__node-header-content) {
-		font-weight: 400;
-		color: #5c5551;
-	}
-	&::v-deep(.q-tree__children .q-tree__node-header-content .header-top) {
-		margin-right: map-get($space-sm, x);
-	}
 
 	&::v-deep(.q-tree__node-header) {
-		padding-top: 2px;
-		padding-bottom: 1px;
+		padding: 0;
+		border-radius: 4px;
+		.file-name {
+			font-size: 14px !important;
+			color: $ink-1 !important;
+			font-weight: 500;
+		}
+	}
+
+	&::v-deep(.q-tree__node-collapsible .q-tree__node-header) {
+		.file-name {
+			font-size: 12px !important;
+			color: $ink-2 !important;
+			font-weight: 400;
+		}
+	}
+
+	::v-deep(.q-tree__node--selected) {
+		background-color: $teal-soft;
+		.file-item {
+			.file-name {
+				color: $teal-pressed !important;
+			}
+		}
 	}
 
 	::v-deep(.q-tree__arrow) {
-		font-size: 14px;
-		border: 1px solid rgba(255, 255, 255, 0);
-		color: $ink-1;
-	}
-	::v-deep(.q-tree__spinner) {
 		font-size: 14px;
 		border: 1px solid rgba(255, 255, 255, 0);
 		color: $ink-1;
@@ -343,6 +355,8 @@ const _deleteFile = async (path: string) => {
 }
 .my-tree-header-container {
 	width: 100%;
+	height: 24px;
+	line-height: 24px;
 	position: relative;
 	border-radius: 4px;
 	.my-tree-badge-wrapper {
@@ -357,33 +371,32 @@ const _deleteFile = async (path: string) => {
 		}
 	}
 }
-::v-deep(.q-tree .q-tree__node-header) {
-	border-radius: 4px;
-}
-::v-deep(.q-tree .q-tree__node-header .q-focus-helper) {
-	left: -6px;
-	right: 0;
-	width: auto;
-	border-radius: 4px;
-}
 
-::v-deep(.q-focus-helper:has(+ .q-icon.q-tree__arrow)) {
-	left: 0;
-	right: 0;
-	width: auto;
-}
+$my_tree_width_base: 8px;
+$my_tree_left: -($my_tree_width_base + 4px);
 
-.my-tree-header-wrapper {
-	padding: 4px 0;
-	border-radius: 4px;
-	padding-right: 8px;
-	width: 100%;
+::v-deep(.q-tree__node--child) {
+	padding-left: 0px;
 }
-
 ::v-deep(.q-tree__node-header:before) {
-	border-bottom-left-radius: 7px;
-	border-color: $separator-2;
+	height: 24px;
+	border-bottom: none;
 }
+
+::v-deep(.q-tree__node--parent .q-tree__node-header:before) {
+	border-left: 1px solid $separator-2 !important;
+}
+
+::v-deep(.q-tree__node--child > .q-tree__node-header:before) {
+	left: -8px;
+	top: 0px;
+	border-left: 1px solid $separator-2 !important;
+}
+
+::v-deep(.q-tree--dense .q-tree__node-header:before) {
+	display: none !important;
+}
+
 ::v-deep(
 		.q-tree__node--parent > .q-tree__node-collapsible > .q-tree__node-body:after
 	) {
@@ -392,6 +405,7 @@ const _deleteFile = async (path: string) => {
 ::v-deep(.q-tree__node:after) {
 	border-color: $separator-2;
 }
+
 ::v-deep(.my-menu-before-scroll .q-scrollarea__container) {
 	overflow-x: hidden;
 }
@@ -401,26 +415,5 @@ const _deleteFile = async (path: string) => {
 }
 ::v-deep(.my-menu-before-scroll .q-tree__node-collapsible) {
 	overflow-x: hidden;
-}
-
-::v-deep(.q-tree__node--selected) {
-	background-color: $background-3;
-}
-
-::v-deep(
-		.q-tree
-			> .q-tree__node--parent
-			> .q-tree__node-header
-			> .q-tree__node-header-content
-	) {
-	color: $ink-1 !important;
-}
-::v-deep(
-		.q-tree--dense
-			.q-tree__node--parent
-			> .q-tree__node-collapsible
-			> .q-tree__node-body
-	) {
-	padding-bottom: 0px;
 }
 </style>

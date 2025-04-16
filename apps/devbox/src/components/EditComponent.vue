@@ -1,24 +1,34 @@
 <template>
 	<div class="files row">
-		<div class="files-left">
-			<app-tree
-				:app="app"
-				:selected="selected"
-				:chartNodes="chartNodes"
-				@on-selected="onSelected"
-				@update-path-node="updatePathNode"
-			/>
-		</div>
+		<q-splitter
+			v-model="splitterModel"
+			unit="px"
+			:limits="[240, 480]"
+			style="height: 100%; width: 100%"
+		>
+			<template v-slot:before>
+				<div class="files-left">
+					<app-tree
+						:app="app"
+						:selected="selected"
+						:chartNodes="chartNodes"
+						@on-selected="onSelected"
+						@update-path-node="updatePathNode"
+					/>
+				</div>
+			</template>
 
-		<div class="files-right col-9">
-			<app-edit-file
-				:fileInfo="fileInfo"
-				:isEditing="isEditing"
-				@on-save-file="onSaveFile"
-				@change-code="changeCode"
-				@editorMount="editorMount"
-			/>
-		</div>
+			<template v-slot:after>
+				<div class="files-right">
+					<app-edit-file
+						:fileInfo="fileStore.fileInfo"
+						:isEditing="fileStore.isEditing"
+						@on-save-file="onSaveFile"
+						@change-code="changeCode"
+					/>
+				</div>
+			</template>
+		</q-splitter>
 	</div>
 </template>
 
@@ -27,12 +37,11 @@ import axios from 'axios';
 import { useI18n } from 'vue-i18n';
 import { useQuasar } from 'quasar';
 import { useRouter, useRoute, onBeforeRouteLeave } from 'vue-router';
-import { ref, watch, onMounted, onUnmounted, PropType, reactive } from 'vue';
-import { BtDialog, BtNotify, NotifyDefinedType } from '@bytetrade/ui';
-import { ApplicationInfo, FilesSelectType, FilesCodeType } from '@/types/core';
+import { ref, watch, onMounted, onUnmounted, PropType } from 'vue';
+import { ApplicationInfo, FilesSelectType } from '@/types/core';
 
 import { useDevelopingApps } from '../stores/app';
-import { useDockerStore } from './../stores/docker';
+import { useFileStore } from './../stores/file';
 
 import AppTree from './common/AppTree.vue';
 import AppEditFile from './common/AppEditFile.vue';
@@ -46,27 +55,24 @@ const props = defineProps({
 });
 
 const store = useDevelopingApps();
-const dockerStore = useDockerStore();
+const fileStore = useFileStore();
 
 const $q = useQuasar();
 const { t } = useI18n();
 const router = useRouter();
 const route = useRoute();
 const chartNodes = ref<any>([]);
-const tempFile = ref();
-const isEditing = ref(false);
+const tempFile = ref('');
 const selected = ref(props.app.chart);
-
-const fileInfo = reactive<FilesCodeType>({
-	code: '',
-	lang: 'json',
-	name: ''
-});
+const splitterModel = ref(240);
 
 onBeforeRouteLeave((to, from, next) => {
-	if (isEditing.value) {
+	console.log('onBeforeRouteLeave to', to.path);
+	console.log('onBeforeRouteLeave from', from.path);
+
+	if (fileStore.isEditing) {
 		const answer = window.confirm(
-			`${fileInfo.name} has been modified. Do you want to save the changes and update the chart repository?'`
+			`${fileStore.fileInfo.name} has been modified. Do you want to save the changes and update the chart repository?'`
 		);
 		if (answer) {
 			onSaveFile();
@@ -79,33 +85,27 @@ onBeforeRouteLeave((to, from, next) => {
 });
 
 watch(
-	() => fileInfo.code,
+	() => fileStore.fileInfo.code,
 	(newVal) => {
 		if (newVal !== tempFile.value) {
-			isEditing.value = true;
-			dockerStore.configEditFlag = true;
+			fileStore.isEditing = true;
+			fileStore.addEditStorage(route.path);
 		} else {
-			isEditing.value = false;
-			dockerStore.configEditFlag = false;
+			if (fileStore.isEditing) {
+				fileStore.isEditing = false;
+				fileStore.deleteEditStorage(route.path);
+			}
 		}
 	}
 );
 
 const changeCode = (value) => {
-	fileInfo.code = value;
+	fileStore.fileInfo.code = value;
 };
 
 async function onSaveFile() {
 	if (!selected.value) return false;
-	await axios.put(store.url + '/api/files/' + selected.value, fileInfo.code, {
-		headers: { 'content-type': 'text/plain' }
-	});
-
-	isEditing.value = false;
-	BtNotify.show({
-		type: NotifyDefinedType.SUCCESS,
-		message: t('message.save_file_success')
-	});
+	fileStore.saveFile(selected.value);
 }
 
 const getChildren = (items: any) => {
@@ -113,6 +113,7 @@ const getChildren = (items: any) => {
 
 	for (let n in items) {
 		const data = items[n];
+
 		const selectData: FilesSelectType = {
 			label: data.name,
 			icon: data.isDir ? 'folder' : 'article',
@@ -123,6 +124,11 @@ const getChildren = (items: any) => {
 			isDir: data.isDir,
 			lazy: data.isDir ? true : false
 		};
+
+		if (data.items) {
+			selectData.children = getChildren(data.items);
+		}
+
 		children.push(selectData);
 	}
 
@@ -133,6 +139,7 @@ async function loadChart() {
 	const res: any = await axios.get(store.url + '/api/files' + props.app.chart);
 
 	const children = getChildren(res.items);
+
 	chartNodes.value = [
 		{
 			label: props.app.appName,
@@ -143,7 +150,20 @@ async function loadChart() {
 			isDir: true
 		}
 	];
+
+	// loadFile();
 }
+
+const loadFile = () => {
+	if (route.path.split('/')[3]) {
+		return;
+	}
+
+	const defaultFile = chartNodes.value[0].children.find((item) => !item.isDir);
+
+	updateRoute(defaultFile.path);
+	fetchData(defaultFile.path);
+};
 
 const updatePathNode = async (path: string) => {
 	const res: any = await axios.get(store.url + '/api/files/' + path);
@@ -181,7 +201,7 @@ const updateRoute = (value) => {
 };
 
 const onSelected = async (value) => {
-	if (isEditing.value) {
+	if (fileStore.isEditing) {
 		checkFileSave(value);
 	} else {
 		fetchData(value);
@@ -190,22 +210,21 @@ const onSelected = async (value) => {
 };
 
 const fetchData = async (value) => {
-	await dockerStore.getFile(value);
+	await fileStore.getFile(value);
 
-	dockerStore.configEditFlag = false;
-	isEditing.value = false;
-	tempFile.value = dockerStore.currentFileData.content
-		? dockerStore.currentFileData.content
+	fileStore.isEditing = false;
+	tempFile.value = fileStore.currentFileData.content
+		? fileStore.currentFileData.content
 		: '';
-	fileInfo.code = dockerStore.currentFileData.content
-		? dockerStore.currentFileData.content
+	fileStore.fileInfo.code = fileStore.currentFileData.content
+		? fileStore.currentFileData.content
 		: '';
-	// fileInfo.lang = dockerStore.currentFileData.extension;
-	fileInfo.name = dockerStore.currentFileData.name;
+	fileStore.fileInfo.lang = fileStore.currentFileData.extension.startsWith('.')
+		? fileStore.currentFileData.extension.slice(1)
+		: fileStore.currentFileData.extension;
+	fileStore.fileInfo.name = fileStore.currentFileData.name;
 
-	// router.push({
-	// 	path: `/app/${props.app.appName}/${Encoder.stringToBase64Url(value)}`
-	// });
+	console.log('fileInfo', fileStore.fileInfo);
 };
 
 const checkFileSave = (value) => {
@@ -227,21 +246,6 @@ const checkFileSave = (value) => {
 		});
 };
 
-const editorMount = () => {
-	if (selected.value === props.app.chart) {
-		if (chartNodes.value && chartNodes.value.length > 0) {
-			const defaultFile = chartNodes.value[0].children.find(
-				(item) => !item.isDir
-			);
-
-			updateRoute(defaultFile.path);
-			fetchData(defaultFile.path);
-		}
-	} else {
-		fetchData(selected.value);
-	}
-};
-
 const handleKeyDown = async (event) => {
 	if (
 		(event.ctrlKey || event.metaKey) && // Ctrl (Windows/Linux) 或 Cmd (Mac)
@@ -257,12 +261,20 @@ const handleKeyDown = async (event) => {
 onMounted(async () => {
 	window.addEventListener('keydown', handleKeyDown);
 
+	fileStore.filesEditStorage = [];
+	fileStore.fileInfo = {
+		code: '',
+		name: '',
+		lang: ''
+	};
+
 	const fileParamsPath = route.path.split('/').slice(2);
 	if (fileParamsPath && fileParamsPath.length > 0) {
 		updateRoute(fileParamsPath.join('/'));
 	}
 
 	await loadChart();
+	selected.value && (await fetchData(selected.value));
 });
 
 onUnmounted(() => {
@@ -275,15 +287,17 @@ onUnmounted(() => {
 	height: 100%;
 
 	.files-left {
-		width: 260px;
+		width: 100%;
 		background-color: $background-1;
-		padding: 20px;
+		padding: 12px 4px;
 	}
 	.files-right {
-		flex: 1;
+		width: 100%;
+		height: 100%;
 		overflow: hidden;
-		background: $background-3;
-		padding: 20px;
+		display: flex;
+		align-items: flex-start;
+		justify-content: center;
 	}
 }
 </style>

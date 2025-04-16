@@ -35,6 +35,7 @@ import { useRouter, useRoute } from 'vue-router';
 import { useDevelopingApps } from '@/stores/app';
 import { useDockerStore } from '@/stores/docker';
 import { useMenuStore, MenuLabel } from '@/stores/menu';
+import { pushToSystem } from './../utils/utils';
 
 const store = useDevelopingApps();
 const menuStore = useMenuStore();
@@ -73,7 +74,8 @@ const changeItemMenu = (data: any): void => {
 	} else if (key === MenuLabel.CONTAINERS) {
 		router.push({ path: '/containers' });
 	} else if (key.startsWith('/app')) {
-		router.push({ path: key });
+		const app_name = key.slice(5);
+		pushToSystem(app_name, router);
 	}
 
 	menuStore.updateApplications();
