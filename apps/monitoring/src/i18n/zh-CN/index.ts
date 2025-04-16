@@ -47,7 +47,8 @@ const options = {
 	RESUMING: '恢复',
 	UNINSTALLING: '正在卸载',
 	OPEN_APP: '打开应用',
-	VIEW_DETAIL: '查看详情'
+	VIEW_DETAIL: '查看详情',
+	OPERATIONS: '操作'
 };
 
 export default options;

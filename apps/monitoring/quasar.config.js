@@ -129,6 +129,13 @@ module.exports = configure(function (ctx) {
 					target: `https://${proxyTarget}`,
 					changeOrigin: true
 				},
+				'/gpu': {
+					target: 'http://192.168.31.47:3000',
+					changeOrigin: true,
+					pathRewrite: {
+						'^/gpu': ''
+					}
+				},
 				'/bfl': {
 					target: `https://${proxyTarget}`,
 					changeOrigin: true

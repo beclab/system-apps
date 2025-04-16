@@ -14,7 +14,7 @@
 				<ClusterResource
 					:data="clusterData"
 					:type="type.type"
-					:loading="loading"
+					:loading="resourcesStore.loading"
 				></ClusterResource>
 			</MyCard2>
 			<!-- <div class="row justify-between">
@@ -49,7 +49,7 @@
 				</template>
 				<UserResource
 					:data="userResourcesData"
-					:loading="loading"
+					:loading="resourcesStore.loading"
 					:cluster_cpu_total="cluster_cpu_total"
 					:cluster_memory_total="cluster_memory_total"
 				></UserResource>
@@ -108,7 +108,9 @@ import { get, last } from 'lodash';
 import { useColor } from '@bytetrade/ui';
 import PageBackground from 'components/PageBackground.vue';
 import OlaresAvatar from 'src/containers/OlaresAvatar.vue';
+import { useResourcesStore } from 'src/stores/Resource';
 
+const resourcesStore = useResourcesStore();
 const appDetail = useAppDetailStore();
 
 const router = useRouter();
@@ -123,7 +125,6 @@ const clusterData = ref([]);
 const userResourcesData = ref([]);
 const NodeData = ref([]);
 const nodesList = ref<ResourcesResponse['items']>([]);
-const loading = ref(false);
 const nodes = ref<string[]>([]);
 const options = ref(defaultOptions);
 const type = ref(defaultOptions[0]);
@@ -195,7 +196,7 @@ const fetchData = async (autofresh = false) => {
 		filters.last = true;
 		filtersUser.last = true;
 	} else {
-		loading.value = true;
+		resourcesStore.loading = true;
 	}
 
 	const paramsCluster = getParams(filters);
@@ -223,12 +224,12 @@ const fetchData = async (autofresh = false) => {
 			clusterData.value = fillEmptyMetrics(paramsCluster, clusterResultFormat);
 			userResourcesData.value = fillEmptyMetrics(paramsUser, userResultFormat);
 
-			loading.value = false;
+			resourcesStore.loading = false;
 			refresh();
 		})
 		.catch(() => {
 			refresh();
-			loading.value = false;
+			resourcesStore.loading = false;
 		});
 };
 
@@ -253,7 +254,7 @@ const getNodes = () => {
 		sortBy: 'createTime'
 		// labelSelector: '!node-role.kubernetes.io/edge',
 	};
-	loading.value = true;
+	resourcesStore.loading = true;
 	getNodesList(params).then((res) => {
 		nodesList.value = res.data.items;
 		if (nodesList.value.length > 1) {

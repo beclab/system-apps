@@ -1,10 +1,6 @@
 <template>
-	<div class="row q-col-gutter-xl">
-		<div
-			v-for="(item, index) in list"
-			:key="item.name"
-			class="col-sm-6 col-md-6 col-lg-3 col-xl-3"
-		>
+	<div class="row flex-gap-lg">
+		<div v-for="(item, index) in list" :key="item.name" @click="routeTo(item)">
 			<InfoCardItem
 				:active="index === active"
 				@click="itemClick(index, item)"
@@ -24,7 +20,8 @@
 import { ref, toRef, toRefs } from 'vue';
 import InfoCardItem from './InfoCardItem.vue';
 import { InfoCardItemProps } from './InfoCardItem.vue';
-
+import { useRouter } from 'vue-router';
+const router = useRouter();
 export interface InfoCardRadioProps {
 	list?: Array<InfoCardItemProps>;
 	defaultActive?: number;
@@ -43,6 +40,10 @@ const active = ref(props.defaultActive);
 const itemClick = (index: number, data: InfoCardItemProps) => {
 	active.value = index;
 	emit('change', data, index);
+};
+
+const routeTo = (item: InfoCardItemProps) => {
+	router.push(item.route);
 };
 </script>
 
