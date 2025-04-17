@@ -1,204 +1,206 @@
 <template>
-	<FullPageWithBack :title="$t('GPU.GPU_DETAILS')">
-		<template #extra>
-			<QButtonStyle>
-				<q-btn
-					class="q-pa-xs"
-					dense
-					icon="refresh"
-					color="ink-2"
-					outline
-					:disable="loading"
-					@click="refreshHandler"
-					narrow-indicator
-				>
-				</q-btn>
-			</QButtonStyle>
-		</template>
+	<div class="fixed-full">
+		<FullPageWithBack :title="$t('GPU.GPU_DETAILS')">
+			<template #extra>
+				<QButtonStyle>
+					<q-btn
+						class="q-pa-xs"
+						dense
+						icon="refresh"
+						color="ink-2"
+						outline
+						:disable="loading"
+						@click="refreshHandler"
+						narrow-indicator
+					>
+					</q-btn>
+				</QButtonStyle>
+			</template>
 
-		<div>
-			<q-tab-panels
-				v-model="tab"
-				animated
-				swipeable
-				vertical
-				transition-prev="jump-up"
-				transition-next="jump-up"
-			>
-				<q-tab-panel :name="1" class="q-pa-none">
-					<div class="row flex-gap-xl">
-						<div class="row items-center">
-							<span class="text-body3 text-ink-2"
-								>{{ $t('GPU.GRAPHICS_MODEL') }}&nbsp;&nbsp;</span
-							>
-							<BtSelect
-								emit-value
-								v-model="gpuType"
-								:options="GpuStore.gpuList"
-								option-value="type"
-								option-label="type"
-								:placeholder="$t('GPU.PLEASE_CHOOSE')"
-								dense
-								outlined
-								style="width: 200px"
-								@update:model-value="searchGpu"
-							/>
+			<div>
+				<q-tab-panels
+					v-model="tab"
+					animated
+					swipeable
+					vertical
+					transition-prev="jump-up"
+					transition-next="jump-up"
+				>
+					<q-tab-panel :name="1" class="q-pa-none">
+						<div class="row flex-gap-xl">
+							<div class="row items-center">
+								<span class="text-body3 text-ink-2"
+									>{{ $t('GPU.GRAPHICS_MODEL') }}&nbsp;&nbsp;</span
+								>
+								<BtSelect
+									emit-value
+									v-model="gpuType"
+									:options="GpuStore.gpuList"
+									option-value="type"
+									option-label="type"
+									:placeholder="$t('GPU.PLEASE_CHOOSE')"
+									dense
+									outlined
+									style="width: 200px"
+									@update:model-value="searchGpu"
+								/>
+							</div>
+							<div class="row items-center">
+								<span class="text-body3 text-ink-2"
+									>{{ $t('GPU.AFFILIATED_NODE') }}&nbsp;&nbsp;</span
+								>
+								<BtSelect
+									emit-value
+									v-model="gpuNodeName"
+									:options="GpuStore.gpuList"
+									option-value="nodeName"
+									option-label="nodeName"
+									:placeholder="$t('GPU.PLEASE_CHOOSE')"
+									dense
+									outlined
+									style="width: 200px"
+									@update:model-value="searchGpu"
+								/>
+							</div>
+							<QInputStyle>
+								<div class="row items-center">
+									<span class="text-body3 text-ink-2"
+										>{{ $t('GPU.GRAPHICS_ID') }}&nbsp;&nbsp;</span
+									>
+									<q-input
+										v-model="gpuUid"
+										type="search"
+										outlined
+										debounce="500"
+										:placeholder="$t('GPU.PLEASE_ENTER')"
+										clearable
+										style="width: 200px"
+										@update:model-value="searchGpu"
+									>
+										<template v-slot:prepend>
+											<q-icon name="search" color="ink-2" size="xs" />
+										</template>
+									</q-input>
+								</div>
+							</QInputStyle>
 						</div>
-						<div class="row items-center">
-							<span class="text-body3 text-ink-2"
-								>{{ $t('GPU.AFFILIATED_NODE') }}&nbsp;&nbsp;</span
-							>
-							<BtSelect
-								emit-value
-								v-model="gpuNodeName"
-								:options="GpuStore.gpuList"
-								option-value="nodeName"
-								option-label="nodeName"
-								:placeholder="$t('GPU.PLEASE_CHOOSE')"
-								dense
-								outlined
-								style="width: 200px"
-								@update:model-value="searchGpu"
-							/>
-						</div>
-						<QInputStyle>
+					</q-tab-panel>
+					<q-tab-panel :name="2" class="q-pa-none">
+						<div class="row flex-gap-xl">
+							<QInputStyle>
+								<div class="row items-center">
+									<span class="text-body3 text-ink-2"
+										>{{ $t('GPU.TASK_NAME') }}&nbsp;&nbsp;</span
+									>
+									<q-input
+										v-model="taskName"
+										type="search"
+										outlined
+										debounce="500"
+										:placeholder="$t('GPU.PLEASE_ENTER')"
+										clearable
+										style="width: 200px"
+										@update:model-value="searchTask"
+									>
+										<template v-slot:prepend>
+											<q-icon name="search" color="ink-2" size="xs" />
+										</template>
+									</q-input>
+								</div>
+							</QInputStyle>
+
+							<div class="row items-center">
+								<span class="text-body3 text-ink-2"
+									>{{ $t('GPU.NODE_NAME') }}&nbsp;&nbsp;</span
+								>
+								<BtSelect
+									emit-value
+									v-model="taskNodeName"
+									:options="GpuStore.taskList"
+									option-value="nodeName"
+									option-label="nodeName"
+									:placeholder="$t('GPU.PLEASE_CHOOSE')"
+									dense
+									outlined
+									style="width: 200px"
+									@update:model-value="searchTask"
+								/>
+							</div>
+
+							<div class="row items-center">
+								<span class="text-body3 text-ink-2"
+									>{{ $t('GPU.TASK_STATUS') }}&nbsp;&nbsp;</span
+								>
+								<BtSelect
+									v-model="taskStatus"
+									:options="TaskStatusOptions"
+									:placeholder="$t('GPU.PLEASE_CHOOSE')"
+									dense
+									outlined
+									style="width: 200px"
+									@update:model-value="searchTask"
+								/>
+							</div>
 							<div class="row items-center">
 								<span class="text-body3 text-ink-2"
 									>{{ $t('GPU.GRAPHICS_ID') }}&nbsp;&nbsp;</span
 								>
-								<q-input
-									v-model="gpuUid"
-									type="search"
+								<BtSelect
+									v-model="taskDeviceId"
+									:options="GpuStore.deviceIds"
+									:placeholder="$t('GPU.PLEASE_CHOOSE')"
+									dense
 									outlined
-									debounce="500"
-									:placeholder="$t('GPU.PLEASE_ENTER')"
-									clearable
-									style="width: 200px"
-									@update:model-value="searchGpu"
-								>
-									<template v-slot:prepend>
-										<q-icon name="search" color="ink-2" size="xs" />
-									</template>
-								</q-input>
-							</div>
-						</QInputStyle>
-					</div>
-				</q-tab-panel>
-				<q-tab-panel :name="2" class="q-pa-none">
-					<div class="row flex-gap-xl">
-						<QInputStyle>
-							<div class="row items-center">
-								<span class="text-body3 text-ink-2"
-									>{{ $t('GPU.TASK_NAME') }}&nbsp;&nbsp;</span
-								>
-								<q-input
-									v-model="taskName"
-									type="search"
-									outlined
-									debounce="500"
-									:placeholder="$t('GPU.PLEASE_ENTER')"
-									clearable
 									style="width: 200px"
 									@update:model-value="searchTask"
-								>
-									<template v-slot:prepend>
-										<q-icon name="search" color="ink-2" size="xs" />
-									</template>
-								</q-input>
+								/>
 							</div>
-						</QInputStyle>
-
-						<div class="row items-center">
-							<span class="text-body3 text-ink-2"
-								>{{ $t('GPU.NODE_NAME') }}&nbsp;&nbsp;</span
-							>
-							<BtSelect
-								emit-value
-								v-model="taskNodeName"
-								:options="GpuStore.taskList"
-								option-value="nodeName"
-								option-label="nodeName"
-								:placeholder="$t('GPU.PLEASE_CHOOSE')"
-								dense
-								outlined
-								style="width: 200px"
-								@update:model-value="searchTask"
-							/>
 						</div>
+					</q-tab-panel>
+				</q-tab-panels>
+			</div>
 
-						<div class="row items-center">
-							<span class="text-body3 text-ink-2"
-								>{{ $t('GPU.TASK_STATUS') }}&nbsp;&nbsp;</span
-							>
-							<BtSelect
-								v-model="taskStatus"
-								:options="TaskStatusOptions"
-								:placeholder="$t('GPU.PLEASE_CHOOSE')"
-								dense
-								outlined
-								style="width: 200px"
-								@update:model-value="searchTask"
-							/>
-						</div>
-						<div class="row items-center">
-							<span class="text-body3 text-ink-2"
-								>{{ $t('GPU.GRAPHICS_ID') }}&nbsp;&nbsp;</span
-							>
-							<BtSelect
-								v-model="taskDeviceId"
-								:options="GpuStore.deviceIds"
-								:placeholder="$t('GPU.PLEASE_CHOOSE')"
-								dense
-								outlined
-								style="width: 200px"
-								@update:model-value="searchTask"
-							/>
-						</div>
-					</div>
-				</q-tab-panel>
-			</q-tab-panels>
-		</div>
+			<div class="gpu-tabs-wrapper q-pt-md q-mt-md">
+				<q-tabs
+					v-model="tab"
+					align="left"
+					content-class="tabs-content-wrapper"
+					active-color="primary"
+					:breakpoint="0"
+					no-caps
+					narrow-indicator
+					@update:model-value="tabChangeHandler"
+				>
+					<q-tab :ripple="false" content-class="tabs-content-wrapper" :name="1">
+						{{ $t('GPU.GRAPHICS_MANAGEMENT') }}
+					</q-tab>
+					<q-tab :ripple="false" :name="2">{{
+						$t('GPU.TASK_MANAGEMENT')
+					}}</q-tab>
+				</q-tabs>
+				<q-separator />
+			</div>
 
-		<div class="gpu-tabs-wrapper q-pt-md q-mt-md">
-			<q-tabs
-				v-model="tab"
-				align="left"
-				content-class="tabs-content-wrapper"
-				active-color="primary"
-				:breakpoint="0"
-				no-caps
-				narrow-indicator
-				@update:model-value="tabChangeHandler"
-			>
-				<q-tab :ripple="false" content-class="tabs-content-wrapper" :name="1">
-					{{ $t('GPU.GRAPHICS_MANAGEMENT') }}
-				</q-tab>
-				<q-tab :ripple="false" :name="2">{{ $t('GPU.TASK_MANAGEMENT') }}</q-tab>
-			</q-tabs>
-			<q-separator />
-		</div>
-
-		<div class="q-mt-xl my-tabs-panel-wrapper">
-			<q-tab-panels
-				v-model="tab"
-				animated
-				swipeable
-				vertical
-				transition-prev="jump-up"
-				transition-next="jump-up"
-			>
-				<q-tab-panel :name="1" class="q-pa-none">
-					<GPUsTable ref="GPUsTableRef"></GPUsTable>
-				</q-tab-panel>
-				<q-tab-panel :name="2" class="q-pa-none">
-					<TasksTable ref="TasksTableRef"></TasksTable>
-				</q-tab-panel>
-			</q-tab-panels>
-		</div>
-		<div class="absolute-top" style="top: -56px">
-			<RouterViewTransition class="absolute-full"></RouterViewTransition>
-		</div>
-	</FullPageWithBack>
+			<div class="q-mt-xl my-tabs-panel-wrapper">
+				<q-tab-panels
+					v-model="tab"
+					animated
+					swipeable
+					vertical
+					transition-prev="jump-up"
+					transition-next="jump-up"
+				>
+					<q-tab-panel :name="1" class="q-pa-none">
+						<GPUsTable ref="GPUsTableRef"></GPUsTable>
+					</q-tab-panel>
+					<q-tab-panel :name="2" class="q-pa-none">
+						<TasksTable ref="TasksTableRef"></TasksTable>
+					</q-tab-panel>
+				</q-tab-panels>
+			</div>
+		</FullPageWithBack>
+		<RouterViewTransition></RouterViewTransition>
+	</div>
 </template>
 
 <script setup lang="ts">
