@@ -1,6 +1,12 @@
 <template>
-	<FullPageWithBack :title="$t('PHYSICAL_RESOURCE_MONTORING')">
+	<FullPageWithBack :title="$t('GPU.TASK_MANAGEMENT_DETAILS')">
+		<template #extra>
+			<DatePicker v-model="times"></DatePicker>
+		</template>
 		<MyCard>
+			<div class="text-h6 text-ink-1 q-pb-xl">
+				{{ $t('GPU.DETAILS_INFORMATION') }}
+			</div>
 			<div class="row items-center wrap flex-gap-col-xxxxl flex-gap-row-xl">
 				<div>
 					<GPUDetailList :data="detail" :columns="columns" maxColumn="2">
@@ -76,6 +82,7 @@
 								legend: item.legend,
 								data: item.data
 							}"
+							:loading="item.loading"
 							style="height: 234px"
 						></MylineChart>
 					</MyCard>
@@ -88,7 +95,7 @@
 <script setup lang="ts">
 import FullPageWithBack from '@packages/ui/src/components/FullPageWithBack2.vue';
 import { getRangeVector, getTaskDetail } from 'src/network/gpu';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useInstantVector } from './config';
 import MyGaugeChart from 'src/components/Charts/MyGaugeChart.vue';
@@ -101,6 +108,7 @@ import TextPlus from 'src/components/TextPlus.vue';
 import TaskStatus from './TaskStatus.vue';
 import MyGridLayout from '@packages/ui/src/components/MyGridLayout.vue';
 import { useI18n } from 'vue-i18n';
+import DatePicker from './DatePicker.vue';
 
 const route = useRoute();
 const { t } = useI18n();
@@ -115,35 +123,35 @@ const detail = ref();
 
 const columns = [
 	{
-		label: '任务状态',
+		label: t('GPU.TASK_STATUS'),
 		field: 'status'
 	},
 	{
-		label: '所属显卡',
+		label: t('GPU.GRAPHICS_CARD_BELONGS'),
 		field: 'deviceIds'
 	},
 	{
-		label: '所属节点',
+		label: t('GPU.AFFILIATED_NODE'),
 		field: 'nodeName'
 	},
 	{
-		label: '显卡类型',
+		label: t('GPU.GRAPHICS_TYPE'),
 		field: 'type'
 	},
 	{
-		label: '可分配算力',
+		label: t('GPU.ALLOCATABLE_COMPUTING_POWER'),
 		field: 'allocatedCores'
 	},
 	{
-		label: '可分配显存',
+		label: t('GPU.ALLOCATABLE_MEMORY'),
 		field: 'allocatedMem'
 	},
 	{
-		label: '应用名称',
+		label: t('GPU.APP_NAME'),
 		field: 'appName'
 	},
 	{
-		label: '任务创建时间',
+		label: t('GPU.TASK_CREATION_TIME'),
 		field: 'createTime'
 	}
 ];
@@ -193,7 +201,8 @@ const lineConfig = ref([
 			'avg(sum(hami_container_core_util{container_name=~"$container",pod_name=~"$pod",namespace_name="$namespace"}) by (instance))',
 		unit: '%',
 		legend: [t('USAGE')],
-		data: []
+		data: [],
+		loading: false
 	},
 	{
 		title: '显存使用趋势',
@@ -201,12 +210,14 @@ const lineConfig = ref([
 			'avg(sum(hami_container_memory_util{container_name=~"$container",pod_name=~"$pod",namespace_name="$namespace"}) by (instance))',
 		unit: '%',
 		legend: [t('USAGE')],
-		data: []
+		data: [],
+		loading: false
 	}
 ]);
 
 const fetchLineData = async () => {
-	lineConfig.value.map((item, index) =>
+	lineConfig.value.map((item, index) => {
+		lineConfig.value[index].loading = true;
 		getRangeVector({
 			range: {
 				start: timeParse(times.value[0]),
@@ -217,15 +228,20 @@ const fetchLineData = async () => {
 				.replaceAll('$container', detail.value.name)
 				.replaceAll('$namespace', detail.value.namespace)
 				.replaceAll('$pod', detail.value.appName)
-		}).then((res) => {
-			console.log('fffff', res.data);
-
-			const data = res.data.data[0]?.values || [];
-			const list = data.map((item) => [item.timestamp, item.value]);
-
-			lineConfig.value[index].data = [list];
 		})
-	);
+			.then((res) => {
+				const data = res.data.data[0]?.values || [];
+				const list = data.map((item) => [item.timestamp, item.value]);
+
+				lineConfig.value[index].data = [list];
+			})
+			.finally(() => {
+				lineConfig.value[index].loading = false;
+			})
+			.catch(() => {
+				lineConfig.value[index].loading = false;
+			});
+	});
 };
 
 const fetchDetail = async () => {
@@ -233,6 +249,10 @@ const fetchDetail = async () => {
 	detail.value = res.data;
 	fetchLineData();
 };
+
+watch(times, () => {
+	fetchLineData();
+});
 
 onMounted(() => {
 	fetchDetail();

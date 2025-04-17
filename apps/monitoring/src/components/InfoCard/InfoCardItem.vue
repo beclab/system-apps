@@ -20,13 +20,16 @@
 				class="row items-center info-ratio text-h6 text-ink-1 value-wrapper q-mt-xs"
 			>
 				<q-skeleton v-if="loading" type="text" width="88px" />
-				<template v-else>
+				<template v-else-if="!isNaN(_used) && !isNull(_total)">
 					<span>{{ worthValue(_used) }}</span>
 					<span>/</span>
 					<span class="ratio-foolter">{{ worthValue(_total) || '-' }}</span>
 				</template>
 			</div>
-			<div class="row items-center justify-between q-gutter-x-md q-mt-md">
+			<div
+				class="row items-center justify-between q-gutter-x-md q-mt-md"
+				v-if="!isNaN(_used) && !isNull(_total)"
+			>
 				<span class="text-subtitle3" :class="textColorClass"
 					>{{ percent }}%</span
 				>
@@ -46,7 +49,7 @@
 import { getSuitableUnit, getValueByUnit } from 'src/utils/monitoring';
 import { computed, ref, StyleValue, toRefs } from 'vue';
 import { _capitalize } from 'src/utils/index';
-import { isNaN, round } from 'lodash';
+import { isNaN, isNull, round } from 'lodash';
 import { useQuasar } from 'quasar';
 import { worthValue } from 'src/utils/number';
 import arrowRightIcon2 from 'assets/arrow-right2.svg';
@@ -54,8 +57,8 @@ import { RouteLocationRaw } from 'vue-router';
 
 const $q = useQuasar();
 export interface InfoCardItemProps {
-	used: string;
-	total: string;
+	used?: string;
+	total?: string;
 	name: string;
 	active?: boolean;
 	unitType?: any;
@@ -103,9 +106,9 @@ const textColorClass = computed(() => `text-${activeColor.value}`);
 
 <style lang="scss" scoped>
 .info-card-container {
-	width: 168px;
 	cursor: default;
 	.info-card-wrapper {
+		height: 170px;
 		position: relative;
 		border-radius: 20px;
 		border: 1px solid $separator;

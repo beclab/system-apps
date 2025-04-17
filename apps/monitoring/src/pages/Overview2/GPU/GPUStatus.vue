@@ -1,9 +1,14 @@
+import { computed } from 'vue';
 <template>
-	<q-chip
-		:color="isExternal ? 'warning' : health ? 'positive' : 'negative'"
-		text-color="white"
-		dense
-		square
+	<div
+		class="gpu-status-container row inline justify-center items-center q-py-xs q-px-md"
+		:class="[
+			isExternal
+				? 'bg-yellow-alpha text-yellow-default'
+				: health
+				? 'bg-green-alpha text-green-default'
+				: 'bg-red-alpha text-red-default'
+		]"
 	>
 		{{
 			isExternal
@@ -12,7 +17,7 @@
 				? $t('GPU.HEALTHY')
 				: $t('GPU.HARDWARE_ERROR')
 		}}
-	</q-chip>
+	</div>
 </template>
 
 <script setup lang="ts">
@@ -21,7 +26,11 @@ interface Props {
 	isExternal: boolean;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+.gpu-status-container {
+	border-radius: 4px;
+}
+</style>

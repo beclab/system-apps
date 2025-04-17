@@ -2,7 +2,7 @@
 	<QTableStyle2 sticky-first sticky-last>
 		<q-table
 			style="width: 100%"
-			:rows="list"
+			:rows="GpuStore.gpuList"
 			:columns="columns"
 			row-key="uuid"
 			:loading="loading"
@@ -55,7 +55,7 @@
 				<q-td :props="props">
 					<span
 						style="width: 68px"
-						class="text-right"
+						class="text-right text-body2 text-light-blue-default cursor-pointer"
 						@click="routeTo(props.row)"
 						>{{ $t('VIEW_DETAIL') }}</span
 					>
@@ -81,10 +81,12 @@ import { useRouter } from 'vue-router';
 import { ROUTE_NAME } from 'src/router/const';
 import { useI18n } from 'vue-i18n';
 import GPUStatus from 'src/pages/Overview2/GPU/GPUStatus.vue';
+import { useGpuStore } from 'src/stores/GpuStore';
+const GpuStore = useGpuStore();
+
 const router = useRouter();
 const { t } = useI18n();
 
-const list = ref<Graphics[]>([]);
 const loading = ref(false);
 const uid_search = ref();
 const pagination = ref({
@@ -151,7 +153,7 @@ const fetchData = async (filters: GraphicsListParams['filters'] = {}) => {
 	try {
 		const uid = uid_search.value;
 		const params: GraphicsListParams = {
-			filters: {},
+			filters,
 			pageRequest: {
 				pageSize: pagination.value.rowsPerPage,
 				pageNo: pagination.value.page,
@@ -161,8 +163,9 @@ const fetchData = async (filters: GraphicsListParams['filters'] = {}) => {
 		};
 
 		const res = await getGraphicsList(params);
-		list.value = res.data.list;
-		pagination.value.rowsNumber = list.value.length;
+		const list = res.data.list;
+		GpuStore.updateGpuList(list);
+		pagination.value.rowsNumber = list.length;
 	} finally {
 		loading.value = false;
 	}

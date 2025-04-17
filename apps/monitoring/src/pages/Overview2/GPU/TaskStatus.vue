@@ -7,15 +7,16 @@
 				borderRadius: '50%',
 				display: 'inline-block'
 			}"
-			:class="[enums[status].color]"
+			:class="[current.color]"
 		></div>
-		<span>{{ enums[status].text }}</span>
+		<span>{{ current.label }}</span>
 	</div>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
 import { computed } from 'vue';
+import { TaskStatusOptions } from './config';
 
 interface Props {
 	status: string;
@@ -26,14 +27,16 @@ const props = withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
-const enums = {
-	closed: { text: t('COMPLETED'), color: 'bg-status-pending' },
-	success: { text: t('RUNNING'), color: 'bg-positive' },
-	unknown: { text: t('UNKNOWN'), color: 'bg-status-pending' },
-	failed: { text: t('ERROR'), color: 'bg-negative' }
-};
-
-const target = computed(() => enums[props.status]);
+const current = computed(() => {
+	const target = TaskStatusOptions.value.find(
+		(item) => item.value === props.status
+	);
+	if (target) {
+		return target;
+	} else {
+		return TaskStatusOptions[TaskStatusOptions.value.length - 1];
+	}
+});
 </script>
 
 <style></style>

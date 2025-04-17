@@ -1,4 +1,8 @@
 const options = {
+	GPU_DETAILS: 'GPU Details',
+	GRAPHICS_MANAGEMENT_DETAILS: '显卡管理详情',
+	TASK_MANAGEMENT_DETAILS: '任务管理详情',
+	DETAILS_INFORMATION: '详情信息',
 	GPU: 'GPU',
 	NETWORK: 'Network',
 	GRAPHICS_MANAGEMENT: '显卡管理',
@@ -20,7 +24,15 @@ const options = {
 	V_GPU_COUNT: '{ count } 个',
 	DEVICE_NUMBER: '设备号',
 	DRIVER_VERSION: '驱动版本',
-	USAGE_MODE: '使用模式'
+	USAGE_MODE: '使用模式',
+	NODE_NAME: '节点名称',
+	PLEASE_ENTER: '请输入',
+	PLEASE_CHOOSE: '请选择',
+	GRAPHICS_CARD_BELONGS: '所属显卡',
+	GRAPHICS_TYPE: '显卡类型',
+	ALLOCATABLE_COMPUTING_POWER: '可分配算力',
+	ALLOCATABLE_MEMORY: '可分配显存',
+	APP_NAME: '应用名称'
 };
 
 export default options;

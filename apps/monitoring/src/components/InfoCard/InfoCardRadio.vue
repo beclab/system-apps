@@ -1,5 +1,5 @@
 <template>
-	<div class="row flex-gap-lg">
+	<MyGridLayout col-width="168px" gap="lg">
 		<div v-for="(item, index) in list" :key="item.name" @click="routeTo(item)">
 			<InfoCardItem
 				:active="index === active"
@@ -13,7 +13,7 @@
 				:loading="loading"
 			></InfoCardItem>
 		</div>
-	</div>
+	</MyGridLayout>
 </template>
 
 <script setup lang="ts">
@@ -21,6 +21,7 @@ import { ref, toRef, toRefs } from 'vue';
 import InfoCardItem from './InfoCardItem.vue';
 import { InfoCardItemProps } from './InfoCardItem.vue';
 import { useRouter } from 'vue-router';
+import MyGridLayout from '@packages/ui/src/components/MyGridLayout.vue';
 const router = useRouter();
 export interface InfoCardRadioProps {
 	list?: Array<InfoCardItemProps>;

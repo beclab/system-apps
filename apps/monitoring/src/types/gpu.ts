@@ -4,7 +4,7 @@ export interface GraphicsListParams {
 		type?: string;
 		uid?: boolean;
 	};
-	pageRequest: {
+	pageRequest?: {
 		pageSize: number;
 		pageNo: number;
 		sort: 'ASC' | 'DESC';

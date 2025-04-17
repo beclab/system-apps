@@ -1,7 +1,13 @@
 <template>
-	<FullPageWithBack :title="$t('PHYSICAL_RESOURCE_MONTORING')">
+	<FullPageWithBack :title="$t('GPU.GRAPHICS_MANAGEMENT_DETAILS')">
+		<template #extra>
+			<DatePicker v-model="times"></DatePicker>
+		</template>
 		<div class="column flex-gap-xl">
 			<MyCard>
+				<div class="text-h6 text-ink-1 q-pb-xl">
+					{{ $t('GPU.DETAILS_INFORMATION') }}
+				</div>
 				<div class="row q-col-gutter-xl">
 					<GPUDetailList :data="details" :columns="columns">
 						<template #field-health="{ data }">
@@ -41,7 +47,6 @@
 							</div>
 						</div>
 					</div>
-
 					<div v-for="(item, index) in lineTools" :key="index">
 						<MyGaugeChart
 							:data="{
@@ -57,7 +62,13 @@
 		<div class="q-mt-xl">
 			<MyGridLayout col-width="540px" gap="xl">
 				<MyCard v-for="item in trendList" :key="item.title">
-					<MylineChart :data="item" style="height: 234px"></MylineChart>
+					<MylineChart
+						:data="item"
+						:splitNumberY="4"
+						:loading="item.loading"
+						style="height: 234px"
+					>
+					</MylineChart>
 				</MyCard>
 			</MyGridLayout>
 		</div>
@@ -83,6 +94,7 @@ import MyGaugeChart from 'src/components/Charts/MyGaugeChart.vue';
 import MylineChart from '@packages/ui/src/components/Charts/MylineChart.vue';
 import GPUDetailList from './GPUDetailList.vue';
 import GPUStatus from 'src/pages/Overview2/GPU/GPUStatus.vue';
+import DatePicker from './DatePicker.vue';
 
 const end = new Date();
 const start = new Date();
@@ -149,7 +161,8 @@ const gaugeConfig = useInstantVector(
 			total: 0,
 			used: 0,
 			unit: ' ',
-			data: []
+			data: [],
+			loading: false
 		},
 		{
 			title: '显存分配率',
@@ -163,7 +176,8 @@ const gaugeConfig = useInstantVector(
 			total: 0,
 			used: 0,
 			unit: 'GiB',
-			data: []
+			data: [],
+			loading: false
 		},
 		{
 			title: '算力使用率',
@@ -175,7 +189,8 @@ const gaugeConfig = useInstantVector(
 			total: 100,
 			used: 0,
 			unit: ' ',
-			data: []
+			data: [],
+			loading: false
 		},
 		{
 			title: '显存使用率',
@@ -189,7 +204,8 @@ const gaugeConfig = useInstantVector(
 			total: 0,
 			used: 0,
 			unit: 'GiB',
-			data: []
+			data: [],
+			loading: false
 		}
 	],
 	(query) => query.replaceAll('$deviceuuid', route.params.uuid),
@@ -201,19 +217,22 @@ const trendList = computed(() => [
 		title: '资源分配趋势',
 		unit: '%',
 		legend: ['core', 'memory'],
-		data: [gaugeConfig.value[0].data, gaugeConfig.value[1].data]
+		data: [gaugeConfig.value[0].data, gaugeConfig.value[1].data],
+		loading: gaugeConfig.value[0].loading || gaugeConfig.value[1].loading
 	},
 	{
 		title: '资源使用趋势',
 		unit: '%',
 		legend: ['core', 'memory'],
-		data: [gaugeConfig.value[2].data, gaugeConfig.value[3].data]
+		data: [gaugeConfig.value[2].data, gaugeConfig.value[3].data],
+		loading: gaugeConfig.value[2].loading || gaugeConfig.value[3].loading
 	},
 	...lineTools.value.map((item) => ({
 		title: item.title,
 		unit: item.unit,
 		legend: [item.title],
-		data: item.data
+		data: item.data,
+		loading: item.loading
 	}))
 ]);
 
@@ -227,7 +246,8 @@ const lineTools = ref([
 		gaugeUnit: 'W',
 		percent: 0,
 		total: 0,
-		hideInfo: true
+		hideInfo: true,
+		loading: false
 	},
 	{
 		title: 'GPU 温度',
@@ -238,12 +258,15 @@ const lineTools = ref([
 		gaugeUnit: '℃',
 		percent: 0,
 		total: 0,
-		hideInfo: true
+		hideInfo: true,
+		loading: false
 	}
 ]);
 
 const fetchLineData = async () => {
 	lineTools.value.map((item, index) => {
+		lineTools.value[index].loading = true;
+
 		getRangeVector({
 			range: {
 				start: timeParse(times.value[0]),
@@ -251,15 +274,22 @@ const fetchLineData = async () => {
 				step: '1m'
 			},
 			query: item.query.replaceAll('$deviceuuid', route.params.uuid as string)
-		}).then((res) => {
-			const { device_no, driver_version } = res.data.data[0].metric;
-			if (device_no && driver_version) {
-				detail2.value = { ...detail2.value, device_no, driver_version };
-			}
-			const data = res.data.data[0]?.values || [];
-			const list = data.map((item) => [item.timestamp, item.value]);
-			lineTools.value[index].data = [list];
-		});
+		})
+			.then((res) => {
+				const { device_no, driver_version } = res.data.data[0].metric;
+				if (device_no && driver_version) {
+					detail2.value = { ...detail2.value, device_no, driver_version };
+				}
+				const data = res.data.data[0]?.values || [];
+				const list = data.map((item) => [item.timestamp, item.value]);
+				lineTools.value[index].data = [list];
+			})
+			.finally(() => {
+				lineTools.value[index].loading = false;
+			})
+			.catch(() => {
+				lineTools.value[index].loading = false;
+			});
 
 		getInstantVector({
 			query: item.query.replaceAll('$deviceuuid', route.params.uuid as string)

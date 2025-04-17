@@ -27,7 +27,6 @@ export interface LineProps {
 	splitNumberY?: number;
 	loading?: boolean;
 	theme: 'theme1' | 'theme2';
-	lineWidth?: number;
 }
 </script>
 <script lang="ts" setup>
@@ -95,8 +94,7 @@ const props = withDefaults(defineProps<LineProps>(), {
 	xAxisLabel: true,
 	unit: '',
 	legend: [],
-	theme: 'theme1',
-	lineWidth: 3
+	theme: 'theme1'
 });
 console.log('teataaa', props.theme);
 const theme_config = computed(() => {
@@ -227,7 +225,7 @@ const option = computed(() => {
 			symbol: 'none',
 			clip: false,
 			lineStyle: {
-				width: props.lineWidth
+				width: 3
 			},
 			data: item.map((item) => item[1]),
 			areaStyle: {

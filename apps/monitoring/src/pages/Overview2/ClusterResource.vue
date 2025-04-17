@@ -18,7 +18,9 @@ import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
 import { useResourcesStore } from 'src/stores/Resource';
 import gpuImg from 'src/assets/gpu.svg';
+import gpuImgDark from 'src/assets/gpu-dark.svg';
 import networkImg from 'src/assets/network.svg';
+import networkImgDark from 'src/assets/network-dark.svg';
 import { ROUTE_NAME } from 'src/router/const';
 const resourcesStore = useResourcesStore();
 
@@ -39,13 +41,11 @@ const listchange = (data: InfoCardItemProps, index: number) => {
 
 const defaultOptions: InfoCardItemProps[] = [
 	{
-		used: '20',
-		total: '100',
 		name: t('GPU.GPU'),
 		active: false,
 		unitType: '',
 		unit: '',
-		img: gpuImg,
+		img: $q.dark.isActive ? gpuImgDark : gpuImg,
 		img_active: '',
 		loading: false,
 		route: {
@@ -53,13 +53,13 @@ const defaultOptions: InfoCardItemProps[] = [
 		}
 	},
 	{
-		used: '87',
-		total: '100',
+		used: '0',
+		total: '0',
 		name: t('GPU.NETWORK'),
 		active: false,
 		unitType: '',
 		unit: '',
-		img: networkImg,
+		img: $q.dark.isActive ? networkImgDark : networkImg,
 		img_active: '',
 		loading: false,
 		route: {

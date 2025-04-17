@@ -2,12 +2,12 @@
 	<QTableStyle2 sticky-first sticky-last>
 		<q-table
 			style="width: 100%"
-			:rows="list"
+			:rows="GpuStore.taskList"
 			:columns="columns"
 			row-key="uuid"
 			:loading="loading"
 			v-model:pagination="pagination"
-			@request="fetchData"
+			@request="() => fetchData()"
 			flat
 			class="my"
 		>
@@ -25,12 +25,15 @@
 
 			<template #body-cell-deviceIds="props">
 				<q-td :props="props">
-					<q-chip dense square color="primary" text-color="white">
+					<div
+						class="row inline items-center q-py-xs q-px-md text-light-blue-default bg-light-blue-alpha"
+						style="border-radius: 4px"
+					>
 						{{ $t('GPU.V_GPU_COUNT', { count: props.row.deviceIds.length }) }}
 						<q-tooltip>
 							<div v-for="id in props.row.deviceIds" :key="id">{{ id }}</div>
 						</q-tooltip>
-					</q-chip>
+					</div>
 				</q-td>
 			</template>
 
@@ -49,7 +52,7 @@
 				<q-td :props="props">
 					<span
 						style="width: 68px"
-						class="text-right"
+						class="text-right text-body2 text-light-blue-default cursor-pointer"
 						@click="routeTo(props.row)"
 						>{{ $t('VIEW_DETAIL') }}</span
 					>
@@ -67,7 +70,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { TaskItem, TaskListParams } from 'src/types/gpu';
+import { GraphicsListParams, TaskItem, TaskListParams } from 'src/types/gpu';
 import { getTaskList } from 'src/network/gpu';
 import QTableStyle2 from '@packages/ui/src/components/QTableStyle2.vue';
 import Empty from '@packages/ui/src/components/Empty.vue';
@@ -76,9 +79,10 @@ import { useRouter } from 'vue-router';
 import { ROUTE_NAME } from 'src/router/const';
 import { useI18n } from 'vue-i18n';
 import TaskStatus from './TaskStatus.vue';
+import { useGpuStore } from 'src/stores/GpuStore';
+const GpuStore = useGpuStore();
 const router = useRouter();
 const { t } = useI18n();
-const list = ref<TaskItem[]>([]);
 const loading = ref(false);
 const uid_search = ref();
 const pagination = ref({
@@ -89,7 +93,7 @@ const pagination = ref({
 	rowsNumber: 0
 });
 
-const columns = [
+const columns: any = [
 	{
 		name: 'name',
 		label: t('GPU.TASK_NAME'),
@@ -143,7 +147,6 @@ const columns = [
 const fetchData = async (filters: TaskListParams['filters'] = {}) => {
 	loading.value = true;
 	try {
-		const uid = uid_search.value;
 		const params: TaskListParams = {
 			filters,
 			pageRequest: {
@@ -155,8 +158,9 @@ const fetchData = async (filters: TaskListParams['filters'] = {}) => {
 		};
 
 		const res = await getTaskList(params);
-		list.value = res.data.items;
-		pagination.value.rowsNumber = list.value.length;
+		const items = res.data.items;
+		GpuStore.updateTaskList(items);
+		pagination.value.rowsNumber = items.length;
 	} finally {
 		loading.value = false;
 	}
@@ -174,6 +178,7 @@ const routeTo = (data: TaskItem) => {
 
 onMounted(() => {
 	fetchData();
+	GpuStore.getDeviceIds();
 });
 
 defineExpose({ search: fetchData });

@@ -1,14 +1,23 @@
 <template>
 	<div class="my-linechart2-container relative-position">
-		<q-skeleton v-if="loading" style="height: 100%" />
-		<v-chart
-			v-else
-			class="chart"
-			:option="option"
-			:updateOptions="updateOptions"
-			:theme="theme_config"
-			autoresize
-		/>
+		<div
+			class="row justify-between items-center title-container"
+			:style="{ marginBottom: legendShow ? '14px' : '20px' }"
+		>
+			<span class="text-h6 text-ink-1">{{ title }}</span>
+			<slot name="extra"></slot>
+		</div>
+		<div style="flex: 1">
+			<q-skeleton v-if="loading" style="height: 100%" />
+			<v-chart
+				v-else
+				class="chart"
+				:option="option"
+				:updateOptions="updateOptions"
+				:theme="theme_config"
+				autoresize
+			/>
+		</div>
 	</div>
 </template>
 <script lang="ts">
@@ -27,7 +36,6 @@ export interface LineProps {
 	splitNumberY?: number;
 	loading?: boolean;
 	theme: 'theme1' | 'theme2';
-	lineWidth?: number;
 }
 </script>
 <script lang="ts" setup>
@@ -95,8 +103,7 @@ const props = withDefaults(defineProps<LineProps>(), {
 	xAxisLabel: true,
 	unit: '',
 	legend: [],
-	theme: 'theme1',
-	lineWidth: 3
+	theme: 'theme1'
 });
 console.log('teataaa', props.theme);
 const theme_config = computed(() => {
@@ -126,7 +133,7 @@ const legend = isArray(props.data.legend)
 	? props.data.legend.map(capitalize)
 	: [];
 const legendShow = isArray(props.data?.legend) && props.data?.legend.length > 1;
-const gridTop = title.value || legendShow ? 50 : 6;
+const gridTop = legendShow ? 42 : 6;
 const gridBottom = props.xAxisLabel ? 0 : 4;
 
 const updateOptions = {
@@ -141,6 +148,7 @@ const option = computed(() => {
 	const yAxisLabelMargin = (dataMax.toString().length + 1) * 7 + 16;
 	return {
 		title: {
+			show: false,
 			text: title.value,
 			left: 0,
 			padding: 0,
@@ -153,13 +161,13 @@ const option = computed(() => {
 		grid: {
 			top: gridTop,
 			left: yAxisLabelMargin,
-			right: 12,
+			right: 0,
 			bottom: 32,
 			containLabel: false
 		},
 		legend: {
 			show: legendShow,
-			left: 'right',
+			left: 'left',
 			padding: 0,
 			icon: 'circle',
 			itemWidth: 8,
@@ -227,7 +235,7 @@ const option = computed(() => {
 			symbol: 'none',
 			clip: false,
 			lineStyle: {
-				width: props.lineWidth
+				width: 3
 			},
 			data: item.map((item) => item[1]),
 			areaStyle: {
@@ -249,7 +257,12 @@ const option = computed(() => {
 
 <style lang="scss" scoped>
 .my-linechart2-container {
+	display: flex;
+	flex-direction: column;
 	height: 132px;
+	.title-container {
+		margin-bottom: 14px;
+	}
 	.chart {
 		height: 100%;
 	}
