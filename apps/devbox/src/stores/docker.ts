@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
 import { i18n } from '../boot/i18n';
+import { CreateWithOneImageConfig } from '@/types/core';
 import { BtNotify, NotifyDefinedType } from '@bytetrade/ui';
 import { useDevelopingApps } from './app';
 import {
 	CreateWithOneDockerConfig,
 	APP_STATUS,
-	FileItem,
 	AppState,
 	APP_INSTALL_STATE
 } from '@/types/core';
@@ -15,9 +15,6 @@ const appStore = useDevelopingApps();
 
 export type DockerStore = {
 	appStatus: APP_STATUS | undefined;
-	cached: Record<string, FileItem[]>;
-	currentFileData: FileItem;
-	configEditFlag: boolean;
 	appInstallState: APP_INSTALL_STATE | '';
 };
 
@@ -25,29 +22,32 @@ export const useDockerStore = defineStore('docker', {
 	state() {
 		return {
 			appStatus: undefined,
-			cached: {},
-			currentFileData: {},
-			configEditFlag: false,
 			appInstallState: ''
 		} as DockerStore;
 	},
 	actions: {
 		async create_name(name: string): Promise<void> {
 			await axios.post(appStore.url + '/api/command/apps/create', {
-				name
+				title: name
 			});
 		},
 
 		async config_app(config: CreateWithOneDockerConfig): Promise<void> {
 			await axios.post(
 				appStore.url + `/api/command/apps/${config.name}/create`,
-				config
+				{
+					...config,
+					title: appStore.current_app.title
+				}
 			);
 		},
 
 		async create_app(name: string): Promise<void> {
 			await axios.post(
-				appStore.url + `/api/command/apps/${name}/example/create`
+				appStore.url + `/api/command/apps/${name}/example/create`,
+				{
+					title: appStore.current_app.title
+				}
 			);
 		},
 
@@ -60,19 +60,11 @@ export const useDockerStore = defineStore('docker', {
 		},
 
 		async install_app(name: string): Promise<{ namespace: string }> {
-			const installRes = await this.get_app_install_status(name);
-
-			if (installRes.name) {
-				return BtNotify.show({
-					type: NotifyDefinedType.WARNING,
-					message: i18n.global.t('task_progress')
-				});
-			}
-
 			const res: { namespace: string } = await axios.post(
 				appStore.url + '/api/command/install-app',
 				{
-					name
+					name,
+					title: appStore.current_app.title
 				}
 			);
 			return res;
@@ -96,57 +88,6 @@ export const useDockerStore = defineStore('docker', {
 			});
 		},
 
-		async getFile(path: string): Promise<void> {
-			if (path in this.cached) {
-				this.currentFileData = this.cached[path];
-			} else {
-				this.currentFileData = [];
-			}
-
-			const res: FileItem = await axios.get(
-				appStore.url + '/api/files/' + path
-			);
-
-			this.currentFileData = res;
-			this.cached[path] = res;
-		},
-
-		async putFile(path: string): Promise<void> {
-			await axios.put(appStore.url + '/api/files/' + path);
-
-			BtNotify.show({
-				type: NotifyDefinedType.SUCCESS,
-				message: i18n.global.t('message.create_file_success')
-			});
-		},
-
-		async deleteFile(path: string): Promise<void> {
-			await axios.delete(appStore.url + '/api/files/' + path);
-
-			BtNotify.show({
-				type: NotifyDefinedType.SUCCESS,
-				message: i18n.global.t('message.delete_file_success')
-			});
-		},
-
-		async createFolder(path: string): Promise<void> {
-			await axios.post(appStore.url + '/api/files/' + path + '?file_type=dir');
-
-			BtNotify.show({
-				type: NotifyDefinedType.SUCCESS,
-				message: i18n.global.t('message.create_folder_success')
-			});
-		},
-
-		async pathFile(path: string, params: any, headers: any): Promise<void> {
-			await axios.patch(appStore.url + '/api/files/' + path, params, headers);
-
-			BtNotify.show({
-				type: NotifyDefinedType.SUCCESS,
-				message: i18n.global.t('message.rename_folder_success')
-			});
-		},
-
 		async get_app_install_state(name: string): Promise<AppState> {
 			const res: AppState = await axios.get(
 				appStore.url + `/api/app-state?app=${name}`
@@ -155,12 +96,19 @@ export const useDockerStore = defineStore('docker', {
 			return res;
 		},
 
-		async get_app_install_status(name: string): Promise<AppState> {
-			const res: AppState = await axios.get(
-				appStore.url + `/api/app-status?app=${name}`
+		async create_app_code_in_olares(
+			item: CreateWithOneImageConfig
+		): Promise<void> {
+			await axios.post(
+				appStore.url + `/api/command/apps/${item.name}/vscode/create`,
+				{
+					devEnv: item.devEnv,
+					requiredCpu: item.requiredCpu,
+					requiredMemory: item.requiredMemory,
+					requiredDisk: item.requiredDisk,
+					title: appStore.current_app.title
+				}
 			);
-
-			return res;
 		}
 	}
 });

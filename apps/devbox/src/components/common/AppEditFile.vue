@@ -2,11 +2,11 @@
 	<div class="editor">
 		<div class="files-right-header row items-center justify-between">
 			<div class="row items-center justify-start">
-				<img
+				<!-- <img
 					class="q-mr-sm"
 					src="../../assets/icon-txt.svg"
 					style="width: 12px"
-				/>
+				/> -->
 				<span>{{ fileInfo.name }}</span>
 				<span
 					class="statusIcon q-ml-sm"
@@ -15,11 +15,12 @@
 					}"
 				></span>
 			</div>
-			<div>
+			<div class="save-icon row items-center justify-center">
 				<q-icon
-					class="q-ml-md cursor-pointer"
+					class="cursor-pointer"
 					name="sym_r_save"
 					size="20px"
+					color="ink-2"
 					@click="onSaveFile"
 				/>
 			</div>
@@ -27,11 +28,12 @@
 		<div class="files-right-content">
 			<vue-monaco-editor
 				class="files-monaco"
+				:tabSize="4"
 				:theme="$q.dark.isActive ? 'vs-dark' : 'vs'"
 				:language="fileInfo.lang"
+				:contentHeight="10"
 				@change="changeCode"
 				:value="fileInfo.code"
-				@mount="editorMount"
 			/>
 		</div>
 	</div>
@@ -63,12 +65,10 @@ const onSaveFile = () => {
 };
 
 const changeCode = (value) => {
-	console.log('changeCode', value);
 	emits('changeCode', value);
 };
 
 const editorMount = (value) => {
-	console.log('editorMount', value);
 	emits('editorMount');
 };
 </script>
@@ -76,8 +76,8 @@ const editorMount = (value) => {
 <style lang="scss" scoped>
 .files-right-header {
 	width: 100%;
-	height: 56px;
-	line-height: 56px;
+	height: 48px;
+	line-height: 48px;
 	border-bottom: 1px solid $separator;
 	background: $background-1;
 	.statusIcon {
@@ -86,24 +86,27 @@ const editorMount = (value) => {
 		border-radius: 3px;
 		display: inline-block;
 	}
+
+	.save-icon {
+		width: 32px;
+	}
 }
 .files-right-content {
 	height: calc(100% - 56px);
-	padding: 12px;
+	padding: 12px 0;
 	background: $background-1;
 
 	.files-monaco {
 		height: 100%;
 		border-radius: 12px;
-		overflow: hidden;
 	}
 }
 </style>
 
 <style lang="scss" scoped>
 .editor {
+	width: calc(100% - 40px);
 	height: 100%;
-	padding: 0 20px;
 	background: $background-1;
 }
 .my-code-link {
@@ -128,6 +131,9 @@ const editorMount = (value) => {
 }
 .monaco-editor .margin {
 	background-color: $background-2 !important;
+	::-webkit-scrollbar {
+		display: none !important;
+	}
 }
 
 .lines-content.monaco-editor-background {
@@ -148,6 +154,35 @@ const editorMount = (value) => {
 	background-color: $ink-1 !important;
 	caret-color: red !important;
 }
+
+::v-deep(.monaco-editor .line-numbers) {
+	width: 22px !important;
+
+	color: $ink-3 !important;
+	&.active-line-number {
+		color: $ink-2 !important;
+	}
+}
+
+// ::v-deep(.monaco-editor .margin) {
+// 	width: 30px !important;
+// }
+// ::v-deep(.monaco-editor .margin-view-overlays) {
+// 	width: 30px !important;
+// }
+
+::v-deep(.monaco-scrollable-element) {
+	width: calc(100% - 32px) !important;
+}
+
+::v-deep(.monaco-editor) {
+	outline-width: 0 !important;
+}
+
+::v-deep(.monaco-editor .monaco-scrollable-element) {
+	left: 42px !important;
+}
+
 .monaco-editor .inputarea {
 	background-color: $ink-1 !important;
 	z-index: 1 !important;
@@ -155,11 +190,16 @@ const editorMount = (value) => {
 }
 
 .view-lines .view-line {
+	border: 4px solid red !important;
 	span {
 		color: $ink-1 !important;
 	}
 	.mtk1 {
 		color: $ink-1 !important;
 	}
+}
+
+::v-deep(.decorationsOverviewRuler) {
+	width: 0px !important;
 }
 </style>

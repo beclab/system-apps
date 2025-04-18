@@ -4,7 +4,7 @@
 			<div class="row items-center justify-start">
 				<div class="app row items-center justify-center">
 					<span class="q-ml-sm text-h6 text-ink-1">{{
-						store.current_app?.appName
+						store.current_app?.title || store.current_app?.appName
 					}}</span>
 				</div>
 			</div>
@@ -20,7 +20,7 @@
 					class="color"
 					:style="{ background: app_status_style[dockerStore.appStatus].color }"
 				></span>
-				<span class="text-capitalize q-mr-xs">
+				<span class="text-subtitle3 text-ink-2 q-mr-xs">
 					{{ t(`appStatus.${dockerStore.appStatus}`) }}
 				</span>
 			</div>
@@ -32,17 +32,35 @@
 			/>
 
 			<div
-				class="operate-btn q-mr-sm q-px-sm row items-center justify-center"
+				class="operate-btn q-mr-sm q-px-sm"
+				@click="openServerEditor"
+				v-if="
+					store.current_app.devEnv !== 'default' &&
+					dockerStore.appStatus === APP_STATUS.DEPLOYED
+				"
+			>
+				<img src="./../assets/vscode.svg" style="width: 14px; height: 14px" />
+				<span class="operate-btn-install">{{ t('vscode_server') }}</span>
+			</div>
+
+			<div
+				class="operate-btn q-mr-sm q-px-sm"
 				@click="onPreview"
-				v-if="dockerStore.appStatus === APP_STATUS.DEPLOYED"
+				v-if="
+					store.current_app.devEnv === 'default' &&
+					dockerStore.appStatus === APP_STATUS.DEPLOYED
+				"
 			>
 				<q-icon name="sym_r_preview" size="16px" />
 				<span class="operate-btn-install">{{ t('btn_preview') }}</span>
 			</div>
 
 			<div
-				class="operate-btn operate-disabled q-mr-sm q-px-sm row items-center justify-center"
-				v-if="dockerStore.appStatus === APP_STATUS.UNDEPLOY"
+				class="operate-btn operate-disabled q-mr-sm q-px-sm"
+				v-if="
+					store.current_app.devEnv === 'default' &&
+					dockerStore.appStatus === APP_STATUS.UNDEPLOY
+				"
 			>
 				<q-icon name="sym_r_preview" size="16px" />
 				<span class="operate-btn-install">{{ t('btn_preview') }}</span>
@@ -50,7 +68,6 @@
 
 			<div
 				v-if="
-					!installFlag &&
 					!controlFlag &&
 					dockerStore.appStatus &&
 					[
@@ -59,28 +76,21 @@
 						APP_STATUS.ABNORMAL
 					].includes(dockerStore.appStatus)
 				"
-				class="operate-btn q-mr-sm q-px-sm row items-center justify-center"
+				class="operate-btn q-mr-sm q-px-sm"
 				@click="onInstall"
 			>
-				<q-icon name="sym_r_box_edit" size="16px" />
-				<span class="operate-btn-install">{{ t('header_btn.apply') }}</span>
-			</div>
+				<q-icon
+					:name="installNeedless ? 'sym_r_low_priority' : 'sym_r_box_edit'"
+					size="16px"
+				/>
 
-			<div
-				v-if="
-					installFlag &&
-					!controlFlag &&
-					dockerStore.appStatus &&
-					[
-						APP_STATUS.DEPLOYED,
-						APP_STATUS.UNDEPLOY,
-						APP_STATUS.ABNORMAL
-					].includes(dockerStore.appStatus)
-				"
-				class="operate-btn operate-disabled q-mr-sm q-px-sm row items-center justify-center"
-			>
-				<q-icon name="sym_r_box_edit" size="16px" />
-				<span class="operate-btn-install">{{ t('header_btn.apply') }}</span>
+				<span v-if="installNeedless" class="operate-btn-install">{{
+					t('cancel')
+				}}</span>
+
+				<span v-else class="operate-btn-install">{{
+					t('header_btn.apply')
+				}}</span>
 			</div>
 
 			<div
@@ -91,7 +101,7 @@
 						dockerStore.appStatus
 					)
 				"
-				class="operate-btn operate-disabled q-mr-sm q-px-sm row items-center justify-center"
+				class="operate-btn operate-disabled q-mr-sm q-px-sm"
 			>
 				<q-icon name="sym_r_box_edit" size="16px" />
 				<span class="operate-btn-install">{{ t('header_btn.apply') }}</span>
@@ -99,7 +109,7 @@
 
 			<div
 				v-if="controlFlag"
-				class="operate-btn q-mr-sm q-px-sm row items-center justify-center"
+				class="operate-btn q-mr-sm q-px-sm"
 				@click="openFiles"
 			>
 				<q-icon name="sym_r_box_edit" size="16px" />
@@ -115,9 +125,20 @@
 			/>
 
 			<div class="operate-more">
-				<q-icon name="sym_r_more_vert" color="ink-1" />
+				<q-icon name="sym_r_more_vert" color="ink-2" />
 				<q-menu class="rounded-borders" flat>
 					<q-list dense padding>
+						<q-item
+							class="row items-center justify-start text-ink-2"
+							clickable
+							v-ripple
+							@click="openEditor"
+							v-close-popup
+						>
+							<q-icon class="q-mr-xs" name="sym_r_upload" size="20px" />
+							{{ t('vscode_desktop') }}
+						</q-item>
+
 						<q-item
 							class="row items-center justify-start text-ink-2"
 							clickable
@@ -172,7 +193,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onUnmounted, ref, watch } from 'vue';
+import { onUnmounted, ref, watch, computed } from 'vue';
 import axios from 'axios';
 import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
@@ -183,6 +204,7 @@ import { BtNotify, NotifyDefinedType } from '@bytetrade/ui';
 
 import { useDevelopingApps } from '../stores/app';
 import { useDockerStore } from '../stores/docker';
+import { useFileStore } from '../stores/file';
 import { useMenuStore } from '../stores/menu';
 import { pushToSystem } from './../utils/utils';
 
@@ -197,16 +219,37 @@ const route = useRoute();
 const router = useRouter();
 const store = useDevelopingApps();
 const dockerStore = useDockerStore();
+const fileStore = useFileStore();
 const menuStore = useMenuStore();
 const $q = useQuasar();
 
 const uploadInput = ref();
 const downloading = ref(false);
-const controlFlag = ref(false);
 
 const timer = ref();
 const appStatePending = ref(false);
-const installFlag = ref(false);
+
+const controlFlag = computed(() => {
+	const flag = Object.values({ ...componentName, ...ROUTE_NAME }).find(
+		(item) => item === route.name
+	);
+	if (flag) {
+		return true;
+	} else {
+		return false;
+	}
+});
+
+const installNeedless = computed(() => {
+	if (
+		fileStore.filesEditStorage.length <= 0 &&
+		dockerStore.appStatus === APP_STATUS.DEPLOYED
+	) {
+		return true;
+	} else {
+		return false;
+	}
+});
 
 async function onPreview() {
 	if (window.top == window) {
@@ -220,19 +263,21 @@ async function onPreview() {
 }
 
 async function onInstall() {
-	if (
-		!dockerStore.configEditFlag &&
-		dockerStore.appStatus === APP_STATUS.DEPLOYED
-	) {
+	if (installNeedless.value) {
 		return openSystem();
 	}
 
-	installFlag.value = true;
-	BtNotify.show({
-		type: NotifyDefinedType.LOADING,
-		closeTimeout: true,
-		message: t('appStatus.deploying'),
-		notify_id: route.params.id
+	if (fileStore.isEditing) {
+		if (controlFlag.value) {
+			//
+		} else {
+			const current_path = route.path.slice(5);
+			await fileStore.saveFile(current_path);
+		}
+	}
+
+	$q.loading.show({
+		message: t('installing')
 	});
 
 	try {
@@ -241,23 +286,24 @@ async function onInstall() {
 			try {
 				const res = await dockerStore.install_app(store.current_app.appName);
 				namespace = res.namespace;
+				dockerStore.appStatus = null;
+				emits('updateNotify', null);
 				await getAppState();
 				await openSystem(namespace);
 			} catch (error) {
+				dockerStore.appStatus = null;
 				await getAppState();
 			}
 		}
-		BtNotify.hide({ notify_id: route.params.id });
-
-		installFlag.value = false;
+		$q.loading.hide();
+		fileStore.filesEditStorage = [];
 	} catch (error) {
-		BtNotify.hide({ notify_id: route.params.id });
-		installFlag.value = false;
+		$q.loading.hide();
 	}
 }
 
 async function openSystem(value?: string) {
-	pushToSystem(route, router, value);
+	pushToSystem(route.params.id, router, value);
 	dockerStore.appInstallState = null;
 }
 
@@ -272,7 +318,7 @@ function onUninstall() {
 		componentProps: {
 			title: t('btn_uninstall'),
 			message: t('message.uninstall_app', {
-				appName: store.current_app?.appName
+				appName: store.current_app?.title || store.current_app?.appName
 			})
 		}
 	}).onOk(async () => {
@@ -293,7 +339,9 @@ async function onDeleteApplication() {
 		component: DialogConfirm,
 		componentProps: {
 			title: t('btn_delete'),
-			message: t('message.delete_app')
+			message: t('message.delete_app', {
+				appName: store.current_app?.title || store.current_app?.appName
+			})
 		}
 	}).onOk(async () => {
 		$q.loading.show();
@@ -371,14 +419,7 @@ async function refreshApplication() {
 watch(
 	() => route.path,
 	() => {
-		const flag = Object.values({ ...componentName, ...ROUTE_NAME }).find(
-			(item) => item === route.name
-		);
-		if (flag) {
-			controlFlag.value = true;
-		} else {
-			controlFlag.value = false;
-		}
+		refreshApplication();
 	},
 	{
 		immediate: true
@@ -389,11 +430,13 @@ watch(
 	() => route.params.id,
 	async (newVal) => {
 		if (newVal) {
-			await refreshApplication();
 			await updateAppState();
 
-			if (dockerStore.appStatus === APP_STATUS.DEPLOYED) {
-				openSystem();
+			console.log('dockerStore.appStatus', dockerStore.appStatus);
+
+			if (dockerStore.appStatus === APP_STATUS.UNDEPLOY) {
+				const path = route.path.split('/').slice(0, 3).join('/');
+				router.push({ path });
 			}
 
 			emits('updateNotify', null);
@@ -475,6 +518,16 @@ const getAppInstallState = async () => {
 	}
 };
 
+const openServerEditor = () => {
+	window.open('//' + store.current_app.entrance + '/proxy/5000/', '_blank');
+};
+
+const openEditor = () => {
+	const a = document.createElement('a');
+	a.href = 'vscode://';
+	a.click();
+};
+
 onUnmounted(() => {
 	clearInterval(timer.value);
 });
@@ -530,13 +583,15 @@ onUnmounted(() => {
 
 	.operate-btn {
 		height: 32px;
-		line-height: 32px;
+		line-height: 30px;
 		text-align: center;
-		display: inline-block;
 		border-radius: 8px;
 		border: 1px solid $btn-stroke;
 		overflow: hidden;
-		color: $ink-1;
+		color: $ink-2;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 
 		&:hover {
 			background: $background-hover;
@@ -548,15 +603,16 @@ onUnmounted(() => {
 			animation: rotate 1s linear infinite;
 		}
 		.operate-btn-install {
-			width: 100%;
-			height: 100%;
-			line-height: 32px;
-			padding: 0 8px;
-			color: $ink-1;
+			display: inline-block;
+			padding-left: 4px;
+			color: $ink-2;
 			font-size: 12px;
-			line-height: 100%;
 			text-align: center;
 			cursor: pointer;
+			font-weight: 400;
+			line-height: 16px;
+			letter-spacing: 0%;
+			vertical-align: middle;
 		}
 	}
 

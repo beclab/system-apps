@@ -62,20 +62,26 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
 import { useDevelopingApps } from '../stores/app';
 import { useMenuStore } from '../stores/menu';
+import { BtNotify, NotifyDefinedType } from '@bytetrade/ui';
+import { pushToSystem } from './../utils/utils';
 
 import DocumentLink from '../components/common/DocumentLink.vue';
 import CreateAppName from '../components/dialog/CreateAppName.vue';
+import { useDockerStore } from '@/stores/docker';
 
 const { t } = useI18n();
 const $q = useQuasar();
 const router = useRouter();
+const route = useRoute();
 const store = useDevelopingApps();
 const menuStore = useMenuStore();
+const dockerStore = useDockerStore();
+
 const uploadInput = ref();
 
 onMounted(async () => {
@@ -98,20 +104,49 @@ async function uploadFile(event: any) {
 	if (file) {
 		const { status, message, appId } = await upload_dev_file(file);
 		if (status) {
-			$q.notify(message);
+			BtNotify.show({
+				type: NotifyDefinedType.SUCCESS,
+				message: message,
+				notify_id: appId
+			});
 			if (appId) {
 				await store.getApps();
-				await router.push({ path: '/app/' + appId });
 				await menuStore.updateApplications();
-				menuStore.currentItem = '/app/' + appId;
+
+				const current_app_name = store.apps.find(
+					(app) => app.id === appId
+				).appName;
+				$q.loading.show({
+					message: t('installing')
+				});
+
+				try {
+					const res = await dockerStore.install_app(current_app_name);
+					const namespace = res.namespace;
+					$q.loading.hide();
+
+					menuStore.currentItem = '/app/' + current_app_name;
+					updateStatus(current_app_name, namespace);
+				} catch (error) {
+					$q.loading.hide();
+				}
 			}
 		} else {
-			$q.notify(message);
+			BtNotify.show({
+				type: NotifyDefinedType.FAILED,
+				message: message,
+				notify_id: appId
+			});
 		}
 	} else {
 		console.log('file selected failure');
 	}
 }
+
+const updateStatus = async (app_name: string, namespace: string) => {
+	await pushToSystem(app_name, router, namespace);
+	await dockerStore.get_app_status(app_name);
+};
 
 async function upload_dev_file(
 	file: any

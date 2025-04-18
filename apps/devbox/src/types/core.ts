@@ -8,32 +8,15 @@ export interface ApplicationInfo {
 	chart: string;
 	entrance: string;
 	ide: string;
+	podContainers: string;
+	state: string;
+	title: string;
+	description: string;
 }
 
 export interface OpenApplicationConfig {
 	appid: string;
 	path: string;
-}
-
-export enum ContainerState {
-	Running,
-	Waiting,
-	Terminated
-}
-
-export interface Container {
-	image?: string;
-	appId: number;
-	id: number;
-	devEnv: string;
-	createTime: string;
-	updateTime: string;
-	podSelector: string;
-	containerName: string;
-	appName: string;
-	state: ContainerState;
-	devContainerName: string;
-	icon: string;
 }
 
 export interface MenuLabelType {
@@ -54,7 +37,7 @@ export type FilesSelectType = {
 	label: string;
 	icon: string;
 	path: string;
-	expandable: string;
+	expandable: boolean;
 	selectable: boolean;
 	children: any;
 	isDir: boolean;
@@ -129,6 +112,14 @@ export interface CreateWithOneDockerConfig {
 	gpuVendor: VENDOR;
 	env: EnvType;
 	mounts: EnvType;
+}
+
+export interface CreateWithOneImageConfig {
+	name: string;
+	devEnv: string;
+	requiredCpu: string;
+	requiredMemory: string;
+	requiredDisk: string;
 }
 
 export interface VariableType {

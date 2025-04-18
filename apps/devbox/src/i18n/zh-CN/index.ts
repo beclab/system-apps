@@ -22,8 +22,9 @@ export default {
 	home_appname: '应用名称',
 	home_appname_hint: 'Olares 中的应用命名空间',
 	home_appname_rules_1: '请输入应用名称',
-	home_appname_rules_2: '必须以小写字母开头',
-	home_appname_rules_3: '仅允许小写字母（a-z）和数字（0-9）',
+	home_appname_rules_2: '必须以字母开头',
+	home_appname_rules_3:
+		'最多包含30个字符，且仅允许字母，数字，空格，（.）,（-）或者（_）',
 	home_apptype: '应用类型',
 	home_apptype_hint: '选择申请类型',
 	home_entrance_port: '主入口端口',
@@ -285,7 +286,7 @@ export default {
 		successfully: '成功',
 		upgrade_app: '确定更新App吗？',
 		uninstall_app: '确定卸载 {appName} 吗？',
-		delete_app: '确定删除App吗？'
+		delete_app: '确定删除 {appName} 吗？'
 	},
 
 	docker: {
@@ -309,7 +310,8 @@ export default {
 		host_path: '主机路径',
 		container_path: '容器路径',
 		add_env_variables: '添加环境变量',
-		add_storage_volume: '添加存储卷'
+		add_storage_volume: '添加存储卷',
+		volume_size: '卷大小'
 	},
 
 	appStatus: {
@@ -343,5 +345,13 @@ export default {
 	container_path_repeat: '容器路径重复',
 	env_repeat: '已存在环境配置',
 	loading: '加载中',
-	task_progress: '任务执行中'
+	task_progress: '任务执行中',
+
+	image_create: '容器创建',
+	vscode_desktop: '本地编辑器',
+	vscode_server: '在线编辑器',
+	image_env: '请选择或输入开发环境',
+	image_volume: '请输入卷大小',
+	image_volume_rule: '卷大小大小必须为正整数',
+	installing: '资源创建中'
 };

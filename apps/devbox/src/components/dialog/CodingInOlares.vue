@@ -9,9 +9,7 @@
 	>
 		<div class="create-container">
 			<div class="row items-center justify-between create-header">
-				<span class="text-h6 text-ink-1">{{
-					t('docker.create_app_title')
-				}}</span>
+				<span class="text-h6 text-ink-1">{{ t('docker.coding') }}</span>
 				<q-btn
 					dense
 					flat
@@ -25,16 +23,10 @@
 			</div>
 			<div style="height: calc(100% - 164px)">
 				<BtScrollArea style="height: 100%; width: 100%">
-					<image-deployer
+					<create-container
 						ref="imageDeployerRef"
-						@update-container="updateContainer"
+						@update-image="updateImage"
 					/>
-					<instance-config
-						ref="instanceRef"
-						@update-instance="updateInstance"
-					/>
-					<environment-config @update-env="updateEnv" />
-					<mounts-address @update-mounts="updateMounts" />
 				</BtScrollArea>
 			</div>
 
@@ -52,21 +44,18 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive } from 'vue';
-import { useI18n } from 'vue-i18n';
+import { ref } from 'vue';
 import { useQuasar } from 'quasar';
+import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import { useDialogPluginComponent } from 'quasar';
 import { useDockerStore } from '../../stores/docker';
-import { CreateWithOneDockerConfig, VENDOR } from '@/types/core';
+import { CreateWithOneImageConfig } from '@/types/core';
 import { pushToSystem } from '../../utils/utils';
-import { useDevelopingApps } from '@/stores/app';
 
-import ImageDeployer from '../config/ImageDeployer.vue';
-import InstanceConfig from '../config/InstanceConfig.vue';
-import EnvironmentConfig from '../config/EnvironmentConfig.vue';
-import MountsAddress from '../config/MountsAddress.vue';
+import CreateContainer from '../config/CreateContainer.vue';
 import TerminusFormFooter from '../common/TerminusFormFooter.vue';
+import { useDevelopingApps } from '@/stores/app';
 
 const {
 	dialogRef: dialogCreateRef,
@@ -78,80 +67,54 @@ const $q = useQuasar();
 const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
-const dockerStore = useDockerStore();
 const apps = useDevelopingApps();
+const dockerStore = useDockerStore();
 
 const show = ref(true);
 const imageDeployerRef = ref();
-const instanceRef = ref();
 const loading = ref(false);
 
-const config = reactive<CreateWithOneDockerConfig>({
+const config = ref<CreateWithOneImageConfig>({
 	name: route.params.id as string,
-	container: {
-		image: '',
-		port: 80,
-		startCmd: '',
-		startCmdArgs: ''
-	},
+	devEnv: '',
 	requiredCpu: '',
-	limitedCpu: '',
 	requiredMemory: '',
-	limitedMemory: '',
-	requiredGpu: false,
-	needPg: false,
-	needRedis: false,
-	gpuVendor: VENDOR.NVIDIA,
-	env: {},
-	mounts: {}
+	requiredDisk: ''
 });
 
-const updateContainer = (value) => {
-	config.container = { ...value, port: Number(value.port) };
-};
+const updateImage = (value) => {
+	console.log('value', value);
+	console.log('config', config.value);
 
-const updateInstance = (value) => {
-	Object.assign(config, value);
-};
-
-const updateEnv = (value) => {
-	config.env = value;
-};
-
-const updateMounts = (value) => {
-	config.mounts = value;
+	config.value = { ...config.value, ...value };
 };
 
 const submit = async () => {
 	const imageValidate = imageDeployerRef.value.validate();
-	const instanceValidate = instanceRef.value.validate();
 
-	if (imageValidate && instanceValidate) {
+	if (imageValidate) {
 		try {
 			loading.value = true;
-			await dockerStore.config_app(config);
+			await dockerStore.create_app_code_in_olares(config.value);
 
 			$q.loading.show({
 				message: t('installing')
 			});
 
-			await dockerStore.install_app(config.name);
+			await dockerStore.install_app(config.value.name);
+			await dockerStore.get_app_status(route.params.id as string);
 			await apps.getApps();
-
-			await updateStatus();
+			$q.loading.hide();
+			loading.value = false;
+			pushToSystem(route.params.id, router);
 		} catch (error) {
-			await updateStatus();
+			$q.loading.hide();
+			loading.value = false;
+			pushToSystem(route.params.id, router);
 		}
 
 		onDialogOK();
 	}
-};
-
-const updateStatus = async () => {
-	$q.loading.hide();
-	pushToSystem(route.params.id, router);
-	await dockerStore.get_app_status(route.params.id as string);
-	loading.value = false;
 };
 </script>
 

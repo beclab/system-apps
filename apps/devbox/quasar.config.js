@@ -143,6 +143,7 @@ module.exports = configure(function (ctx) {
 		// Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-devServer
 		devServer: {
 			https: true,
+			host: process.env.PROXY_DOMAIN_HOST,
 			open: true, // opens browser window automatically,
 			proxy: {
 				'/api/command': {

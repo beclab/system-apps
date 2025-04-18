@@ -50,6 +50,13 @@ export default boot(({ app }) => {
 			}
 
 			return res.data;
+		},
+		(error) => {
+			BtNotify.show({
+				type: NotifyDefinedType.FAILED,
+				message: error.message
+			});
+			throw Error('Network error, please try again later');
 		}
 	);
 });

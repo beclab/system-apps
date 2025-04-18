@@ -4,9 +4,10 @@ export const ruleConfig = {
 	appNameRules: {
 		rules: [
 			(val) => (val && val.length > 0) || i18n.global.t('home_appname_rules_1'),
-			(val) => /^[a-z]/.test(val) || i18n.global.t('home_appname_rules_2'),
+			(val) => /^[A-Za-z].*/.test(val) || i18n.global.t('home_appname_rules_2'),
 			(val) =>
-				/^[a-z][a-z0-9]*$/.test(val) || i18n.global.t('home_appname_rules_3')
+				/^[a-zA-Z][a-zA-Z0-9 ._-]{0,30}$/.test(val) ||
+				i18n.global.t('home_appname_rules_3')
 		],
 		placeholder: i18n.global.t('home_appname_rules_1')
 	},
@@ -80,5 +81,18 @@ export const ruleConfig = {
 			(val) => !/[\\/:*?"<>|]/.test(val) || i18n.global.t('file_name_rule_2')
 		],
 		placeholder: i18n.global.t('file_name_rule')
+	},
+
+	env: {
+		rules: [(val) => (val && val.length > 0) || i18n.global.t('image_env')],
+		placeholder: i18n.global.t('image_env')
+	},
+
+	volume: {
+		rules: [
+			(val) => (val && val.length > 0) || i18n.global.t('image_volume'),
+			(val) => /^[1-9]\d*$/.test(val) || i18n.global.t('image_volume_rule')
+		],
+		placeholder: i18n.global.t('image_volume')
 	}
 };
