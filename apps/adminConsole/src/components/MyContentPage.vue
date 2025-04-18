@@ -14,9 +14,10 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
 import { computed } from 'vue';
-
+import { useIsStudio } from 'src/stores/hook';
+const isStudio = useIsStudio();
 const route = useRoute();
-const headerShow = computed(() => !route.meta.headerHide);
+const headerShow = computed(() => !isStudio);
 </script>
 <style lang="scss" scoped>
 .my-content-page-header-extra {
