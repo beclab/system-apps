@@ -142,7 +142,7 @@ async function loadChart() {
 
 	chartNodes.value = [
 		{
-			label: props.app.appName,
+			label: props.app.title || props.app.appName,
 			icon: 'folder',
 			children: children,
 			selectable: false,

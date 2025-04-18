@@ -17,8 +17,8 @@ export const envOptions = [
 		value: 'beclab/node-ts-dev:0.1.1'
 	},
 	{
-		label: 'beclab/go-dev:0.1.1',
-		value: 'beclab/go-dev:0.1.1'
+		label: 'beclab/go-dev:0.1.3',
+		value: 'beclab/go-dev:0.1.3'
 	},
 	{
 		label: 'beclab/python-dev:0.1.1',
