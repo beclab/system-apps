@@ -13,10 +13,7 @@
 			<template v-slot:body-cell-type="props">
 				<q-td :props="props">
 					<div class="row items-center no-wrap text-ink-1">
-						<MyBadge
-							class="q-mr-xs"
-							:type="props.row.type ? 'success' : 'failed'"
-						/>
+						<MyBadge class="q-mr-xs" :type="props.row.type" />
 						<span class="event-type">{{ props.row.type }}</span>
 					</div>
 				</q-td>

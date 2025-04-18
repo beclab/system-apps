@@ -110,6 +110,9 @@ const routes: RouteRecordRaw[] = [
 			{
 				path: '/application-spaces',
 				component: () => import('src/pages/ApplicationSpaces/IndexPage.vue'),
+				meta: {
+					workloadActionHide: true
+				},
 				children: [
 					{
 						path: 'workloads/:namespace',
