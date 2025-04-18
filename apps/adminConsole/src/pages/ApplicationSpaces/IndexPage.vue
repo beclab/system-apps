@@ -8,6 +8,7 @@
 		:loading="loading"
 		:accordion="false"
 		ref="myTreeRef"
+		:header-after-hide="headerHide"
 	>
 		<MenuHeader></MenuHeader>
 	</MyTree>
@@ -33,6 +34,8 @@ const list = ref([]);
 const loading = ref(false);
 const route = useRoute();
 const myTreeRef = ref();
+
+const headerHide = computed(() => !!route.meta.headerHide);
 
 const defaultActive = computed(() => {
 	return route.params.namespace;

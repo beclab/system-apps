@@ -1,7 +1,7 @@
 <template>
 	<MySplitter>
 		<template v-slot:before="scope">
-			<div class="my-menu-before-wrapper" v-if="headerShow">
+			<div class="my-menu-before-wrapper" v-if="!headerBeforeHide">
 				<slot v-bind:value="scope.value"></slot>
 				<q-resize-observer @resize="onResize" />
 			</div>
@@ -105,7 +105,7 @@
 		<template v-slot:after>
 			<div
 				class="my-menu-after-wrapper"
-				v-if="headerShow"
+				v-if="!headerAfterHide"
 				:style="{
 					zIndex: zIndex,
 					width: size.widths[index + 1] ? `${size.widths[index + 1]}px` : 'auto'
@@ -170,6 +170,8 @@ interface Props {
 	index: 0;
 	selectedColor: string;
 	selectedBackgroundColor?: string;
+	headerAfterHide?: boolean;
+	headerBeforeHide?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -189,7 +191,6 @@ const extraWidth = ref(32);
 const extraWidthPx = computed(() => extraWidth.value + 'px');
 
 const route = useRoute();
-const headerShow = computed(() => !route.meta.headerHide);
 
 watch(
 	() => props.defaultActive,

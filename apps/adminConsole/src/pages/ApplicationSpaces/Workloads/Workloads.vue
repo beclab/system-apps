@@ -13,6 +13,8 @@
 		:index="1"
 		:key="$route.params.namespace"
 		v-bind="colorObj"
+		header-after-hide
+		:header-before-hide="headerHide"
 	/>
 </template>
 
@@ -68,6 +70,8 @@ const { t } = useI18n();
 const PodListData = usePodList();
 
 const router = useRouter();
+const headerHide = computed(() => !!route.meta.headerHide);
+
 const colorObj = computed(() => {
 	if (isStutio.value) {
 		const { color: bgColor } = useColor('background-3');
