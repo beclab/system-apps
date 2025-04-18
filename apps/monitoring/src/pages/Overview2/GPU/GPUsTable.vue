@@ -66,9 +66,11 @@
 					<Empty v-show="!loading"></Empty>
 				</div>
 			</template>
+			<template v-slot:loading>
+				<q-inner-loading showing />
+			</template>
 		</q-table>
 	</QTableStyle2>
-	<q-inner-loading :showing="loading"> </q-inner-loading>
 </template>
 
 <script setup lang="ts">

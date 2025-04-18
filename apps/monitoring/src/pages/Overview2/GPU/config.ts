@@ -1,3 +1,4 @@
+import { round } from 'lodash';
 import { getInstantVector, getRangeVector } from 'src/network/gpu';
 import { timeParse } from 'src/utils/gpu';
 import { computed, ref, watch, watchEffect } from 'vue';
@@ -55,7 +56,6 @@ export const useInstantVector = (
 							(data.value[index].used / data.value[index].total) * 100;
 					}
 					if (percentQuery) {
-						console.log('percentQuery', parseQuery(percentQuery));
 						const percentData = await getRangeVector({
 							query: parseQuery(percentQuery),
 							range: {
@@ -69,7 +69,7 @@ export const useInstantVector = (
 
 						data.value[index].data = list.map((item) => [
 							item.timestamp,
-							item.value
+							round(item.value)
 						]);
 					}
 				} catch (error) {
@@ -104,7 +104,7 @@ export const useInstantVector = (
 
 						data.value[index].data = list.map((item) => [
 							item.timestamp,
-							item.value
+							round(item.value)
 						]);
 					}
 				} catch (error) {

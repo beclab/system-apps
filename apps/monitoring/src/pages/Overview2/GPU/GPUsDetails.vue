@@ -91,10 +91,11 @@ import { timeParse } from 'src/utils/gpu';
 import { useI18n } from 'vue-i18n';
 import MyGridLayout from '@packages/ui/src/components/MyGridLayout.vue';
 import MyGaugeChart from 'src/components/Charts/MyGaugeChart.vue';
-import MylineChart from '@packages/ui/src/components/Charts/MylineChart.vue';
+import MylineChart from '@packages/ui/src/components/Charts/MylineChart6.vue';
 import GPUDetailList from './GPUDetailList.vue';
 import GPUStatus from 'src/pages/Overview2/GPU/GPUStatus.vue';
 import DatePicker from './DatePicker.vue';
+import { round } from 'lodash';
 
 const end = new Date();
 const start = new Date();
@@ -281,7 +282,7 @@ const fetchLineData = async () => {
 					detail2.value = { ...detail2.value, device_no, driver_version };
 				}
 				const data = res.data.data[0]?.values || [];
-				const list = data.map((item) => [item.timestamp, item.value]);
+				const list = data.map((item) => [item.timestamp, round(item.value)]);
 				lineTools.value[index].data = [list];
 			})
 			.finally(() => {

@@ -103,12 +103,13 @@ import GPUDetailList from './GPUDetailList.vue';
 import GPUStatus from 'src/pages/Overview2/GPU/GPUStatus.vue';
 import MyCard from 'components/MyCard.vue';
 import { roundToDecimal, timeParse } from 'src/utils/gpu';
-import MylineChart from '@packages/ui/src/components/Charts/MylineChart.vue';
+import MylineChart from '@packages/ui/src/components/Charts/MylineChart6.vue';
 import TextPlus from 'src/components/TextPlus.vue';
 import TaskStatus from './TaskStatus.vue';
 import MyGridLayout from '@packages/ui/src/components/MyGridLayout.vue';
 import { useI18n } from 'vue-i18n';
 import DatePicker from './DatePicker.vue';
+import { round } from 'lodash';
 
 const route = useRoute();
 const { t } = useI18n();
@@ -231,7 +232,7 @@ const fetchLineData = async () => {
 		})
 			.then((res) => {
 				const data = res.data.data[0]?.values || [];
-				const list = data.map((item) => [item.timestamp, item.value]);
+				const list = data.map((item) => [item.timestamp, round(item.value)]);
 
 				lineConfig.value[index].data = [list];
 			})
