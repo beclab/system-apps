@@ -33,18 +33,6 @@
 									data: [[item.percent.toFixed(1)]]
 								}"
 							></MyGaugeChart>
-							<div class="text-body3 text-ink-1 q-mt-sm">
-								<span class="">{{
-									item.title.includes('使用') ? '使用' : '分配'
-								}}</span>
-								<span v-if="!item.title.includes('算力')"
-									>({{ item.unit }})</span
-								>
-								:
-								<span class="text-subtitle3"
-									>{{ item.used.toFixed(1) }}/{{ item.total.toFixed() }}</span
-								>
-							</div>
 						</div>
 					</div>
 					<div v-for="(item, index) in lineTools" :key="index">
@@ -86,7 +74,7 @@ import {
 import { GraphicsDetailsResponse } from 'src/types/gpu';
 import { computed, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import { useInstantVector } from './config';
+import { fillEmptyMetricsGPU, useInstantVector } from './config';
 import { timeParse } from 'src/utils/gpu';
 import { useI18n } from 'vue-i18n';
 import MyGridLayout from '@packages/ui/src/components/MyGridLayout.vue';
@@ -96,6 +84,7 @@ import GPUDetailList from './GPUDetailList.vue';
 import GPUStatus from 'src/pages/Overview2/GPU/GPUStatus.vue';
 import DatePicker from './DatePicker.vue';
 import { round } from 'lodash';
+import { date } from 'quasar';
 
 const end = new Date();
 const start = new Date();
@@ -215,14 +204,14 @@ const gaugeConfig = useInstantVector(
 
 const trendList = computed(() => [
 	{
-		title: '资源分配趋势',
+		title: t('GPU.RESOURCE_ALLOCATION_TREND'),
 		unit: '%',
 		legend: ['core', 'memory'],
 		data: [gaugeConfig.value[0].data, gaugeConfig.value[1].data],
 		loading: gaugeConfig.value[0].loading || gaugeConfig.value[1].loading
 	},
 	{
-		title: '资源使用趋势',
+		title: t('GPU.RESOURCE_USAGE_TREND'),
 		unit: '%',
 		legend: ['core', 'memory'],
 		data: [gaugeConfig.value[2].data, gaugeConfig.value[3].data],
@@ -239,10 +228,10 @@ const trendList = computed(() => [
 
 const lineTools = ref([
 	{
-		title: 'GPU功率',
+		title: t('GPU.GPU_POWER'),
 		query:
 			'avg by (device_no,driver_version) (hami_device_power{deviceuuid=~"$deviceuuid"})',
-		data: [],
+		data: [[]],
 		unit: 'W',
 		gaugeUnit: 'W',
 		percent: 0,
@@ -251,10 +240,10 @@ const lineTools = ref([
 		loading: false
 	},
 	{
-		title: 'GPU 温度',
+		title: t('GPU.GPU_TEMP'),
 		query:
 			'avg by (device_no,driver_version) (hami_device_temperature{deviceuuid=~"$deviceuuid"})',
-		data: [],
+		data: [[]],
 		unit: '℃',
 		gaugeUnit: '℃',
 		percent: 0,
@@ -267,13 +256,13 @@ const lineTools = ref([
 const fetchLineData = async () => {
 	lineTools.value.map((item, index) => {
 		lineTools.value[index].loading = true;
-
+		const range = {
+			start: timeParse(times.value[0]),
+			end: timeParse(times.value[1]),
+			step: '1m'
+		};
 		getRangeVector({
-			range: {
-				start: timeParse(times.value[0]),
-				end: timeParse(times.value[1]),
-				step: '1m'
-			},
+			range,
 			query: item.query.replaceAll('$deviceuuid', route.params.uuid as string)
 		})
 			.then((res) => {
@@ -283,7 +272,9 @@ const fetchLineData = async () => {
 				}
 				const data = res.data.data[0]?.values || [];
 				const list = data.map((item) => [item.timestamp, round(item.value)]);
-				lineTools.value[index].data = [list];
+				const list2 = fillEmptyMetricsGPU({ ...range, times: 60000 }, list);
+
+				lineTools.value[index].data = [list2];
 			})
 			.finally(() => {
 				lineTools.value[index].loading = false;

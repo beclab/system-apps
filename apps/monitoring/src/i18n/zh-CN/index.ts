@@ -1,5 +1,6 @@
 // This is just an example,
 // so you can safely delete all default props below
+import GPU from './gpu';
 
 const options = {
 	OVERVIEW: '概览',
@@ -51,4 +52,4 @@ const options = {
 	OPERATIONS: '操作'
 };
 
-export default options;
+export default { ...options, GPU };

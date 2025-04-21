@@ -199,6 +199,7 @@ const option = computed(() => {
 		gap: 10px;
 		border-radius: var(--8, 8px);
 		background: $background-3;
+		white-space: nowrap;
 	}
 }
 </style>

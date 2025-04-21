@@ -97,7 +97,7 @@ import FullPageWithBack from '@packages/ui/src/components/FullPageWithBack2.vue'
 import { getRangeVector, getTaskDetail } from 'src/network/gpu';
 import { ref, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import { useInstantVector } from './config';
+import { fillEmptyMetricsGPU, useInstantVector } from './config';
 import MyGaugeChart from 'src/components/Charts/MyGaugeChart.vue';
 import GPUDetailList from './GPUDetailList.vue';
 import GPUStatus from 'src/pages/Overview2/GPU/GPUStatus.vue';
@@ -160,7 +160,7 @@ const columns = [
 const gaugeConfig = useInstantVector(
 	[
 		{
-			title: '算力使用率',
+			title: t('GPU.CPU_R'),
 			percent: 0,
 			query:
 				'avg(sum(hami_container_core_used{container_name="$container",pod_name=~"$pod",namespace_name="$namespace"}) by (instance))',
@@ -174,7 +174,7 @@ const gaugeConfig = useInstantVector(
 			data: []
 		},
 		{
-			title: '显存使用率',
+			title: t('GPU.VRAM_USAGE_RATE'),
 			percent: 0,
 			query:
 				'avg(sum(hami_container_memory_used{container_name="$container",pod_name=~"$pod",namespace_name="$namespace"}) by (instance))/ 1024',
@@ -197,21 +197,21 @@ const gaugeConfig = useInstantVector(
 
 const lineConfig = ref([
 	{
-		title: '算力使用趋势',
+		title: t('GPU.COMPUTE_POWER_USAGE_TREND'),
 		query:
 			'avg(sum(hami_container_core_util{container_name=~"$container",pod_name=~"$pod",namespace_name="$namespace"}) by (instance))',
 		unit: '%',
 		legend: [t('USAGE')],
-		data: [],
+		data: [[]],
 		loading: false
 	},
 	{
-		title: '显存使用趋势',
+		title: t('GPU.VRAM_USAGE_TREND'),
 		query:
 			'avg(sum(hami_container_memory_util{container_name=~"$container",pod_name=~"$pod",namespace_name="$namespace"}) by (instance))',
 		unit: '%',
 		legend: [t('USAGE')],
-		data: [],
+		data: [[]],
 		loading: false
 	}
 ]);
@@ -219,12 +219,13 @@ const lineConfig = ref([
 const fetchLineData = async () => {
 	lineConfig.value.map((item, index) => {
 		lineConfig.value[index].loading = true;
+		const range = {
+			start: timeParse(times.value[0]),
+			end: timeParse(times.value[1]),
+			step: '1m'
+		};
 		getRangeVector({
-			range: {
-				start: timeParse(times.value[0]),
-				end: timeParse(times.value[1]),
-				step: '1m'
-			},
+			range,
 			query: item.query
 				.replaceAll('$container', detail.value.name)
 				.replaceAll('$namespace', detail.value.namespace)
@@ -233,8 +234,9 @@ const fetchLineData = async () => {
 			.then((res) => {
 				const data = res.data.data[0]?.values || [];
 				const list = data.map((item) => [item.timestamp, round(item.value)]);
+				const list2 = fillEmptyMetricsGPU({ ...range, times: 60000 }, list);
 
-				lineConfig.value[index].data = [list];
+				lineConfig.value[index].data = [list2];
 			})
 			.finally(() => {
 				lineConfig.value[index].loading = false;

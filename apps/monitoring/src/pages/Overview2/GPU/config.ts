@@ -1,4 +1,5 @@
 import { round } from 'lodash';
+import { date } from 'quasar';
 import { getInstantVector, getRangeVector } from 'src/network/gpu';
 import { timeParse } from 'src/utils/gpu';
 import { computed, ref, watch, watchEffect } from 'vue';
@@ -126,4 +127,38 @@ export const useInstantVector = (
 	});
 
 	return data;
+};
+
+export const fillEmptyMetricsGPU = (params: any, result: any) => {
+	if (!params.times || !params.start || !params.end) {
+		return result;
+	}
+
+	const start = Number(date.formatDate(params.start, 'x'));
+	const end = Number(date.formatDate(params.end, 'x'));
+	const times = params.times || 60000;
+
+	const format = (num: number) => String(num).replace(/\..*$/, '');
+	const correctCount = Math.floor((end - start) / times) + 1;
+
+	let curValues = result || [];
+	const curValuesMap: any = curValues.reduce(
+		(prev: any, cur: any) => ({
+			...prev,
+			[format(cur[0])]: cur[1]
+		}),
+		{}
+	);
+
+	if (curValues.length < correctCount) {
+		const newValues: any = [];
+		for (let index = 0; index < correctCount; index++) {
+			const time = format(start + index * times);
+			const data: any = [time, curValuesMap[time] || '0'];
+			newValues.push(data);
+		}
+		curValues = newValues;
+	}
+
+	return curValues;
 };
