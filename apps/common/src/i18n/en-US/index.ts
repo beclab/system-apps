@@ -23,7 +23,8 @@ const options_update = {
 	ALL_STATUS: 'All statuses',
 	CPU: 'CPU',
 	REMOVE_CONFIRM_DSC:
-		'Enter the { name } name <strong>{ resource }</strong> to confirm that you understand the risks of this operation.'
+		'Enter the { name } name <strong>{ resource }</strong> to confirm that you understand the risks of this operation.',
+	POD: 'POD'
 };
 
 const options = {

@@ -64,7 +64,10 @@ const items = computed(() => {
 			key: 'middleware',
 			label: t('MIDDLEWARE'),
 			children: options3.value
-		},
+		}
+	];
+
+	const item3 = [
 		{
 			key: 'terminal',
 			label: t('TERMINAL'),
@@ -72,7 +75,11 @@ const items = computed(() => {
 		}
 	];
 
-	return appDetailStore.isDemo ? item1 : item1.concat(item2);
+	return appDetailStore.isDemo
+		? item1
+		: appDetailStore.isAdmin
+		? item1.concat(item2).concat(item3)
+		: item1.concat(item2);
 });
 
 const optionsAll = [
@@ -167,4 +174,3 @@ onBeforeMount(() => {
 }
 </style>
 <style></style>
-useTerminalStoreuseTerminalStore ../stores/TerminalStore

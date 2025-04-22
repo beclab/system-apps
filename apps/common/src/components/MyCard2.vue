@@ -7,12 +7,16 @@
 		class="my-card-container q-pa-none"
 	>
 		<q-card-section v-if="titleShow" class="my-card-section-wrapper q-pa-none">
-			<div class="row no-wrap justify-between items-center q-pa-lg">
-				<div class="text-subtitle2 text-ink-1">
+			<div
+				class="row no-wrap justify-between items-center q-py-lg q-pl-lg q-pr-md"
+				style="gap: 20px"
+				:class="[contentClass]"
+			>
+				<div class="text-subtitle2 text-ink-1 ellipsis">
 					<slot v-if="$slots.title" name="title"></slot>
 					<span v-else>{{ title }}</span>
 				</div>
-				<div class="col-auto my-card-extra text-ink-2">
+				<div class="my-card-extra row justify-end text-ink-2" style="flex: 1">
 					<slot name="extra" v-if="slots.extra"></slot>
 					<template v-if="extra">
 						{{ extra }}
@@ -58,6 +62,7 @@ interface Props {
 	 * no card content gap padding
 	 */
 	noContentGap?: boolean | undefined;
+	contentClass?: string;
 }
 
 const slots = useSlots();
