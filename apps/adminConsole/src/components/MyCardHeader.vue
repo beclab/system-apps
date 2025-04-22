@@ -11,7 +11,7 @@
 				style="width: 20px; height: 20px; border-radius: 50%"
 			/>
 		</div>
-		<div class="q-ml-sm" style="cursor: text">
+		<div class="q-ml-sm ellipsis" style="cursor: text">
 			<MyTitle size="sm" style="flex: 1">
 				<slot name="title"></slot>
 				<template v-if="title">

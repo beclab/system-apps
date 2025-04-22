@@ -21,7 +21,8 @@ const options_update = {
 	core: '核心',
 	CPU: 'CPU',
 	REMOVE_CONFIRM_DSC:
-		'请输入{ name }名称 <strong>{ resource }</strong> 确保您已了解操作所带来的风险。'
+		'请输入{ name }名称 <strong>{ resource }</strong> 确保您已了解操作所带来的风险。',
+	POD: 'POD'
 };
 
 const options = {

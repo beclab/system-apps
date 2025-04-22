@@ -1,10 +1,10 @@
 <template>
-	<div class="my-content-page-header-extra" v-if="headerShow">
+	<div class="my-content-page-header-extra" v-if="!isStudio">
 		<slot name="extra"></slot>
 	</div>
 	<bt-scroll-area
 		class="my-scroll-area-wrapper"
-		:class="{ 'my-scroll-area-no-header': !headerShow }"
+		:class="{ 'my-scroll-area-no-header': isStudio }"
 	>
 		<div>
 			<slot></slot>
@@ -17,7 +17,6 @@ import { computed } from 'vue';
 import { useIsStudio } from 'src/stores/hook';
 const isStudio = useIsStudio();
 const route = useRoute();
-const headerShow = computed(() => !isStudio);
 </script>
 <style lang="scss" scoped>
 .my-content-page-header-extra {
@@ -32,6 +31,7 @@ const headerShow = computed(() => !isStudio);
 .my-scroll-area-wrapper {
 	height: calc(100vh - #{$content-header-height});
 	margin-top: $content-header-height;
+	min-width: 400px;
 	&.my-scroll-area-no-header {
 		height: 100vh;
 		margin-top: 0px;

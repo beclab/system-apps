@@ -27,12 +27,14 @@
 			v-if="isStudio"
 		>
 			<template #title>
-				<div class="row items-center" style="cursor: pointer">
+				<div class="row items-center no-wrap" style="cursor: pointer">
 					<MyCardHeader
+						class="no-wrap ellipsis"
+						:isStudio="isStudio"
 						:title="$route.params.pods_name"
 						:img="selectedNodes?.img"
 					/>
-					<div class="q-ml-sm">
+					<div class="q-ml-sm" v-permission>
 						<q-icon
 							v-for="item in options4"
 							:key="item.value"
@@ -51,15 +53,29 @@
 				</div>
 			</template>
 			<template #extra>
-				<div class="row" style="gap: 8px">
-					<MyButton
-						v-for="item in options2"
-						:key="item.value"
-						:icon="item.icon"
-						:label="item.label"
-						@click="item.onClick"
+				<div ref="detailExtraRef" class="full-width row justify-end">
+					<q-resize-observer @resize="onResize" />
+					<MoreSelection
+						:options="options"
+						size="md"
+						v-permission
+						v-if="isMini"
+					></MoreSelection>
+					<div
+						v-else
+						v-permission
+						class="row items-center q-pr-sm"
+						style="gap: 8px"
 					>
-					</MyButton>
+						<MyButton
+							v-for="item in options2"
+							:key="item.value"
+							:icon="item.icon"
+							:label="item.label"
+							@click="item.onClick"
+						>
+						</MyButton>
+					</div>
 				</div>
 			</template>
 			<div class="q-pt-sm">
@@ -123,6 +139,8 @@ interface Props {
 const deleteDialogRef = ref();
 const deleteDialogRef2 = ref();
 const route = useRoute();
+const detailExtraRef = ref();
+const isMini = ref(false);
 
 const options = computed(() =>
 	optionsChildren1.value.concat(optionsChildren2.value)
@@ -211,5 +229,12 @@ const clickHandler2 = () => {
 
 const fetchList = () => {
 	detaiDatalRef.value && detaiDatalRef.value.update();
+};
+
+const onResize = (size: { width: number; height: number }) => {
+	// When the width of the "extra" cannot accommodate all the buttons, they will fold.
+	const buttonWidth = 276;
+	const boundingSize = detailExtraRef.value.getBoundingClientRect();
+	isMini.value = size.width < buttonWidth;
 };
 </script>
