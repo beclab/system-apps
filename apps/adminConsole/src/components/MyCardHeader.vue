@@ -8,7 +8,12 @@
 				width="20px"
 				spinner-size="8px"
 				:placeholder-src="defaultIcon"
-				style="width: 20px; height: 20px; border-radius: 50%"
+				style="
+					width: 20px;
+					height: 20px;
+					border-radius: 50%;
+					vertical-align: initial;
+				"
 			/>
 		</div>
 		<div class="q-ml-sm ellipsis" style="cursor: text">

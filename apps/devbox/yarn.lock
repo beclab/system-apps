@@ -11,7 +11,7 @@
     "@jridgewell/trace-mapping" "^0.3.24"
 
 "@apps/admin_console@../adminConsole":
-  version "0.5.6"
+  version "0.5.7"
   dependencies:
     "@apps/monitoring" "../monitoring"
     "@apps/nodes" "../nodes"

@@ -53,29 +53,34 @@
 				</div>
 			</template>
 			<template #extra>
-				<div ref="detailExtraRef" class="full-width row justify-end">
+				<div class="full-width row justify-end">
 					<q-resize-observer @resize="onResize" />
-					<MoreSelection
-						:options="options"
-						size="md"
-						v-permission
-						v-if="isMini"
-					></MoreSelection>
-					<div
-						v-else
-						v-permission
-						class="row items-center q-pr-sm"
-						style="gap: 8px"
-					>
-						<MyButton
-							v-for="item in options2"
-							:key="item.value"
-							:icon="item.icon"
-							:label="item.label"
-							@click="item.onClick"
+
+					<transition enter-active-class="animated fadeInRight">
+						<div
+							v-show="!isMini"
+							v-permission
+							class="row items-center q-pr-sm"
+							style="gap: 8px"
 						>
-						</MyButton>
-					</div>
+							<MyButton
+								v-for="item in options2"
+								:key="item.value"
+								:icon="item.icon"
+								:label="item.label"
+								@click="item.onClick"
+							>
+							</MyButton>
+						</div>
+					</transition>
+					<transition enter-active-class="animated fadeIn slower">
+						<MoreSelection
+							:options="options"
+							size="md"
+							v-permission
+							v-show="isMini"
+						></MoreSelection>
+					</transition>
 				</div>
 			</template>
 			<div class="q-pt-sm">
@@ -110,7 +115,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, withDefaults, computed } from 'vue';
+import { ref, withDefaults, computed, watch } from 'vue';
 import { t } from 'src/boot/i18n';
 import EnvironmentVariables from 'src/containers/EnvironmentVariables.vue';
 import Yaml from 'src/pages/NamespacePods/Yaml.vue';
@@ -139,7 +144,6 @@ interface Props {
 const deleteDialogRef = ref();
 const deleteDialogRef2 = ref();
 const route = useRoute();
-const detailExtraRef = ref();
 const isMini = ref(false);
 
 const options = computed(() =>
@@ -234,7 +238,13 @@ const fetchList = () => {
 const onResize = (size: { width: number; height: number }) => {
 	// When the width of the "extra" cannot accommodate all the buttons, they will fold.
 	const buttonWidth = 276;
-	const boundingSize = detailExtraRef.value.getBoundingClientRect();
 	isMini.value = size.width < buttonWidth;
 };
+
+watch(
+	() => route.params.pods_name,
+	() => {
+		isMini.value = true;
+	}
+);
 </script>
