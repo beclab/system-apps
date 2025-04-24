@@ -46,7 +46,7 @@ export const useFileStore = defineStore('file', {
 		},
 
 		async putFile(path: string): Promise<void> {
-			await axios.put(appStore.url + '/api/files/' + path);
+			await axios.post(appStore.url + '/api/files/' + path);
 
 			BtNotify.show({
 				type: NotifyDefinedType.SUCCESS,
