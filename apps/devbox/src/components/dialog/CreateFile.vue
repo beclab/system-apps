@@ -3,7 +3,7 @@
 		ref="CustomRef"
 		:title="title"
 		:cancel="true"
-		:okLoading="loading"
+		:okLoading="loading ? t('loading') : ''"
 		size="small"
 		@onSubmit="submit"
 	>
@@ -11,13 +11,14 @@
 			<div class="text-subtitle2 text-ink-3 q-mb-xs">
 				{{ t('dialog_create_title') }}
 			</div>
-			<div class="form-item-value q-mb-lg">
+			<div class="form-item-value">
 				<q-input
 					ref="fileNameRef"
 					dense
 					borderless
 					no-error-icon
 					v-model="appName"
+					autofocus
 					class="form-item-input"
 					input-class="text-ink-2"
 					:placeholder="ruleConfig.file.placeholder"
@@ -67,21 +68,29 @@ const submit = async () => {
 	fileNameRef.value.validate();
 	if (fileNameRef.value.hasError) return;
 
-	switch (props.action) {
-		case OPERATE_ACTION.ADD_FILE:
-			await createFile();
-			break;
+	loading.value = true;
 
-		case OPERATE_ACTION.ADD_FOLDER:
-			await createFolder();
-			break;
+	try {
+		switch (props.action) {
+			case OPERATE_ACTION.ADD_FILE:
+				await createFile();
+				break;
 
-		case OPERATE_ACTION.RENAME:
-			await renameFile();
-			break;
+			case OPERATE_ACTION.ADD_FOLDER:
+				await createFolder();
+				break;
+
+			case OPERATE_ACTION.RENAME:
+				await renameFile();
+				break;
+		}
+
+		loading.value = false;
+
+		CustomRef.value.onDialogOK(appName.value);
+	} catch (error) {
+		loading.value = false;
 	}
-
-	CustomRef.value.onDialogOK();
 };
 
 const createFile = async () => {

@@ -106,7 +106,7 @@ const $q = useQuasar();
 const store = useDevelopingApps();
 const fileStore = useFileStore();
 
-const expanded = ref<string[]>();
+const expanded = ref<string[]>([]);
 const mouseItemKey = ref();
 
 const fileMenu = ref([
@@ -229,8 +229,13 @@ const createDialog = (path: string, action: OPERATE_ACTION) => {
 			path,
 			action
 		}
-	}).onOk(() => {
-		emits('updatePathNode', path);
+	}).onOk((val) => {
+		expanded.value?.push(path);
+		emits('updatePathNode', {
+			path,
+			action,
+			name: val
+		});
 	});
 };
 
@@ -244,7 +249,10 @@ const renameDialog = (path: string, label: string, action: OPERATE_ACTION) => {
 		}
 	}).onOk(() => {
 		const parentPath = path.split('/').slice(0, -1).join('/');
-		emits('updatePathNode', parentPath);
+		emits('updatePathNode', {
+			path: parentPath,
+			action
+		});
 	});
 };
 
@@ -265,7 +273,10 @@ const deleteFile = async (path: string) => {
 const _deleteFile = async (path: string) => {
 	const parentPath = path.split('/').slice(0, -1).join('/');
 	await fileStore.deleteFile(path);
-	emits('updatePathNode', parentPath);
+	emits('updatePathNode', {
+		path: parentPath,
+		action: OPERATE_ACTION.DELETE
+	});
 };
 </script>
 
