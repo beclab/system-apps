@@ -38,7 +38,7 @@ import { useI18n } from 'vue-i18n';
 import { useQuasar } from 'quasar';
 import { useRouter, useRoute, onBeforeRouteLeave } from 'vue-router';
 import { ref, watch, onMounted, onUnmounted, PropType } from 'vue';
-import { ApplicationInfo, FilesSelectType } from '@/types/core';
+import { ApplicationInfo, FilesSelectType, OPERATE_ACTION } from '@/types/core';
 
 import { useDevelopingApps } from '../stores/app';
 import { useFileStore } from './../stores/file';
@@ -71,12 +71,14 @@ onBeforeRouteLeave((to, from, next) => {
 	console.log('onBeforeRouteLeave from', from.path);
 
 	if (fileStore.isEditing) {
-		const answer = window.confirm(
-			`${fileStore.fileInfo.name} has been modified. Do you want to save the changes and update the chart repository?'`
-		);
-		if (answer) {
-			onSaveFile();
-		}
+		onSaveFile();
+
+		// const answer = window.confirm(
+		// 	`${fileStore.fileInfo.name} has been modified. Do you want to save the changes and update the chart repository?'`
+		// );
+		// if (answer) {
+		// 	onSaveFile();
+		// }
 
 		next();
 	} else {
@@ -165,14 +167,29 @@ const loadFile = () => {
 	fetchData(defaultFile.path);
 };
 
-const updatePathNode = async (path: string) => {
-	const res: any = await axios.get(store.url + '/api/files/' + path);
+const updatePathNode = async (item: {
+	path: string;
+	action: OPERATE_ACTION;
+	name?: string;
+}) => {
+	const res: any = await axios.get(store.url + '/api/files/' + item.path);
 
 	const children = getChildren(res.items);
 
-	const replaceNodes = replaceObjectByPath(chartNodes.value, path, children);
+	const replaceNodes = replaceObjectByPath(
+		chartNodes.value,
+		item.path,
+		children
+	);
 
 	chartNodes.value = replaceNodes;
+
+	if (
+		item.action === OPERATE_ACTION.ADD_FILE ||
+		item.action === OPERATE_ACTION.ADD_FOLDER
+	) {
+		onSelected(`${item.path}/${item.name}`);
+	}
 };
 
 function replaceObjectByPath(array, targetPath, newObject) {
@@ -202,7 +219,10 @@ const updateRoute = (value) => {
 
 const onSelected = async (value) => {
 	if (fileStore.isEditing) {
-		checkFileSave(value);
+		// checkFileSave(value);
+		await onSaveFile();
+		updateRoute(value);
+		fetchData(value);
 	} else {
 		fetchData(value);
 		updateRoute(value);

@@ -129,6 +129,10 @@
 				<q-menu class="rounded-borders" flat>
 					<q-list dense padding>
 						<q-item
+							v-if="
+								store.current_app.devEnv !== 'default' &&
+								dockerStore.appStatus === APP_STATUS.DEPLOYED
+							"
 							class="row items-center justify-start text-ink-2"
 							clickable
 							v-ripple
