@@ -70,8 +70,9 @@ export const useDockerStore = defineStore('docker', {
 			return res;
 		},
 
-		async un_install_app(name: string): Promise<void> {
+		async un_install_app(name: string, hideNotify = false): Promise<void> {
 			await axios.post(appStore.url + `/api/command/uninstall/${name}`, {});
+			if (hideNotify) return;
 			BtNotify.show({
 				type: NotifyDefinedType.SUCCESS,
 				message: i18n.global.t('message.start_uninstalling')
@@ -79,6 +80,7 @@ export const useDockerStore = defineStore('docker', {
 		},
 
 		async delete_app(name: string): Promise<void> {
+			await this.un_install_app(name, true);
 			await axios.post(appStore.url + '/api/command/delete-app', {
 				name
 			});
@@ -93,6 +95,7 @@ export const useDockerStore = defineStore('docker', {
 				appStore.url + `/api/app-state?app=${name}`
 			);
 
+			this.appInstallState = res.state;
 			return res;
 		},
 

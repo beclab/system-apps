@@ -349,6 +349,15 @@ export default {
 		abnormal: 'Abnormal'
 	},
 
+	appInstallStatus: {
+		pending: 'Pending',
+		downloading: 'Downloading',
+		processing: 'Processing',
+		canceled: 'Canceled',
+		failed: 'Failed',
+		completed: 'Completed'
+	},
+
 	header_btn: {
 		apply: 'Apply',
 		edit: 'Edit',

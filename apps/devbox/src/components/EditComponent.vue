@@ -294,7 +294,9 @@ onMounted(async () => {
 	}
 
 	await loadChart();
-	selected.value && (await fetchData(selected.value));
+	if (selected.value && selected.value.split('/').length > 1) {
+		await fetchData(selected.value);
+	}
 });
 
 onUnmounted(() => {

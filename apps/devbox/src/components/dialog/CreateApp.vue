@@ -41,7 +41,7 @@
 			<div class="footer row items-center justify-end q-pr-lg">
 				<TerminusFormFooter
 					:ok-text="t('create')"
-					:on-cancel="t('cancel')"
+					:cancel-text="t('cancel')"
 					:loading="loading"
 					@submit="submit"
 					@cancel="onDialogCancel"

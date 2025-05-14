@@ -10,20 +10,35 @@
 			</div>
 		</div>
 		<div class="row items-center justify-end">
+			<div class="status q-mx-md" v-if="dockerStore.appInstallState">
+				<q-icon
+					class="q-mr-sm"
+					:name="app_install_status_style[dockerStore.appInstallState].icon"
+					size="16px"
+					:style="{
+						color: app_install_status_style[dockerStore.appInstallState].color
+					}"
+				/>
+				<span class="text-subtitle3 text-ink-2">
+					{{ t(`appInstallStatus.${dockerStore.appInstallState}`) }}
+				</span>
+			</div>
+
 			<div
-				class="status"
+				class="status q-mx-md"
 				v-if="
 					dockerStore.appStatus && dockerStore.appStatus != APP_STATUS.EMPTY
 				"
 			>
 				<span
-					class="color"
+					class="color q-mr-sm"
 					:style="{ background: app_status_style[dockerStore.appStatus].color }"
 				></span>
-				<span class="text-subtitle3 text-ink-2 q-mr-xs">
+				<span class="text-subtitle3 text-ink-2">
 					{{ t(`appStatus.${dockerStore.appStatus}`) }}
 				</span>
 			</div>
+
 			<q-separator
 				class="q-mx-md"
 				v-if="dockerStore.appStatus"
@@ -139,7 +154,13 @@
 							@click="openEditor"
 							v-close-popup
 						>
-							<q-icon class="q-mr-xs" name="sym_r_upload" size="20px" />
+							<div class="q-mr-xs" style="width: 20px; height: 20px">
+								<img
+									src="./../assets/vscode.svg"
+									style="width: 14px; height: 14px"
+								/>
+							</div>
+
 							{{ t('vscode_desktop') }}
 						</q-item>
 
@@ -203,7 +224,12 @@ import { useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import { ROUTE_NAME } from '../common/router-name';
-import { APP_STATUS, app_status_style, APP_INSTALL_STATE } from '../types/core';
+import {
+	APP_STATUS,
+	app_status_style,
+	app_install_status_style,
+	APP_INSTALL_STATE
+} from '../types/core';
 import { BtNotify, NotifyDefinedType } from '@bytetrade/ui';
 
 import { useDevelopingApps } from '../stores/app';
@@ -231,7 +257,6 @@ const uploadInput = ref();
 const downloading = ref(false);
 
 const timer = ref();
-const appStatePending = ref(false);
 
 const controlFlag = computed(() => {
 	const flag = Object.values({ ...componentName, ...ROUTE_NAME }).find(
@@ -291,12 +316,16 @@ async function onInstall() {
 				const res = await dockerStore.install_app(store.current_app.appName);
 				namespace = res.namespace;
 				dockerStore.appStatus = null;
+				dockerStore.appInstallState = null;
 				emits('updateNotify', null);
-				await getAppState();
+				// await getAppState();
+				await updateAppState();
 				await openSystem(namespace);
 			} catch (error) {
 				dockerStore.appStatus = null;
-				await getAppState();
+				dockerStore.appInstallState = null;
+				// await getAppState();
+				await updateAppState();
 			}
 		}
 		$q.loading.hide();
@@ -308,11 +337,11 @@ async function onInstall() {
 
 async function openSystem(value?: string) {
 	pushToSystem(route.params.id, router, value);
-	dockerStore.appInstallState = null;
+	// dockerStore.appInstallState = null;
 }
 
 async function openFiles() {
-	dockerStore.appInstallState = null;
+	// dockerStore.appInstallState = null;
 	router.push({ path: menuStore.currentItem });
 }
 
@@ -330,7 +359,9 @@ function onUninstall() {
 			store.current_app &&
 				(await dockerStore.un_install_app(store.current_app.appName));
 			dockerStore.appStatus = null;
-			await getAppState();
+			dockerStore.appInstallState = null;
+			// await getAppState();
+			await updateAppState();
 			openFiles();
 		} catch (error) {
 			console.log(error);
@@ -434,17 +465,14 @@ watch(
 	() => route.params.id,
 	async (newVal) => {
 		if (newVal) {
-			await updateAppState();
+			emits('updateNotify', null);
 
-			console.log('dockerStore.appStatus', dockerStore.appStatus);
+			await updateAppState();
 
 			if (dockerStore.appStatus === APP_STATUS.UNDEPLOY) {
 				const path = route.path.split('/').slice(0, 3).join('/');
 				router.push({ path });
 			}
-
-			emits('updateNotify', null);
-			dockerStore.appInstallState = null;
 		}
 	},
 	{
@@ -477,23 +505,17 @@ async function getAppState() {
 		return false;
 	}
 
-	if (appStatePending.value) {
-		return false;
-	}
-
-	appStatePending.value = true;
 	try {
 		await dockerStore.get_app_status(route.params.id as string);
-		appStatePending.value = false;
 	} catch (error) {
-		appStatePending.value = false;
+		console.log(error);
 	}
 }
 
 const getAppInstallState = async () => {
 	if (
 		dockerStore.appStatus &&
-		[APP_STATUS.EMPTY, APP_STATUS.ABNORMAL, , APP_STATUS.UNDEPLOY].includes(
+		[APP_STATUS.EMPTY, APP_STATUS.ABNORMAL, APP_STATUS.UNDEPLOY].includes(
 			dockerStore.appStatus
 		)
 	) {
@@ -505,8 +527,7 @@ const getAppInstallState = async () => {
 		[
 			APP_INSTALL_STATE.CANCELED,
 			APP_INSTALL_STATE.FAILED,
-			APP_INSTALL_STATE.COMPLETED,
-			APP_INSTALL_STATE.RESUMED
+			APP_INSTALL_STATE.COMPLETED
 		].includes(dockerStore.appInstallState)
 	) {
 		return false;
@@ -516,7 +537,6 @@ const getAppInstallState = async () => {
 		if (res.state === APP_INSTALL_STATE.FAILED) {
 			emits('updateNotify', res.message);
 		}
-		dockerStore.appInstallState = res.state;
 	} catch (error) {
 		console.log(error);
 	}
@@ -648,11 +668,10 @@ onUnmounted(() => {
 		align-items: center;
 		justify-content: center;
 		.color {
-			width: 12px;
-			height: 12px;
-			border-radius: 6px;
+			width: 10px;
+			height: 10px;
+			border-radius: 5px;
 			display: inline-block;
-			margin-right: 8px;
 		}
 	}
 }

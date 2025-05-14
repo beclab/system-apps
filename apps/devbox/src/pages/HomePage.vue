@@ -146,6 +146,7 @@ async function uploadFile(event: any) {
 const updateStatus = async (app_name: string, namespace: string) => {
 	await pushToSystem(app_name, router, namespace);
 	await dockerStore.get_app_status(app_name);
+	await dockerStore.get_app_install_state(app_name);
 };
 
 async function upload_dev_file(

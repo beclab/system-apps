@@ -68,6 +68,7 @@ const changeItemMenu = (data: any): void => {
 	const key: string = data.key;
 	menuStore.currentItem = key;
 	dockerStore.appStatus = undefined;
+	dockerStore.appInstallState = undefined;
 
 	if (key === MenuLabel.HOME) {
 		router.push({ path: '/home' });

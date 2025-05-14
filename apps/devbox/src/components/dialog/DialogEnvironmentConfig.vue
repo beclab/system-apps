@@ -50,7 +50,7 @@
 
 			<TerminusFormFooter
 				:ok-text="t('submit')"
-				:on-cancel="t('cancel')"
+				:cancel-text="t('cancel')"
 				@submit="submit"
 				@cancel="onDialogCancel"
 			/>

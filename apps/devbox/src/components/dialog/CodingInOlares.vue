@@ -33,7 +33,7 @@
 			<div class="footer row items-center justify-end q-pr-lg">
 				<TerminusFormFooter
 					:ok-text="t('create')"
-					:on-cancel="t('cancel')"
+					:cancel-text="t('cancel')"
 					:loading="loading"
 					@submit="submit"
 					@cancel="onDialogCancel"
@@ -103,6 +103,7 @@ const submit = async () => {
 
 			await dockerStore.install_app(config.value.name);
 			await dockerStore.get_app_status(route.params.id as string);
+			await dockerStore.get_app_install_state(route.params.id as string);
 			await apps.getApps();
 			$q.loading.hide();
 			loading.value = false;
@@ -110,7 +111,6 @@ const submit = async () => {
 		} catch (error) {
 			$q.loading.hide();
 			loading.value = false;
-			pushToSystem(route.params.id, router);
 		}
 
 		onDialogOK();

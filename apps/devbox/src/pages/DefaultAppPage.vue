@@ -92,6 +92,7 @@ const initApp = async () => {
 const updateStatus = async () => {
 	await pushToSystem(route.params.id, router);
 	await dockerStore.get_app_status(route.params.id as string);
+	await dockerStore.get_app_install_state(route.params.id as string);
 	$q.loading.hide();
 };
 </script>
