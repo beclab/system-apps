@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - 'main'
+      - 'ci/add_space_size'
     tags:
       - 'v*'
 jobs:
