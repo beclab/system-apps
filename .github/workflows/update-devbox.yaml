@@ -40,8 +40,8 @@ jobs:
             ${{ runner.os }}-node-
       - name: Install
         run: |
-					export NODE_OPTIONS="--max_old_space_size=4096"
-					npm i -g yarn
+          export NODE_OPTIONS="--max_old_space_size=4096"
+          npm i -g yarn
       - run: yarn install --no-frozen-lockfile
       - name: Install fonttools
         run: pip3 install fonttools brotli
