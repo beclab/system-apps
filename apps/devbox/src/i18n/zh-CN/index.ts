@@ -322,6 +322,15 @@ export default {
 		abnormal: '部署异常'
 	},
 
+	appInstallStatus: {
+		pending: '等待中',
+		downloading: '下载中',
+		processing: '处理中',
+		canceled: '已取消',
+		failed: '失败',
+		completed: '已完成'
+	},
+
 	header_btn: {
 		apply: '应用',
 		edit: '编辑',

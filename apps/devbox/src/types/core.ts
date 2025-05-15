@@ -156,18 +156,47 @@ export interface FileItem {
 
 export enum APP_INSTALL_STATE {
 	PENDING = 'pending',
-	INSTALLING = 'installing',
-	UPGRADING = 'upgrading',
-	UNINSTALLING = 'uninstalling',
+	DOWNLOADING = 'downloading',
+	PROCESSING = 'processing',
 	CANCELED = 'canceled',
 	FAILED = 'failed',
-	COMPLETED = 'completed',
-	RESUMED = 'resumed',
-	CANCELING = 'canceling',
-	STOPPING = 'stopping',
-	DOWNLOADING = 'downloading',
-	PROCESSING = 'processing'
+	COMPLETED = 'completed'
+
+	// INSTALLING = 'installing',
+	// UPGRADING = 'upgrading',
+	// UNINSTALLING = 'uninstalling',
+	// RESUMING = 'resuming',
+	// RESUMED = 'resumed',
+	// CANCELING = 'canceling',
+	// STOPPING = 'stopping',
 }
+
+export const app_install_status_style = {
+	pending: {
+		color: '#5C5C5C',
+		icon: 'sym_r_download'
+	},
+	downloading: {
+		color: '#FEBE01',
+		icon: 'sym_r_downloading'
+	},
+	processing: {
+		color: '#3377FF',
+		icon: 'sym_r_download_for_offline'
+	},
+	canceled: {
+		color: '#ADADAD',
+		icon: 'sym_r_block'
+	},
+	failed: {
+		color: '#FF4D4D',
+		icon: 'sym_r_file_download_off'
+	},
+	completed: {
+		color: '#29CC5F',
+		icon: 'sym_r_move_to_inbox'
+	}
+};
 
 export interface AppState {
 	appName: string;
