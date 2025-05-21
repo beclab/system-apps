@@ -60,7 +60,7 @@
 					</template>
 					<template #subTitle>
 						<template v-if="reason">
-							{{ t(reason.toUpperCase()) }}
+							{{ t(reason) }}
 						</template>
 						<template v-else>
 							{{ t('IMAGE_VALUE', { value: container.image }) }}
