@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "@apps/monitoring": "../monitoring",
-    "@apps/nodes": "../nodes",
     "@bytetrade/ui": "0.1.62",
     "@packages/ui": "../common",
     "@quasar/extras": "^1.16.9",

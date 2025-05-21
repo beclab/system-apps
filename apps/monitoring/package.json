@@ -14,7 +14,6 @@
     "prebuild": "rimraf dist"
   },
   "dependencies": {
-    "@apps/nodes": "../nodes",
     "@bytetrade/core": "0.3.67",
     "@bytetrade/ui": "0.1.54",
     "@packages/ui": "../common",
