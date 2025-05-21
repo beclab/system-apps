@@ -73,7 +73,7 @@ const router = useRouter();
 const headerHide = computed(() => !!route.meta.headerHide);
 
 const colorObj = computed(() => {
-	if (isStutio.value) {
+	if (headerHide.value) {
 		const { color: bgColor } = useColor('background-3');
 		const { color: textColor } = useColor('ink-1');
 
