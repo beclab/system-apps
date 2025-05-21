@@ -9,6 +9,7 @@
 			:theme="theme_config"
 			autoresize
 		/>
+		<Empty center v-show="!hasData"></Empty>
 	</div>
 </template>
 <script lang="ts">
@@ -27,7 +28,6 @@ export interface LineProps {
 	splitNumberY?: number;
 	loading?: boolean;
 	theme: 'theme1' | 'theme2';
-	lineWidth?: number;
 }
 </script>
 <script lang="ts" setup>
@@ -51,7 +51,8 @@ import { date } from 'quasar';
 import { firstToUpper, firstToUpperWith_ } from 'src/constant';
 import { colors } from 'quasar';
 import { useColor } from '@bytetrade/ui';
-import { formatter } from './utils';
+import { formatter, dateFormate } from './utils';
+import Empty from '../Empty.vue';
 import './tooltip.scss';
 
 const { color: ink1 } = useColor('ink-1');
@@ -95,8 +96,7 @@ const props = withDefaults(defineProps<LineProps>(), {
 	xAxisLabel: true,
 	unit: '',
 	legend: [],
-	theme: 'theme1',
-	lineWidth: 3
+	theme: 'theme1'
 });
 console.log('teataaa', props.theme);
 const theme_config = computed(() => {
@@ -132,6 +132,11 @@ const gridBottom = props.xAxisLabel ? 0 : 4;
 const updateOptions = {
 	notMerge: false
 };
+
+const hasData = computed(() => {
+	const data = get(props.data, 'data', []);
+	return data.some((item) => isArray(item) && item.length > 0);
+});
 
 const option = computed(() => {
 	const dataFlat = props.data.data
@@ -172,7 +177,16 @@ const option = computed(() => {
 			trigger: 'axis',
 			valueFormatter: (value: any) =>
 				`${isNaN(value) ? '-' : value} ${unit.value}`,
-			formatter: (params: any, ticket: string) => formatter(params, unit.value),
+			formatter: (params: any, ticket: string) => {
+				const data = params.map((item: any) => ({
+					marker: item.marker,
+					seriesName: item.seriesName,
+					data: item.value,
+					unit: unit.value,
+					axisValueLabel: dateFormate(params[0].axisValueLabel)
+				}));
+				return formatter(data, unit.value);
+			},
 			axisPointer: {
 				type: 'line',
 				lineStyle: {
@@ -200,7 +214,10 @@ const option = computed(() => {
 			axisLabel: {
 				show: props.xAxisLabel,
 				color: ink3.value,
-				margin: 20
+				margin: 20,
+				formatter(value: string) {
+					return dateFormate(value, 'HH:mm');
+				}
 			},
 			data: get(props.data.data, '[0]', []).map((item) => item[0])
 		},
@@ -227,7 +244,7 @@ const option = computed(() => {
 			symbol: 'none',
 			clip: false,
 			lineStyle: {
-				width: props.lineWidth
+				width: 3
 			},
 			data: item.map((item) => item[1]),
 			areaStyle: {
@@ -245,6 +262,10 @@ const option = computed(() => {
 		}))
 	};
 });
+
+function dateFormate(value: string, formatStr = 'YYYY-MM-DD HH:mm:ss') {
+	return date.formatDate(new Date(parseFloat(value)), formatStr);
+}
 </script>
 
 <style lang="scss" scoped>

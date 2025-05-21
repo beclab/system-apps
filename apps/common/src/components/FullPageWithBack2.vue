@@ -48,7 +48,7 @@
 <script setup lang="ts">
 import RouteBackBar from './RouteBackBar.vue';
 import MyLayoutContainer from './MyLayoutContainer.vue';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import MyAvatarImg from './MyAvatarImg.vue';
 import { useQuasar } from 'quasar';
 const $q = useQuasar();
@@ -69,10 +69,16 @@ const scrollHander = (data: any) => {
 	}
 	emits('scroll', data);
 };
+
+const shadowColor = computed(() =>
+	$q.dark.isActive
+		? 'rgba(160, 160, 160, 0.1) 0px 2px 4px 0px'
+		: 'rgba(0, 0, 0, 0.1) 0px 2px 4px 0px'
+);
 </script>
 
 <style lang="scss" scoped>
 .top-show {
-	box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px;
+	box-shadow: v-bind(shadowColor);
 }
 </style>

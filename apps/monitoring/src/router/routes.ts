@@ -1,4 +1,5 @@
 import { RouteRecordRaw } from 'vue-router';
+import { ROUTE_NAME } from './const';
 
 const routes: RouteRecordRaw[] = [
 	{
@@ -14,6 +15,40 @@ const routes: RouteRecordRaw[] = [
 						path: '/physical-resources/cluster',
 						component: () => import('src/pages/PhysicalResource/IndexPage.vue')
 					},
+					{
+						path: '/resources/:type',
+						component: () => import('src/pages/Overview2/ResourcePage.vue')
+					},
+					{
+						path: '/overview/resources/:type',
+						name: ROUTE_NAME.PHYSICAL_RESOURCE_DETAIL,
+						component: () => import('src/pages/Overview2/ResourcePage.vue')
+					},
+					{
+						path: '/overview/gpu/list',
+						name: ROUTE_NAME.GPU_LIST,
+						component: () => import('src/pages/Overview2/GPU/IndexPage.vue'),
+						children: [
+							{
+								path: '/overview/gpu/:uuid/detail',
+								name: ROUTE_NAME.GPUS_DETAILS,
+								component: () =>
+									import('src/pages/Overview2/GPU/GPUsDetails.vue')
+							},
+							{
+								path: '/overview/task/:name/:pod_uid/detail',
+								name: ROUTE_NAME.TASKS_DETAILS,
+								component: () =>
+									import('src/pages/Overview2/GPU/TasksDetails.vue')
+							}
+						]
+					},
+					{
+						path: '/overview/network/detail',
+						name: ROUTE_NAME.NETWORK_DETAIL,
+						component: () => import('src/pages/Overview2/Network/IndexPage.vue')
+					},
+
 					{
 						path: '/physical-resources/:node',
 						component: () => import('src/pages/Nodes/NodeMonitoring.vue')

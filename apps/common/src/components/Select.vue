@@ -1,6 +1,10 @@
 <template>
 	<QSectionStyle>
-		<q-select v-bind="$attrs" popup-content-class="q-pa-sm my-select-wrapper">
+		<q-select
+			v-bind="$attrs"
+			popup-content-class="q-pa-sm my-select-wrapper"
+			:emit-value="emitValue"
+		>
 			<template v-slot:option="scope">
 				<q-item
 					class="row justify-between items-center cursor-pointer select-option-item"
@@ -24,7 +28,14 @@
 
 					<q-item-section avatar class="my-avatar-wrapper">
 						<q-icon
-							v-if="isEqual(scope.opt, $attrs.modelValue)"
+							v-if="
+								isEqual(
+									emitValue
+										? scope.opt[$attrs['option-value'] || 'value']
+										: scope.opt,
+									$attrs.modelValue
+								)
+							"
 							color="primary"
 							size="16px"
 							name="sym_r_check_circle"
@@ -48,6 +59,10 @@
 import QSectionStyle from './QSectionStyle.vue';
 import { isEqual } from 'lodash';
 import { useSlots, computed } from 'vue';
+interface Props {
+	emitValue?: boolean;
+}
+defineProps<Props>();
 </script>
 
 <style lang="scss" scoped>

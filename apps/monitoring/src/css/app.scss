@@ -47,3 +47,34 @@
 	-ms-border-radius: 32px;
 	-o-border-radius: 32px;
 }
+.flex-gap-xs {
+	gap: $flex-gutter-xs;
+}
+.flex-gap-sm {
+	gap: $flex-gutter-sm;
+}
+.flex-gap-md {
+	gap: $flex-gutter-md;
+}
+.flex-gap-lg {
+	gap: $flex-gutter-lg;
+}
+.flex-gap-xl {
+	gap: $flex-gutter-xl;
+}
+.flex-gap-xxl {
+	gap: $flex-gutter-xxl;
+}
+.flex-gap-xxxl {
+	gap: $flex-gutter-xxxl;
+}
+.flex-gap-xxxxl {
+	gap: $flex-gutter-xxxxl;
+}
+
+.flex-gap-col-xxxxl {
+	column-gap: $flex-gutter-xxxxl;
+}
+.flex-gap-row-xl {
+	row-gap: $flex-gutter-xl;
+}

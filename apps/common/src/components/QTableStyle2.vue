@@ -46,6 +46,9 @@ const { stickyFirst, stickyLast } = toRefs(props);
 		line-height: 20px;
 		color: $ink-1;
 	}
+	::v-deep(tr td:last-child) {
+		padding: 20px 0 20px 0;
+	}
 	::v-deep(th) {
 		padding: 8px 0 8px 0;
 	}

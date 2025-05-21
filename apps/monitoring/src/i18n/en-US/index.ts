@@ -1,6 +1,6 @@
 // This is just an example,
 // so you can safely delete all default props below
-
+import GPU from './gpu';
 const options = {
 	OVERVIEW: 'Overview',
 	APPLICATIONS: 'Applications',
@@ -47,7 +47,8 @@ const options = {
 	RESUMING: 'Resuming',
 	UNINSTALLING: 'Uninstalling',
 	OPEN_APP: 'Open App',
-	VIEW_DETAIL: 'View Detail'
+	VIEW_DETAIL: 'View Detail',
+	OPERATIONS: 'Operations'
 };
 
-export default options;
+export default { ...options, GPU };

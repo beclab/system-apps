@@ -1,3 +1,5 @@
+import { date } from 'quasar';
+
 export const chartEntervalOfWidth = (width: number) => {
 	let chartInterval: number | 'auto' = 2;
 	if (width > 1500) {
@@ -27,4 +29,8 @@ export function formatter(params: any, unit: string) {
 		dom += domItem;
 	});
 	return `<div class="chart-tooltip-title">${params[0].axisValueLabel}</div><div class="chart-tooltip-item-container">${dom}</div>`;
+}
+
+export function dateFormate(value: string, formatStr = 'YYYY-MM-DD HH:mm:ss') {
+	return date.formatDate(new Date(parseFloat(value)), formatStr);
 }

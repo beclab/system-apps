@@ -2,6 +2,9 @@
   "extends": "@quasar/app-webpack/tsconfig-preset",
   "compilerOptions": {
     "baseUrl": ".",
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "target": "esnext",
+    "module": "esnext",
+    "lib": ["dom", "es2021"]
   }
 }
